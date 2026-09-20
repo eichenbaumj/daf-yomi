@@ -9,6 +9,8 @@ export interface DafNote {
   generatedAt: string;
   /** Sefaria URL refs the note was written from. */
   sources: string[];
+  /** Token usage summed over attempts, and the estimated cost at the model's list price. */
+  usage?: { inputTokens: number; outputTokens: number; attempts: number; estUsd: number };
 }
 
 export const noteKey = (t: Tractate, daf: number) => `note:v1:${t.slug}:${daf}`;

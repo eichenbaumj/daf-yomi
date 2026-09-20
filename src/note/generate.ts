@@ -42,7 +42,14 @@ export async function buildPromptInput(ref: DafRef, kv?: KVNamespace): Promise<{
   };
 }
 
-export async function draftNote(client: Anthropic, model: string, input: PromptInput): Promise<{ draft: NoteDraft | null; refusal?: string }> {
+/** List prices per million tokens, for the cost estimate stored with each note. */
+const PRICE_USD_PER_M: Record<string, { input: number; output: number }> = { "claude-opus-5": { input: 5, output: 25 } };
+export function estimateUsd(model: string, inputTokens: number, outputTokens: number): number {
+  const p = PRICE_USD_PER_M[model] ?? PRICE_USD_PER_M["claude-opus-5"]!;
+  return Math.round(((inputTokens * p.input + outputTokens * p.output) / 1e6) * 10000) / 10000;
+}
+
+export async function draftNote(client: Anthropic, model: string, input: PromptInput): Promise<{ draft: NoteDraft | null; refusal?: string; usage: { inputTokens: number; outputTokens: number } }> {
   const response = await client.messages.parse({
     model,
     max_tokens: 4000,
@@ -50,10 +57,11 @@ export async function draftNote(client: Anthropic, model: string, input: PromptI
     messages: [{ role: "user", content: userMessage(input) }],
     output_config: { format: zodOutputFormat(NoteSchema) },
   });
+  const usage = { inputTokens: response.usage.input_tokens, outputTokens: response.usage.output_tokens };
   if (response.stop_reason === "refusal") {
-    return { draft: null, refusal: response.stop_details?.explanation ?? "model declined" };
+    return { draft: null, refusal: response.stop_details?.explanation ?? "model declined", usage };
   }
-  return { draft: response.parsed_output ?? null };
+  return { draft: response.parsed_output ?? null, usage };
 }
 
 /**
@@ -73,12 +81,14 @@ export async function ensureNote(env: Env, ref: DafRef, opts: { force?: boolean;
     const client = new Anthropic({ apiKey: env.ANTHROPIC_API_KEY, maxRetries: 2 });
     const model = env.NOTE_MODEL || "claude-opus-5";
     let feedback: string | undefined;
+    let inputTokens = 0, outputTokens = 0;
     for (let attempt = 1; attempt <= 2; attempt++) {
-      const { draft, refusal } = await draftNote(client, model, { ...input, feedback });
+      const { draft, refusal, usage } = await draftNote(client, model, { ...input, feedback });
+      inputTokens += usage.inputTokens; outputTokens += usage.outputTokens;
       if (!draft) return { status: "failed", reason: refusal ? `refused: ${refusal}` : "unparseable response" };
       const check = checkNote(draft, sourceText);
       if (check.ok) {
-        const note: DafNote = { ...draft, model, promptVersion: hashPrompt(), generatedAt: new Date().toISOString(), sources };
+        const note: DafNote = { ...draft, model, promptVersion: hashPrompt(), generatedAt: new Date().toISOString(), sources, usage: { inputTokens, outputTokens, attempts: attempt, estUsd: estimateUsd(model, inputTokens, outputTokens) } };
         await putNote(env.DAF_KV, t, daf, note);
         return { status: "generated", note, attempts: attempt };
       }

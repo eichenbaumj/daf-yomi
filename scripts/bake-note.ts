@@ -39,7 +39,8 @@ async function main() {
     console.log(`━━━ ${ref.tractate.name} ${ref.daf} · ${input.positionLine} · ${sourceText.split(/\s+/).length} source words`);
     if (dump === "prompt") { console.log("--- system ---\n" + SYSTEM_PROMPT + "\n--- user ---\n" + userMessage(input)); continue; }
     if (dump === "text") { console.log(sourceText); continue; }
-    const { draft, refusal } = await draftNote(client, model, input);
+    const { draft, refusal, usage } = await draftNote(client, model, input);
+    console.log(`tokens: ${usage.inputTokens} in / ${usage.outputTokens} out`);
     if (!draft) { console.log(`  no draft (${refusal ?? "unparseable"})`); continue; }
     console.log(`\n${draft.summary}\n\n${draft.question}\n`);
     if (draft.quotes.length) console.log(`quotes: ${draft.quotes.map((q) => `"${q}"`).join(" · ")}`);

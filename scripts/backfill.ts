@@ -18,12 +18,15 @@ const from = parseYmd(opt("from") ?? ""); const to = parseYmd(opt("to") ?? "");
 if (!from || !to) { console.error("need --from and --to (YYYY-MM-DD)"); process.exit(2); }
 const force = args.includes("--force");
 
+let total = 0;
 async function main() {
   for (let d = from!; d <= to!; d = addDays(d, 1)) {
     const url = `${site}/admin/bake?date=${ymd(d)}${force ? "&force=1" : ""}`;
     const res = await fetch(url, { method: "POST", headers: { authorization: `Bearer ${token}` } });
     const body: any = await res.json().catch(() => ({}));
-    console.log(`${ymd(d)} ${body.daf ?? ""}: ${res.status} ${body.status ?? ""} ${body.reason ?? ""} ${body.attempts ? `(${body.attempts} attempt/s)` : ""}`);
+    const u = body.note?.usage;
+    if (u) total += u.estUsd;
+    console.log(`${ymd(d)} ${body.daf ?? ""}: ${res.status} ${body.status ?? ""} ${body.reason ?? ""} ${body.attempts ? `(${body.attempts} attempt/s)` : ""}${u ? ` ${u.inputTokens} in / ${u.outputTokens} out ≈ $${u.estUsd.toFixed(3)}` : ""}`);
   }
 }
-main().catch((e) => { console.error(e); process.exit(1); });
+main().then(() => console.log(`estimated total ≈ $${total.toFixed(2)} at list price`)).catch((e) => { console.error(e); process.exit(1); });
