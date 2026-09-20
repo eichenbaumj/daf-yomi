@@ -52,7 +52,7 @@ export function renderPositionMini(ref: DafRef, learnedThroughDaf: number): stri
   for (const y of inSeder) {
     const w = y.days / sd;
     const cur = y.slug === t.slug ? " cur" : "";
-    tractGeo.push(`<a class="ms t s${si + 1}${cur}" style="width:${pc(w)}" href="/${esc(y.slug)}" title="${esc(y.name)}: ${y.days} days" tabindex="-1"></a>`);
+    tractGeo.push(`<span class="ms t s${si + 1}${cur}" style="width:${pc(w)}" title="${esc(y.name)}: ${y.days} days"></span>`);
     if (w >= 0.1) tractLabels.push(`<span style="left:${pc(x)};width:${pc(w)}">${esc(y.name)}</span>`);
     x += w;
   }

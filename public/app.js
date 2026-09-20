@@ -56,7 +56,6 @@
     zoom.setAttribute("aria-pressed", L > 0 ? "true" : "false");
   }
   zoom.addEventListener("click", function (e) {
-    if (e.target.closest && e.target.closest("a")) return; // a tractate link inside level 2
     show(level === max ? 0 : level + 1);
   });
   zoom.addEventListener("keydown", function (e) {

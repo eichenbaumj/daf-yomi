@@ -204,8 +204,6 @@ a.ref { color: inherit; text-decoration: underline dotted var(--ink-3); }
 .ms:last-child { border-right: 0; }
 .ms.cur { opacity: 1; }
 .ms.plain { background: var(--s4); opacity: .5; }
-a.ms:hover { opacity: .8; }
-a.ms.cur:hover { opacity: 1; }
 .geo.dapim .dc { box-sizing: border-box; flex: 1 1 0; min-width: 0; height: 100%; margin-right: 1px; background: var(--paper-2); border: 1px solid var(--rule); border-radius: 1px; }
 .geo.dapim .dc.past { background: var(--ink-3); border-color: var(--ink-3); }
 .geo.dapim .dc.today { background: var(--accent); border-color: var(--accent); }
