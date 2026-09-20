@@ -27,6 +27,10 @@ describe("grounding", () => {
     expect(normalize("“Why do I need” all")).toBe(`"why do i need" all`);
     expect(checkNote({ ...good, quotes: ["WHY DO I NEED ALL THESE EXAMPLES"] }, source).ok).toBe(true);
   });
+  it("rejects a teaser-and-colon opener", () => {
+    expect(checkNote({ ...good, summary: "Bekhorot opens with donkeys: " + good.summary }, source).problems).toContainEqual(expect.stringMatching(/teaser-and-colon/));
+    expect(checkNote(good, source).ok).toBe(true); // a colon later in a full sentence is fine
+  });
   it("catches article slips without false alarms", () => {
     expect(articleSlips("with a uprooted carob tree and an river")).toEqual(["a uprooted", "an river"]);
     expect(articleSlips("a one-time gift, a university, a useful hour, an honest man, an oven, a European")).toEqual([]);

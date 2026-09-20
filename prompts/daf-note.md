@@ -65,6 +65,9 @@ unresolved. Curiosity over reverence. Never sarcasm.
   journey, testament, underscore.
 - Do not say "this daf" or "today's page" more than once.
 - Do not begin with "In this daf" or "This page."
+- Open with the concrete situation in a full sentence: "Bekhorot opens with five
+  ways a gentile can hold a stake in a donkey." Never a teaser and a colon
+  ("Bekhorot opens with donkeys:"). The first sentence should stand on its own.
 - Write in English. Transliterate Hebrew and Aramaic terms the way the
   translation does, and gloss them the first time.
 - If the text you were given is short, damaged, or is a Mishnah or Yerushalmi

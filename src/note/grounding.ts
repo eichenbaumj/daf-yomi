@@ -62,6 +62,7 @@ export function checkNote(note: NoteDraft, sourcePlainText: string): GroundingRe
   for (const w of BANNED_WORDS) if (new RegExp(`\\b${w}\\w*`, "i").test(prose)) problems.push(`banned word: ${w}.`);
   for (const p of BANNED_PHRASES) if (lower.includes(p)) problems.push(`banned phrase: "${p.trim()}".`);
   if (/^(in this daf|this page|today's page|on this daf)/i.test(note.summary.trim())) problems.push("do not open with 'In this daf' or 'This page'.");
+  if (/^(\S+\s+){1,6}\S*:/.test(note.summary.trim())) problems.push("no teaser-and-colon opener ('X opens with donkeys:'); make the first sentence stand on its own.");
   if (/\b(rashi|tosafot|tosfot|maimonides|rambam|steinsaltz|sefaria|shulchan arukh|shulchan aruch)\b/i.test(prose)) problems.push("do not cite later authorities, Steinsaltz, or Sefaria.");
   if (note.quotes.length > 2) problems.push("at most two quotes.");
   for (const q of note.quotes) {
