@@ -7,6 +7,7 @@
  *   npm run verify:cycle -- --from 2020-01-05 --to 2020-03-01
  *   npm run verify:cycle -- --sample 60     # 60 evenly spaced dates across the range
  *   npm run verify:cycle -- --delay 1500    # ms between requests (default 1200; Sefaria throttles bursts)
+ *   npm run verify:cycle -- --dates 2026-11-18,2027-03-13   # specific dates
  */
 import { dafForDate, cycleEndDate, addDays, ymd, parseYmd } from "../src/daf/schedule";
 
@@ -34,9 +35,14 @@ async function sefariaDaf(d: Date): Promise<{ name: string; daf: number } | null
     const j: any = await res.json();
     const item = (j.calendar_items ?? []).find((i: any) => i?.title?.en === "Daf Yomi");
     if (!item) return null;
-    const m = /^(.*?)\s+(\d+)$/.exec(String(item.displayValue?.en ?? ""));
-    if (!m) return { name: String(item.displayValue?.en), daf: NaN };
-    return { name: m[1]!, daf: Number(m[2]) };
+    const display = String(item.displayValue?.en ?? "");
+    // "Bekhorot 61a": tractates that end on side a are shown with the amud. "Mishnah Kinnim 2:1-3:1":
+    // Kinnim/Middot days carry a Mishnah range instead of a daf number; compare the tractate only.
+    const m = /^(.*?)\s+(\d+)[ab]?$/.exec(display);
+    if (m) return { name: m[1]!, daf: Number(m[2]) };
+    const r = /^(Mishnah \w+)\s+\d/.exec(display);
+    if (r) return { name: r[1]!, daf: NaN };
+    return { name: display, daf: NaN };
   }
   throw new Error(`gave up on ${url}`);
 }
@@ -48,7 +54,9 @@ async function main() {
   const sample = Number(opt("sample") ?? 0);
   const delay = Number(opt("delay") ?? 1200);
   let dates: Date[] = [];
-  for (let d = from; d <= to; d = addDays(d, 1)) dates.push(d);
+  const explicit = opt("dates");
+  if (explicit) dates = explicit.split(",").map((x) => parseYmd(x.trim())).filter((x): x is Date => !!x);
+  else for (let d = from; d <= to; d = addDays(d, 1)) dates.push(d);
   if (sample > 0 && sample < dates.length) {
     const step = dates.length / sample;
     dates = Array.from({ length: sample }, (_, i) => dates[Math.floor(i * step)]!);
@@ -57,7 +65,7 @@ async function main() {
   for (const d of dates) {
     const ours = dafForDate(d);
     const theirs = await sefariaDaf(d);
-    const match = theirs && normalizeName(theirs.name) === normalizeName(ours.tractate.name) && theirs.daf === ours.daf;
+    const match = theirs && normalizeName(theirs.name) === normalizeName(ours.tractate.name) && (theirs.daf === ours.daf || (Number.isNaN(theirs.daf) && ours.tractate.refMode === "calendar"));
     if (match) ok++;
     else bad.push(`${ymd(d)}: ours=${ours.tractate.name} ${ours.daf} sefaria=${theirs ? `${theirs.name} ${theirs.daf}` : "none"}`);
     if ((ok + bad.length) % 50 === 0) process.stderr.write(`${ok + bad.length}/${dates.length} checked, ${bad.length} mismatches\n`);
