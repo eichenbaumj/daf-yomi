@@ -19,6 +19,8 @@ export interface DafPageModel {
   notesEnabled: boolean;
   /** Today's daf, for the "learned so far" fill; defaults to the page's own daf. */
   todayRef?: DafRef;
+  /** Today's civil date, for the note-pending copy. */
+  todayDate?: Date;
 }
 
 export const AI_LABEL = "Written by Claude, an AI, from the English translation on this page. Not a scholar. Here to get you thinking, not to tell you what it means.";
@@ -42,9 +44,12 @@ function noteBox(m: DafPageModel): string {
   <p class="note-question">${esc(note.question)}</p>
 </aside>`;
   }
-  const why = m.notesEnabled
-    ? "The note for this page has not been written yet. It usually appears a minute or two after the first visit; reload to check."
-    : "Notes are not switched on for this deployment.";
+  const daysAway = Math.abs(Math.round((m.date.getTime() - (m.todayDate ?? m.date).getTime()) / 86400000));
+  const why = !m.notesEnabled
+    ? "Notes are not switched on for this deployment."
+    : daysAway <= 3
+      ? "The note for this page has not been written yet. It usually appears a minute or two after the first visit; reload to check."
+      : "The note for this page has not been written. Notes are written for the days around today; pages further out get theirs when the archive is filled in.";
   return `<aside class="note note-pending" aria-labelledby="note-h">
   <p class="note-label" id="note-h"><span class="ai">AI note</span> ${esc(AI_LABEL)}</p>
   <p class="note-summary muted">${esc(why)}</p>

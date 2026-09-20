@@ -57,7 +57,7 @@ async function dafPageResponse(env: Env, ctx: ExecutionContext, origin: string, 
   if (!note && notesEnabled && nearToday) {
     ctx.waitUntil(ensureNote(env, ref).then((o) => console.log(`[heal] ${ref.tractate.name} ${ref.daf}: ${o.status}${"reason" in o ? ` ${o.reason}` : ""}`)).catch((e) => console.error("[heal]", e)));
   }
-  const body = renderDafPage({ env, origin, ref, date, isToday, texts, note, notesEnabled, todayRef });
+  const body = renderDafPage({ env, origin, ref, date, isToday, texts, note, notesEnabled, todayRef, todayDate });
   return html(body, 200, { "x-daf": `${ref.tractate.slug}/${ref.daf}`, "x-daf-note": note ? "yes" : "pending" });
 }
 
