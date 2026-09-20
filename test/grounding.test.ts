@@ -35,6 +35,12 @@ describe("grounding", () => {
     expect(unglossed("the priests eat their teruma, the priestly portion")).toEqual([]);
     expect(unglossed("The Mishna lists thirty-six; the Gemara asks")).toEqual([]); // page vocabulary is glossed in the legend
     expect(unglossed("the harder mitzvot earn no less")).toEqual(["mitzvot"]);
+    expect(unglossed("in all of them the offspring has no firstborn status.")).toEqual(["firstborn status"]);
+    expect(unglossed("no firstborn status, the rule that a firstborn male animal belongs to the priest, in any of them")).toEqual([]);
+    expect(unglossed("exempts him from the priestly gifts of foreleg, jaw and stomach")).toEqual([]); // "of …" counts as a gloss
+    expect(unglossed("exempts him from the priestly gifts entirely")).toEqual(["priestly gifts"]);
+    expect(unglossed("exempts him from the priestly gifts (the foreleg, jaw and stomach owed to a priest)")).toEqual([]);
+    expect(unglossed("brings a sin-offering, an animal offered for an unwitting sin,")).toEqual([]);
     expect(unglossed("worth two hundred dinars, silver coins, at the time")).toEqual([]);
     expect(unglossed("paid in silver dinars and a copper issar")).toEqual([]);
     expect(unglossed("a measure of teruma set aside for the priests")).toEqual([]);

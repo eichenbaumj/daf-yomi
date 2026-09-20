@@ -78,6 +78,13 @@ unresolved. Curiosity over reverence. Never sarcasm.
   one has to guess: not "the mother bird" but "a mother bird sitting on her
   nest", not "the fetus" but "an unborn donkey". If a reader could ask "what
   is that?" or "which one?", answer it in the sentence.
+- English can be jargon too. When the translation renders a legal category or
+  institution in English words ("firstborn status", "priestly gifts", "levirate
+  marriage", "a sin offering", "the second tithe"), the words alone tell a
+  newcomer nothing. Say what it is in the world, from what the page itself
+  says: "firstborn status, the rule that a firstborn male animal belongs to the
+  priest and cannot simply be worked or eaten". One clause, once per note. A
+  reader may be meeting this tractate for the first time today.
 - Write in English. Transliterate Hebrew and Aramaic terms the way the
   translation does.
 - If the text you were given is short, damaged, or is a Mishnah or Yerushalmi

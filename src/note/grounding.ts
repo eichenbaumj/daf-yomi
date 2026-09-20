@@ -52,17 +52,21 @@ export function articleSlips(text: string): string[] {
  * instead, so it is deliberately not listed here.
  */
 export const GLOSS_TERMS = ["issar", "zuz", "sela", "dinar", "perutah", "maneh", "kav", "seah", "kor", "tefach", "parasang", "teruma", "terumah", "maaser", "korban", "olah", "chatat", "asham", "minchah", "shelamim", "todah", "bikkurim", "orlah", "kilayim", "shemitta", "yovel", "eruv", "muktzeh", "melakhah", "karet", "ketubah", "chalitzah", "yibbum", "nazirite", "tosefta", "mitzva", "mitzvah", "mitzvot", "halakha", "halakhah", "halacha"];
+/** Legal categories the translation renders in English words that still mean nothing to a newcomer. */
+export const GLOSS_PHRASES = ["firstborn status", "priestly gifts", "levirate marriage", "sin offering", "guilt offering", "burnt offering", "peace offering", "meal offering", "first fruits", "second tithe", "first tithe", "poor man's tithe", "heave offering", "the Temple treasury", "consecrated property", "the red heifer", "the scapegoat", "a nazirite vow", "the Sabbatical Year", "the Jubilee", "an eruv", "the Paschal lamb", "the show bread", "the omer"];
 export function unglossed(text: string): string[] {
   const out: string[] = [];
-  for (const term of GLOSS_TERMS) {
-    const re = new RegExp(`\\b${term}s?\\b`, "i");
+  const terms = [...GLOSS_TERMS, ...GLOSS_PHRASES];
+  for (const term of terms) {
+    const pattern = term.split(/[\s-]+/).map((w) => w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("[\\s-]+");
+    const re = new RegExp(`\\b${pattern}s?\\b`, "i");
     const m = re.exec(text);
     if (!m) continue;
     const after = text.slice(m.index + m[0].length, m.index + m[0].length + 60);
     const before = text.slice(Math.max(0, m.index - 40), m.index);
     const glossed =
       /^\s*[,(]/.test(after) ||                                   // "issar, a small coin" / "dinars, silver coins" / "(…)"
-      /^\s*(of|worth|in|per)\s/i.test(after) ||                    // "dinars of silver", "an issar worth…"
+      /^\s*(of|worth|in|per|called|known as|that is|meaning)\s/i.test(after) || // "dinars of silver", "a sin offering called a chatat"
       /\((?:[^)]*)$/.test(before) ||                                // inside an open parenthesis
       /\b(called|known as|termed)\s+(a|an|the)?\s*$/i.test(before) ||
       /\b(silver|copper|gold|bronze|small|large|liquid|dry)\s+(coins?\s+(called|of)\s+)?$/i.test(before) || // "silver dinars", "small copper coin called an issar"
