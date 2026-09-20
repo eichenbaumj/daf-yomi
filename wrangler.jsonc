@@ -9,6 +9,14 @@
   "compatibility_date": "2026-09-01",
   "compatibility_flags": ["nodejs_compat"],
   "assets": { "directory": "./public", "binding": "ASSETS" },
+  // Custom domains: Cloudflare creates the DNS records and certificates itself.
+  // Keep the original *.workers.dev URL alive: the Worker 301s it to daf-yomi.dev so old links still land.
+  "workers_dev": true,
+  "preview_urls": false,
+  "routes": [
+    { "pattern": "daf-yomi.dev", "custom_domain": true },
+    { "pattern": "www.daf-yomi.dev", "custom_domain": true }
+  ],
   "kv_namespaces": [{ "binding": "DAF_KV", "id": "34d5b074f78b4c5da60c9fcf989315c7" }],
   // UTC. 06:00 bakes tomorrow's note (ready before any timezone's midnight);
   // 18:00 retries anything still missing. Free plan: 10 ms CPU per invocation,
@@ -18,6 +26,8 @@
   "observability": { "enabled": true },
   "vars": {
     "SITE_NAME": "Today's Daf",
+    // Every other hostname (www, the old *.workers.dev URL) 301s here; localhost is exempt for wrangler dev.
+    "CANONICAL_HOST": "daf-yomi.dev",
     "SITE_TAGLINE": "The day's page of Talmud, in English, with a short note to get you thinking.",
     "DEFAULT_TIMEZONE": "America/New_York",
     "NOTE_MODEL": "claude-opus-5"

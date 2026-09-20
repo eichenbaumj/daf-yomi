@@ -1,5 +1,7 @@
 # Hosting
 
+**Domain: https://daf-yomi.dev** (bought 2026-09-20 via Cloudflare Registrar on this account). `www.daf-yomi.dev` and the original `daf-yomi.joe-2a0.workers.dev` stay attached and 301 to the apex (`CANONICAL_HOST` var; localhost exempt), so links shared before the domain keep working.
+
 Cloudflare Worker `daf-yomi` on Joe's account (joe@group17a.com, account id in wrangler's `whoami`).
 Wrangler config: `wrangler.jsonc`. KV namespace `DAF_KV` (id in the config).
 
@@ -7,7 +9,7 @@ Wrangler config: `wrangler.jsonc`. KV namespace `DAF_KV` (id in the config).
 
 ```bash
 npm test && npm run typecheck
-npm run deploy                     # wrangler deploy → https://daf-yomi.<subdomain>.workers.dev
+npm run deploy                     # wrangler deploy → https://daf-yomi.dev (and the redirecting hosts)
 ```
 
 Secrets, set once (they persist across deploys):
@@ -23,17 +25,18 @@ Without `ANTHROPIC_API_KEY` the site works and the note box says notes are off.
 
 - Open the live `/`, a permalink, `/feed.xml`, `/api/today.json`. Check `x-daf-cache` flips miss → hit.
 - `npm run tail` and hit a page: no errors, CPU time well under 10 ms.
-- Backfill so "yesterday" has a note: `ADMIN_TOKEN=… npm run backfill -- --site https://… --from <2 weeks ago> --to <today>`.
+- Backfill so "yesterday" has a note: `npm run backfill -- --site https://daf-yomi.dev --from <2 weeks ago> --to <today>` (reads ADMIN_TOKEN from .dev.vars).
 - Cron: `wrangler triggers` are in the config (06:00 and 18:00 UTC). Check the Workers dashboard →
   Triggers → Cron events after the first night.
 
-## Custom domain (when Joe picks a name)
+## Custom domain
 
-Workers custom domains are proxied by Cloudflare by design (unlike the Lovable gray-cloud rule for the
-warehouse). Add `"routes": [{ "pattern": "example.org", "custom_domain": true }]` to `wrangler.jsonc`
-for a zone on this account and deploy; Cloudflare creates the DNS record and certificate. Then set
-`SITE_URL` if anything ever needs an absolute URL outside the request origin (nothing does today: the
-pages derive `origin` from the request).
+`wrangler.jsonc` carries `routes` for `daf-yomi.dev` and `www.daf-yomi.dev` as custom domains; Cloudflare
+created the DNS records and the certificate on the first deploy (live within a minute). Workers custom
+domains are proxied by design, unlike the Lovable gray-cloud rule for the warehouse. Gotcha: adding
+`routes` makes wrangler disable the `*.workers.dev` URL unless `"workers_dev": true` is set explicitly;
+we keep it on so the old URL redirects instead of dying. Pages derive absolute URLs from the request
+origin, so nothing else needed changing.
 
 ## Measured CPU (wrangler tail, 2026-09-20, after the formatter/cache fixes)
 

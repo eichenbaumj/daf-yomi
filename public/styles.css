@@ -187,22 +187,30 @@ a.ref { color: inherit; text-decoration: underline dotted var(--ink-3); }
   .dy-page { flex-direction: column; }
 }
 
-/* Where today sits: two thin bars under the title. Orders across the whole Talmud, then the dapim of this tractate. */
-.mini { margin: .9rem 0 .5rem; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: .35rem .7rem; align-items: center; font-size: .82rem; color: var(--ink-2); }
-.mini-cap { white-space: nowrap; }
-.mini-val { white-space: nowrap; font-variant-numeric: tabular-nums; }
-.mini-bar { position: relative; display: flex; height: 9px; min-width: 0; width: 100%; overflow: visible; }
-.mini-bar.labeled { height: 15px; }
-.mini-bar .ms { box-sizing: border-box; height: 100%; border-right: 1px solid var(--paper); opacity: .45; border-radius: 1px; overflow: hidden; text-decoration: none; }
-.mini-bar .ms .lbl { display: block; padding-left: 4px; font-size: .64rem; line-height: 15px; color: var(--seg-ink); white-space: nowrap; letter-spacing: .02em; }
-.mini-bar a.ms:hover { opacity: .8; }
-.mini-bar a.ms.cur:hover { opacity: 1; }
-.mini-bar .ms:last-child { border-right: 0; }
-.mini-bar .ms.cur { opacity: 1; }
-.mini-bar .mark { position: absolute; top: -3px; bottom: -3px; width: 2px; margin-left: -1px; background: var(--accent); border-radius: 1px; }
-.mini-bar.dapim .dc { box-sizing: border-box; flex: 1 1 0; min-width: 0; height: 100%; margin-right: 1px; background: var(--paper-2); border: 1px solid var(--rule); border-radius: 1px; }
-.mini-bar.dapim .dc.past { background: var(--ink-3); border-color: var(--ink-3); }
-.mini-bar.dapim .dc.today { background: var(--accent); border-color: var(--accent); transform: scaleY(1.45); }
-.mini-bar.dapim .dc.chapter-start { margin-left: 2px; }
-.mini-bar.dapim .dc:last-child { margin-right: 0; }
-@media (max-width: 40rem) { .mini .ms .lbl { display: none; } .mini-bar.labeled { height: 11px; } .mini { grid-template-columns: auto minmax(0, 1fr); } .mini-val { grid-column: 2; justify-self: end; margin-top: -.2rem; } }
+/* Where today sits: one bar that zooms (see src/render/positionMini.ts and app.js). */
+.zoom { margin: .9rem 0 .5rem; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: .3rem .7rem; align-items: center; font-size: .82rem; color: var(--ink-2); cursor: zoom-in; outline: none; }
+.zoom.max { cursor: zoom-out; }
+.zoom:focus-visible .zoom-stage { outline: 2px solid var(--accent); outline-offset: 3px; }
+.zoom .mini-cap, .zoom .mini-val { white-space: nowrap; }
+.zoom .mini-val { font-variant-numeric: tabular-nums; }
+.zoom-hint { grid-column: 2; font-size: .72rem; margin-top: -.15rem; letter-spacing: .02em; }
+.zoom-stage { position: relative; height: 16px; overflow: hidden; border-radius: 2px; }
+.zl { position: absolute; inset: 0; transform-origin: 0 50%; opacity: 0; transition: transform .7s cubic-bezier(.4, 0, .2, 1), opacity .45s ease; will-change: transform, opacity; pointer-events: none; }
+.zl.on { opacity: 1; pointer-events: auto; }
+.zl .geo { display: flex; height: 100%; }
+.zl .labels { position: absolute; inset: 0; pointer-events: none; }
+.zl .labels span { position: absolute; top: 0; height: 100%; box-sizing: border-box; padding-left: 4px; overflow: hidden; white-space: nowrap; font-size: .64rem; line-height: 16px; color: var(--seg-ink); letter-spacing: .02em; }
+.ms { box-sizing: border-box; height: 100%; border-right: 1px solid var(--paper); opacity: .45; border-radius: 1px; text-decoration: none; }
+.ms:last-child { border-right: 0; }
+.ms.cur { opacity: 1; }
+.ms.plain { background: var(--s4); opacity: .5; }
+a.ms:hover { opacity: .8; }
+a.ms.cur:hover { opacity: 1; }
+.geo.dapim .dc { box-sizing: border-box; flex: 1 1 0; min-width: 0; height: 100%; margin-right: 1px; background: var(--paper-2); border: 1px solid var(--rule); border-radius: 1px; }
+.geo.dapim .dc.past { background: var(--ink-3); border-color: var(--ink-3); }
+.geo.dapim .dc.today { background: var(--accent); border-color: var(--accent); }
+.geo.dapim .dc.chapter-start { margin-left: 2px; }
+.geo.dapim .dc:last-child { margin-right: 0; }
+.zmark { position: absolute; top: -2px; bottom: -2px; width: 2px; margin-left: -1px; background: var(--accent); border-radius: 1px; transition: left .7s cubic-bezier(.4, 0, .2, 1); pointer-events: none; z-index: 2; }
+@media (prefers-reduced-motion: reduce) { .zl, .zmark { transition: none; } }
+@media (max-width: 40rem) { .zoom { grid-template-columns: auto minmax(0, 1fr); } .zoom .mini-val { grid-column: 2; justify-self: end; margin-top: -.2rem; } .zl .labels span { font-size: .6rem; } }

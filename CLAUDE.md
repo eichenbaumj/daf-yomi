@@ -1,6 +1,6 @@
 # Today's Daf (daf-yomi)
 
-Standalone, public, free Daf Yomi site. Independent of the gizmo-warehouse code (a warehouse post may
+Standalone, public, free Daf Yomi site at **https://daf-yomi.dev**. Independent of the gizmo-warehouse code (a warehouse post may
 link here later). Joe's decisions, 2026-09-20: AI-written note, fully transparent; Cloudflare Workers +
 cron; permalinks for every daf.
 

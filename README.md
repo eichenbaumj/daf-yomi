@@ -4,7 +4,7 @@ An English-forward Daf Yomi page. Every day: the day's page of Talmud in
 English (Rabbi Adin Even-Israel Steinsaltz's translation, via Sefaria), where it
 sits in the cycle, and a short note written by an AI that says so.
 
-Free, no accounts, no tracking. One Cloudflare Worker, no framework.
+Live at **https://daf-yomi.dev**. Free, no accounts, no tracking. One Cloudflare Worker, no framework.
 
 ## What it does
 
@@ -53,6 +53,8 @@ Try the note style on a few dapim without touching KV:
 
 ```bash
 ANTHROPIC_API_KEY=... npm run bake:note -- bekhorot/2 berakhot/2 shabbat/31 2026-09-21
+# or, against the live site (uses ADMIN_TOKEN from .dev.vars):
+npm run backfill -- --site https://daf-yomi.dev --from 2026-09-20 --to 2026-09-21 --force
 ```
 
 ## Deploy

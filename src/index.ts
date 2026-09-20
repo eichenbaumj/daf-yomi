@@ -197,9 +197,19 @@ async function adminBake(request: Request, env: Env & { ADMIN_TOKEN?: string }, 
   return new Response(JSON.stringify({ daf: `${ref.tractate.slug}/${ref.daf}`, ...outcome }, null, 2), { status: outcome.status === "failed" ? 502 : 200, headers: JSON_H });
 }
 
+/** Hosts that must never be redirected to the canonical domain (local dev). */
+function isLocalHost(hostname: string): boolean {
+  return hostname === "localhost" || hostname === "127.0.0.1" || hostname.endsWith(".localhost");
+}
+
 export default {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
-    const origin = new URL(request.url).origin;
+    const url = new URL(request.url);
+    if (env.CANONICAL_HOST && url.hostname !== env.CANONICAL_HOST && !isLocalHost(url.hostname)) {
+      // The old workers.dev URL and www keep working as permanent redirects, so shared links never break.
+      return redirect(`https://${env.CANONICAL_HOST}${url.pathname}${url.search}`, 301);
+    }
+    const origin = url.origin;
     try {
       return await handle(request, env, ctx);
     } catch (e) {
