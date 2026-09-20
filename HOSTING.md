@@ -58,7 +58,12 @@ rendering, and remember the cron run (up to 3 note generations) is the heaviest 
 
 - 100,000 requests/day, 10 ms CPU per request and per cron invocation, 50 subrequests per request.
 - 5 cron triggers per account; this Worker uses 2.
-- KV: generous read quota; ~1,000 writes/day on free. Each daf page write is a text cache (2 keys) and a note.
+- **KV: 1,000 writes/day on free, hard-enforced** (hit it 2026-09-20 during re-bakes: "KV put() limit exceeded
+  for the day"; resets at midnight UTC). That is why Sefaria text and generation locks live in the edge Cache
+  API, not KV: a crawl of all 2,711 permalinks would otherwise burn 5,000 writes. KV now takes roughly one
+  write per note (≈3/day from the cron) plus the 28 one-time ref lookups for the irregular tractates.
+  A big forced re-bake of the archive still costs one KV write per daf, so keep those under ~900 a day or
+  move to Workers Paid.
 - If any of this binds, Workers Paid is $5/month and lifts CPU to 30 s.
 
 ## Failure modes

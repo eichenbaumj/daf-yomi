@@ -1,11 +1,13 @@
 /**
  * Sefaria text access. Every text on the site comes from here; nothing is
- * generated locally. Responses are cached in KV so a permalink costs Sefaria
- * one request a month at most.
+ * generated locally. Responses are cached on the edge (Cache API, no write
+ * quota) for 30 days; KV is not used for text, so a crawl of all 2,711 pages
+ * cannot exhaust the free plan's 1,000 KV writes a day.
  */
 import { dateForDaf } from "../daf/schedule";
 import type { Tractate } from "../daf/tractates";
 import { plainText, sanitize } from "./sanitize";
+import { edgeGet, edgePut } from "../edgecache";
 
 export const SEFARIA = "https://www.sefaria.org";
 const UA = "daf-yomi-site (Cloudflare Worker; joe@group17a.com)";
@@ -61,12 +63,10 @@ export function toUrlRef(ref: string): string {
   return ref.replace(/ /g, "_");
 }
 
-export async function fetchText(urlRef: string, kv?: KVNamespace): Promise<SefariaText> {
+export async function fetchText(urlRef: string, _kv?: KVNamespace): Promise<SefariaText> {
   const key = `text:v2:${urlRef}`;
-  if (kv) {
-    const cached = await kv.get<SefariaText>(key, "json");
-    if (cached) return cached;
-  }
+  const cached = await edgeGet<SefariaText>(key);
+  if (cached) return cached;
   const url = `${SEFARIA}/api/v3/texts/${encodeURI(urlRef)}?version=english&version=hebrew`;
   const res = await fetch(url, { headers: { "User-Agent": UA, Accept: "application/json" } });
   if (!res.ok) throw new SefariaError(`Sefaria returned HTTP ${res.status} for ${urlRef}`, res.status);
@@ -95,7 +95,7 @@ export async function fetchText(urlRef: string, kv?: KVNamespace): Promise<Sefar
     prev: j.prev ? String(j.prev) : null,
     fetchedAt: new Date().toISOString(),
   };
-  if (kv) await kv.put(key, JSON.stringify(text), { expirationTtl: TEXT_TTL_SECONDS });
+  await edgePut(key, text, TEXT_TTL_SECONDS);
   return text;
 }
 

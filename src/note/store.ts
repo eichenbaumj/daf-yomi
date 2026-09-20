@@ -1,4 +1,5 @@
 import type { Tractate } from "../daf/tractates";
+import { edgeDelete, edgeGet, edgePut } from "../edgecache";
 
 export interface DafNote {
   summary: string;
@@ -34,13 +35,13 @@ export async function notedDafim(kv: KVNamespace, t: Tractate): Promise<Set<numb
   } while (cursor);
   return out;
 }
-/** Best-effort lock so a burst of visitors does not trigger parallel generations. KV is eventually consistent; this is a throttle, not a mutex. */
-export async function acquireLock(kv: KVNamespace, t: Tractate, daf: number, ttlSeconds = 300): Promise<boolean> {
+/** Best-effort lock so a burst of visitors does not trigger parallel generations. Lives on the edge cache (per data-centre, no write quota); a throttle, not a mutex. */
+export async function acquireLock(_kv: KVNamespace, t: Tractate, daf: number, ttlSeconds = 300): Promise<boolean> {
   const k = lockKey(t, daf);
-  if (await kv.get(k)) return false;
-  await kv.put(k, new Date().toISOString(), { expirationTtl: ttlSeconds });
+  if (await edgeGet<string>(k)) return false;
+  await edgePut(k, new Date().toISOString(), ttlSeconds);
   return true;
 }
-export async function releaseLock(kv: KVNamespace, t: Tractate, daf: number): Promise<void> {
-  await kv.delete(lockKey(t, daf));
+export async function releaseLock(_kv: KVNamespace, t: Tractate, daf: number): Promise<void> {
+  await edgeDelete(lockKey(t, daf));
 }
