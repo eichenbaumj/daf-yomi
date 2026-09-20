@@ -30,6 +30,8 @@
     "CANONICAL_HOST": "daf-yomi.dev",
     "SITE_TAGLINE": "The day's page of Talmud, in English, with a short note to get you thinking.",
     "DEFAULT_TIMEZONE": "America/New_York",
-    "NOTE_MODEL": "claude-opus-5"
+    "NOTE_MODEL": "claude-opus-5",
+    // Hard cap on paid generations per UTC day from cron + on-visit self-heal (admin --force bakes are exempt).
+    "DAILY_GENERATION_CAP": "12"
   }
 }

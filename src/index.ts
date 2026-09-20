@@ -16,6 +16,8 @@ import { cachedResponse } from "./cache";
 import { runCron } from "./cron";
 
 const HTML = { "content-type": "text/html; charset=utf-8" };
+/** On-visit note generation happens only within this many days of today. */
+const HEAL_WINDOW_DAYS = 3;
 const JSON_H = { "content-type": "application/json; charset=utf-8" };
 
 function html(body: string, status = 200, extra: Record<string, string> = {}): Response {
@@ -44,11 +46,15 @@ async function loadDafTexts(ref: DafRef, kv: KVNamespace): Promise<{ label: stri
   return out;
 }
 
-async function dafPageResponse(env: Env, ctx: ExecutionContext, origin: string, ref: DafRef, date: Date, isToday: boolean, todayRef: DafRef): Promise<Response> {
+async function dafPageResponse(env: Env, ctx: ExecutionContext, origin: string, ref: DafRef, date: Date, isToday: boolean, todayRef: DafRef, todayDate: Date): Promise<Response> {
   const [texts, note] = await Promise.all([loadDafTexts(ref, env.DAF_KV), getNote(env.DAF_KV, ref.tractate, ref.daf)]);
   const notesEnabled = Boolean(env.ANTHROPIC_API_KEY);
-  if (!note && notesEnabled) {
-    // Self-heal: write the note in the background; the next visitor sees it.
+  // Self-heal only for pages a person would plausibly be reading now (yesterday, today, tomorrow, a few days
+  // either side). A crawler walking the sitemap's 2,711 permalinks must never trigger paid generation:
+  // on 2026-09-20 one did, and generated ~2,600 notes in a day. Older pages say "not written yet" instead.
+  const daysFromToday = Math.round((date.getTime() - todayDate.getTime()) / 86400000);
+  const nearToday = Math.abs(daysFromToday) <= HEAL_WINDOW_DAYS;
+  if (!note && notesEnabled && nearToday) {
     ctx.waitUntil(ensureNote(env, ref).then((o) => console.log(`[heal] ${ref.tractate.name} ${ref.daf}: ${o.status}${"reason" in o ? ` ${o.reason}` : ""}`)).catch((e) => console.error("[heal]", e)));
   }
   const body = renderDafPage({ env, origin, ref, date, isToday, texts, note, notesEnabled, todayRef });
@@ -100,7 +106,7 @@ async function handle(request: Request, env: Env, ctx: ExecutionContext): Promis
     }
     case "today": {
       const ref = dafForDate(today);
-      return cachedResponse(ck(`/today/${ref.tractate.slug}/${ref.daf}`), 600, () => dafPageResponse(env, ctx, origin, ref, today, true, ref), bypass);
+      return cachedResponse(ck(`/today/${ref.tractate.slug}/${ref.daf}`), 600, () => dafPageResponse(env, ctx, origin, ref, today, true, ref, today), bypass);
     }
     case "daf": {
       const todayRef = dafForDate(today);
@@ -110,7 +116,7 @@ async function handle(request: Request, env: Env, ctx: ExecutionContext): Promis
       const isToday = ymd(date) === ymd(today);
       // Pages without a note yet are cached briefly so the self-healed note shows up soon.
       const ttl = (res: Response) => (isToday ? 600 : res.headers.get("x-daf-note") === "yes" ? 3600 : 120);
-      return cachedResponse(ck(`${dafPath(ref.tractate, ref.daf)}?t=${isToday ? "today" : "perma"}&d=${ymd(today)}`), ttl, () => dafPageResponse(env, ctx, origin, ref, date, isToday, todayRef), bypass);
+      return cachedResponse(ck(`${dafPath(ref.tractate, ref.daf)}?t=${isToday ? "today" : "perma"}&d=${ymd(today)}`), ttl, () => dafPageResponse(env, ctx, origin, ref, date, isToday, todayRef, today), bypass);
     }
     case "tractate": {
       const todayRef = dafForDate(today);

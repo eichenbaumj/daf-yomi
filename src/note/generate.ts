@@ -74,6 +74,15 @@ export async function ensureNote(env: Env, ref: DafRef, opts: { force?: boolean;
     if (existing) return { status: "exists", note: existing };
   }
   if (!env.ANTHROPIC_API_KEY) return { status: "skipped", reason: "ANTHROPIC_API_KEY is not set" };
+  // Hard daily cap on paid generations, whatever the trigger (cron, self-heal, admin without ?force).
+  // The counter is one KV write per generation; the cap is far below anything a normal day needs.
+  if (!opts.force) {
+    const dayKey = `gen:${new Date().toISOString().slice(0, 10)}`;
+    const used = Number((await env.DAF_KV.get(dayKey)) ?? 0);
+    const cap = Number(env.DAILY_GENERATION_CAP ?? 12);
+    if (used >= cap) return { status: "skipped", reason: `daily generation cap of ${cap} reached (${used} today)` };
+    await env.DAF_KV.put(dayKey, String(used + 1), { expirationTtl: 60 * 60 * 48 });
+  }
   if (!opts.skipLock && !(await acquireLock(env.DAF_KV, t, daf))) return { status: "skipped", reason: "another generation is in progress" };
   try {
     const { input, sources, sourceText } = await buildPromptInput(ref, env.DAF_KV);

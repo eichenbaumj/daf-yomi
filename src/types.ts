@@ -10,4 +10,6 @@ export interface Env {
   NOTE_MODEL: string;
   /** Set at deploy time (git short sha) and folded into edge-cache keys. */
   BUILD?: string;
+  /** Max paid note generations per UTC day outside of forced admin bakes. */
+  DAILY_GENERATION_CAP?: string;
 }
