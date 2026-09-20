@@ -18,7 +18,7 @@ export type GenerateOutcome =
   | { status: "exists"; note: DafNote }
   | { status: "generated"; note: DafNote; attempts: number; firstAttemptProblems?: string[] }
   | { status: "skipped"; reason: string }
-  | { status: "failed"; reason: string; problems?: string[] };
+  | { status: "failed"; reason: string; problems?: string[]; lastDraft?: NoteDraft };
 
 export function positionLine(ref: DafRef): string {
   const p = positionFor(ref);
@@ -96,7 +96,7 @@ export async function ensureNote(env: Env, ref: DafRef, opts: { force?: boolean;
       firstAttemptProblems ??= check.problems;
       console.log(`[note] ${t.slug}/${daf} attempt ${attempt} rejected: ${check.problems.join(" | ")}`);
       feedback = check.problems.join(" ");
-      if (attempt === 2) return { status: "failed", reason: "note failed grounding twice", problems: check.problems };
+      if (attempt === 2) return { status: "failed", reason: "note failed grounding twice", problems: check.problems, lastDraft: draft };
     }
     return { status: "failed", reason: "unreachable" };
   } finally {

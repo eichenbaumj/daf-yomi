@@ -28,6 +28,7 @@ async function main() {
     if (u) total += u.estUsd;
     console.log(`${ymd(d)} ${body.daf ?? ""}: ${res.status} ${body.status ?? ""} ${body.reason ?? ""} ${body.attempts ? `(${body.attempts} attempt/s)` : ""}${u ? ` ${u.inputTokens} in / ${u.outputTokens} out ≈ $${u.estUsd.toFixed(3)}` : ""}`);
     for (const p of [...(body.firstAttemptProblems ?? []), ...(body.problems ?? [])]) console.log(`    ↳ ${p}`);
+    if (body.lastDraft) console.log(`    rejected draft: ${body.lastDraft.summary}\n    Q: ${body.lastDraft.question}`);
   }
 }
 main().then(() => console.log(`estimated total ≈ $${total.toFixed(2)} at list price`)).catch((e) => { console.error(e); process.exit(1); });

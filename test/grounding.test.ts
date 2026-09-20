@@ -35,6 +35,11 @@ describe("grounding", () => {
     expect(unglossed("the priests eat their teruma, the priestly portion")).toEqual([]);
     expect(unglossed("The Mishna lists thirty-six; the Gemara asks")).toEqual([]); // page vocabulary is glossed in the legend
     expect(unglossed("the harder mitzvot earn no less")).toEqual(["mitzvot"]);
+    expect(unglossed("worth two hundred dinars, silver coins, at the time")).toEqual([]);
+    expect(unglossed("paid in silver dinars and a copper issar")).toEqual([]);
+    expect(unglossed("a measure of teruma set aside for the priests")).toEqual([]);
+    expect(unglossed("two dinars of silver")).toEqual([]);
+    expect(unglossed("he owed four dinars and left")).toEqual(["dinars"]);
     expect(unglossed("the harder mitzvot, the commandments that cost more, earn no less")).toEqual([]);
     expect(checkNote({ ...good, summary: "The mishna sets up an a fortiori argument. " + good.summary }, source).problems).toContainEqual(expect.stringMatching(/a fortiori/));
     expect(checkNote({ ...good, summary: good.summary + " It costs an issar." }, source).problems).toContainEqual(expect.stringMatching(/gloss "issar"/));

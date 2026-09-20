@@ -60,7 +60,13 @@ export function unglossed(text: string): string[] {
     if (!m) continue;
     const after = text.slice(m.index + m[0].length, m.index + m[0].length + 60);
     const before = text.slice(Math.max(0, m.index - 40), m.index);
-    const glossed = /^\s*[,(]\s*(a|an|the|which|that|meaning|i\.e\.|or)\b/i.test(after) || /^\s*\(/.test(after) || /\((?:[^)]*)$/.test(before) || /\b(called|known as|termed)\s+(a|an|the)?\s*$/i.test(before);
+    const glossed =
+      /^\s*[,(]/.test(after) ||                                   // "issar, a small coin" / "dinars, silver coins" / "(…)"
+      /^\s*(of|worth|in|per)\s/i.test(after) ||                    // "dinars of silver", "an issar worth…"
+      /\((?:[^)]*)$/.test(before) ||                                // inside an open parenthesis
+      /\b(called|known as|termed)\s+(a|an|the)?\s*$/i.test(before) ||
+      /\b(silver|copper|gold|bronze|small|large|liquid|dry)\s+(coins?\s+(called|of)\s+)?$/i.test(before) || // "silver dinars", "small copper coin called an issar"
+      /\b(a|an|the|one|two|three|four|five|six|ten|hundred|thousand)\s+(measures?|coins?|portions?|offerings?|gifts?)\s+(of|called)\s+(a|an|the)?\s*$/i.test(before); // "a measure of…", "two coins of…"
     if (!glossed) out.push(m[0]);
   }
   return out;
