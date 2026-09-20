@@ -18,13 +18,15 @@ export interface DafPageModel {
   notesEnabled: boolean;
 }
 
-export const AI_LABEL = "Written by Claude, an AI, from Rabbi Steinsaltz's English. Not a scholar. Here to get you thinking, not to tell you what it means.";
+export const AI_LABEL = "Written by Claude, an AI, from the English translation on this page. Not a scholar. Here to get you thinking, not to tell you what it means.";
+/** Introduces the translator the first time a reader meets him; most first-time visitors will not know the name. */
+export const LEGEND = `<b>Bold</b> is the Talmud's own words. The regular text between is explanation woven in by Rabbi Adin Steinsaltz (1937 to 2020), whose English translation this is.`;
 
 export function positionStrip(p: Position): string {
   const items: string[] = [];
   if (p.seder) items.push(`<span>${esc(p.seder)}${p.sederHe ? ` <span lang="he" dir="rtl" class="he-inline">${esc(p.sederHe)}</span>` : ""}</span>`);
   items.push(`<span>${esc(p.tractate)}${p.tractateHe ? ` <span lang="he" dir="rtl" class="he-inline">${esc(p.tractateHe)}</span>` : ""}</span>`);
-  if (p.chapterLabel) items.push(`<span title="${esc(p.chapterTitles.join(" / "))}">${esc(p.chapterLabel)}</span>`);
+  if (p.chapterLabel) items.push(`<span>${esc(p.chapterLabel)}${p.chapterTitles.length ? `, <i>${esc(p.chapterTitles.join(" / "))}</i>` : ""}</span>`);
   items.push(`<span>${esc(p.dafOfTractate)}</span>`);
   items.push(`<span>Day ${p.dayInCycle.toLocaleString("en-US")} of ${p.cycleLength.toLocaleString("en-US")}</span>`);
   return `<p class="position">${items.join('<span class="sep" aria-hidden="true">·</span>')}</p>`;
@@ -57,6 +59,7 @@ function versionCredit(t: SefariaText): string {
 }
 
 function amudSection(label: string, t: SefariaText, anchor: string): string {
+  const heRef = t.heRef ? ` <span lang="he" dir="rtl" class="he-inline">${esc(t.heRef)}</span>` : "";
   const n = Math.max(t.en.length, t.he.length);
   const items: string[] = [];
   for (let i = 0; i < n; i++) {
@@ -69,7 +72,7 @@ function amudSection(label: string, t: SefariaText, anchor: string): string {
 </li>`);
   }
   return `<section class="amud" id="${anchor}" aria-labelledby="${anchor}-h">
-  <h2 id="${anchor}-h">${esc(label)}</h2>
+  <h2 id="${anchor}-h" class="amud-title"><span>${esc(label)}${heRef}</span></h2>
   <ol class="segments">${items.join("\n")}</ol>
   <p class="credit">${versionCredit(t)}</p>
 </section>`;
@@ -92,6 +95,8 @@ export function renderDafPage(m: DafPageModel): string {
   const label = dafLabel(t, ref.daf);
   const prev = adjacentDaf(t, ref.daf, -1);
   const next = adjacentDaf(t, ref.daf, 1);
+  const prevWord = m.isToday ? "Yesterday" : "Before";
+  const nextWord = m.isToday ? "Tomorrow" : "Next";
   const firstText = m.texts[0]?.text;
   const description = m.note
     ? m.note.summary
@@ -114,23 +119,25 @@ export function renderDafPage(m: DafPageModel): string {
 
   ${noteBox(m)}
 
+  <p class="ornament" aria-hidden="true">✦</p>
+
   <div class="tools" role="group" aria-label="Reading options">
     ${anyHebrew ? `<button type="button" class="toggle" data-toggle="he" aria-pressed="false">Show Hebrew / Aramaic</button>` : ""}
     ${anyElu ? `<button type="button" class="toggle" data-toggle="talmudOnly" aria-pressed="false">Talmud only</button>` : ""}
-    <p class="legend muted"><b>Bold</b> is the Talmud's own words; regular weight is Rabbi Steinsaltz's explanation woven in.</p>
+    <p class="legend muted">${LEGEND}</p>
   </div>
 
   ${sections}
 
   <nav class="prevnext" aria-label="Neighbouring pages">
-    ${prev ? `<a rel="prev" href="${dafPath(prev.tractate, prev.daf)}">← ${esc(dafLabel(prev.tractate, prev.daf))}</a>` : "<span></span>"}
-    <a href="/${esc(t.slug)}">All of ${esc(t.name)}</a>
-    ${next ? `<a rel="next" href="${dafPath(next.tractate, next.daf)}">${esc(dafLabel(next.tractate, next.daf))} →</a>` : "<span></span>"}
+    ${prev ? `<a rel="prev" href="${dafPath(prev.tractate, prev.daf)}"><span class="muted small">${prevWord}</span><br>← ${esc(dafLabel(prev.tractate, prev.daf))}</a>` : "<span></span>"}
+    <a href="/${esc(t.slug)}"><span class="muted small">The tractate</span><br>All of ${esc(t.name)}</a>
+    ${next ? `<a rel="next" href="${dafPath(next.tractate, next.daf)}" class="right"><span class="muted small">${nextWord}</span><br>${esc(dafLabel(next.tractate, next.daf))} →</a>` : "<span></span>"}
   </nav>
 
   <section class="deeper-wrap">
     <h2>Go deeper</h2>
-    <p class="muted">Real teachers, every day, for free:</p>
+    <p class="muted">Teachers who give a class on this very page, every day, for free:</p>
     ${scholarLinks(t, ref.daf, firstText?.urlRef)}
   </section>
 </article>`;

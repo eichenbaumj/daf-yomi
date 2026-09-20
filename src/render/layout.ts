@@ -17,7 +17,7 @@ export interface PageOptions {
   ogType?: "website" | "article";
 }
 
-const FONTS = "https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Source+Sans+3:wght@400;600&family=Frank+Ruhl+Libre:wght@400;700&family=David+Libre:wght@400;700&display=swap";
+const FONTS = "https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=Frank+Ruhl+Libre:wght@400;700&display=swap";
 
 export function page(o: PageOptions): string {
   const siteName = o.env.SITE_NAME;
@@ -43,13 +43,13 @@ export function page(o: PageOptions): string {
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="${FONTS}">
 <link rel="stylesheet" href="/styles.css">
-<script>try{var s=localStorage,q=new URLSearchParams(location.search),l=q.get("look");if(l){s.setItem("daf:look",l)}l=l||s.getItem("daf:look");if(l&&l!=="a"){document.documentElement.setAttribute("data-look",l)}document.documentElement.className+=(s.getItem("daf:he")==="1"?" show-he":"")+(s.getItem("daf:talmudOnly")==="1"?" talmud-only":"")}catch(e){}</script>
+<script>try{var s=localStorage;document.documentElement.className+=(s.getItem("daf:he")==="1"?" show-he":"")+(s.getItem("daf:talmudOnly")==="1"?" talmud-only":"")}catch(e){}</script>
 ${o.extraHead ?? ""}
 </head>
 <body class="${esc(o.bodyClass ?? "")}">
 <a class="skip" href="#main">Skip to the text</a>
 <header class="site">
-  <a class="brand" href="/">${esc(siteName)}</a>
+  <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">✦</span>${esc(siteName)}</a>
   <nav aria-label="Site">
     <a href="/">Today</a>
     <a href="/tractates">Tractates</a>
@@ -61,8 +61,9 @@ ${o.extraHead ?? ""}
 ${o.body}
 </main>
 <footer class="site">
-  <p>Text: <a href="https://www.sefaria.org/william-davidson-talmud" rel="noopener">The William Davidson Talmud</a> (Koren Noé edition, translation and commentary by Rabbi Adin Even-Israel Steinsaltz), via <a href="https://www.sefaria.org" rel="noopener">Sefaria</a>, <a href="https://creativecommons.org/licenses/by-nc/4.0/" rel="noopener">CC BY-NC 4.0</a>. Other texts credited on their pages.</p>
-  <p>The daily note is written by an AI and says so. <a href="/about">How this works.</a> Free, no accounts, no tracking cookies.</p>
+  <p class="ornament" aria-hidden="true">✦ ✦ ✦</p>
+  <p>The text is <a href="https://www.sefaria.org/william-davidson-talmud" rel="noopener">The William Davidson Talmud</a>: Rabbi Adin Even-Israel Steinsaltz's English translation and explanation (Koren Noé edition), served by <a href="https://www.sefaria.org" rel="noopener">Sefaria</a> under <a href="https://creativecommons.org/licenses/by-nc/4.0/" rel="noopener">CC BY-NC 4.0</a>. Other texts are credited where they appear.</p>
+  <p>The daily note is written by an AI and says so. <a href="/about">How this works.</a> Free, no accounts, no tracking cookies. A good day of learning to you.</p>
 </footer>
 <script src="/app.js" defer></script>
 </body>

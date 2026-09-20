@@ -10,7 +10,7 @@ export function renderAbout(env: Env, origin: string): string {
 
   <h2>What you get</h2>
   <ul>
-    <li><strong>The whole daf, in English.</strong> Rabbi Adin Even-Israel Steinsaltz's translation, in which the bold words are the Talmud's own and the regular text is his explanation woven through. The Hebrew and Aramaic are one tap away. So is a "Talmud only" view that hides the explanation.</li>
+    <li><strong>The whole daf, in English.</strong> The translation is by Rabbi Adin Even-Israel Steinsaltz (1937 to 2020), a Jerusalem rabbi who spent most of his working life turning the Talmud into modern Hebrew and English so that anyone could read it. In his edition the bold words are the Talmud's own and the regular text is his explanation woven through. The Hebrew and Aramaic are one tap away. So is a "Talmud only" view that hides the explanation.</li>
     <li><strong>Where you are.</strong> The Seder, the tractate, the chapter, the daf, and the day of the 2,711-day cycle.</li>
     <li><strong>A short note, written by an AI.</strong> Two or three sentences on what the page argues about, and one question with no settled answer. It is labelled as an AI note every single time, because that is what it is.</li>
     <li><strong>A permalink for every daf</strong>, so yesterday is one tap back and any page can be shared.</li>
@@ -22,7 +22,7 @@ export function renderAbout(env: Env, origin: string): string {
   <p>If you want real teaching, every daf page links to <a href="https://hadran.org.il" rel="noopener">Hadran</a>, <a href="https://www.dafyomi.co.il/" rel="noopener">Kollel Iyun Hadaf</a>, and the <a href="https://steinsaltz.org/todays-daf/" rel="noopener">Steinsaltz Center</a>. They are the scholars. This is a door.</p>
 
   <h2>Where the text comes from</h2>
-  <p>The text is served from <a href="https://www.sefaria.org" rel="noopener">Sefaria</a>'s open API. The Babylonian Talmud is <a href="https://www.sefaria.org/william-davidson-talmud" rel="noopener">The William Davidson Talmud</a> (Koren Noé edition), released by Koren Publishers under a <a href="https://creativecommons.org/licenses/by-nc/4.0/" rel="noopener">Creative Commons BY-NC 4.0</a> license. The 21 days of Shekalim use the Jerusalem Talmud in Heinrich Guggenheimer's translation (CC BY), and the Kinnim and Middot days use the Mishnah, as the Daf Yomi calendar does; those pages credit their own versions. Nothing on this site is sold and nothing is behind a login.</p>
+  <p>Every word of Talmud on this site is served live from <a href="https://www.sefaria.org" rel="noopener">Sefaria</a>'s open API. The Babylonian Talmud is <a href="https://www.sefaria.org/william-davidson-talmud" rel="noopener">The William Davidson Talmud</a> (Koren Noé edition), released by Koren Publishers under a <a href="https://creativecommons.org/licenses/by-nc/4.0/" rel="noopener">Creative Commons BY-NC 4.0</a> license. The 21 days of Shekalim use the Jerusalem Talmud in Heinrich Guggenheimer's translation (CC BY), and the Kinnim and Middot days use the Mishnah, as the Daf Yomi calendar does; those pages credit their own versions. Nothing on this site is sold and nothing is behind a login.</p>
 
   <h2>Which day is it</h2>
   <p>The daf follows the civil date where you are, the same convention Sefaria, Hebcal, and the printed calendars use. If you learn after nightfall and want to be a day ahead, the next daf is one tap away at the bottom of every page.</p>

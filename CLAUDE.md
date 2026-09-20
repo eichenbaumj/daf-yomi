@@ -16,6 +16,9 @@ cron; permalinks for every daf.
 - **No em dashes, no AI tells** in any rendered prose (`test/render.test.ts` checks the chrome; the
   grounding check covers notes).
 - Joe's voice on `/about`: first person, plain, dry. Not corporate.
+- **Design direction (Joe, 2026-09-20):** warm parchment, brown ink, oxblood and gold; "the office of a great old
+  Torah scholar," human and lived in, exciting for a day of Torah. White/clinical surfaces were rejected. Assume
+  the reader has never heard of Rabbi Steinsaltz, Sefaria, or a Seder: gloss every such name on first appearance.
 
 ## Layout
 
