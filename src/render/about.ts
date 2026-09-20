@@ -22,9 +22,9 @@ export function renderAbout(env: Env, origin: string, today: DafRef): string {
   <p>Daf Yomi ("a page a day") is a shared reading schedule: one leaf of the Babylonian Talmud every day, in print order, until you have read all of it. Then you start again. It was proposed by Rabbi Meir Shapiro in 1923 and has run continuously since.</p>
   ${renderDafYomiDiagram(today)}
 
-  <h2>About the AI note, plainly</h2>
+  <h2>About the AI note</h2>
   <p>The note is written each night by Claude, a large language model made by Anthropic, from the English text of that day's daf and nothing else. It is not a rabbi. It is not a scholar. It has not read Rashi. It is asked to summarize and to raise a question, not to tell you what the page means or what you should do.</p>
-  <p>A few rules are enforced in code, not just requested: the note may quote only phrases that appear word for word in the text; it may not cite later authorities; it may not state a halachic ruling as practice; and if it fails those checks twice, the page shows no note that day rather than a wrong one. The style it writes in is a house style that will keep changing. If a note is off, <a href="mailto:${esc("joe@group17a.com")}">tell me</a>.</p>
+  <p>I have hardcoded a few core principles into how Claude interprets Talmud. AI-generated notes may quote only phrases that appear word for word in the text; they may not cite later authorities; they may not state a halachic ruling as practice. If, in the process of constructing an AI note, Claude fails those checks twice, the page shows no note that day. The style the AI notes are written in is a house style that will keep changing. If a note is off, <a href="mailto:joe@group17a.com">tell me</a>.</p>
   <p>If you want real teaching, every daf page links to <a href="https://hadran.org.il" rel="noopener">Hadran</a>, <a href="https://www.dafyomi.co.il/" rel="noopener">Kollel Iyun Hadaf</a>, and the <a href="https://steinsaltz.org/todays-daf/" rel="noopener">Steinsaltz Center</a>. They are the scholars. This is a door.</p>
 
   <h2>Where the text comes from</h2>
