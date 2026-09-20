@@ -10,13 +10,13 @@ import { cycleEndDate, cycleStartDate, longDate, shortDate, type DafRef } from "
 import { esc } from "./layout";
 
 /** Canonical order of the six Sedarim with a plain gloss for newcomers. */
-const SEDARIM: { name: string; he: string; gloss: string }[] = [
+export const SEDARIM: { name: string; he: string; gloss: string }[] = [
   { name: "Seder Zeraim", he: "זרעים", gloss: "Seeds: blessings and prayer (the farming laws have no Babylonian Gemara)" },
   { name: "Seder Moed", he: "מועד", gloss: "Appointed times: Shabbat and the festivals" },
   { name: "Seder Nashim", he: "נשים", gloss: "Women: marriage, divorce, vows" },
   { name: "Seder Nezikin", he: "נזיקין", gloss: "Damages: civil law, courts, idolatry, ethics" },
   { name: "Seder Kodashim", he: "קדשים", gloss: "Holy things: the Temple and its offerings" },
-  { name: "Seder Tohorot", he: "טהרות", gloss: "Purities: only Niddah has a Babylonian Gemara" },
+  { name: "Seder Tahorot", he: "טהרות", gloss: "Purities: only Niddah has a Babylonian Gemara" },
 ];
 
 function yearsMonths(days: number): string {

@@ -2,6 +2,8 @@ import { describe, expect, it } from "vitest";
 import { AI_LABEL, renderDafPage } from "../src/render/dafPage";
 import { esc } from "../src/render/layout";
 import { renderAbout } from "../src/render/about";
+import { SEDARIM } from "../src/render/dafYomiDiagram";
+import { TRACTATES } from "../src/daf/tractates";
 import { dafForDate } from "../src/daf/schedule";
 import type { Env } from "../src/types";
 import type { SefariaText } from "../src/sefaria/client";
@@ -61,5 +63,12 @@ describe("about", () => {
     expect(html).toContain("You are here: day 2,451, Bekhorot 2");
     expect((html.match(/class="seg tractate/g) ?? []).length).toBe(40);
     expect((html.match(/class="seg seder/g) ?? []).length).toBe(6);
+    expect(html).not.toContain("0 tractates");
+  });
+  it("places every tractate in one of the six Orders", () => {
+    const names = new Set(SEDARIM.map((s) => s.name));
+    for (const t of TRACTATES) expect(names.has(t.seder), `${t.name} → ${t.seder}`).toBe(true);
+    const days = TRACTATES.reduce((a, t) => a + t.days, 0);
+    expect(days).toBe(2711);
   });
 });
