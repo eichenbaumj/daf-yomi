@@ -22,7 +22,8 @@ x, y0, bw = 90, 92, W - 180
 for dcount, col in zip(days, ramp):
     w = bw * dcount / 2711
     d.rectangle([x, y0, x + w - 3, y0 + 14], fill=col); x += w
-d.text((90, 130), "✦  TODAY'S DAF", font=reg(26), fill=GOLD)
+d.polygon([(101, 133), (110, 145), (101, 157), (92, 145)], fill=GOLD)  # a small diamond; the font has no ✦
+d.text((124, 130), "TODAY'S DAF", font=reg(26), fill=GOLD)
 d.text((90, 190), "The day's page of Talmud,", font=bold(76), fill=INK)
 d.text((90, 280), "in English.", font=bold(76), fill=INK)
 d.text((90, 400), "Where it sits in the whole Talmud, and a short note to get", font=reg(32), fill=INK2)
