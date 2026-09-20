@@ -1,0 +1,41 @@
+{
+  "name": "daf-yomi",
+  "version": "1.0.0",
+  "description": "An English-forward Daf Yomi page: today's daf, where it sits, and a short AI-written note. Cloudflare Worker.",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "build:tractates": "tsx scripts/build-tractates.ts",
+    "verify:cycle": "tsx scripts/verify-cycle.ts",
+    "bake:note": "tsx scripts/bake-note.ts",
+    "backfill": "tsx scripts/backfill.ts",
+    "tail": "wrangler tail --format pretty",
+    "check:links": "tsx scripts/check-scholar-links.ts"
+  },
+  "keywords": [
+    "daf yomi",
+    "talmud",
+    "sefaria"
+  ],
+  "author": "",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.127.0",
+    "@hebcal/core": "^6.9.2",
+    "@hebcal/learning": "^6.11.3",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20260920.1",
+    "@types/node": "^26.6.2",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.11",
+    "wrangler": "^4.135.0"
+  },
+  "private": true
+}

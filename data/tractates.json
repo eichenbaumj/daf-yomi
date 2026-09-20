@@ -1,0 +1,3666 @@
+{
+ "generatedAt": "2026-09-20T15:38:31.212Z",
+ "cycleLength": 2711,
+ "tractates": [
+  {
+   "hebcalName": "Berachot",
+   "sefariaTitle": "Berakhot",
+   "name": "Berakhot",
+   "slug": "berakhot",
+   "heTitle": "ברכות",
+   "seder": "Seder Zeraim",
+   "sederHe": "סדר זרעים",
+   "order": 0,
+   "firstDaf": 2,
+   "lastDaf": 64,
+   "days": 63,
+   "refMode": "talmud",
+   "shortDesc": "Blessings and prayers, focusing on Shema and the Amidah.",
+   "description": "Berakhot (“Blessings”) is the first tractate of Zeraim (“Seeds”), the first order of the Mishnah, and the only tractate in Zeraim included in the Babylonian Talmud. Its nine chapters discuss the laws of prayers, focusing on the Shema, the Amidah, and blessings, including those recited in the context of eating.",
+   "chapters": [
+    {
+     "n": 1,
+     "title": "MeEimatai",
+     "heTitle": "מאימתי",
+     "startDaf": "2a",
+     "endDaf": "13a"
+    },
+    {
+     "n": 2,
+     "title": "Hayah Korei",
+     "heTitle": "היה קורא",
+     "startDaf": "13a",
+     "endDaf": "17b"
+    },
+    {
+     "n": 3,
+     "title": "Mi SheMeto",
+     "heTitle": "מי שמתו",
+     "startDaf": "17b",
+     "endDaf": "26a"
+    },
+    {
+     "n": 4,
+     "title": "Tefillat HaShachar",
+     "heTitle": "תפלת השחר",
+     "startDaf": "26a",
+     "endDaf": "30b"
+    },
+    {
+     "n": 5,
+     "title": "Ein Omdin",
+     "heTitle": "אין עומדין",
+     "startDaf": "30b",
+     "endDaf": "34b"
+    },
+    {
+     "n": 6,
+     "title": "Keitzad Mevarchin",
+     "heTitle": "כיצד מברכין",
+     "startDaf": "35a",
+     "endDaf": "45a"
+    },
+    {
+     "n": 7,
+     "title": "Sheloshah SheAchlu",
+     "heTitle": "שלשה שאכלו",
+     "startDaf": "45a",
+     "endDaf": "51b"
+    },
+    {
+     "n": 8,
+     "title": "Ellu Devarim",
+     "heTitle": "אלו דברים",
+     "startDaf": "51b",
+     "endDaf": "53b"
+    },
+    {
+     "n": 9,
+     "title": "HaRoeh",
+     "heTitle": "הרואה",
+     "startDaf": "54a",
+     "endDaf": "64a"
+    }
+   ],
+   "introNodes": [
+    "Introduction to Berakhot",
+    "Introduction to Perek I",
+    "Summary of Perek I",
+    "Introduction to Perek II",
+    "Summary of Perek II",
+    "Introduction to Perek III",
+    "Summary of Perek III",
+    "Introduction to Perek IV",
+    "Summary of Perek IV",
+    "Introduction to Perek V",
+    "Summary of Perek V",
+    "Introduction to Perek VI",
+    "Summary of Perek VI",
+    "Introduction to Perek VII",
+    "Summary of Perek VII",
+    "Introduction to Perek VIII",
+    "Summary of Perek VIII",
+    "Introduction to Perek IX",
+    "Summary of Perek IX"
+   ],
+   "hadranSlug": "berakhot"
+  },
+  {
+   "hebcalName": "Shabbat",
+   "sefariaTitle": "Shabbat",
+   "name": "Shabbat",
+   "slug": "shabbat",
+   "heTitle": "שבת",
+   "seder": "Seder Moed",
+   "sederHe": "סדר מועד",
+   "order": 1,
+   "firstDaf": 2,
+   "lastDaf": 157,
+   "days": 156,
+   "refMode": "talmud",
+   "shortDesc": "Creative work prohibited on Shabbat and other laws that preserve the sanctity of the day.",
+   "description": "Shabbat (“Sabbath”) is the first tractate in Seder Moed (Order of Festivals). Its 24 chapters discuss the 39 melachot (creative labors prohibited on Shabbat), prohibitions of carrying on Shabbat, and positive commandments that preserve the sanctity of the day, such as lighting candles and eating three meals. The tractate also contains the Talmud’s main discussion about the holiday of Chanukah.\n.",
+   "chapters": [
+    {
+     "n": 1,
+     "title": "Yetziot HaShabbat",
+     "heTitle": "יציאות השבת",
+     "startDaf": "2a",
+     "endDaf": "20b"
+    },
+    {
+     "n": 2,
+     "title": "BaMeh Madlikin",
+     "heTitle": "במה מדליקין",
+     "startDaf": "20b",
+     "endDaf": "36b"
+    },
+    {
+     "n": 3,
+     "title": "Kirah",
+     "heTitle": "כירה",
+     "startDaf": "36b",
+     "endDaf": "47b"
+    },
+    {
+     "n": 4,
+     "title": "BaMeh Tomnin",
+     "heTitle": "במה טומנין",
+     "startDaf": "47b",
+     "endDaf": "51b"
+    },
+    {
+     "n": 5,
+     "title": "BaMeh Behemah",
+     "heTitle": "במה בהמה",
+     "startDaf": "51b",
+     "endDaf": "56b"
+    },
+    {
+     "n": 6,
+     "title": "BaMeh Ishah",
+     "heTitle": "במה אשה",
+     "startDaf": "57a",
+     "endDaf": "67b"
+    },
+    {
+     "n": 7,
+     "title": "Kelal Gadol",
+     "heTitle": "כלל גדול",
+     "startDaf": "67b",
+     "endDaf": "76b"
+    },
+    {
+     "n": 8,
+     "title": "HaMotzi Yayin",
+     "heTitle": "המוציא יין",
+     "startDaf": "76b",
+     "endDaf": "82a"
+    },
+    {
+     "n": 9,
+     "title": "Amar Rabbi Akiva",
+     "heTitle": "אמר רבי עקיבא",
+     "startDaf": "82a",
+     "endDaf": "90b"
+    },
+    {
+     "n": 10,
+     "title": "HaMatznia",
+     "heTitle": "המצניע",
+     "startDaf": "90b",
+     "endDaf": "96a"
+    },
+    {
+     "n": 11,
+     "title": "HaZorek",
+     "heTitle": "הזורק",
+     "startDaf": "96a",
+     "endDaf": "102a"
+    },
+    {
+     "n": 12,
+     "title": "HaBoneh",
+     "heTitle": "הבונה",
+     "startDaf": "102b",
+     "endDaf": "105a"
+    },
+    {
+     "n": 13,
+     "title": "HaOreg",
+     "heTitle": "האורג",
+     "startDaf": "105a",
+     "endDaf": "107a"
+    },
+    {
+     "n": 14,
+     "title": "Shemoneh Sheratzim",
+     "heTitle": "שמנה שרצים",
+     "startDaf": "107a",
+     "endDaf": "111b"
+    },
+    {
+     "n": 15,
+     "title": "VeEllu Kesharim",
+     "heTitle": "ואלו קשרים",
+     "startDaf": "111b",
+     "endDaf": "115a"
+    },
+    {
+     "n": 16,
+     "title": "Kol Kitvei",
+     "heTitle": "כל כתבי",
+     "startDaf": "115a",
+     "endDaf": "122b"
+    },
+    {
+     "n": 17,
+     "title": "Kol HaKelim",
+     "heTitle": "כל הכלים",
+     "startDaf": "122b",
+     "endDaf": "126b"
+    },
+    {
+     "n": 18,
+     "title": "Mefannin",
+     "heTitle": "מפנין",
+     "startDaf": "126b",
+     "endDaf": "129b"
+    },
+    {
+     "n": 19,
+     "title": "Rabbi Eliezer DeMilah",
+     "heTitle": "רבי אליעזר דמילה",
+     "startDaf": "130a",
+     "endDaf": "137b"
+    },
+    {
+     "n": 20,
+     "title": "Tolin",
+     "heTitle": "תולין",
+     "startDaf": "137b",
+     "endDaf": "141b"
+    },
+    {
+     "n": 21,
+     "title": "Notel Adam et Beno",
+     "heTitle": "נוטל אדם את בנו",
+     "startDaf": "141b",
+     "endDaf": "143a"
+    },
+    {
+     "n": 22,
+     "title": "Chavit",
+     "heTitle": "חבית",
+     "startDaf": "143b",
+     "endDaf": "148a"
+    },
+    {
+     "n": 23,
+     "title": "Shoel",
+     "heTitle": "שואל",
+     "startDaf": "148a",
+     "endDaf": "153a"
+    },
+    {
+     "n": 24,
+     "title": "Mi SheHechshikh",
+     "heTitle": "מי שהחשיך",
+     "startDaf": "153a",
+     "endDaf": "157b"
+    }
+   ],
+   "introNodes": [
+    "Introduction to Shabbat",
+    "Introduction to Perek I",
+    "Summary of Perek I",
+    "Introduction to Perek II",
+    "Summary of Perek II",
+    "Introduction to Perek III",
+    "Summary of Perek III",
+    "Introduction to Perek IV",
+    "Summary of Perek IV",
+    "Introduction to Perek V",
+    "Summary of Perek V",
+    "Introduction to Perek VI",
+    "Summary of Perek VI",
+    "Introduction to Perek VII",
+    "Summary of Perek VII",
+    "Introduction to Perek VIII",
+    "Summary of Perek VIII",
+    "Introduction to Perek IX",
+    "Summary of Perek IX",
+    "Introduction to Perek X",
+    "Summary of Perek X",
+    "Introduction to Perek XI",
+    "Summary of Perek XI",
+    "Introduction to Perek XII",
+    "Summary of Perek XII",
+    "Introduction to Perek XIII",
+    "Summary of Perek XIII",
+    "Introduction to Perek XIV",
+    "Summary of Perek XIV",
+    "Introduction to Perek XV",
+    "Summary of Perek XV",
+    "Introduction to Perek XVI",
+    "Summary of Perek XVI",
+    "Introduction to Perek XVII",
+    "Summary of Perek XVII",
+    "Introduction to Perek XVIII",
+    "Summary of Perek XVIII",
+    "Introduction to Perek XIX",
+    "Summary of Perek XIX",
+    "Introduction to Perek XX",
+    "Summary of Perek XX",
+    "Introduction to Perek XXI",
+    "Summary of Perek XXI",
+    "Introduction to Perek XXII",
+    "Summary of Perek XXII",
+    "Introduction to Perek XXIII",
+    "Summary of Perek XXIII",
+    "Introduction to Perek XXIV",
+    "Summary of Perek XXIV"
+   ],
+   "hadranSlug": "shabbat"
+  },
+  {
+   "hebcalName": "Eruvin",
+   "sefariaTitle": "Eruvin",
+   "name": "Eruvin",
+   "slug": "eruvin",
+   "heTitle": "עירובין",
+   "seder": "Seder Moed",
+   "sederHe": "סדר מועד",
+   "order": 2,
+   "firstDaf": 2,
+   "lastDaf": 105,
+   "days": 104,
+   "refMode": "talmud",
+   "shortDesc": "Enclosures that legally expand the areas in which one can carry and travel on Shabbat.",
+   "description": "Eruvin (literally, “mixtures” referring to the symbolic combination of separate domains) is the second tractate in Seder Moed (Order of Festivals) and consists of ten chapters. It serves as a continuation of tractate Shabbat, discussing the rabbinic enactments - namely, ritual enclosures and designated food items - that legally expand the areas in which one can carry and travel on Shabbat.",
+   "chapters": [
+    {
+     "n": 1,
+     "title": "Mavoi",
+     "heTitle": "מבוי",
+     "startDaf": "2a",
+     "endDaf": "17b"
+    },
+    {
+     "n": 2,
+     "title": "Osin Passin",
+     "heTitle": "עושין פסין",
+     "startDaf": "17b",
+     "endDaf": "26b"
+    },
+    {
+     "n": 3,
+     "title": "BaKol Mearvin",
+     "heTitle": "בכל מערבין",
+     "startDaf": "26b",
+     "endDaf": "41b"
+    },
+    {
+     "n": 4,
+     "title": "Mi SheHotziuhu",
+     "heTitle": "מי שהוציאוהו",
+     "startDaf": "41b",
+     "endDaf": "52b"
+    },
+    {
+     "n": 5,
+     "title": "Keitzad",
+     "heTitle": "כיצד מעברין",
+     "startDaf": "52b",
+     "endDaf": "61b"
+    },
+    {
+     "n": 6,
+     "title": "HaDar",
+     "heTitle": "הדר",
+     "startDaf": "61b",
+     "endDaf": "76a"
+    },
+    {
+     "n": 7,
+     "title": "Challon",
+     "heTitle": "חלון",
+     "startDaf": "76a",
+     "endDaf": "82a"
+    },
+    {
+     "n": 8,
+     "title": "Keitzad Mishtattfin",
+     "heTitle": "כיצד משתתפין",
+     "startDaf": "82a",
+     "endDaf": "89a"
+    },
+    {
+     "n": 9,
+     "title": "Kol Gaggot",
+     "heTitle": "כל גגות",
+     "startDaf": "89a",
+     "endDaf": "95a"
+    },
+    {
+     "n": 10,
+     "title": "HaMotzei Tefillin",
+     "heTitle": "המוצא תפילין",
+     "startDaf": "95a",
+     "endDaf": "105a"
+    }
+   ],
+   "introNodes": [
+    "Introduction to Eruvin",
+    "Introduction to Perek I",
+    "Summary of Perek I",
+    "Introduction to Perek II",
+    "Summary of Perek II",
+    "Introduction to Perek III",
+    "Summary of Perek III",
+    "Introduction to Perek IV",
+    "Summary of Perek IV",
+    "Introduction to Perek V",
+    "Summary of Perek V",
+    "Introduction to Perek VI",
+    "Summary of Perek VI",
+    "Introduction to Perek VII",
+    "Summary of Perek VII",
+    "Introduction to Perek VIII",
+    "Summary of Perek VIII",
+    "Introduction to Perek IX",
+    "Summary of Perek IX",
+    "Introduction to Perek X",
+    "Summary of Perek X"
+   ],
+   "hadranSlug": "eruvin"
+  },
+  {
+   "hebcalName": "Pesachim",
+   "sefariaTitle": "Pesachim",
+   "name": "Pesachim",
+   "slug": "pesachim",
+   "heTitle": "פסחים",
+   "seder": "Seder Moed",
+   "sederHe": "סדר מועד",
+   "order": 3,
+   "firstDaf": 2,
+   "lastDaf": 121,
+   "days": 120,
+   "refMode": "talmud",
+   "shortDesc": "Passover: ridding of chametz, the Paschal lamb offering, matzah, maror, and the Seder.",
+   "description": "Pesachim (“Passover Festivals”) is the third tractate in Seder Moed (“Festivals”). Its ten chapters discuss laws relating to Passover: the consumption of matzah (unleavened bread) and maror (bitter herbs), the prohibitions against owning or consuming chametz (leavened bread) on the festival, the paschal lamb that used to be offered at the Temple in Jerusalem, and the order of the seder (ritual feast) held on the first evening of the holiday.\n.",
+   "chapters": [
+    {
+     "n": 1,
+     "title": "Or LeArba'ah Asar",
+     "heTitle": "אור לארבעה עשר",
+     "startDaf": "2a",
+     "endDaf": "21a"
+    },
+    {
+     "n": 2,
+     "title": "Kol Sha'ah",
+     "heTitle": "כל שעה",
+     "startDaf": "21a",
+     "endDaf": "42a"
+    },
+    {
+     "n": 3,
+     "title": "Ellu Ovrim",
+     "heTitle": "אלו עוברין",
+     "startDaf": "42a",
+     "endDaf": "50a"
+    },
+    {
+     "n": 4,
+     "title": "Makom SheNahagu",
+     "heTitle": "מקום שנהגו",
+     "startDaf": "50a",
+     "endDaf": "57b"
+    },
+    {
+     "n": 5,
+     "title": "Tamid Nishchat",
+     "heTitle": "תמיד נשחט",
+     "startDaf": "58a",
+     "endDaf": "65b"
+    },
+    {
+     "n": 6,
+     "title": "Ellu Devarim",
+     "heTitle": "אלו דברים",
+     "startDaf": "65b",
+     "endDaf": "73b"
+    },
+    {
+     "n": 7,
+     "title": "Keitzad Tzolin",
+     "heTitle": "כיצד צולין",
+     "startDaf": "74a",
+     "endDaf": "86b"
+    },
+    {
+     "n": 8,
+     "title": "HaIshah",
+     "heTitle": "האשה",
+     "startDaf": "87a",
+     "endDaf": "92b"
+    },
+    {
+     "n": 9,
+     "title": "Mi SheHayah Tamei",
+     "heTitle": "מי שהיה טמא",
+     "startDaf": "92b",
+     "endDaf": "99a"
+    },
+    {
+     "n": 10,
+     "title": "Arvei Pesachim",
+     "heTitle": "ערבי פסחים",
+     "startDaf": "99b",
+     "endDaf": "121b"
+    }
+   ],
+   "introNodes": [
+    "Introduction to Pesachim",
+    "Introduction to Perek I",
+    "Summary of Perek I",
+    "Introduction to Perek II",
+    "Summary of Perek II",
+    "Introduction to Perek III",
+    "Summary of Perek III",
+    "Introduction to Perek IV",
+    "Summary of Perek IV",
+    "Introduction to Perek V",
+    "Summary of Perek V",
+    "Introduction to Perek VI",
+    "Summary of Perek VI",
+    "Introduction to Perek VII",
+    "Summary of Perek VII",
+    "Introduction to Perek VIII",
+    "Summary of Perek VIII",
+    "Introduction to Perek IX",
+    "Summary of Perek IX",
+    "Introduction to Perek X",
+    "Summary of Perek X"
+   ],
+   "hadranSlug": "pesachim"
+  },
+  {
+   "hebcalName": "Shekalim",
+   "sefariaTitle": "Jerusalem Talmud Shekalim",
+   "name": "Shekalim",
+   "slug": "shekalim",
+   "heTitle": "שקלים",
+   "seder": "Seder Moed",
+   "sederHe": "סדר מועד",
+   "order": 4,
+   "firstDaf": 2,
+   "lastDaf": 22,
+   "days": 21,
+   "refMode": "calendar",
+   "shortDesc": "Annual half-shekel donations to the Temple, administration and inventory of the Temple.",
+   "description": "Sheqalim (Shekels) belongs to the second order, Moed (Festivals) and discusses the collection of the half-Shekel as well as the expenses and expenditure of the Temple. It has eight chapters.",
+   "chapters": [],
+   "introNodes": [],
+   "hadranSlug": "shekalim"
+  },
+  {
+   "hebcalName": "Yoma",
+   "sefariaTitle": "Yoma",
+   "name": "Yoma",
+   "slug": "yoma",
+   "heTitle": "יומא",
+   "seder": "Seder Moed",
+   "sederHe": "סדר מועד",
+   "order": 5,
+   "firstDaf": 2,
+   "lastDaf": 88,
+   "days": 87,
+   "refMode": "talmud",
+   "shortDesc": "Yom Kippur: the High Priest’s preparation, the Temple service, the fast, and repentance.",
+   "description": "Tractate Yoma (“The Day,” referring to Yom Kippur) is located in Seder Moed (“the Order of Festivals”). It consists of eight chapters; the first seven discuss the preparation for and service of the High Priest in the Temple on Yom Kippur day. The last chapter discusses the laws of fasting, other prohibitions of Yom Kippur, and the process of repentance.",
+   "chapters": [
+    {
+     "n": 1,
+     "title": "Shivat Yamim",
+     "heTitle": "שבעת ימים",
+     "startDaf": "2a",
+     "endDaf": "21b"
+    },
+    {
+     "n": 2,
+     "title": "BaRishonah",
+     "heTitle": "בראשונה",
+     "startDaf": "22a",
+     "endDaf": "28a"
+    },
+    {
+     "n": 3,
+     "title": "Amar Lahem HaMemunneh",
+     "heTitle": "אמר להם הממונה",
+     "startDaf": "28a",
+     "endDaf": "39a"
+    },
+    {
+     "n": 4,
+     "title": "Taraf BaKalpi",
+     "heTitle": "טרף בקלפי",
+     "startDaf": "39a",
+     "endDaf": "46b"
+    },
+    {
+     "n": 5,
+     "title": "Hotziu Lo",
+     "heTitle": "הוציאו לו",
+     "startDaf": "47a",
+     "endDaf": "62a"
+    },
+    {
+     "n": 6,
+     "title": "Shenei Seirei",
+     "heTitle": "שני שעירי",
+     "startDaf": "62a",
+     "endDaf": "68b"
+    },
+    {
+     "n": 7,
+     "title": "Ba Lo",
+     "heTitle": "בא לו",
+     "startDaf": "68b",
+     "endDaf": "73b"
+    },
+    {
+     "n": 8,
+     "title": "Yom HaKippurim",
+     "heTitle": "יום הכפורים",
+     "startDaf": "73b",
+     "endDaf": "88a"
+    }
+   ],
+   "introNodes": [
+    "Introduction to Yoma",
+    "Introduction to Perek I",
+    "Summary of Perek I",
+    "Introduction to Perek II",
+    "Summary of Perek II",
+    "Introduction to Perek III",
+    "Summary of Perek III",
+    "Introduction to Perek IV",
+    "Summary of Perek IV",
+    "Introduction to Perek V",
+    "Summary of Perek V",
+    "Introduction to Perek VI",
+    "Summary of Perek VI",
+    "Introduction to Perek VII",
+    "Summary of Perek VII",
+    "Introduction to Perek VIII",
+    "Summary of Perek VIII"
+   ],
+   "hadranSlug": "yoma"
+  },
+  {
+   "hebcalName": "Sukkah",
+   "sefariaTitle": "Sukkah",
+   "name": "Sukkah",
+   "slug": "sukkah",
+   "heTitle": "סוכה",
+   "seder": "Seder Moed",
+   "sederHe": "סדר מועד",
+   "order": 6,
+   "firstDaf": 2,
+   "lastDaf": 56,
+   "days": 55,
+   "refMode": "talmud",
+   "shortDesc": "The structure of and obligation to dwell in the sukkah, the four species, and celebrating the holiday in the Temple.",
+   "description": "Tractate Sukkah is located in Seder Moed (“the Order of Festivals”) and discusses the holiday of Sukkot. It consists of five chapters; the first two chapters discuss the structure of and obligation to dwell in the sukkah. The remaining chapters discuss laws of the four species and the celebration of Sukkot in the Temple, describing ceremonies involving willow branches and water libations.",
+   "chapters": [
+    {
+     "n": 1,
+     "title": "Sukkah",
+     "heTitle": "סוכה",
+     "startDaf": "2a",
+     "endDaf": "20b"
+    },
+    {
+     "n": 2,
+     "title": "HaYashen",
+     "heTitle": "הישן",
+     "startDaf": "20b",
+     "endDaf": "29b"
+    },
+    {
+     "n": 3,
+     "title": "Lulav HaGazul",
+     "heTitle": "לולב הגזול",
+     "startDaf": "29b",
+     "endDaf": "42b"
+    },
+    {
+     "n": 4,
+     "title": "Lulav VeAravah",
+     "heTitle": "לולב וערבה",
+     "startDaf": "42b",
+     "endDaf": "50a"
+    },
+    {
+     "n": 5,
+     "title": "HeChalil",
+     "heTitle": "החליל",
+     "startDaf": "50a",
+     "endDaf": "56b"
+    }
+   ],
+   "introNodes": [
+    "Introduction to Sukkah",
+    "Introduction to Perek I",
+    "Summary of Perek I",
+    "Introduction to Perek II",
+    "Summary of Perek II",
+    "Introduction to Perek III",
+    "Summary of Perek III",
+    "Introduction to Perek IV",
+    "Summary of Perek IV",
+    "Introduction to Perek V",
+    "Summary of Perek V"
+   ],
+   "hadranSlug": "sukkah"
+  },
+  {
+   "hebcalName": "Beitzah",
+   "sefariaTitle": "Beitzah",
+   "name": "Beitzah",
+   "slug": "beitzah",
+   "heTitle": "ביצה",
+   "seder": "Seder Moed",
+   "sederHe": "סדר מועד",
+   "order": 7,
+   "firstDaf": 2,
+   "lastDaf": 40,
+   "days": 39,
+   "refMode": "talmud",
+   "shortDesc": "Holiday laws governing which objects can be used, how food is prepared, and what labor is permitted.",
+   "description": "Tractate Beitzah (“Egg,” named for the first word in the tractate) is located in Seder Moed (“the Order of Festivals”) and discusses the laws of Yom Tov (biblical holidays). In medieval commentaries, it is often referred to as tractate Yom Tov. The tractate opens with discussions about muktzeh, or items that are set-aside and cannot be used on Shabbat or Yom Tov. The remaining chapters mainly focus on preparation of food on Yom Tov, a form of labor that is prohibited on Shabbat.\n\n.",
+   "chapters": [
+    {
+     "n": 1,
+     "title": "Beitzah",
+     "heTitle": "ביצה",
+     "startDaf": "2a",
+     "endDaf": "15a"
+    },
+    {
+     "n": 2,
+     "title": "Yom Tov",
+     "heTitle": "יום טוב",
+     "startDaf": "15b",
+     "endDaf": "23b"
+    },
+    {
+     "n": 3,
+     "title": "Ein Tzadin",
+     "heTitle": "אין צדין",
+     "startDaf": "23b",
+     "endDaf": "29b"
+    },
+    {
+     "n": 4,
+     "title": "HaMevi Kaddei Yayin",
+     "heTitle": "המביא כדי יין",
+     "startDaf": "29b",
+     "endDaf": "35b"
+    },
+    {
+     "n": 5,
+     "title": "Mashilin",
+     "heTitle": "משילין",
+     "startDaf": "35b",
+     "endDaf": "40b"
+    }
+   ],
+   "introNodes": [
+    "Introduction to Beitzah",
+    "Introduction to Perek I",
+    "Summary of Perek I",
+    "Introduction to Perek II",
+    "Summary of Perek II",
+    "Introduction to Perek III",
+    "Summary of Perek III",
+    "Introduction to Perek IV",
+    "Summary of Perek IV",
+    "Introduction to Perek V",
+    "Summary of Perek V"
+   ],
+   "hadranSlug": "beitzah"
+  },
+  {
+   "hebcalName": "Rosh Hashana",
+   "sefariaTitle": "Rosh Hashanah",
+   "name": "Rosh Hashanah",
+   "slug": "rosh-hashanah",
+   "heTitle": "ראש השנה",
+   "seder": "Seder Moed",
+   "sederHe": "סדר מועד",
+   "order": 8,
+   "firstDaf": 2,
+   "lastDaf": 35,
+   "days": 34,
+   "refMode": "talmud",
+   "shortDesc": "The four Jewish New Years, the process of sanctifying a new month, and laws of blowing the shofar.",
+   "description": "Tractate Rosh Hashanah, located in Seder Moed (“The Order of Festivals”) opens with the statement that there are four days of the calendar, each of which is a New Year for its own purpose. The bulk of the tractate's discussion is elaboration of the laws concerning the holiday of Rosh Hashanah, its religious significance, and the details of the sounding of the shofar. The tractate also discusses the process of sanctifying a new month in the Temple period, which involved witnesses testifying in front of the high rabbinic court that they saw the new moon.",
+   "chapters": [
+    {
+     "n": 1,
+     "title": "Arba'ah Rashei Shanim",
+     "heTitle": "ארבעה ראשי שנים",
+     "startDaf": "2a",
+     "endDaf": "22a"
+    },
+    {
+     "n": 2,
+     "title": "Im Einan Makkirin",
+     "heTitle": "אם אינן מכירין",
+     "startDaf": "22a",
+     "endDaf": "25b"
+    },
+    {
+     "n": 3,
+     "title": "Rauhu Beit Din",
+     "heTitle": "ראוהו בית דין",
+     "startDaf": "25b",
+     "endDaf": "29b"
+    },
+    {
+     "n": 4,
+     "title": "Yom Tov",
+     "heTitle": "יום טוב",
+     "startDaf": "29b",
+     "endDaf": "35a"
+    }
+   ],
+   "introNodes": [
+    "Introduction to Rosh Hashanah",
+    "Introduction to Perek I",
+    "Summary of Perek I",
+    "Introduction to Perek II",
+    "Summary of Perek II",
+    "Introduction to Perek III",
+    "Summary of Perek III",
+    "Introduction to Perek IV",
+    "Summary of Perek IV"
+   ],
+   "hadranSlug": "rosh-hashanah"
+  },
+  {
+   "hebcalName": "Taanit",
+   "sefariaTitle": "Taanit",
+   "name": "Taanit",
+   "slug": "taanit",
+   "heTitle": "תענית",
+   "seder": "Seder Moed",
+   "sederHe": "סדר מועד",
+   "order": 9,
+   "firstDaf": 2,
+   "lastDaf": 31,
+   "days": 30,
+   "refMode": "talmud",
+   "shortDesc": "Praying for rain, fasting in times of drought, and annual fast days marking Jerusalem’s destruction.",
+   "description": "Tractate Taanit (“Fast”) is located in Seder Moed (“the Order of Festivals”). Its four chapters discuss laws and stories relating to fast days, with a focus on fast days enacted by Jewish courts in times of drought. The tractate also discusses praying for rain, the fast days of the 17th of Tamuz and Tisha B’Av, and the concept of ma’amadot, in which groups of laypeople witnessed sacrifices in the Temple or gathered to read Torah, pray, and fast while sacrifices were being offered.",
+   "chapters": [
+    {
+     "n": 1,
+     "title": "MeEimatai Mazkirin",
+     "heTitle": "מאימתי מזכירין",
+     "startDaf": "2a",
+     "endDaf": "15a"
+    },
+    {
+     "n": 2,
+     "title": "Seder Ta'anit",
+     "heTitle": "סדר תעניות כיצד",
+     "startDaf": "15a",
+     "endDaf": "18b"
+    },
+    {
+     "n": 3,
+     "title": "Seder Ta'aniyot Elu",
+     "heTitle": "סדר תעניות אלו",
+     "startDaf": "18b",
+     "endDaf": "26a"
+    },
+    {
+     "n": 4,
+     "title": "BiShloshah Perakim",
+     "heTitle": "בשלשה פרקים",
+     "startDaf": "26a",
+     "endDaf": "31a"
+    }
+   ],
+   "introNodes": [
+    "Introduction to Taanit",
+    "Introduction to Perek I",
+    "Summary of Perek I",
+    "Introduction to Perek II",
+    "Summary of Perek II",
+    "Introduction to Perek III",
+    "Summary of Perek III",
+    "Introduction to Perek IV",
+    "Summary of Perek IV"
+   ],
+   "hadranSlug": "taanit"
+  },
+  {
+   "hebcalName": "Megillah",
+   "sefariaTitle": "Megillah",
+   "name": "Megillah",
+   "slug": "megillah",
+   "heTitle": "מגילה",
+   "seder": "Seder Moed",
+   "sederHe": "סדר מועד",
+   "order": 10,
+   "firstDaf": 2,
+   "lastDaf": 32,
+   "days": 31,
+   "refMode": "talmud",
+   "shortDesc": "Reading the scroll of Esther on Purim, expansions on the Esther story, synagogue rituals, and treatment of sacred objects.",
+   "description": "Tractate Megillah (“Scroll”) is located in Seder Moed (“the Order of Festivals”). The first two chapters discuss the laws of reading the scroll of Esther on the holiday of Purim and include interpretations of and elaborations upon the scroll’s story. The remaining two chapters discuss laws of public reading of the Torah and Prophets, public prayer, and treatment and selling of sacred objects and synagogues.",
+   "chapters": [
+    {
+     "n": 1,
+     "title": "Megillah Nikreit",
+     "heTitle": "מגילה נקראת",
+     "startDaf": "2a",
+     "endDaf": "17a"
+    },
+    {
+     "n": 2,
+     "title": "HaKorei Lemafrea",
+     "heTitle": "הקורא למפרע",
+     "startDaf": "17a",
+     "endDaf": "21a"
+    },
+    {
+     "n": 3,
+     "title": "HaKorei Omed",
+     "heTitle": "הקורא עומד",
+     "startDaf": "21a",
+     "endDaf": "25b"
+    },
+    {
+     "n": 4,
+     "title": "Benei HaIr",
+     "heTitle": "בני העיר",
+     "startDaf": "25b",
+     "endDaf": "32a"
+    }
+   ],
+   "introNodes": [
+    "Introduction to Megillah",
+    "Introduction to Perek I",
+    "Summary of Perek I",
+    "Introduction to Perek II",
+    "Summary of Perek II",
+    "Introduction to Perek III",
+    "Summary of Perek III",
+    "Introduction to Perek IV",
+    "Summary of Perek IV"
+   ],
+   "hadranSlug": "megillah"
+  },
+  {
+   "hebcalName": "Moed Katan",
+   "sefariaTitle": "Moed Katan",
+   "name": "Moed Katan",
+   "slug": "moed-katan",
+   "heTitle": "מועד קטן",
+   "seder": "Seder Moed",
+   "sederHe": "סדר מועד",
+   "order": 11,
+   "firstDaf": 2,
+   "lastDaf": 29,
+   "days": 28,
+   "refMode": "talmud",
+   "shortDesc": "Chol HaMoed (the intermediate days of Passover and Sukkot), mourning and ex-communication.",
+   "description": "Tractate Moed Katan (“Minor Holiday”) is located in Seder Moed (“the Order of Festivals”). The tractate’s first two chapters discuss the laws of Chol Hamoed, or the intermediate days of Passover and Sukkot, with a focus on permitted and prohibited work on these days. The last chapter discusses laws of mourning, ex-communication, leprosy and stories about the deaths of different talmudic sages.",
+   "chapters": [
+    {
+     "n": 1,
+     "title": "Mashkin Beit HaShelachin",
+     "heTitle": "משקין בית השלחין",
+     "startDaf": "2a",
+     "endDaf": "11a"
+    },
+    {
+     "n": 2,
+     "title": "Mi SheHafakh",
+     "heTitle": "מי שהפך",
+     "startDaf": "11b",
+     "endDaf": "13b"
+    },
+    {
+     "n": 3,
+     "title": "VeEllu Megallechin",
+     "heTitle": "ואלו מגלחין",
+     "startDaf": "13b",
+     "endDaf": "29a"
+    }
+   ],
+   "introNodes": [
+    "Introduction to Moed Katan",
+    "Introduction to Perek I",
+    "Summary of Perek I",
+    "Introduction to Perek II",
+    "Summary of Perek II",
+    "Introduction to Perek III",
+    "Summary of Perek III"
+   ],
+   "hadranSlug": "moed-katan"
+  },
+  {
+   "hebcalName": "Chagigah",
+   "sefariaTitle": "Chagigah",
+   "name": "Chagigah",
+   "slug": "chagigah",
+   "heTitle": "חגיגה",
+   "seder": "Seder Moed",
+   "sederHe": "סדר מועד",
+   "order": 12,
+   "firstDaf": 2,
+   "lastDaf": 27,
+   "days": 26,
+   "refMode": "talmud",
+   "shortDesc": "Sacrifices offered on pilgrimage to Jerusalem on the Festivals, ritual purity, and esoteric discussions of creation.",
+   "description": "Tractate Chagigah (“Festival Offering”) is located in Seder Moed (“the Order of Festivals”) and addresses the commandment to make a pilgrimage to the Temple on the holidays of Passover, Shavuot, and Sukkot. The tractate focuses on the sacrifices offered then and the ritual purity required of those who visit the Temple. Chagigah also includes long digressions with esoteric interpretations of the biblical stories of creation in the Book of Genesis and the divine chariot in the Book of Ezekiel.",
+   "chapters": [
+    {
+     "n": 1,
+     "title": "HaKol Chayyavin",
+     "heTitle": "הכל חייבין",
+     "startDaf": "2a",
+     "endDaf": "11b"
+    },
+    {
+     "n": 2,
+     "title": "Ein Dorshin",
+     "heTitle": "אין דורשין",
+     "startDaf": "11b",
+     "endDaf": "20b"
+    },
+    {
+     "n": 3,
+     "title": "Chomer BaKodesh",
+     "heTitle": "חומר בקודש",
+     "startDaf": "20b",
+     "endDaf": "27a"
+    }
+   ],
+   "introNodes": [
+    "Introduction to Chagigah",
+    "Introduction to Perek I",
+    "Summary of Perek I",
+    "Introduction to Perek II",
+    "Summary of Perek II",
+    "Introduction to Perek III",
+    "Summary of Perek III"
+   ],
+   "hadranSlug": "chagigah"
+  },
+  {
+   "hebcalName": "Yevamot",
+   "sefariaTitle": "Yevamot",
+   "name": "Yevamot",
+   "slug": "yevamot",
+   "heTitle": "יבמות",
+   "seder": "Seder Nashim",
+   "sederHe": "סדר נשים",
+   "order": 13,
+   "firstDaf": 2,
+   "lastDaf": 122,
+   "days": 121,
+   "refMode": "talmud",
+   "shortDesc": "The mandated marriage of a widow to the brother of her childless husband and the alternative rite discharging that obligation.",
+   "description": "Yevamot (the plural of the word used to refer to one’s childless brother’s widow) is the first tractate in Seder Nashim (“Order of Women,” which addresses family law). Its sixteen chapters discuss yibum, the Torah-mandated marriage of a widow to the brother of her childless husband as well as chalitzah, the alternative rite discharging that obligation, in which the widow takes off the shoe of her husband’s brother and spits on the floor. Included in the tractate are also sections on the laws of marriage, prohibitted sexual relations, and conversion.",
+   "chapters": [
+    {
+     "n": 1,
+     "title": "Chamesh Esreh Nashim",
+     "heTitle": "חמש עשרה נשים",
+     "startDaf": "2a",
+     "endDaf": "17a"
+    },
+    {
+     "n": 2,
+     "title": "Keitzad Eshet Achiv",
+     "heTitle": "כיצד אשת אחיו",
+     "startDaf": "17a",
+     "endDaf": "26a"
+    },
+    {
+     "n": 3,
+     "title": "Arba'ah Achin",
+     "heTitle": "ארבעה אחין",
+     "startDaf": "26a",
+     "endDaf": "35a"
+    },
+    {
+     "n": 4,
+     "title": "HaCholetz",
+     "heTitle": "החולץ",
+     "startDaf": "35b",
+     "endDaf": "50a"
+    },
+    {
+     "n": 5,
+     "title": "Rabban Gamliel",
+     "heTitle": "רבן גמליאל",
+     "startDaf": "50a",
+     "endDaf": "53b"
+    },
+    {
+     "n": 6,
+     "title": "HaBa Al Yevimto",
+     "heTitle": "הבא על יבמתו",
+     "startDaf": "53b",
+     "endDaf": "66a"
+    },
+    {
+     "n": 7,
+     "title": "Almanah LeKohen Gadol ",
+     "heTitle": "אלמנה לכהן גדול",
+     "startDaf": "66a",
+     "endDaf": "70a"
+    },
+    {
+     "n": 8,
+     "title": "HaArel",
+     "heTitle": "הערל",
+     "startDaf": "70a",
+     "endDaf": "84a"
+    },
+    {
+     "n": 9,
+     "title": "Yesh Muttarot",
+     "heTitle": "יש מותרות",
+     "startDaf": "84a",
+     "endDaf": "87b"
+    },
+    {
+     "n": 10,
+     "title": "HaIshah Rabbah",
+     "heTitle": "האישה רבה",
+     "startDaf": "87b",
+     "endDaf": "97a"
+    },
+    {
+     "n": 11,
+     "title": "Nosin Al HaAnusah",
+     "heTitle": "נושאין על האנוסה",
+     "startDaf": "97a",
+     "endDaf": "101a"
+    },
+    {
+     "n": 12,
+     "title": "Mitzvat Chalitzah",
+     "heTitle": "מצות חליצה",
+     "startDaf": "101a",
+     "endDaf": "106b"
+    },
+    {
+     "n": 13,
+     "title": "Beit Shammai",
+     "heTitle": "בית שמאי",
+     "startDaf": "107a",
+     "endDaf": "112b"
+    },
+    {
+     "n": 14,
+     "title": "Cheresh SheNasa",
+     "heTitle": "חרש שנשא",
+     "startDaf": "112b",
+     "endDaf": "114b"
+    },
+    {
+     "n": 15,
+     "title": "HaIshah Shalom",
+     "heTitle": "האשה שלום",
+     "startDaf": "114b",
+     "endDaf": "118b"
+    },
+    {
+     "n": 16,
+     "title": "HaIshah Batra",
+     "heTitle": "האשה בתרא",
+     "startDaf": "119a",
+     "endDaf": "122b"
+    }
+   ],
+   "introNodes": [
+    "Introduction to Yevamot",
+    "Introduction to Perek I",
+    "Summary of Perek I",
+    "Introduction to Perek II",
+    "Summary of Perek II",
+    "Introduction to Perek III",
+    "Summary of Perek III",
+    "Introduction to Perek IV",
+    "Summary of Perek IV",
+    "Introduction to Perek V",
+    "Summary of Perek V",
+    "Introduction to Perek VI",
+    "Summary of Perek VI",
+    "Introduction to Perek VII",
+    "Summary of Perek VII",
+    "Introduction to Perek VIII",
+    "Summary of Perek VIII",
+    "Introduction to Perek IX",
+    "Summary of Perek IX",
+    "Introduction to Perek X",
+    "Summary of Perek X",
+    "Introduction to Perek XI",
+    "Summary of Perek XI",
+    "Introduction to Perek XII",
+    "Summary of Perek XII",
+    "Introduction to Perek XIII",
+    "Summary of Perek XIII",
+    "Introduction to Perek XIV",
+    "Summary of Perek XIV",
+    "Introduction to Perek XV",
+    "Summary of Perek XV",
+    "Introduction to Perek XVI",
+    "Summary of Perek XVI"
+   ],
+   "hadranSlug": "yevamot"
+  },
+  {
+   "hebcalName": "Ketubot",
+   "sefariaTitle": "Ketubot",
+   "name": "Ketubot",
+   "slug": "ketubot",
+   "heTitle": "כתובות",
+   "seder": "Seder Nashim",
+   "sederHe": "סדר נשים",
+   "order": 14,
+   "firstDaf": 2,
+   "lastDaf": 112,
+   "days": 111,
+   "refMode": "talmud",
+   "shortDesc": "The marital contract (Ketubah) and obligations between husband and wife.",
+   "description": "Ketubot is the second tractate in Seder Nashim (“Order of Women,” which addresses family law). Its thirteen chapters primarily discuss the ketubah (marriage contract) and obligations between a husband and wife during marriage and after the dissolution of marriage. The tractate also addresses topics such as giving testimony, vows, and slander.",
+   "chapters": [
+    {
+     "n": 1,
+     "title": "Betulah Nisset",
+     "heTitle": "בתולה נשאת",
+     "startDaf": "2a",
+     "endDaf": "15b"
+    },
+    {
+     "n": 2,
+     "title": "HaIshah SheNitarmelah",
+     "heTitle": "האשה שנתארמלה",
+     "startDaf": "15b",
+     "endDaf": "28b"
+    },
+    {
+     "n": 3,
+     "title": "Ellu Na'arot",
+     "heTitle": "אלו נערות",
+     "startDaf": "29a",
+     "endDaf": "41b"
+    },
+    {
+     "n": 4,
+     "title": "Na'arah SheNitpattetah",
+     "heTitle": "נערה שנתפתתה",
+     "startDaf": "41b",
+     "endDaf": "54b"
+    },
+    {
+     "n": 5,
+     "title": "Af Al Pi",
+     "heTitle": "אף על פי",
+     "startDaf": "54b",
+     "endDaf": "65b"
+    },
+    {
+     "n": 6,
+     "title": "Metziat HaIshah",
+     "heTitle": "מציאת האשה",
+     "startDaf": "65b",
+     "endDaf": "70a"
+    },
+    {
+     "n": 7,
+     "title": "HaMaddir",
+     "heTitle": "המדיר",
+     "startDaf": "70a",
+     "endDaf": "77b"
+    },
+    {
+     "n": 8,
+     "title": "HaIshah SheNaflu",
+     "heTitle": "האשה שנפלו",
+     "startDaf": "78a",
+     "endDaf": "82b"
+    },
+    {
+     "n": 9,
+     "title": "HaKotev LeIshto",
+     "heTitle": "הכותב לאשתו",
+     "startDaf": "83a",
+     "endDaf": "90a"
+    },
+    {
+     "n": 10,
+     "title": "Mi SheHayah Nasui",
+     "heTitle": "מי שהיה נשוי",
+     "startDaf": "90a",
+     "endDaf": "95b"
+    },
+    {
+     "n": 11,
+     "title": "Almanah Nizzonet",
+     "heTitle": "אלמנה ניזונת",
+     "startDaf": "95b",
+     "endDaf": "101b"
+    },
+    {
+     "n": 12,
+     "title": "HaNosei et HaIshah",
+     "heTitle": "הנושא את האשה",
+     "startDaf": "101b",
+     "endDaf": "104b"
+    },
+    {
+     "n": 13,
+     "title": "Shenei Dayyanei Gezeirot",
+     "heTitle": "שני דייני גזירות",
+     "startDaf": "104b",
+     "endDaf": "112b"
+    }
+   ],
+   "introNodes": [
+    "Introduction to Ketubot",
+    "Introduction to Perek I",
+    "Summary of Perek I",
+    "Introduction to Perek II",
+    "Summary of Perek II",
+    "Introduction to Perek III",
+    "Summary of Perek III",
+    "Introduction to Perek IV",
+    "Summary of Perek IV",
+    "Introduction to Perek V",
+    "Summary of Perek V",
+    "Introduction to Perek VI",
+    "Summary of Perek VI",
+    "Introduction to Perek VII",
+    "Summary of Perek VII",
+    "Introduction to Perek VIII",
+    "Summary of Perek VIII",
+    "Introduction to Perek IX",
+    "Summary of Perek IX",
+    "Introduction to Perek X",
+    "Summary of Perek X",
+    "Introduction to Perek XI",
+    "Summary of Perek XI",
+    "Introduction to Perek XII",
+    "Summary of Perek XII",
+    "Introduction to Perek XIII",
+    "Summary of Perek XIII"
+   ],
+   "hadranSlug": "ketubot"
+  },
+  {
+   "hebcalName": "Nedarim",
+   "sefariaTitle": "Nedarim",
+   "name": "Nedarim",
+   "slug": "nedarim",
+   "heTitle": "נדרים",
+   "seder": "Seder Nashim",
+   "sederHe": "סדר נשים",
+   "order": 15,
+   "firstDaf": 2,
+   "lastDaf": 91,
+   "days": 90,
+   "refMode": "talmud",
+   "shortDesc": "Vows taken voluntarily, particularly those that forbid specific actions or objects.",
+   "description": "Nedarim (“Vows”) is a tractate in Seder Nashim (“Order of Women,” which addresses family law). Its eleven chapters primarily discuss vows taken voluntarily, particularly those that forbid specific actions or objects. The tractate analyzes the conditions under which vows take effect, interpretations and implications of different vows, and the process of nullifying or dissolving vows. Nedarim also includes discussions on topics such as circumcision and visiting the sick.",
+   "chapters": [
+    {
+     "n": 1,
+     "title": "Kol Kinnuyei",
+     "heTitle": "כל כנויי",
+     "startDaf": "2a",
+     "endDaf": "13b"
+    },
+    {
+     "n": 2,
+     "title": "VeEllu Muttarin",
+     "heTitle": "ואלו מותרין",
+     "startDaf": "13b",
+     "endDaf": "20b"
+    },
+    {
+     "n": 3,
+     "title": "Arba'ah Nedarim",
+     "heTitle": "ארבעה נדרים",
+     "startDaf": "20b",
+     "endDaf": "32b"
+    },
+    {
+     "n": 4,
+     "title": "Ein Bein HaMuddar",
+     "heTitle": "אין בין המודר",
+     "startDaf": "32b",
+     "endDaf": "45a"
+    },
+    {
+     "n": 5,
+     "title": "HaShuttafin SheNadru",
+     "heTitle": "השותפין שנדרו",
+     "startDaf": "45b",
+     "endDaf": "48b"
+    },
+    {
+     "n": 6,
+     "title": "HaNoder Min HaMevushal",
+     "heTitle": "הנודר מן המבושל",
+     "startDaf": "49a",
+     "endDaf": "53b"
+    },
+    {
+     "n": 7,
+     "title": "HaNoder Min HaYarak",
+     "heTitle": "הנודר מן הירק",
+     "startDaf": "54a",
+     "endDaf": "60a"
+    },
+    {
+     "n": 8,
+     "title": "Konam Yayin",
+     "heTitle": "קונם יין",
+     "startDaf": "60a",
+     "endDaf": "63b"
+    },
+    {
+     "n": 9,
+     "title": "Rabbi Eliezer",
+     "heTitle": "רבי אליעזר",
+     "startDaf": "64a",
+     "endDaf": "66b"
+    },
+    {
+     "n": 10,
+     "title": "Na'arah HaMeorasah",
+     "heTitle": "נערה המאורסה",
+     "startDaf": "66b",
+     "endDaf": "79a"
+    },
+    {
+     "n": 11,
+     "title": "VeEllu Nedarim",
+     "heTitle": "ואלו נדרים",
+     "startDaf": "79a",
+     "endDaf": "91b"
+    }
+   ],
+   "introNodes": [
+    "Introduction to Nedarim",
+    "Introduction to Perek I",
+    "Summary of Perek I",
+    "Introduction to Perek II",
+    "Summary of Perek II",
+    "Introduction to Perek III",
+    "Summary of Perek III",
+    "Introduction to Perek IV",
+    "Summary of Perek IV",
+    "Introduction to Perek V",
+    "Summary of Perek V",
+    "Introduction to Perek VI",
+    "Summary of Perek VI",
+    "Introduction to Perek VII",
+    "Summary of Perek VII",
+    "Introduction to Perek VIII",
+    "Summary of Perek VIII",
+    "Introduction to Perek IX",
+    "Summary of Perek IX",
+    "Introduction to Perek X",
+    "Summary of Perek X",
+    "Introduction to Perek XI",
+    "Summary of Perek XI"
+   ],
+   "hadranSlug": "nedarim"
+  },
+  {
+   "hebcalName": "Nazir",
+   "sefariaTitle": "Nazir",
+   "name": "Nazir",
+   "slug": "nazir",
+   "heTitle": "נזיר",
+   "seder": "Seder Nashim",
+   "sederHe": "סדר נשים",
+   "order": 16,
+   "firstDaf": 2,
+   "lastDaf": 66,
+   "days": 65,
+   "refMode": "talmud",
+   "shortDesc": "The Nazirite, or one who vows abstinence from wine, haircuts, and ritual impurity generated from contact with corpses.",
+   "description": "Nazir is a tractate in Seder Nashim (“Order of Women,” which addresses family law). Its nine chapters discuss laws relating to the Nazirite, or one who vows abstinence from wine, haircuts, and ritual impurity generated from contact with corpses. Among the topics analyzed are different types of Nazirite vows and their implications, the sacrifices brought at the end of the fulfillment of a Nazirite vow, and cases of uncertainty with regards to a Nazirite’s purity status.",
+   "chapters": [
+    {
+     "n": 1,
+     "title": "Kol Kinnuyei Nezirut",
+     "heTitle": "כל כנויי נזירות",
+     "startDaf": "2a",
+     "endDaf": "8b"
+    },
+    {
+     "n": 2,
+     "title": "Hareini Nazir",
+     "heTitle": "הריני נזיר",
+     "startDaf": "9a",
+     "endDaf": "16a"
+    },
+    {
+     "n": 3,
+     "title": "Mi SheAmar Kamma",
+     "heTitle": "מי שאמר קמא",
+     "startDaf": "16a",
+     "endDaf": "20b"
+    },
+    {
+     "n": 4,
+     "title": "Mi SheAmar Batra",
+     "heTitle": "מי שאמר בתרא",
+     "startDaf": "20b",
+     "endDaf": "30b"
+    },
+    {
+     "n": 5,
+     "title": "Beit Shammai",
+     "heTitle": "בית שמאי",
+     "startDaf": "30b",
+     "endDaf": "34a"
+    },
+    {
+     "n": 6,
+     "title": "Sheloshah Minin",
+     "heTitle": "שלשה מינין",
+     "startDaf": "34a",
+     "endDaf": "47a"
+    },
+    {
+     "n": 7,
+     "title": "Kohen Gadol",
+     "heTitle": "כהן גדול",
+     "startDaf": "47a",
+     "endDaf": "57a"
+    },
+    {
+     "n": 8,
+     "title": "Shenei Nezirim",
+     "heTitle": "שני נזירים",
+     "startDaf": "57a",
+     "endDaf": "61a"
+    },
+    {
+     "n": 9,
+     "title": "HaKutim Ein Lahem Nezirut",
+     "heTitle": "הכותים אין להם נזירות",
+     "startDaf": "61a",
+     "endDaf": "66b"
+    }
+   ],
+   "introNodes": [
+    "Introduction to Nazir",
+    "Introduction to Perek I",
+    "Summary of Perek I",
+    "Introduction to Perek II",
+    "Summary of Perek II",
+    "Introduction to Perek III",
+    "Summary of Perek III",
+    "Introduction to Perek IV",
+    "Summary of Perek IV",
+    "Introduction to Perek V",
+    "Summary of Perek V",
+    "Introduction to Perek VI",
+    "Summary of Perek VI",
+    "Introduction to Perek VII",
+    "Summary of Perek VII",
+    "Introduction to Perek VIII",
+    "Summary of Perek VIII",
+    "Introduction to Perek IX",
+    "Summary of Perek IX"
+   ],
+   "hadranSlug": "nazir"
+  },
+  {
+   "hebcalName": "Sotah",
+   "sefariaTitle": "Sotah",
+   "name": "Sotah",
+   "slug": "sotah",
+   "heTitle": "סוטה",
+   "seder": "Seder Nashim",
+   "sederHe": "סדר נשים",
+   "order": 17,
+   "firstDaf": 2,
+   "lastDaf": 49,
+   "days": 48,
+   "refMode": "talmud",
+   "shortDesc": "A woman suspected of adultery, the ritual determining her culpability, and other rituals involving recitation.",
+   "description": "Sotah is a tractate in Seder Nashim (“Order of Women,” which addresses family law). Its first six chapters discuss laws relating to a sotah, or woman whose husband suspects her of adultery. The tractate outlines the process the sotah experiences, beginning with a warning issued by her husband and her seclusion with another man and through the steps of the ritual performed in the Temple in order to determine her culpability. The last three chapters discuss other rituals that involve recitation.",
+   "chapters": [
+    {
+     "n": 1,
+     "title": "HaMekannei",
+     "heTitle": "המקנא",
+     "startDaf": "2a",
+     "endDaf": "14a"
+    },
+    {
+     "n": 2,
+     "title": "Hayah Mevi ",
+     "heTitle": "היה מביא",
+     "startDaf": "14a",
+     "endDaf": "19a"
+    },
+    {
+     "n": 3,
+     "title": "Hayah Notel",
+     "heTitle": "היה נוטל",
+     "startDaf": "19a",
+     "endDaf": "23b"
+    },
+    {
+     "n": 4,
+     "title": "Arusah",
+     "heTitle": "ארוסה",
+     "startDaf": "23b",
+     "endDaf": "27b"
+    },
+    {
+     "n": 5,
+     "title": "KeShem SheHamayim",
+     "heTitle": "כשם שהמים",
+     "startDaf": "27b",
+     "endDaf": "31a"
+    },
+    {
+     "n": 6,
+     "title": "Mi SheKinnei",
+     "heTitle": "מי שקינא",
+     "startDaf": "31a",
+     "endDaf": "32a"
+    },
+    {
+     "n": 7,
+     "title": "Ellu Ne'emarin",
+     "heTitle": "אלו נאמרין",
+     "startDaf": "32a",
+     "endDaf": "42a"
+    },
+    {
+     "n": 8,
+     "title": "Mashuach Milchamah",
+     "heTitle": "משוח מלחמה",
+     "startDaf": "42a",
+     "endDaf": "44b"
+    },
+    {
+     "n": 9,
+     "title": "Eglah Arufah",
+     "heTitle": "עגלה ערופה",
+     "startDaf": "44b",
+     "endDaf": "49b"
+    }
+   ],
+   "introNodes": [
+    "Introduction to Sotah",
+    "Introduction to Perek I",
+    "Summary of Perek I",
+    "Introduction to Perek II",
+    "Summary of Perek II",
+    "Introduction to Perek III",
+    "Summary of Perek III",
+    "Introduction to Perek IV",
+    "Summary of Perek IV",
+    "Introduction to Perek V",
+    "Summary of Perek V",
+    "Introduction to Perek VI",
+    "Summary of Perek VI",
+    "Introduction to Perek VII",
+    "Summary of Perek VII",
+    "Introduction to Perek VIII",
+    "Summary of Perek VIII",
+    "Introduction to Perek IX",
+    "Summary of Perek IX"
+   ],
+   "hadranSlug": "sotah"
+  },
+  {
+   "hebcalName": "Gitin",
+   "sefariaTitle": "Gittin",
+   "name": "Gittin",
+   "slug": "gittin",
+   "heTitle": "גיטין",
+   "seder": "Seder Nashim",
+   "sederHe": "סדר נשים",
+   "order": 18,
+   "firstDaf": 2,
+   "lastDaf": 90,
+   "days": 89,
+   "refMode": "talmud",
+   "shortDesc": "Laws relating to divorce, focusing on the get (bill of divorce) and its delivery.",
+   "description": "Gittin (plural of “Get,” or writ of divorce) is a tractate in Seder Nashim (“Order of Women,” which addresses family law). Its nine chapters primarily discuss the process of writing and transmitting a get. Also included in the tractate are sections about tikkun ha’olam, or enactments instituted by the sages for the betterment of the world, stories about the destruction of the Temple, and discussions of medical advice.",
+   "chapters": [
+    {
+     "n": 1,
+     "title": "HaMevi Kamma",
+     "heTitle": "המביא קמא",
+     "startDaf": "2a",
+     "endDaf": "15a"
+    },
+    {
+     "n": 2,
+     "title": "HaMevi Batra",
+     "heTitle": "המביא בתרא",
+     "startDaf": "15a",
+     "endDaf": "24a"
+    },
+    {
+     "n": 3,
+     "title": "Kol HaGet",
+     "heTitle": "כל הגט",
+     "startDaf": "24a",
+     "endDaf": "32a"
+    },
+    {
+     "n": 4,
+     "title": "HaSholeach",
+     "heTitle": "השולח",
+     "startDaf": "32a",
+     "endDaf": "48b"
+    },
+    {
+     "n": 5,
+     "title": "HaNizzakin",
+     "heTitle": "הניזקין",
+     "startDaf": "48b",
+     "endDaf": "62a"
+    },
+    {
+     "n": 6,
+     "title": "HaOmer Hitkabbel",
+     "heTitle": "האומר התקבל",
+     "startDaf": "62b",
+     "endDaf": "67b"
+    },
+    {
+     "n": 7,
+     "title": "Mi SheAchazo",
+     "heTitle": "מי שאחזו",
+     "startDaf": "67b",
+     "endDaf": "77a"
+    },
+    {
+     "n": 8,
+     "title": "HaZorek Get",
+     "heTitle": "הזורק גט",
+     "startDaf": "77a",
+     "endDaf": "82a"
+    },
+    {
+     "n": 9,
+     "title": "HaMegaresh",
+     "heTitle": "המגרש",
+     "startDaf": "82a",
+     "endDaf": "90b"
+    }
+   ],
+   "introNodes": [
+    "Introduction to Gittin",
+    "Introduction to Perek I",
+    "Summary of Perek I",
+    "Introduction to Perek II",
+    "Summary of Perek II",
+    "Introduction to Perek III",
+    "Summary of Perek III",
+    "Introduction to Perek IV",
+    "Summary of Perek IV",
+    "Introduction to Perek V",
+    "Summary of Perek V",
+    "Introduction to Perek VI",
+    "Summary of Perek VI",
+    "Introduction to Perek VII",
+    "Summary of Perek VII",
+    "Introduction to Perek VIII",
+    "Summary of Perek VIII",
+    "Introduction to Perek IX",
+    "Summary of Perek IX"
+   ],
+   "hadranSlug": "gittin"
+  },
+  {
+   "hebcalName": "Kiddushin",
+   "sefariaTitle": "Kiddushin",
+   "name": "Kiddushin",
+   "slug": "kiddushin",
+   "heTitle": "קידושין",
+   "seder": "Seder Nashim",
+   "sederHe": "סדר נשים",
+   "order": 19,
+   "firstDaf": 2,
+   "lastDaf": 82,
+   "days": 81,
+   "refMode": "talmud",
+   "shortDesc": "Betrothal, marriage, acquisitions, and lineage.",
+   "description": "Kiddushin (“Betrothal”)  is the last tractate in Seder Nashim (“Order of Women,” which addresses family law). Its four chapters primarily discuss laws relating to betrothal. Also addressed are laws of acquisition, sending representatives to perform legal actions, lineage, and the prohibition of seclusion between a man and a woman not married to each other.",
+   "chapters": [
+    {
+     "n": 1,
+     "title": "HaIshah Nikneit",
+     "heTitle": "האשה נקנית",
+     "startDaf": "2a",
+     "endDaf": "41a"
+    },
+    {
+     "n": 2,
+     "title": "HaIsh Mekaddesh",
+     "heTitle": "האיש מקדש",
+     "startDaf": "41a",
+     "endDaf": "58b"
+    },
+    {
+     "n": 3,
+     "title": "HaOmer LeChavero",
+     "heTitle": "האומר לחברו",
+     "startDaf": "58b",
+     "endDaf": "69a"
+    },
+    {
+     "n": 4,
+     "title": "Asarah Yochasin",
+     "heTitle": "עשרה יוחסין",
+     "startDaf": "69a",
+     "endDaf": "82b"
+    }
+   ],
+   "introNodes": [
+    "Introduction to Kiddushin",
+    "Introduction to Perek I",
+    "Summary of Perek I",
+    "Introduction to Perek II",
+    "Summary of Perek II",
+    "Introduction to Perek III",
+    "Summary of Perek III",
+    "Introduction to Perek IV",
+    "Summary of Perek IV"
+   ],
+   "hadranSlug": "kiddushin"
+  },
+  {
+   "hebcalName": "Baba Kamma",
+   "sefariaTitle": "Bava Kamma",
+   "name": "Bava Kamma",
+   "slug": "bava-kamma",
+   "heTitle": "בבא קמא",
+   "seder": "Seder Nezikin",
+   "sederHe": "סדר נזיקין",
+   "order": 20,
+   "firstDaf": 2,
+   "lastDaf": 119,
+   "days": 118,
+   "refMode": "talmud",
+   "shortDesc": "Liability and compensation for damages inflicted on people or property.",
+   "description": "Bava Kamma (״The First Gate״) is the first of a series of three tractates in Seder Nezikin (“Order of Damages\") that deal with civil matters. Bava Kamma focuses on the laws of torts: the first six chapters mostly address damages inflicted by one’s property, while the last four chapters discuss damages inflicted by people, such as theft and injury.",
+   "chapters": [
+    {
+     "n": 1,
+     "title": "Arba'ah Avot",
+     "heTitle": "ארבעה אבות",
+     "startDaf": "2a",
+     "endDaf": "17a"
+    },
+    {
+     "n": 2,
+     "title": "Keitzad HaRegel",
+     "heTitle": "כיצד הרגל",
+     "startDaf": "17a",
+     "endDaf": "27a"
+    },
+    {
+     "n": 3,
+     "title": "HaManiach",
+     "heTitle": "המניח",
+     "startDaf": "27a",
+     "endDaf": "36a"
+    },
+    {
+     "n": 4,
+     "title": "Shor SheNagach Arba'ah VaChamishah",
+     "heTitle": "שור שנגח ד' וה'",
+     "startDaf": "36a",
+     "endDaf": "46a"
+    },
+    {
+     "n": 5,
+     "title": "Shor SheNagach et HaParah",
+     "heTitle": "שור שנגח את הפרה",
+     "startDaf": "46a",
+     "endDaf": "55a"
+    },
+    {
+     "n": 6,
+     "title": "HaKones",
+     "heTitle": "הכונס",
+     "startDaf": "55b",
+     "endDaf": "62b"
+    },
+    {
+     "n": 7,
+     "title": "Merubbeh",
+     "heTitle": "מרובה",
+     "startDaf": "62b",
+     "endDaf": "83a"
+    },
+    {
+     "n": 8,
+     "title": "HaChovel",
+     "heTitle": "החובל",
+     "startDaf": "83b",
+     "endDaf": "93a"
+    },
+    {
+     "n": 9,
+     "title": "HaGozel Etzim",
+     "heTitle": "הגוזל עצים",
+     "startDaf": "93b",
+     "endDaf": "111a"
+    },
+    {
+     "n": 10,
+     "title": "HaGozel Batra",
+     "heTitle": "הגוזל בתרא",
+     "startDaf": "111b",
+     "endDaf": "119b"
+    }
+   ],
+   "introNodes": [
+    "Introduction to Bava Kamma",
+    "Introduction to Perek I",
+    "Summary of Perek I",
+    "Introduction to Perek II",
+    "Summary of Perek II",
+    "Introduction to Perek III",
+    "Summary of Perek III",
+    "Introduction to Perek IV",
+    "Summary of Perek IV",
+    "Introduction to Perek V",
+    "Summary of Perek V",
+    "Introduction to Perek VI",
+    "Summary of Perek VI",
+    "Introduction to Perek VII",
+    "Summary of Perek VII",
+    "Introduction to Perek VIII",
+    "Summary of Perek VIII",
+    "Introduction to Perek IX",
+    "Summary of Perek IX",
+    "Introduction to Perek X",
+    "Summary of Perek X"
+   ],
+   "hadranSlug": "bava-kamma"
+  },
+  {
+   "hebcalName": "Baba Metzia",
+   "sefariaTitle": "Bava Metzia",
+   "name": "Bava Metzia",
+   "slug": "bava-metzia",
+   "heTitle": "בבא מציעא",
+   "seder": "Seder Nezikin",
+   "sederHe": "סדר נזיקין",
+   "order": 21,
+   "firstDaf": 2,
+   "lastDaf": 119,
+   "days": 118,
+   "refMode": "talmud",
+   "shortDesc": "Disputed property, returning lost objects, guarding, renting, borrowing, and responsibilities of workers and employers.",
+   "description": "Bava Metzia (״The Middle Gate״) is the second of a series of three tractates in Seder Nezikin (“Order of Damages\") that deal with civil laws. It mainly focuses on interpersonal matters that are not connected to damages, such as disputed property, usury, returning lost objects, guarding, renting, borrowing, and responsibilities of workers and employers.",
+   "chapters": [
+    {
+     "n": 1,
+     "title": "Shenayim Ochazin",
+     "heTitle": "שנים אוחזין",
+     "startDaf": "2a",
+     "endDaf": "21a"
+    },
+    {
+     "n": 2,
+     "title": "Ellu Metziot",
+     "heTitle": "אלו מציאות",
+     "startDaf": "21a",
+     "endDaf": "33b"
+    },
+    {
+     "n": 3,
+     "title": "HaMafkid",
+     "heTitle": "המפקיד",
+     "startDaf": "33b",
+     "endDaf": "44a"
+    },
+    {
+     "n": 4,
+     "title": "HaZahav",
+     "heTitle": "הזהב",
+     "startDaf": "44a",
+     "endDaf": "60b"
+    },
+    {
+     "n": 5,
+     "title": "Eizehu Neshekh",
+     "heTitle": "איזהו נשך",
+     "startDaf": "60b",
+     "endDaf": "75b"
+    },
+    {
+     "n": 6,
+     "title": "HaSokher et HaUmmanin",
+     "heTitle": "השוכר את האומנין",
+     "startDaf": "75b",
+     "endDaf": "83a"
+    },
+    {
+     "n": 7,
+     "title": "HaSokher et HaPoalim",
+     "heTitle": "השוכר את הפועלים",
+     "startDaf": "83a",
+     "endDaf": "94a"
+    },
+    {
+     "n": 8,
+     "title": "HaShoel et HaParah",
+     "heTitle": "השואל את הפרה",
+     "startDaf": "94a",
+     "endDaf": "103a"
+    },
+    {
+     "n": 9,
+     "title": "HaMekabbel Sadeh MeChavero",
+     "heTitle": "המקבל שדה מחבירו",
+     "startDaf": "103a",
+     "endDaf": "116a"
+    },
+    {
+     "n": 10,
+     "title": "HaBayit VeHa'aliyyah",
+     "heTitle": "הבית והעלייה",
+     "startDaf": "116b",
+     "endDaf": "119a"
+    }
+   ],
+   "introNodes": [
+    "Introduction to Bava Metzia",
+    "Introduction to Perek I",
+    "Summary of Perek I",
+    "Introduction to Perek II",
+    "Summary of Perek II",
+    "Introduction to Perek III",
+    "Summary of Perek III",
+    "Introduction to Perek IV",
+    "Summary of Perek IV",
+    "Introduction to Perek V",
+    "Summary of Perek V",
+    "Introduction to Perek VI",
+    "Summary of Perek VI",
+    "Introduction to Perek VII",
+    "Summary of Perek VII",
+    "Introduction to Perek VIII",
+    "Summary of Perek VIII",
+    "Introduction to Perek IX",
+    "Summary of Perek IX",
+    "Introduction to Perek X",
+    "Summary of Perek X"
+   ],
+   "hadranSlug": "bava-metzia"
+  },
+  {
+   "hebcalName": "Baba Batra",
+   "sefariaTitle": "Bava Batra",
+   "name": "Bava Batra",
+   "slug": "bava-batra",
+   "heTitle": "בבא בתרא",
+   "seder": "Seder Nezikin",
+   "sederHe": "סדר נזיקין",
+   "order": 22,
+   "firstDaf": 2,
+   "lastDaf": 176,
+   "days": 175,
+   "refMode": "talmud",
+   "shortDesc": "Relationships between neighbors, land ownership, sales, and inheritance.",
+   "description": "Bava Batra (״The Last Gate״) is the third of a series of three tractates in Seder Nezikin (“Order of Damages\") that deal with civil laws. It addresses relations between neighbors, presumptions of ownership and deeds, and laws of sales and inheritance. Bava Batra stands out from its surrounding tractates in that the vast majority of its laws are not explicitly biblical in origin, but rather rabbinic ordinances based on the sages’ understanding of human nature, societal conventions, and the need to establish limits and guidelines to regulate business relationships.",
+   "chapters": [
+    {
+     "n": 1,
+     "title": "HaShuttafin",
+     "heTitle": "השותפין",
+     "startDaf": "2a",
+     "endDaf": "17a"
+    },
+    {
+     "n": 2,
+     "title": "Lo Yachpor",
+     "heTitle": "לא יחפור",
+     "startDaf": "17a",
+     "endDaf": "27b"
+    },
+    {
+     "n": 3,
+     "title": "Chezkat HaBattim",
+     "heTitle": "חזקת הבתים",
+     "startDaf": "28a",
+     "endDaf": "60b"
+    },
+    {
+     "n": 4,
+     "title": "HaMokher et HaBayit",
+     "heTitle": "המוכר את הבית",
+     "startDaf": "61a",
+     "endDaf": "73a"
+    },
+    {
+     "n": 5,
+     "title": "HaMokher et HaSefinah",
+     "heTitle": "המוכר את הספינה",
+     "startDaf": "73a",
+     "endDaf": "91b"
+    },
+    {
+     "n": 6,
+     "title": "HaMokher Peirot",
+     "heTitle": "המוכר פירות",
+     "startDaf": "92a",
+     "endDaf": "102b"
+    },
+    {
+     "n": 7,
+     "title": "Beit Kur",
+     "heTitle": "בית כור",
+     "startDaf": "102b",
+     "endDaf": "108a"
+    },
+    {
+     "n": 8,
+     "title": "Yesh Nochalin",
+     "heTitle": "יש נוחלין",
+     "startDaf": "108a",
+     "endDaf": "139b"
+    },
+    {
+     "n": 9,
+     "title": "Mi SheMet",
+     "heTitle": "מי שמת",
+     "startDaf": "139b",
+     "endDaf": "159b"
+    },
+    {
+     "n": 10,
+     "title": "Get Pashut",
+     "heTitle": "גט פשוט",
+     "startDaf": "160a",
+     "endDaf": "176b"
+    }
+   ],
+   "introNodes": [
+    "Introduction to Bava Batra",
+    "Introduction to Perek I",
+    "Summary of Perek I",
+    "Introduction to Perek II",
+    "Summary of Perek II",
+    "Introduction to Perek III",
+    "Summary of Perek III",
+    "Introduction to Perek IV",
+    "Summary of Perek IV",
+    "Introduction to Perek V",
+    "Summary of Perek V",
+    "Introduction to Perek VI",
+    "Summary of Perek VI",
+    "Introduction to Perek VII",
+    "Summary of Perek VII",
+    "Introduction to Perek VIII",
+    "Summary of Perek VIII",
+    "Introduction to Perek IX",
+    "Summary of Perek IX",
+    "Introduction to Perek X",
+    "Summary of Perek X"
+   ],
+   "hadranSlug": "bava-batra"
+  },
+  {
+   "hebcalName": "Sanhedrin",
+   "sefariaTitle": "Sanhedrin",
+   "name": "Sanhedrin",
+   "slug": "sanhedrin",
+   "heTitle": "סנהדרין",
+   "seder": "Seder Nezikin",
+   "sederHe": "סדר נזיקין",
+   "order": 23,
+   "firstDaf": 2,
+   "lastDaf": 113,
+   "days": 112,
+   "refMode": "talmud",
+   "shortDesc": "The judicial system, forming the court, accepting testimony, and executing capital punishment.",
+   "description": "Tractate Sanhedrin (“Assembly of Judges”) is a tractate in Seder Nezikin (“Order of Damages\") that addresses the judicial system. Its eleven chapters discuss the selection of judges and forming a court, the process of accepting testimony, and monetary, corporal, and capital punishment. The last chapter, known as “perek chelek,” addresses the World to Come and who does not receive it.",
+   "chapters": [
+    {
+     "n": 1,
+     "title": "Dinei Mamonot",
+     "heTitle": "דיני ממונות",
+     "startDaf": "2a",
+     "endDaf": "18a"
+    },
+    {
+     "n": 2,
+     "title": "Kohen Gadol",
+     "heTitle": "כהן גדול",
+     "startDaf": "18a",
+     "endDaf": "22b"
+    },
+    {
+     "n": 3,
+     "title": "Zeh Borer",
+     "heTitle": "זה בורר",
+     "startDaf": "23a",
+     "endDaf": "31b"
+    },
+    {
+     "n": 4,
+     "title": "Echad Dinei Mamonot",
+     "heTitle": "אחד דיני ממונות",
+     "startDaf": "32a",
+     "endDaf": "39b"
+    },
+    {
+     "n": 5,
+     "title": "Hayu Bodkin",
+     "heTitle": "היו בודקין",
+     "startDaf": "40a",
+     "endDaf": "42a"
+    },
+    {
+     "n": 6,
+     "title": "Nigmar HaDin",
+     "heTitle": "נגמר הדין",
+     "startDaf": "42b",
+     "endDaf": "49a"
+    },
+    {
+     "n": 7,
+     "title": "Arba Mitot",
+     "heTitle": "ארבע מיתות",
+     "startDaf": "49b",
+     "endDaf": "68a"
+    },
+    {
+     "n": 8,
+     "title": "Ben Sorer Umoreh",
+     "heTitle": "בן סורר ומורה",
+     "startDaf": "68b",
+     "endDaf": "75a"
+    },
+    {
+     "n": 9,
+     "title": "HaNisrafin",
+     "heTitle": "הנשרפין",
+     "startDaf": "75a",
+     "endDaf": "84a"
+    },
+    {
+     "n": 10,
+     "title": "Ellu Hen HaNechnakin",
+     "heTitle": "אלו הן הנחנקין",
+     "startDaf": "84b",
+     "endDaf": "90a"
+    },
+    {
+     "n": 11,
+     "title": "Chelek",
+     "heTitle": "חלק",
+     "startDaf": "90a",
+     "endDaf": "113b"
+    }
+   ],
+   "introNodes": [
+    "Introduction to Sanhedrin",
+    "Introduction to Perek I",
+    "Summary of Perek I",
+    "Introduction to Perek II",
+    "Summary of Perek II",
+    "Introduction to Perek III",
+    "Summary of Perek III",
+    "Introduction to Perek IV",
+    "Summary of Perek IV",
+    "Introduction to Perek V",
+    "Summary of Perek V",
+    "Introduction to Perek VI",
+    "Summary of Perek VI",
+    "Introduction to Perek VII",
+    "Summary of Perek VII",
+    "Introduction to Perek VIII",
+    "Summary of Perek VIII",
+    "Introduction to Perek IX",
+    "Summary of Perek IX",
+    "Introduction to Perek X",
+    "Summary of Perek X",
+    "Introduction to Perek XI",
+    "Summary of Perek XI"
+   ],
+   "hadranSlug": "sanhedrin"
+  },
+  {
+   "hebcalName": "Makkot",
+   "sefariaTitle": "Makkot",
+   "name": "Makkot",
+   "slug": "makkot",
+   "heTitle": "מכות",
+   "seder": "Seder Nezikin",
+   "sederHe": "סדר נזיקין",
+   "order": 24,
+   "firstDaf": 2,
+   "lastDaf": 24,
+   "days": 23,
+   "refMode": "talmud",
+   "shortDesc": "Court-administered lashing, false witnesses, and cities of refuge for inadvertent murderers.",
+   "description": "Tractate Makkot (“Lashes”) is a tractate in Seder Nezikin (“Order of Damages\") that serves as a companion tractate to Sanhedrin. Makkot addresses court-administered punishments: the first chapter discusses false witnesses (eidim zomemim) and the process of administering their punishments, the second chapter discusses exile to cities of refuge for inadvertent murderers, and the third and final chapter discusses the punishment of lashes.",
+   "chapters": [
+    {
+     "n": 1,
+     "title": "Keitzad HaEdim",
+     "heTitle": "כיצד העדים",
+     "startDaf": "2a",
+     "endDaf": "7a"
+    },
+    {
+     "n": 2,
+     "title": "Ellu Hen HaGolin",
+     "heTitle": "אלו הן הגולין",
+     "startDaf": "7a",
+     "endDaf": "13a"
+    },
+    {
+     "n": 3,
+     "title": "Ellu Hen HaLokin",
+     "heTitle": "אלו הן הלוקין",
+     "startDaf": "13a",
+     "endDaf": "24b"
+    }
+   ],
+   "introNodes": [
+    "Introduction to Makkot",
+    "Introduction to Perek I",
+    "Summary of Perek I",
+    "Introduction to Perek II",
+    "Summary of Perek II",
+    "Introduction to Perek III",
+    "Summary of Perek III"
+   ],
+   "hadranSlug": "makkot"
+  },
+  {
+   "hebcalName": "Shevuot",
+   "sefariaTitle": "Shevuot",
+   "name": "Shevuot",
+   "slug": "shevuot",
+   "heTitle": "שבועות",
+   "seder": "Seder Nezikin",
+   "sederHe": "סדר נזיקין",
+   "order": 25,
+   "firstDaf": 2,
+   "lastDaf": 49,
+   "days": 48,
+   "refMode": "talmud",
+   "shortDesc": "Oaths and the process of atoning for entering the Temple or eating from a sacrifice while impure.",
+   "description": "Tractate Shevuot (“Oaths”) is a tractate in Seder Nezikin (“Order of Damages\"). Its first two chapters discuss the sacrifices brought to atone for entering the Temple or eating from a sacrifice while impure. The remaining six chapters discuss different types of oaths, like those taken by litigants in court or a false promise made by an individual.",
+   "chapters": [
+    {
+     "n": 1,
+     "title": "Shevuot Shetayim Kamma",
+     "heTitle": "שבועות שתים קמא",
+     "startDaf": "2a",
+     "endDaf": "14a"
+    },
+    {
+     "n": 2,
+     "title": "Yediot HaTumah",
+     "heTitle": "ידיעות הטומאה",
+     "startDaf": "14a",
+     "endDaf": "19b"
+    },
+    {
+     "n": 3,
+     "title": "Shevuot Shetayim Batra",
+     "heTitle": "שבועות שתים בתרא",
+     "startDaf": "19b",
+     "endDaf": "29b"
+    },
+    {
+     "n": 4,
+     "title": "Shevuat HaEdut",
+     "heTitle": "שבועת העדות",
+     "startDaf": "30a",
+     "endDaf": "36b"
+    },
+    {
+     "n": 5,
+     "title": "Shevuat HaPikkadon",
+     "heTitle": "שבועת הפקדון",
+     "startDaf": "36b",
+     "endDaf": "38b"
+    },
+    {
+     "n": 6,
+     "title": "Shevuat HaDayyanin",
+     "heTitle": "שבועת הדיינין",
+     "startDaf": "38b",
+     "endDaf": "44b"
+    },
+    {
+     "n": 7,
+     "title": "Kol HaNishbain",
+     "heTitle": "כל הנשבעין",
+     "startDaf": "44b",
+     "endDaf": "49a"
+    },
+    {
+     "n": 8,
+     "title": "Arba'ah Shomrim",
+     "heTitle": "ארבעה שומרין",
+     "startDaf": "49a",
+     "endDaf": "49b"
+    }
+   ],
+   "introNodes": [
+    "Introduction to Shevuot",
+    "Introduction to Perek I",
+    "Summary of Perek I",
+    "Introduction to Perek II",
+    "Summary of Perek II",
+    "Introduction to Perek III",
+    "Summary of Perek III",
+    "Introduction to Perek IV",
+    "Summary of Perek IV",
+    "Introduction to Perek V",
+    "Summary of Perek V",
+    "Introduction to Perek VI",
+    "Summary of Perek VI",
+    "Introduction to Perek VII",
+    "Summary of Perek VII",
+    "Introduction to Perek VIII",
+    "Summary of Perek VIII"
+   ],
+   "hadranSlug": "shevuot"
+  },
+  {
+   "hebcalName": "Avodah Zarah",
+   "sefariaTitle": "Avodah Zarah",
+   "name": "Avodah Zarah",
+   "slug": "avodah-zarah",
+   "heTitle": "עבודה זרה",
+   "seder": "Seder Nezikin",
+   "sederHe": "סדר נזיקין",
+   "order": 26,
+   "firstDaf": 2,
+   "lastDaf": 76,
+   "days": 75,
+   "refMode": "talmud",
+   "shortDesc": "Disassociating from idolatry, regulations on business interactions between Jews and idolaters.",
+   "description": "Tractate Avodah Zara (“Idolatry”) is a tractate in Seder Nezikin (“Order of Damages\") that discusses the prohibition of idolatry and regulations on interactions between Jews and idolaters. The first two chapters address economic relationships with idolaters and consumption of their food. The third and fourth chapters discuss laws related to forbidden idols and images and the process of their nullification, and the fifth chapter discusses the prohibition of deriving benefit from wine that was poured as libation for idol worship.",
+   "chapters": [
+    {
+     "n": 1,
+     "title": "Lifnei Eideihen",
+     "heTitle": "לפני אידיהן",
+     "startDaf": "2a",
+     "endDaf": "22a"
+    },
+    {
+     "n": 2,
+     "title": "Ein Ma'amidin",
+     "heTitle": "אין מעמידין",
+     "startDaf": "22a",
+     "endDaf": "40b"
+    },
+    {
+     "n": 3,
+     "title": "Kol HaTzelamim",
+     "heTitle": "כל הצלמים",
+     "startDaf": "40b",
+     "endDaf": "49b"
+    },
+    {
+     "n": 4,
+     "title": "Rabbi Yishmael",
+     "heTitle": "רבי ישמעאל",
+     "startDaf": "49b",
+     "endDaf": "61b"
+    },
+    {
+     "n": 5,
+     "title": "HaSokher et HaPoel",
+     "heTitle": "השוכר את הפועל",
+     "startDaf": "62a",
+     "endDaf": "76b"
+    }
+   ],
+   "introNodes": [
+    "Introduction to Avodah Zarah",
+    "Introduction to Perek I",
+    "Summary of Perek I",
+    "Introduction to Perek II",
+    "Summary of Perek II",
+    "Introduction to Perek III",
+    "Summary of Perek III",
+    "Introduction to Perek IV",
+    "Summary of Perek IV",
+    "Introduction to Perek V",
+    "Summary of Perek V"
+   ],
+   "hadranSlug": "avodah-zarah"
+  },
+  {
+   "hebcalName": "Horayot",
+   "sefariaTitle": "Horayot",
+   "name": "Horayot",
+   "slug": "horayot",
+   "heTitle": "הוריות",
+   "seder": "Seder Nezikin",
+   "sederHe": "סדר נזיקין",
+   "order": 27,
+   "firstDaf": 2,
+   "lastDaf": 14,
+   "days": 13,
+   "refMode": "talmud",
+   "shortDesc": "Atoning for erroneous rulings of the court and inadvertent sins of leaders.",
+   "description": "Horayot (“Decisions”) is the last tractate in Seder Nezikin (“Order of Damages\"). Its three chapters discuss erroneous rulings of the court, inadvertent sins of kings, High Priests, or political leaders, and the sacrifices brought as atonement. The conclusion of the tractate addresses the statuses of various members of the Jewish people and how to prioritize them when necessary. Horayat is the shortest tractate in the Talmud that has commentary on the entirety of the Mishnah, at just 13 folio.",
+   "chapters": [
+    {
+     "n": 1,
+     "title": "Horu Beit Din",
+     "heTitle": "הורו בית דין",
+     "startDaf": "2a",
+     "endDaf": "6b"
+    },
+    {
+     "n": 2,
+     "title": "Horah Kohen Mashiach",
+     "heTitle": "הורה כהן משיח",
+     "startDaf": "6b",
+     "endDaf": "9b"
+    },
+    {
+     "n": 3,
+     "title": "Kohen Mashiach",
+     "heTitle": "כהן משיח",
+     "startDaf": "9b",
+     "endDaf": "14a"
+    }
+   ],
+   "introNodes": [
+    "Introduction to Horayot",
+    "Introduction to Perek I",
+    "Summary of Perek I",
+    "Introduction to Perek II",
+    "Summary of Perek II",
+    "Introduction to Perek III",
+    "Summary of Perek III"
+   ],
+   "hadranSlug": "horayot"
+  },
+  {
+   "hebcalName": "Zevachim",
+   "sefariaTitle": "Zevachim",
+   "name": "Zevachim",
+   "slug": "zevachim",
+   "heTitle": "זבחים",
+   "seder": "Seder Kodashim",
+   "sederHe": "סדר קדשים",
+   "order": 28,
+   "firstDaf": 2,
+   "lastDaf": 120,
+   "days": 119,
+   "refMode": "talmud",
+   "shortDesc": "Animal and bird sacrifices in the Temple.",
+   "description": "Zevachim (Animal Sacrifices) belongs in the fifth order, Kodashim (Sacrifices) and discusses the procedure of animal and bird offerings. It has fourteen chapters.\n",
+   "chapters": [
+    {
+     "n": 1,
+     "title": "Kol HaZevachim",
+     "heTitle": "כל הזבחים",
+     "startDaf": "2a",
+     "endDaf": "15b"
+    },
+    {
+     "n": 2,
+     "title": "Kol HaZevachim SheKibblu Daman",
+     "heTitle": "כל הזבחים שקבלו דמן",
+     "startDaf": "15b",
+     "endDaf": "31b"
+    },
+    {
+     "n": 3,
+     "title": "Kol HaPesulin",
+     "heTitle": "כל הפסולין",
+     "startDaf": "31b",
+     "endDaf": "36b"
+    },
+    {
+     "n": 4,
+     "title": "Beit Shammai",
+     "heTitle": "בית שמאי",
+     "startDaf": "36b",
+     "endDaf": "47a"
+    },
+    {
+     "n": 5,
+     "title": "Eizehu Mekoman",
+     "heTitle": "איזהו מקומן",
+     "startDaf": "47a",
+     "endDaf": "57b"
+    },
+    {
+     "n": 6,
+     "title": "Kodshei Kodashim",
+     "heTitle": "קדשי קדשים",
+     "startDaf": "58a",
+     "endDaf": "66a"
+    },
+    {
+     "n": 7,
+     "title": "Chatat HaOf",
+     "heTitle": "חטאת העוף",
+     "startDaf": "66a",
+     "endDaf": "70b"
+    },
+    {
+     "n": 8,
+     "title": "Kol HaZevachim SheNitarvu",
+     "heTitle": "כל הזבחים שנתערבו",
+     "startDaf": "70b",
+     "endDaf": "83a"
+    },
+    {
+     "n": 9,
+     "title": "HaMizbeach Mekaddesh",
+     "heTitle": "המזבח מקדש",
+     "startDaf": "83a",
+     "endDaf": "88b"
+    },
+    {
+     "n": 10,
+     "title": "Kol HaTadir",
+     "heTitle": "כל התדיר",
+     "startDaf": "89a",
+     "endDaf": "92a"
+    },
+    {
+     "n": 11,
+     "title": "Dam Chatat",
+     "heTitle": "דם חטאת",
+     "startDaf": "92a",
+     "endDaf": "98b"
+    },
+    {
+     "n": 12,
+     "title": "Tevul Yom",
+     "heTitle": "טבול יום",
+     "startDaf": "98b",
+     "endDaf": "106a"
+    },
+    {
+     "n": 13,
+     "title": "HaShochet VeHama'aleh",
+     "heTitle": "השוחט והמעלה",
+     "startDaf": "106a",
+     "endDaf": "112a"
+    },
+    {
+     "n": 14,
+     "title": "Parat Chatat",
+     "heTitle": "פרת חטאת",
+     "startDaf": "112a",
+     "endDaf": "120b"
+    }
+   ],
+   "introNodes": [
+    "Introduction to Zevachim",
+    "Introduction to Perek I",
+    "Summary of Perek I",
+    "Introduction to Perek II",
+    "Summary of Perek II",
+    "Introduction to Perek III",
+    "Summary of Perek III",
+    "Introduction to Perek IV",
+    "Summary of Perek IV",
+    "Introduction to Perek V",
+    "Summary of Perek V",
+    "Introduction to Perek VI",
+    "Summary of Perek VI",
+    "Introduction to Perek VII",
+    "Summary of Perek VII",
+    "Introduction to Perek VIII",
+    "Summary of Perek VIII",
+    "Introduction to Perek IX",
+    "Summary of Perek IX",
+    "Introduction to Perek X",
+    "Summary of Perek X",
+    "Introduction to Perek XI",
+    "Summary of Perek XI",
+    "Introduction to Perek XII",
+    "Summary of Perek XII",
+    "Introduction to Perek XIII",
+    "Summary of Perek XIII",
+    "Introduction to Perek XIV",
+    "Summary of Perek XIV"
+   ],
+   "hadranSlug": "zevachim"
+  },
+  {
+   "hebcalName": "Menachot",
+   "sefariaTitle": "Menachot",
+   "name": "Menachot",
+   "slug": "menachot",
+   "heTitle": "מנחות",
+   "seder": "Seder Kodashim",
+   "sederHe": "סדר קדשים",
+   "order": 29,
+   "firstDaf": 2,
+   "lastDaf": 110,
+   "days": 109,
+   "refMode": "talmud",
+   "shortDesc": "Flour offerings, usually mixed with oil, wine libations, and bread loaf offerings in the Temple.",
+   "description": "Menachot (“Meal Offerings”) is the second tractate in Seder Kodashim (“Order of Holy Things\"). Its thirteen chapters mainly discuss flour-based offerings brought in the Temple, as well as oil and wine libations. Among the topics addressed are intentions that nullify an offering’s validity, details of the process of removing a handful of meal-offering, sanctifying it in a vessel, carrying it, and burning it on the altar, and the preparation and consumption of showbread (loaves that were always present on a dedicated table in the Temple). Menachot also contains the Talmud’s main discussions about the commandments of mezuzah (doorpost marker) , tzitzit (ritual fringes), and tefillin (phylacteries), included in the third and fourth chapters.",
+   "chapters": [
+    {
+     "n": 1,
+     "title": "Kol HaMenachot",
+     "heTitle": "כל המנחות",
+     "startDaf": "2a",
+     "endDaf": "13a"
+    },
+    {
+     "n": 2,
+     "title": "HaKometz et HaMinchah",
+     "heTitle": "הקומץ את המנחה",
+     "startDaf": "13a",
+     "endDaf": "17a"
+    },
+    {
+     "n": 3,
+     "title": "HaKometz Rabbah",
+     "heTitle": "הקומץ רבה",
+     "startDaf": "17a",
+     "endDaf": "38a"
+    },
+    {
+     "n": 4,
+     "title": "HaTekhelet",
+     "heTitle": "התכלת",
+     "startDaf": "38a",
+     "endDaf": "52b"
+    },
+    {
+     "n": 5,
+     "title": "Kol HaMenachot Baot Matzah",
+     "heTitle": "כל המנחות באות מצה",
+     "startDaf": "52b",
+     "endDaf": "63b"
+    },
+    {
+     "n": 6,
+     "title": "Rabbi Yishmael",
+     "heTitle": "רבי ישמעאל",
+     "startDaf": "63b",
+     "endDaf": "72b"
+    },
+    {
+     "n": 7,
+     "title": "Ellu Menachot Nikmatzot",
+     "heTitle": "אלו מנחות נקמצות",
+     "startDaf": "72b",
+     "endDaf": "76b"
+    },
+    {
+     "n": 8,
+     "title": "HaTodah Haytah Ba'ah",
+     "heTitle": "התודה היתה באה",
+     "startDaf": "76b",
+     "endDaf": "83b"
+    },
+    {
+     "n": 9,
+     "title": "Kol Korbanot Tzibbur",
+     "heTitle": "כל קרבנות ציבור",
+     "startDaf": "83b",
+     "endDaf": "87a"
+    },
+    {
+     "n": 10,
+     "title": "Shetei Middot",
+     "heTitle": "שתי מדות",
+     "startDaf": "87a",
+     "endDaf": "94a"
+    },
+    {
+     "n": 11,
+     "title": "Shetei HaLechem",
+     "heTitle": "שתי הלחם",
+     "startDaf": "94a",
+     "endDaf": "100b"
+    },
+    {
+     "n": 12,
+     "title": "HaMenachot VeHanesakhim",
+     "heTitle": "המנחות והנסכים",
+     "startDaf": "100b",
+     "endDaf": "104b"
+    },
+    {
+     "n": 13,
+     "title": "Harei Alai Issaron",
+     "heTitle": "הרי עלי עשרון",
+     "startDaf": "104b",
+     "endDaf": "110a"
+    }
+   ],
+   "introNodes": [
+    "Introduction to Menachot",
+    "Introduction to Perek I",
+    "Summary of Perek I",
+    "Introduction to Perek II",
+    "Summary of Perek II",
+    "Introduction to Perek III",
+    "Summary of Perek III",
+    "Introduction to Perek IV",
+    "Summary of Perek IV",
+    "Introduction to Perek V",
+    "Summary of Perek V",
+    "Introduction to Perek VI",
+    "Summary of Perek VI",
+    "Introduction to Perek VII",
+    "Summary of Perek VII",
+    "Introduction to Perek VIII",
+    "Summary of Perek VIII",
+    "Introduction to Perek IX",
+    "Summary of Perek IX",
+    "Introduction to Perek X",
+    "Summary of Perek X",
+    "Introduction to Perek XI",
+    "Summary of Perek XI",
+    "Introduction to Perek XII",
+    "Summary of Perek XII",
+    "Introduction to Perek XIII",
+    "Summary of Perek XIII"
+   ],
+   "hadranSlug": "menachot"
+  },
+  {
+   "hebcalName": "Chullin",
+   "sefariaTitle": "Chullin",
+   "name": "Chullin",
+   "slug": "chullin",
+   "heTitle": "חולין",
+   "seder": "Seder Kodashim",
+   "sederHe": "סדר קדשים",
+   "order": 30,
+   "firstDaf": 2,
+   "lastDaf": 142,
+   "days": 141,
+   "refMode": "talmud",
+   "shortDesc": "Slaughter of animals and birds for non-consecrated purposes, other aspects of kashrut.",
+   "description": "Chullin (lit: “Ordinary,” referring to animal and birds consumed in non-consecrated contexts) is the third tractate in Seder Kodashim (“Order of Holy Things\"). Its twelve chapters discuss laws related to non-sacred consumption of meat, such as ritual slaughter of non-consecrated animals and birds, kosher and non-kosher living beings, the obligation to cover the blood of slaughtered animals, and the prohibitions of mixing meat and dairy products and of slaughtering an animal and its offspring on the same day. The tractate’s last chapter discusses the obligation to send away a mother bird when taking her young or eggs (shiluach hakein).",
+   "chapters": [
+    {
+     "n": 1,
+     "title": "HaKol Shochatin",
+     "heTitle": "הכל שוחטין",
+     "startDaf": "2a",
+     "endDaf": "26b"
+    },
+    {
+     "n": 2,
+     "title": "HaShochet",
+     "heTitle": "השוחט",
+     "startDaf": "27a",
+     "endDaf": "42a"
+    },
+    {
+     "n": 3,
+     "title": "Ellu Terefot",
+     "heTitle": "אלו טרפות",
+     "startDaf": "42a",
+     "endDaf": "67b"
+    },
+    {
+     "n": 4,
+     "title": "Behemah",
+     "heTitle": "בהמה המקשה",
+     "startDaf": "68a",
+     "endDaf": "78a"
+    },
+    {
+     "n": 5,
+     "title": "Oto VeEt Beno",
+     "heTitle": "אותו ואת בנו",
+     "startDaf": "78a",
+     "endDaf": "83b"
+    },
+    {
+     "n": 6,
+     "title": "Kissui HaDam",
+     "heTitle": "כסוי הדם",
+     "startDaf": "83b",
+     "endDaf": "89b"
+    },
+    {
+     "n": 7,
+     "title": "Gid HaNasheh",
+     "heTitle": "גיד הנשה",
+     "startDaf": "89b",
+     "endDaf": "103b"
+    },
+    {
+     "n": 8,
+     "title": "Kol HaBasar",
+     "heTitle": "כל הבשר",
+     "startDaf": "103b",
+     "endDaf": "117b"
+    },
+    {
+     "n": 9,
+     "title": "HaOr VeHarotev",
+     "heTitle": "העור והרוטב",
+     "startDaf": "117b",
+     "endDaf": "129b"
+    },
+    {
+     "n": 10,
+     "title": "HaZeroa VeHalechayim",
+     "heTitle": "הזרוע והלחיים",
+     "startDaf": "130a",
+     "endDaf": "134b"
+    },
+    {
+     "n": 11,
+     "title": "Reshit HaGez",
+     "heTitle": "ראשית הגז",
+     "startDaf": "135a",
+     "endDaf": "138b"
+    },
+    {
+     "n": 12,
+     "title": "Shilluach HaKen",
+     "heTitle": "שילוח הקן",
+     "startDaf": "138b",
+     "endDaf": "142a"
+    }
+   ],
+   "introNodes": [
+    "Introduction to Chullin",
+    "Introduction to Perek I",
+    "Summary of Perek I",
+    "Introduction to Perek II",
+    "Summary of Perek II",
+    "Introduction to Perek III",
+    "Summary of Perek III",
+    "Introduction to Perek IV",
+    "Summary of Perek IV",
+    "Introduction to Perek V",
+    "Summary of Perek V",
+    "Introduction to Perek VI",
+    "Summary of Perek VI",
+    "Introduction to Perek VII",
+    "Summary of Perek VII",
+    "Introduction to Perek VIII",
+    "Summary of Perek VIII",
+    "Introduction to Perek IX",
+    "Summary of Perek IX",
+    "Introduction to Perek X",
+    "Summary of Perek X",
+    "Introduction to Perek XI",
+    "Summary of Perek XI",
+    "Introduction to Perek XII",
+    "Summary of Perek XII"
+   ],
+   "hadranSlug": "chullin"
+  },
+  {
+   "hebcalName": "Bechorot",
+   "sefariaTitle": "Bekhorot",
+   "name": "Bekhorot",
+   "slug": "bekhorot",
+   "heTitle": "בכורות",
+   "seder": "Seder Kodashim",
+   "sederHe": "סדר קדשים",
+   "order": 31,
+   "firstDaf": 2,
+   "lastDaf": 61,
+   "days": 60,
+   "refMode": "talmud",
+   "shortDesc": "Transfer of first-born kosher animals to a priest, redemption of first-born donkeys and people.",
+   "description": "Bekhorot (“Firstborns”) is a tractate in Seder Kodashim (“Order of Holy Things\") that discusses three categories of firstborns: a woman’s firstborn son, the male firstborn of a kosher domesticated animal, and a male firstborn donkey. The Torah assigns a sacred status to each of these and requires them to be consecrated - either through transfer to a priest, redemption, or sacrifice, depending on the firstborn and the circumstances. Bekhorot discusses details of this process, such as determining whether an animal is a firstborn in questionable cases and blemishes that disqualify a firstborn animal from being sacrificed in the Temple.",
+   "chapters": [
+    {
+     "n": 1,
+     "title": "HaLokeach Ubbar Chamoro",
+     "heTitle": "הלוקח עובר חמורו",
+     "startDaf": "2a",
+     "endDaf": "13a"
+    },
+    {
+     "n": 2,
+     "title": "HaLokeach Ubbar Parato",
+     "heTitle": "הלוקח עובר פרתו",
+     "startDaf": "13a",
+     "endDaf": "19b"
+    },
+    {
+     "n": 3,
+     "title": "HaLokeach Behemah",
+     "heTitle": "הלוקח בהמה",
+     "startDaf": "19b",
+     "endDaf": "26b"
+    },
+    {
+     "n": 4,
+     "title": "Ad Kammah",
+     "heTitle": "עד כמה",
+     "startDaf": "26b",
+     "endDaf": "31a"
+    },
+    {
+     "n": 5,
+     "title": "Kol Pesulei HaMukdashin",
+     "heTitle": "כל פסולי המוקדשין",
+     "startDaf": "31a",
+     "endDaf": "37a"
+    },
+    {
+     "n": 6,
+     "title": "Al Ellu Mumin",
+     "heTitle": "על אלו מומין",
+     "startDaf": "37a",
+     "endDaf": "43a"
+    },
+    {
+     "n": 7,
+     "title": "Mumin Ellu",
+     "heTitle": "מומין אלו",
+     "startDaf": "43a",
+     "endDaf": "46a"
+    },
+    {
+     "n": 8,
+     "title": "Yesh Bekhor",
+     "heTitle": "יש בכור",
+     "startDaf": "46a",
+     "endDaf": "52b"
+    },
+    {
+     "n": 9,
+     "title": "Ma'aser Behemah",
+     "heTitle": "מעשר בהמה",
+     "startDaf": "53a",
+     "endDaf": "61a"
+    }
+   ],
+   "introNodes": [
+    "Introduction to Bekhorot",
+    "Introduction to Perek I",
+    "Summary of Perek I",
+    "Introduction to Perek II",
+    "Summary of Perek II",
+    "Introduction to Perek III",
+    "Summary of Perek III",
+    "Introduction to Perek IV",
+    "Summary of Perek IV",
+    "Introduction to Perek V",
+    "Summary of Perek V",
+    "Introduction to Perek VI",
+    "Summary of Perek VI",
+    "Introduction to Perek VII",
+    "Summary of Perek VII",
+    "Introduction to Perek VIII",
+    "Summary of Perek VIII",
+    "Introduction to Perek IX",
+    "Summary of Perek IX"
+   ],
+   "hadranSlug": "bekhorot"
+  },
+  {
+   "hebcalName": "Arachin",
+   "sefariaTitle": "Arakhin",
+   "name": "Arakhin",
+   "slug": "arakhin",
+   "heTitle": "ערכין",
+   "seder": "Seder Kodashim",
+   "sederHe": "סדר קדשים",
+   "order": 32,
+   "firstDaf": 2,
+   "lastDaf": 34,
+   "days": 33,
+   "refMode": "talmud",
+   "shortDesc": "Vowing to donate a person’s prescribed value delineated in the Torah to the Temple, donations of land to the Temple.",
+   "description": "Arakhin (“Values”) is a tractate within Seder Kodashim (“Order of Holy Things”). Its nine chapters address the process of vowing to donate a person’s prescribed value to provide for Temple maintenance (as described in Leviticus chapter 27), discussing details such as limitations on who can take a vow of donation and methods of collecting these donations. The tractate also discusses donations of land to the Temple and the sale of ancestral fields, houses of walled cities, and houses of unwalled courtyards.",
+   "chapters": [
+    {
+     "n": 1,
+     "title": "HaKol Ma'arikhin",
+     "heTitle": "הכל מעריכין",
+     "startDaf": "2a",
+     "endDaf": "7b"
+    },
+    {
+     "n": 2,
+     "title": "Ein Ne'erakhin",
+     "heTitle": "אין נערכין",
+     "startDaf": "7b",
+     "endDaf": "13b"
+    },
+    {
+     "n": 3,
+     "title": "Yesh BaArakhin",
+     "heTitle": "יש בערכין",
+     "startDaf": "13b",
+     "endDaf": "17a"
+    },
+    {
+     "n": 4,
+     "title": "Hesseg Yad",
+     "heTitle": "השג יד",
+     "startDaf": "17a",
+     "endDaf": "19a"
+    },
+    {
+     "n": 5,
+     "title": "HaOmer Mishkali Alai",
+     "heTitle": "האומר משקלי עלי",
+     "startDaf": "19a",
+     "endDaf": "21b"
+    },
+    {
+     "n": 6,
+     "title": "Shum HaYetomim",
+     "heTitle": "שום היתומים",
+     "startDaf": "21b",
+     "endDaf": "24a"
+    },
+    {
+     "n": 7,
+     "title": "Ein Makdishin",
+     "heTitle": "אין מקדישין",
+     "startDaf": "24a",
+     "endDaf": "27a"
+    },
+    {
+     "n": 8,
+     "title": "HaMakdish Sadehu",
+     "heTitle": "המקדיש שדהו",
+     "startDaf": "27a",
+     "endDaf": "29a"
+    },
+    {
+     "n": 9,
+     "title": "HaMokher Sadehu",
+     "heTitle": "המוכר שדהו",
+     "startDaf": "29b",
+     "endDaf": "34a"
+    }
+   ],
+   "introNodes": [
+    "Introduction to Arakhin",
+    "Introduction to Perek I",
+    "Summary of Perek I",
+    "Introduction to Perek II",
+    "Summary of Perek II",
+    "Introduction to Perek III",
+    "Summary of Perek III",
+    "Introduction to Perek IV",
+    "Summary of Perek IV",
+    "Introduction to Perek V",
+    "Summary of Perek V",
+    "Introduction to Perek VI",
+    "Summary of Perek VI",
+    "Introduction to Perek VII",
+    "Summary of Perek VII",
+    "Introduction to Perek VIII",
+    "Summary of Perek VIII",
+    "Introduction to Perek IX",
+    "Summary of Perek IX"
+   ],
+   "hadranSlug": "arakhin"
+  },
+  {
+   "hebcalName": "Temurah",
+   "sefariaTitle": "Temurah",
+   "name": "Temurah",
+   "slug": "temurah",
+   "heTitle": "תמורה",
+   "seder": "Seder Kodashim",
+   "sederHe": "סדר קדשים",
+   "order": 33,
+   "firstDaf": 2,
+   "lastDaf": 34,
+   "days": 33,
+   "refMode": "talmud",
+   "shortDesc": "The sanctity of animals dedicated for sacrifice and the prohibition of exchanging them for others.",
+   "description": "Temurah (“Substitution”) is a tractate within Seder Kodashim (“Order of Holy Things”). It mainly discusses the prohibition, based in Leviticus 27:10 and 27:33, against substituting a non-consecrated animal for an animal consecrated for sacrifice in the Temple, and the sacred status that both animals receive if this prohibition is violated. Temurah’s seven chapters address details such as the status of fetuses of substituted animals and the status of money set aside for sacrifices.",
+   "chapters": [
+    {
+     "n": 1,
+     "title": "HaKol Memirin",
+     "heTitle": "הכל ממירין",
+     "startDaf": "2a",
+     "endDaf": "13b"
+    },
+    {
+     "n": 2,
+     "title": "Yesh BeKorbenot",
+     "heTitle": "יש בקרבנות",
+     "startDaf": "14a",
+     "endDaf": "17b"
+    },
+    {
+     "n": 3,
+     "title": "Ellu Kadashim",
+     "heTitle": "אלו קדשים",
+     "startDaf": "17b",
+     "endDaf": "21b"
+    },
+    {
+     "n": 4,
+     "title": "Velad Chatat",
+     "heTitle": "ולד חטאת",
+     "startDaf": "21b",
+     "endDaf": "24a"
+    },
+    {
+     "n": 5,
+     "title": "Keitzad Ma'arimin",
+     "heTitle": "כיצד מערימין",
+     "startDaf": "24b",
+     "endDaf": "27b"
+    },
+    {
+     "n": 6,
+     "title": "Kol HaAsurin",
+     "heTitle": "כל האסורין",
+     "startDaf": "28a",
+     "endDaf": "31a"
+    },
+    {
+     "n": 7,
+     "title": "Yesh BeKodshei Mizbeach",
+     "heTitle": "יש בקדשי מזבח",
+     "startDaf": "31a",
+     "endDaf": "34a"
+    }
+   ],
+   "introNodes": [
+    "Introduction to Temurah",
+    "Introduction to Perek I",
+    "Summary of Perek I",
+    "Introduction to Perek II",
+    "Summary of Perek II",
+    "Introduction to Perek III",
+    "Summary of Perek III",
+    "Introduction to Perek IV",
+    "Summary of Perek IV",
+    "Introduction to Perek V",
+    "Summary of Perek V",
+    "Introduction to Perek VI",
+    "Summary of Perek VI",
+    "Introduction to Perek VII",
+    "Summary of Perek VII"
+   ],
+   "hadranSlug": "temurah"
+  },
+  {
+   "hebcalName": "Keritot",
+   "sefariaTitle": "Keritot",
+   "name": "Keritot",
+   "slug": "keritot",
+   "heTitle": "כריתות",
+   "seder": "Seder Kodashim",
+   "sederHe": "סדר קדשים",
+   "order": 34,
+   "firstDaf": 2,
+   "lastDaf": 28,
+   "days": 27,
+   "refMode": "talmud",
+   "shortDesc": "Karet, divinely-issued severance from the Jewish people, and sacrifices for unintentional sin.",
+   "description": "Keritot (plural of “Karet,” or the punishment of divinely-issued severance from the Jewish people) is a tractate within Seder Kodashim (“Order of Holy Things”). It mainly discusses prohibitions for which the Torah imposes karet for those who knowingly transgress. It also discusses the sin offering brought when one unintentionally violates these prohibitions (chatat), as well as the provisional guilt offering brought when one is unsure if they violated these prohibitions (asham).",
+   "chapters": [
+    {
+     "n": 1,
+     "title": "Sheloshim VeShesh",
+     "heTitle": "שלשים ושש",
+     "startDaf": "2a",
+     "endDaf": "8b"
+    },
+    {
+     "n": 2,
+     "title": "Arba'ah Mechusrei Kapparah",
+     "heTitle": "ארבעה מחוסרי כפרה",
+     "startDaf": "8b",
+     "endDaf": "11b"
+    },
+    {
+     "n": 3,
+     "title": "Amru Lo",
+     "heTitle": "אמרו לו",
+     "startDaf": "11b",
+     "endDaf": "17a"
+    },
+    {
+     "n": 4,
+     "title": "Safek Akhal Chelev",
+     "heTitle": "ספק אכל חלב",
+     "startDaf": "17a",
+     "endDaf": "20b"
+    },
+    {
+     "n": 5,
+     "title": "Dam Shechitah",
+     "heTitle": "דם שחיטה",
+     "startDaf": "20b",
+     "endDaf": "23b"
+    },
+    {
+     "n": 6,
+     "title": "HaMevi Asham",
+     "heTitle": "המביא אשם",
+     "startDaf": "23b",
+     "endDaf": "28b"
+    }
+   ],
+   "introNodes": [
+    "Introduction to Keritot",
+    "Introduction to Perek I",
+    "Summary of Perek I",
+    "Introduction to Perek II",
+    "Summary of Perek II",
+    "Introduction to Perek III",
+    "Summary of Perek III",
+    "Introduction to Perek IV",
+    "Summary of Perek IV",
+    "Introduction to Perek V",
+    "Summary of Perek V",
+    "Introduction to Perek VI",
+    "Summary of Perek VI"
+   ],
+   "hadranSlug": "keritot"
+  },
+  {
+   "hebcalName": "Meilah",
+   "sefariaTitle": "Meilah",
+   "name": "Meilah",
+   "slug": "meilah",
+   "heTitle": "מעילה",
+   "seder": "Seder Kodashim",
+   "sederHe": "סדר קדשים",
+   "order": 35,
+   "firstDaf": 2,
+   "lastDaf": 22,
+   "days": 21,
+   "refMode": "talmud",
+   "shortDesc": "Prohibited benefit from Temple property, the sacrifice and restitution offered as atonement.",
+   "description": "Meilah (“Misuse of Property”) is a tractate within Seder Kodashim (“Order of Holy Things”). It discusses the prohibition against deriving benefit from property dedicated to the Temple, and the sacrifice and restitution brought as atonement by those who violate the prohibition (as detailed in Leviticus 5:15-16). The tractate’s six chapters address details such as which consecrated items are subject to the laws of meilah and culpability when an agent is sent to derive benefit from Temple property.",
+   "chapters": [
+    {
+     "n": 1,
+     "title": "Kodshei Kodashim",
+     "heTitle": "קדשי קדשים",
+     "startDaf": "2a",
+     "endDaf": "8a"
+    },
+    {
+     "n": 2,
+     "title": "Chatat HaOf",
+     "heTitle": "חטאת העוף",
+     "startDaf": "8a",
+     "endDaf": "10b"
+    },
+    {
+     "n": 3,
+     "title": "Velad Chatat",
+     "heTitle": "ולד חטאת",
+     "startDaf": "10b",
+     "endDaf": "14b"
+    },
+    {
+     "n": 4,
+     "title": "Kodshei Mizbeach",
+     "heTitle": "קדשי מזבח",
+     "startDaf": "15a",
+     "endDaf": "18a"
+    },
+    {
+     "n": 5,
+     "title": "HaNeheneh Min HaHekdesh",
+     "heTitle": "הנהנה מן ההקדש",
+     "startDaf": "18a",
+     "endDaf": "20a"
+    },
+    {
+     "n": 6,
+     "title": "HaShaliach SheAsah Shelichuto",
+     "heTitle": "השליח שעשה שליחותו",
+     "startDaf": "20a",
+     "endDaf": "22a"
+    }
+   ],
+   "introNodes": [
+    "Introduction to Meilah",
+    "Introduction to Perek I",
+    "Summary of Perek I",
+    "Introduction to Perek II",
+    "Summary of Perek II",
+    "Introduction to Perek III",
+    "Summary of Perek III",
+    "Introduction to Perek IV",
+    "Summary of Perek IV",
+    "Introduction to Perek V",
+    "Summary of Perek V",
+    "Introduction to Perek VI",
+    "Summary of Perek VI"
+   ],
+   "hadranSlug": "meilah"
+  },
+  {
+   "hebcalName": "Kinnim",
+   "sefariaTitle": "Mishnah Kinnim",
+   "name": "Kinnim",
+   "slug": "kinnim",
+   "heTitle": "קינים",
+   "seder": "Seder Kodashim",
+   "sederHe": "סדר קדשים",
+   "order": 36,
+   "firstDaf": 23,
+   "lastDaf": 25,
+   "days": 3,
+   "refMode": "calendar",
+   "shortDesc": "Bird-offerings that are mixed up and the complex math involved in determining their status.",
+   "description": "Kinnim (Nests) belongs to the fifth order, Kodshim (Holy things) and discusses the complex laws for situations where the mixing of bird-offerings occurred. It has three chapters.",
+   "chapters": [],
+   "introNodes": [],
+   "hadranSlug": "kinnim"
+  },
+  {
+   "hebcalName": "Tamid",
+   "sefariaTitle": "Tamid",
+   "name": "Tamid",
+   "slug": "tamid",
+   "heTitle": "תמיד",
+   "seder": "Seder Kodashim",
+   "sederHe": "סדר קדשים",
+   "order": 37,
+   "firstDaf": 26,
+   "lastDaf": 33,
+   "days": 8,
+   "refMode": "talmud",
+   "shortDesc": "The daily Temple service, including the burnt-offerings brought every morning and afternoon.",
+   "description": "Tractate Tamid (“Daily Burnt Offering”) is a tractate within Seder Kodashim (“Order of Holy Things”). It discusses the daily Temple service, with a focus on the burnt-offerings brought every morning and afternoon. The mishnayot (plural of mishnah) of Tamid stand out from those of other tractates in that they contain almost no disputes, instead telling a narrative about what happened in the Temple..",
+   "chapters": [
+    {
+     "n": 1,
+     "title": "BiShloshah Mekomot ",
+     "heTitle": "בשלשה מקומות",
+     "startDaf": "25b",
+     "endDaf": "28b"
+    },
+    {
+     "n": 2,
+     "title": "Rauhu Echav",
+     "heTitle": "ראוהו אחיו",
+     "startDaf": "28b",
+     "endDaf": "30a"
+    },
+    {
+     "n": 3,
+     "title": "Amar Lahem HaMemunneh Bou",
+     "heTitle": "אמר להם הממונה בואו",
+     "startDaf": "30a",
+     "endDaf": "30b"
+    },
+    {
+     "n": 4,
+     "title": "Lo Hayu Koftin",
+     "heTitle": "לא היו כופתין",
+     "startDaf": "30b",
+     "endDaf": "32b"
+    },
+    {
+     "n": 5,
+     "title": "Amar Lahem HaMemunneh Barkhu",
+     "heTitle": "אמר להם הממונה ברכו",
+     "startDaf": "32b",
+     "endDaf": "33a"
+    }
+   ],
+   "introNodes": [
+    "Introduction to Tamid"
+   ],
+   "hadranSlug": "tamid"
+  },
+  {
+   "hebcalName": "Midot",
+   "sefariaTitle": "Mishnah Middot",
+   "name": "Middot",
+   "slug": "middot",
+   "heTitle": "מדות",
+   "seder": "Seder Kodashim",
+   "sederHe": "סדר קדשים",
+   "order": 38,
+   "firstDaf": 34,
+   "lastDaf": 37,
+   "days": 4,
+   "refMode": "calendar",
+   "shortDesc": "Measurements and descriptions of the Second Temple and the Temple Mount.",
+   "description": "Middot (Measurements) belongs to the fifth order, Kodshim (Holy things) and discusses the measurements of the second Temple. It has four chapters.",
+   "chapters": [],
+   "introNodes": [],
+   "hadranSlug": "middot"
+  },
+  {
+   "hebcalName": "Niddah",
+   "sefariaTitle": "Niddah",
+   "name": "Niddah",
+   "slug": "niddah",
+   "heTitle": "נדה",
+   "seder": "Seder Tahorot",
+   "sederHe": "סדר טהרות",
+   "order": 39,
+   "firstDaf": 2,
+   "lastDaf": 73,
+   "days": 72,
+   "refMode": "talmud",
+   "shortDesc": "The ritual impurity of a woman in her menstrual cycle or experiencing particular discharges.",
+   "description": "Niddah (“Woman who is Menstruating”) is a tractate in Seder Taharot (“Order of Purities”) that discusses the ritual impurity of a woman in her menstrual cycle or experiencing particular discharges and the accompanying prohibition of intercourse. Its ten chapters address details such as the status of blood stains, hymenal bleeding, and blood from an internal wound.",
+   "chapters": [
+    {
+     "n": 1,
+     "title": "Shammai Omer",
+     "heTitle": "שמאי אומר",
+     "startDaf": "2a",
+     "endDaf": "12b"
+    },
+    {
+     "n": 2,
+     "title": "Kol HaYad",
+     "heTitle": "כל היד",
+     "startDaf": "13a",
+     "endDaf": "21a"
+    },
+    {
+     "n": 3,
+     "title": "HaMappelet Chatikhah",
+     "heTitle": "המפלת חתיכה",
+     "startDaf": "21a",
+     "endDaf": "31b"
+    },
+    {
+     "n": 4,
+     "title": "Benot Kutim",
+     "heTitle": "בנות כותים",
+     "startDaf": "31b",
+     "endDaf": "39b"
+    },
+    {
+     "n": 5,
+     "title": "Yotze Dofen",
+     "heTitle": "יוצא דופן",
+     "startDaf": "40a",
+     "endDaf": "48a"
+    },
+    {
+     "n": 6,
+     "title": "Ba Siman",
+     "heTitle": "בא סימן",
+     "startDaf": "48a",
+     "endDaf": "54b"
+    },
+    {
+     "n": 7,
+     "title": "Dam HaNiddah",
+     "heTitle": "דם הנדה",
+     "startDaf": "54b",
+     "endDaf": "57a"
+    },
+    {
+     "n": 8,
+     "title": "HaRoeh Ketem",
+     "heTitle": "הרואה כתם",
+     "startDaf": "57b",
+     "endDaf": "59a"
+    },
+    {
+     "n": 9,
+     "title": "HaIshah SheHi Osah",
+     "heTitle": "האשה שהיא עושה",
+     "startDaf": "59b",
+     "endDaf": "64b"
+    },
+    {
+     "n": 10,
+     "title": "Tinoket",
+     "heTitle": "תינוקת",
+     "startDaf": "64b",
+     "endDaf": "73a"
+    }
+   ],
+   "introNodes": [
+    "Introduction to Niddah",
+    "Introduction to Perek I",
+    "Summary of Perek I",
+    "Introduction to Perek II",
+    "Summary of Perek II",
+    "Introduction to Perek III",
+    "Summary of Perek III",
+    "Introduction to Perek IV",
+    "Summary of Perek IV",
+    "Introduction to Perek V",
+    "Summary of Perek V",
+    "Introduction to Perek VI",
+    "Summary of Perek VI",
+    "Introduction to Perek VII",
+    "Summary of Perek VII",
+    "Introduction to Perek VIII",
+    "Summary of Perek VIII",
+    "Introduction to Perek IX",
+    "Summary of Perek IX",
+    "Introduction to Perek X",
+    "Summary of Perek X"
+   ],
+   "hadranSlug": "niddah"
+  }
+ ]
+}

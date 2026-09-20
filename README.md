@@ -1,0 +1,67 @@
+# Today's Daf
+
+An English-forward Daf Yomi page. Every day: the day's page of Talmud in
+English (Rabbi Adin Even-Israel Steinsaltz's translation, via Sefaria), where it
+sits in the cycle, and a short note written by an AI that says so.
+
+Free, no accounts, no tracking. One Cloudflare Worker, no framework.
+
+## What it does
+
+- `/` today's daf, by the civil date in the visitor's timezone
+- `/bekhorot/2` a permalink for every one of the 2,711 dapim
+- `/bekhorot` a tractate page: chapters, Steinsaltz's introduction, every daf with its date
+- `/tractates`, `/about`, `/feed.xml` (RSS, last 14 days), `/api/today.json`, `/api/<slug>/<n>.json`
+- `/yesterday`, `/tomorrow`, `/date/YYYY-MM-DD` redirect to the right page
+- Toggles: Hebrew/Aramaic alongside the English; "Talmud only" hides the interpolated explanation
+
+## How it works
+
+```
+visitor → Worker fetch()
+           ├─ date (request.cf.timezone) → daf     offline, @hebcal/learning (public-domain daf.el port)
+           ├─ text: KV cache (30 d) → Sefaria v3 texts API (both amudim, English + Hebrew)
+           └─ note: KV → else render "pending" and generate in ctx.waitUntil
+cron (06:00 and 18:00 UTC) → bake tomorrow's + today's note, backfill the last 7 days, ≤3 generations/run
+```
+
+- **Schedule**: `src/daf/schedule.ts`. Cycle 14 runs 5 Jan 2020 to 7 Jun 2027. The tractate table
+  (`data/tractates.json`) is baked by `npm run build:tractates` from hebcal's lengths plus Sefaria's
+  index metadata, and sums to exactly 2,711 days. `npm run verify:cycle` diffs our schedule against
+  Sefaria's calendar API date by date.
+- **Irregular days**: Shekalim (Yerushalmi), Kinnim and Middot (Mishnah) have no `{Tractate}.{n}a` on
+  Sefaria; for those we ask Sefaria's calendar which ref it uses for that date and cache the answer.
+- **Sanitizing**: `src/sefaria/sanitize.ts` allowlists inline tags, vets hrefs, drops footnotes, and wraps
+  non-bold English runs in `<span class="elu">` (bold = the Talmud's words, plain = Steinsaltz's gloss).
+- **The note**: `prompts/daf-note.md` is the house style, `src/note/generate.ts` calls Claude
+  (`claude-opus-5`, structured output), and `src/note/grounding.ts` enforces in code what the prompt asks:
+  quotes must appear verbatim in the text, no later authorities, no sermon, no em dashes, one question.
+  Two failures and the day goes without a note rather than with a wrong one.
+
+## Develop
+
+```bash
+npm install
+cp .dev.vars.example .dev.vars     # add ANTHROPIC_API_KEY to see notes locally (optional)
+npm run dev                        # http://localhost:8787
+npm test && npm run typecheck
+```
+
+Trigger the cron locally: `curl "http://localhost:8787/cdn-cgi/local/scheduled?cron=0+6+*+*+*"`.
+
+Try the note style on a few dapim without touching KV:
+
+```bash
+ANTHROPIC_API_KEY=... npm run bake:note -- bekhorot/2 berakhot/2 shabbat/31 2026-09-21
+```
+
+## Deploy
+
+See [HOSTING.md](HOSTING.md). Short version: `npm run deploy`, set the two secrets once
+(`ANTHROPIC_API_KEY`, `ADMIN_TOKEN`), backfill recent notes with `npm run backfill`.
+
+## Licenses
+
+Code: MIT. Text: The William Davidson Talmud (Koren Noé edition) via Sefaria, CC BY-NC 4.0;
+Shekalim from Guggenheimer's Jerusalem Talmud (CC BY); Kinnim/Middot from Sefaria's Mishnah.
+Every page credits the versions it shows. This site is non-commercial and will stay that way.

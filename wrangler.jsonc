@@ -1,0 +1,25 @@
+{
+  // Cloudflare Worker for the Daf Yomi site.
+  // Secrets are NOT stored here. Set once per environment:
+  //   npx wrangler secret put ANTHROPIC_API_KEY
+  // Local dev reads .dev.vars (gitignored); see .dev.vars.example.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "daf-yomi",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-09-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": { "directory": "./public", "binding": "ASSETS" },
+  "kv_namespaces": [{ "binding": "DAF_KV", "id": "34d5b074f78b4c5da60c9fcf989315c7" }],
+  // UTC. 06:00 bakes tomorrow's note (ready before any timezone's midnight);
+  // 18:00 retries anything still missing. Free plan: 10 ms CPU per invocation,
+  // so each run bakes at most two dapim (see src/cron.ts).
+  "triggers": { "crons": ["0 6 * * *", "0 18 * * *"] },
+  "rules": [{ "type": "Text", "globs": ["**/*.md"], "fallthrough": true }],
+  "observability": { "enabled": true },
+  "vars": {
+    "SITE_NAME": "Today's Daf",
+    "SITE_TAGLINE": "The day's page of Talmud, in English, with a short note to get you thinking.",
+    "DEFAULT_TIMEZONE": "America/New_York",
+    "NOTE_MODEL": "claude-opus-5"
+  }
+}
