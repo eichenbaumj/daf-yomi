@@ -10,7 +10,6 @@ import type { Tractate } from "../daf/tractates";
 import { positionFor } from "../daf/position";
 import type { DafRef } from "../daf/schedule";
 import { fetchText, resolveDafRefs } from "../sefaria/client";
-import { plainText } from "../sefaria/sanitize";
 import { checkNote } from "./grounding";
 import { NoteSchema, SYSTEM_PROMPT, hashPrompt, userMessage, type NoteDraft, type PromptInput } from "./prompt";
 import { acquireLock, getNote, putNote, releaseLock, type DafNote } from "./store";
@@ -32,7 +31,7 @@ export async function buildPromptInput(ref: DafRef, kv?: KVNamespace): Promise<{
   const sections: PromptInput["sections"] = [];
   for (let i = 0; i < resolved.urlRefs.length; i++) {
     const text = await fetchText(resolved.urlRefs[i]!, kv);
-    const en = text.en.map((s) => plainText(s)).filter(Boolean).join("\n\n");
+    const en = text.enPlain.filter(Boolean).join("\n\n");
     sections.push({ label: resolved.labels[i] ?? text.ref, text: en || "(no English text available for this section)" });
   }
   const sourceText = sections.map((s) => s.text).join("\n\n");

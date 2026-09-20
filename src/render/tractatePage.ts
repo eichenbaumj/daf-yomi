@@ -2,7 +2,6 @@ import type { Env } from "../types";
 import { TRACTATES, dafPath, introRef, type Tractate } from "../daf/tractates";
 import { dateForDaf, shortDate, ymd, type DafRef } from "../daf/schedule";
 import type { SefariaText } from "../sefaria/client";
-import { sanitize } from "../sefaria/sanitize";
 import { esc, page } from "./layout";
 
 export interface TractatePageModel {
@@ -31,7 +30,7 @@ export function renderTractatePage(m: TractatePageModel): string {
     : "";
   const intro = m.intro
     ? `<details class="intro"><summary>Rabbi Steinsaltz's introduction to ${esc(t.name)}</summary>
-<div class="intro-body">${m.intro.en.map((s) => `<p>${sanitize(s)}</p>`).join("\n")}</div>
+<div class="intro-body">${m.intro.enHtml.map((s) => `<p>${s}</p>`).join("\n")}</div>
 <p class="credit">${esc(m.intro.enVersion?.versionTitle ?? "")}${m.intro.enVersion?.license ? ` (${esc(m.intro.enVersion.license)})` : ""} · <a href="https://www.sefaria.org/${esc(m.intro.urlRef)}" rel="noopener">On Sefaria</a></p></details>`
     : "";
   const prevT = TRACTATES[t.order - 1];

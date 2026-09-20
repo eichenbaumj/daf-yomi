@@ -3,7 +3,7 @@ import { dafLabel, dafPath, type Tractate } from "../daf/tractates";
 import { adjacentDaf, hebrewDate, hebrewDateHe, longDate, ymd, type DafRef } from "../daf/schedule";
 import { positionFor, type Position } from "../daf/position";
 import type { SefariaText } from "../sefaria/client";
-import { plainText, sanitize } from "../sefaria/sanitize";
+import { plainText } from "../sefaria/sanitize";
 import type { DafNote } from "../note/store";
 import { esc, page } from "./layout";
 
@@ -60,8 +60,8 @@ function amudSection(label: string, t: SefariaText, anchor: string): string {
   const n = Math.max(t.en.length, t.he.length);
   const items: string[] = [];
   for (let i = 0; i < n; i++) {
-    const en = t.en[i] ? sanitize(t.en[i]!, { markElucidation: true }) : "";
-    const he = t.he[i] ? sanitize(t.he[i]!) : "";
+    const en = t.enHtml[i] ?? "";
+    const he = t.heHtml[i] ?? "";
     items.push(`<li class="seg" id="${anchor}-${i + 1}">
   <a class="segno" href="#${anchor}-${i + 1}" aria-label="Segment ${i + 1}">${i + 1}</a>
   ${en ? `<p class="en" lang="en">${en}</p>` : `<p class="en muted" lang="en">(no English for this segment)</p>`}
@@ -101,7 +101,7 @@ export function renderDafPage(m: DafPageModel): string {
 
   const sections = m.texts.map((x, i) => amudSection(x.label, x.text, i === 0 ? "a" : i === 1 ? "b" : `s${i + 1}`)).join("\n");
   const anyHebrew = m.texts.some((x) => x.text.he.length > 0);
-  const anyElu = m.texts.some((x) => x.text.en.some((s) => /<b>|<strong>/i.test(s)));
+  const anyElu = m.texts.some((x) => x.text.enHtml.some((s) => s.includes('class="elu"')));
 
   const body = `
 <article class="daf">

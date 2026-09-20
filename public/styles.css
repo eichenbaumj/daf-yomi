@@ -24,6 +24,26 @@
   --rule: #37342c; --accent: #e08a7a; --accent-soft: #3a2320; --note-bg: #221e15;
 }
 
+/* Look B (?look=b, remembered): white paper, cobalt accent, sans chrome, David Libre Hebrew. Look A is the default. */
+html[data-look="b"] {
+  --paper: #ffffff; --paper-2: #f4f4f6; --ink: #111114; --ink-2: #4b4b55; --ink-3: #82828e; --rule: #e2e2e8;
+  --accent: #1F1FD6; --accent-soft: #e9e9fb; --note-bg: #f7f7fc;
+  --hebrew: "David Libre", "Frank Ruhl Libre", serif; --sans: "Source Sans 3", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  html[data-look="b"]:not([data-theme="light"]) {
+    --paper: #0f0f14; --paper-2: #1a1a22; --ink: #ecebf2; --ink-2: #b3b2c2; --ink-3: #7e7d8c; --rule: #2a2a36;
+    --accent: #8f8fff; --accent-soft: #23234a; --note-bg: #16161f;
+  }
+}
+html[data-look="b"] header.site, html[data-look="b"] .position, html[data-look="b"] .date, html[data-look="b"] .tools,
+html[data-look="b"] .note-label, html[data-look="b"] .credit, html[data-look="b"] .prevnext, html[data-look="b"] footer.site,
+html[data-look="b"] .cycle, html[data-look="b"] .segno, html[data-look="b"] .cell .d { font-family: var(--sans); font-variant-numeric: normal; }
+html[data-look="b"] .note { border-radius: 6px; border-left-width: 1px; box-shadow: 0 1px 0 var(--rule); }
+html[data-look="b"] .note-label .ai { background: var(--accent); color: #fff; padding: .1rem .4rem; border-radius: 3px; }
+html[data-look="b"] .toggle { border-radius: 6px; }
+html[data-look="b"] h1 { letter-spacing: -.02em; }
+
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
 body {

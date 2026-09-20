@@ -17,7 +17,7 @@ export interface PageOptions {
   ogType?: "website" | "article";
 }
 
-const FONTS = "https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Frank+Ruhl+Libre:wght@400;700&display=swap";
+const FONTS = "https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Source+Sans+3:wght@400;600&family=Frank+Ruhl+Libre:wght@400;700&family=David+Libre:wght@400;700&display=swap";
 
 export function page(o: PageOptions): string {
   const siteName = o.env.SITE_NAME;
@@ -43,7 +43,7 @@ export function page(o: PageOptions): string {
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="${FONTS}">
 <link rel="stylesheet" href="/styles.css">
-<script>try{var s=localStorage;document.documentElement.className+=(s.getItem("daf:he")==="1"?" show-he":"")+(s.getItem("daf:talmudOnly")==="1"?" talmud-only":"")}catch(e){}</script>
+<script>try{var s=localStorage,q=new URLSearchParams(location.search),l=q.get("look");if(l){s.setItem("daf:look",l)}l=l||s.getItem("daf:look");if(l&&l!=="a"){document.documentElement.setAttribute("data-look",l)}document.documentElement.className+=(s.getItem("daf:he")==="1"?" show-he":"")+(s.getItem("daf:talmudOnly")==="1"?" talmud-only":"")}catch(e){}</script>
 ${o.extraHead ?? ""}
 </head>
 <body class="${esc(o.bodyClass ?? "")}">

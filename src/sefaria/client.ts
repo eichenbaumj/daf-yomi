@@ -5,6 +5,7 @@
  */
 import { dateForDaf } from "../daf/schedule";
 import type { Tractate } from "../daf/tractates";
+import { plainText, sanitize } from "./sanitize";
 
 export const SEFARIA = "https://www.sefaria.org";
 const UA = "daf-yomi-site (Cloudflare Worker; joe@group17a.com)";
@@ -28,8 +29,13 @@ export interface SefariaText {
   urlRef: string;
   ref: string;
   heRef: string;
+  /** Raw Sefaria HTML per segment (kept for provenance). */
   en: string[];
   he: string[];
+  /** Sanitized at cache time so page renders are string concatenation: HTML with <span class="elu"> wrapping, and plain text. */
+  enHtml: string[];
+  heHtml: string[];
+  enPlain: string[];
   enVersion: TextVersion | null;
   heVersion: TextVersion | null;
   next: string | null;
@@ -56,7 +62,7 @@ export function toUrlRef(ref: string): string {
 }
 
 export async function fetchText(urlRef: string, kv?: KVNamespace): Promise<SefariaText> {
-  const key = `text:v1:${urlRef}`;
+  const key = `text:v2:${urlRef}`;
   if (kv) {
     const cached = await kv.get<SefariaText>(key, "json");
     if (cached) return cached;
@@ -80,6 +86,9 @@ export async function fetchText(urlRef: string, kv?: KVNamespace): Promise<Sefar
     heRef: String(j.heRef ?? ""),
     en,
     he,
+    enHtml: en.map((x) => sanitize(x, { markElucidation: true })),
+    heHtml: he.map((x) => sanitize(x)),
+    enPlain: en.map((x) => plainText(x)),
     enVersion: toVersion(enV, "en"),
     heVersion: toVersion(heV, "he"),
     next: j.next ? String(j.next) : null,

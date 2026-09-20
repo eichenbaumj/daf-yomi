@@ -5,7 +5,8 @@
  *
  *   npm run verify:cycle            # today → cycle end
  *   npm run verify:cycle -- --from 2020-01-05 --to 2020-03-01
- *   npm run verify:cycle -- --sample 60     # 60 random dates across the cycle
+ *   npm run verify:cycle -- --sample 60     # 60 evenly spaced dates across the range
+ *   npm run verify:cycle -- --delay 1500    # ms between requests (default 1200; Sefaria throttles bursts)
  */
 import { dafForDate, cycleEndDate, addDays, ymd, parseYmd } from "../src/daf/schedule";
 
@@ -20,9 +21,9 @@ function normalizeName(s: string): string {
 
 async function sefariaDaf(d: Date): Promise<{ name: string; daf: number } | null> {
   const url = `https://www.sefaria.org/api/calendars?year=${d.getFullYear()}&month=${d.getMonth() + 1}&day=${d.getDate()}&timezone=UTC`;
-  for (let attempt = 0; attempt < 3; attempt++) {
+  for (let attempt = 0; attempt < 5; attempt++) {
     const res = await fetch(url, { headers: { "User-Agent": UA } });
-    if (res.status === 429 || res.status >= 500) { await new Promise((r) => setTimeout(r, 2000 * (attempt + 1))); continue; }
+    if (res.status === 429 || res.status >= 500) { await new Promise((r) => setTimeout(r, 15000 * (attempt + 1))); continue; }
     if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
     const j: any = await res.json();
     const item = (j.calendar_items ?? []).find((i: any) => i?.title?.en === "Daf Yomi");
@@ -39,6 +40,7 @@ async function main() {
   const from = parseYmd(opt("from") ?? "") ?? t0;
   const to = parseYmd(opt("to") ?? "") ?? cycleEndDate(dafForDate(t0).cycle);
   const sample = Number(opt("sample") ?? 0);
+  const delay = Number(opt("delay") ?? 1200);
   let dates: Date[] = [];
   for (let d = from; d <= to; d = addDays(d, 1)) dates.push(d);
   if (sample > 0 && sample < dates.length) {
@@ -53,7 +55,7 @@ async function main() {
     if (match) ok++;
     else bad.push(`${ymd(d)}: ours=${ours.tractate.name} ${ours.daf} sefaria=${theirs ? `${theirs.name} ${theirs.daf}` : "none"}`);
     if ((ok + bad.length) % 50 === 0) process.stderr.write(`${ok + bad.length}/${dates.length} checked, ${bad.length} mismatches\n`);
-    await new Promise((r) => setTimeout(r, 150)); // be polite
+    await new Promise((r) => setTimeout(r, delay)); // Sefaria throttles bursts of ~75 requests
   }
   console.log(`${ok}/${dates.length} agree with Sefaria's calendar (${ymd(from)} → ${ymd(to)})`);
   if (bad.length) { console.log("MISMATCHES:"); for (const b of bad) console.log("  " + b); process.exit(1); }
