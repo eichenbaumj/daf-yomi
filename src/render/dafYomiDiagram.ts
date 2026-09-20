@@ -61,6 +61,8 @@ export function renderDafYomiDiagram(today: DafRef): string {
     if (day > 0 && day < CYCLE_LENGTH) ticks.push(`<span class="tick" style="left:${pct(day)}"><i></i>${y}</span>`);
   }
   const todayLeft = pct(today.dayInCycle - 0.5);
+  const frac = today.dayInCycle / CYCLE_LENGTH;
+  const todayClass = frac > 0.72 ? "today late" : frac < 0.14 ? "today early" : "today";
 
   const legend = SEDARIM.map((s, i) => {
     const list = bySeder.get(s.name) ?? [];
@@ -98,7 +100,7 @@ export function renderDafYomiDiagram(today: DafRef): string {
   <div class="dy-bar dy-tractates">${tractateSegments.join("")}</div>
   <div class="dy-axis">
     ${ticks.join("")}
-    <span class="today" style="left:${todayLeft}"><i></i><span class="you">You are here: day ${today.dayInCycle.toLocaleString("en-US")}, ${esc(today.tractate.name)} ${today.daf}</span></span>
+    <span class="${todayClass}" style="left:${todayLeft}"><i></i><span class="you">You are here: day ${today.dayInCycle.toLocaleString("en-US")}, ${esc(today.tractate.name)} ${today.daf}</span></span>
   </div>
   <p class="dy-label muted">Cycle ${cycle}: ${esc(longDate(start))} to ${esc(longDate(end))}. The cycle has run without a break since 1923; everyone learning Daf Yomi anywhere in the world is on the same page today.</p>
 

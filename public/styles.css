@@ -159,7 +159,7 @@ a.ref { color: inherit; text-decoration: underline dotted var(--ink-3); }
   :root:not([data-theme="light"]) { --s1: #e2b56b; --s2: #cf9c55; --s3: #b98444; --s4: #a06d37; --s5: #86582d; --s6: #6b4526; --seg-ink: #1e1711; }
 }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
-.dy-diagram { margin: 1.4rem 0 2rem; }
+.dy-diagram { margin: 1.4rem 0 2rem; overflow-x: clip; }
 .dy-stats { display: flex; flex-wrap: wrap; gap: .8rem 2rem; margin: 0 0 1.4rem; }
 .dy-stats div { display: flex; flex-direction: column; }
 .dy-stats .num { font-weight: 700; font-size: 1.6rem; line-height: 1.1; color: var(--accent); }
@@ -168,8 +168,10 @@ a.ref { color: inherit; text-decoration: underline dotted var(--ink-3); }
 .dy-page svg { flex: none; }
 .dy-page p { margin: 0; font-size: .98rem; }
 .dy-label { margin: 1rem 0 .3rem; font-size: .9rem; color: var(--ink-2); }
-.dy-bar { display: flex; width: 100%; gap: 2px; }
-.dy-bar .seg { display: block; min-width: 2px; height: 2rem; overflow: hidden; border-radius: 2px; color: var(--seg-ink); text-decoration: none; position: relative; }
+.dy-bar { display: flex; width: 100%; }
+/* Widths sum to exactly 100%; the 2px paper-coloured right border is the gap between fills. */
+.dy-bar .seg { display: block; box-sizing: border-box; min-width: 3px; height: 2rem; overflow: hidden; border-radius: 2px; color: var(--seg-ink); text-decoration: none; position: relative; border-right: 2px solid var(--paper); }
+.dy-bar .seg:last-child { border-right: 0; }
 .dy-bar .seg .lbl { position: absolute; left: .4rem; top: 50%; transform: translateY(-50%); font-size: .78rem; white-space: nowrap; overflow: hidden; text-overflow: clip; max-width: calc(100% - .5rem); }
 .dy-tractates .seg { height: 1.4rem; }
 .dy-tractates .seg .lbl { font-size: .7rem; }
@@ -182,11 +184,17 @@ a.ref { color: inherit; text-decoration: underline dotted var(--ink-3); }
 .dy-axis .today { position: absolute; top: 0; transform: translateX(-50%); }
 .dy-axis .today i { display: block; margin: -1px auto 0; width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-top: 8px solid var(--accent); }
 .dy-axis .today .you { position: absolute; top: 1.6rem; left: 50%; transform: translateX(-50%); white-space: nowrap; font-size: .8rem; color: var(--accent); font-weight: 600; }
+.dy-axis .today.late .you { left: auto; right: 0; transform: none; }
+.dy-axis .today.early .you { left: 0; transform: none; }
 .dy-legend { list-style: none; padding: 0; margin: .8rem 0 .6rem; }
 .dy-legend li { margin: .35rem 0; font-size: .95rem; }
 .dy-legend .chip { display: inline-block; width: .8rem; height: .8rem; border-radius: 2px; vertical-align: -.1rem; margin-right: .45rem; }
 @media (max-width: 40rem) {
   .dy-bar .seg .lbl { display: none; }
-  .dy-axis .today .you { transform: none; left: auto; right: 0; }
+  .dy-axis .today .you { position: static; display: block; transform: none; margin-top: .2rem; text-align: right; }
+  .dy-axis .today { position: static; transform: none; }
+  .dy-axis .today i { display: none; }
+  .dy-axis { height: auto; padding-bottom: .2rem; }
+  .dy-axis .tick { display: none; }
   .dy-page { flex-direction: column; }
 }
