@@ -13,7 +13,8 @@
     "bake:note": "tsx scripts/bake-note.ts",
     "backfill": "tsx scripts/backfill.ts",
     "tail": "wrangler tail --format pretty",
-    "check:links": "tsx scripts/check-scholar-links.ts"
+    "check:links": "tsx scripts/check-scholar-links.ts",
+    "fill:missing": "tsx scripts/fill-missing.ts"
   },
   "keywords": [
     "daf yomi",
