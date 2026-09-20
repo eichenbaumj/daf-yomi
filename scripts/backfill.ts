@@ -3,13 +3,17 @@
  *
  *   ADMIN_TOKEN=... npm run backfill -- --site https://daf-yomi.<acct>.workers.dev --from 2026-09-06 --to 2026-09-21 [--force]
  */
+import { readFileSync } from "node:fs";
 import { addDays, parseYmd, ymd } from "../src/daf/schedule";
 
 const args = process.argv.slice(2);
 const opt = (k: string) => { const i = args.indexOf(`--${k}`); return i >= 0 ? args[i + 1] : undefined; };
 const site = (opt("site") ?? "").replace(/\/$/, "");
-const token = process.env.ADMIN_TOKEN;
-if (!site || !token) { console.error("need --site and ADMIN_TOKEN"); process.exit(2); }
+function tokenFromDevVars(): string | undefined {
+  try { return /^ADMIN_TOKEN=(.+)$/m.exec(readFileSync(".dev.vars", "utf8"))?.[1]?.trim(); } catch { return undefined; }
+}
+const token = process.env.ADMIN_TOKEN ?? tokenFromDevVars();
+if (!site || !token) { console.error("need --site and ADMIN_TOKEN (env or .dev.vars)"); process.exit(2); }
 const from = parseYmd(opt("from") ?? ""); const to = parseYmd(opt("to") ?? "");
 if (!from || !to) { console.error("need --from and --to (YYYY-MM-DD)"); process.exit(2); }
 const force = args.includes("--force");

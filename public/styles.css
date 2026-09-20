@@ -92,7 +92,8 @@ h2 { font-weight: 600; font-size: 1.2rem; margin: 2rem 0 .6rem; }
 .seg .he b, .seg .he strong { font-weight: 700; }
 html.show-he .seg .he { display: block; }
 html.talmud-only .elu { display: none; }
-html.talmud-only .seg .en b + b::before, html.talmud-only .seg .en strong + b::before, html.talmud-only .seg .en b + strong::before { content: " "; }
+/* With the explanation hidden, put a space back between neighbouring bold runs. */
+html.talmud-only .seg .en .elu + b::before, html.talmud-only .seg .en .elu + strong::before { content: " "; }
 a.ref { color: inherit; text-decoration: underline dotted var(--ink-3); }
 .credit { font-size: .8rem; color: var(--ink-3); margin: 1rem 0 0; }
 
