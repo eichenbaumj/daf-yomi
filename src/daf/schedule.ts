@@ -45,11 +45,11 @@ export function dafForDate(date: Date): DafRef {
   };
 }
 
+const PREFIX_DAYS: number[] = TRACTATES.reduce<number[]>((acc, t, i) => { acc.push(i === 0 ? 0 : acc[i - 1]! + TRACTATES[i - 1]!.days); return acc; }, []);
+
 /** Days from the start of a cycle to a given daf (0-based). */
 export function cycleOffset(t: Tractate, daf: number): number {
-  let off = 0;
-  for (const x of TRACTATES) if (x.order < t.order) off += x.days;
-  return off + (daf - t.firstDaf);
+  return PREFIX_DAYS[t.order]! + (daf - t.firstDaf);
 }
 
 /** The civil date a daf is learned in a given cycle. */
@@ -69,13 +69,26 @@ export function adjacentDaf(t: Tractate, daf: number, delta: 1 | -1): { tractate
   return prev ? { tractate: prev, daf: prev.lastDaf } : null;
 }
 
+// Intl.DateTimeFormat construction costs real CPU (Workers bill CPU per invocation), so build each formatter once.
+const ymdFormatters = new Map<string, Intl.DateTimeFormat>();
+function ymdFormatter(timeZone: string): Intl.DateTimeFormat {
+  let f = ymdFormatters.get(timeZone);
+  if (!f) {
+    f = new Intl.DateTimeFormat("en-CA", { timeZone, year: "numeric", month: "2-digit", day: "2-digit" });
+    ymdFormatters.set(timeZone, f);
+  }
+  return f;
+}
+const LONG_DATE = new Intl.DateTimeFormat("en-GB", { weekday: "long", day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
+const SHORT_DATE = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
+
 /** Today's civil date in an IANA timezone, as a local-midnight Date. */
 export function todayIn(timeZone: string, now: Date = new Date()): Date {
   let parts: Intl.DateTimeFormatPart[];
   try {
-    parts = new Intl.DateTimeFormat("en-CA", { timeZone, year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(now);
+    parts = ymdFormatter(timeZone).formatToParts(now);
   } catch {
-    parts = new Intl.DateTimeFormat("en-CA", { timeZone: "UTC", year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(now);
+    parts = ymdFormatter("UTC").formatToParts(now);
   }
   const get = (type: string) => Number(parts.find((p) => p.type === type)?.value);
   return new Date(get("year"), get("month") - 1, get("day"));
@@ -105,11 +118,9 @@ export function hebrewDateHe(d: Date): string {
 }
 /** "Sunday, 20 September 2026" */
 export function longDate(d: Date): string {
-  return new Intl.DateTimeFormat("en-GB", { weekday: "long", day: "numeric", month: "long", year: "numeric", timeZone: "UTC" })
-    .format(new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate())));
+  return LONG_DATE.format(new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate())));
 }
 /** "20 Sep 2026" */
 export function shortDate(d: Date): string {
-  return new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" })
-    .format(new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate())));
+  return SHORT_DATE.format(new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate())));
 }

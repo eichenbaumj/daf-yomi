@@ -6,4 +6,6 @@ export interface Env {
   SITE_TAGLINE: string;
   DEFAULT_TIMEZONE: string;
   NOTE_MODEL: string;
+  /** Set at deploy time (git short sha) and folded into edge-cache keys. */
+  BUILD?: string;
 }

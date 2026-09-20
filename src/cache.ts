@@ -1,5 +1,5 @@
 /** Edge cache for rendered HTML. Cloudflare does not cache Worker HTML on its own. */
-export async function cachedResponse(cacheKey: string, ttlSeconds: number, build: () => Promise<Response>, bypass = false): Promise<Response> {
+export async function cachedResponse(cacheKey: string, ttl: number | ((res: Response) => number), build: () => Promise<Response>, bypass = false): Promise<Response> {
   const cache = (caches as unknown as { default: Cache }).default;
   const key = new Request(cacheKey, { method: "GET" });
   if (!bypass) {
@@ -11,6 +11,7 @@ export async function cachedResponse(cacheKey: string, ttlSeconds: number, build
     }
   }
   const fresh = await build();
+  const ttlSeconds = typeof ttl === "function" ? ttl(fresh) : ttl;
   if (fresh.status === 200 && ttlSeconds > 0) {
     const h = new Headers(fresh.headers);
     h.set("Cache-Control", `public, max-age=0, s-maxage=${ttlSeconds}`);

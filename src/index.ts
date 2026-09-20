@@ -77,6 +77,8 @@ async function handle(request: Request, env: Env, ctx: ExecutionContext): Promis
   const origin = url.origin;
   const route = parseRoute(url.pathname);
   const bypass = url.searchParams.has("nocache");
+  // Cache keys carry the build id so a deploy never serves last version's HTML.
+  const ck = (path: string) => `${origin}/_c/${env.BUILD ?? "dev"}${path}`;
   const tz = visitorTimezone(request, env);
   const today = todayIn(tz);
 
@@ -98,20 +100,20 @@ async function handle(request: Request, env: Env, ctx: ExecutionContext): Promis
     }
     case "today": {
       const ref = dafForDate(today);
-      return cachedResponse(`${origin}/_cache/today/${ref.tractate.slug}/${ref.daf}`, 600, () => dafPageResponse(env, ctx, origin, ref, today, true), bypass);
+      return cachedResponse(ck(`/today/${ref.tractate.slug}/${ref.daf}`), 600, () => dafPageResponse(env, ctx, origin, ref, today, true), bypass);
     }
     case "daf": {
       const cycle = dafForDate(today).cycle;
       const date = dateForDaf(route.tractate, route.daf, cycle);
       const ref: DafRef = { tractate: route.tractate, daf: route.daf, cycle, dayInCycle: Math.round((date.getTime() - dateForDaf(TRACTATES[0]!, TRACTATES[0]!.firstDaf, cycle).getTime()) / 86400000) + 1 };
       const isToday = ymd(date) === ymd(today);
-      const note = await getNote(env.DAF_KV, ref.tractate, ref.daf);
-      const ttl = isToday ? 600 : note ? 3600 : 120;
-      return cachedResponse(`${origin}${dafPath(ref.tractate, ref.daf)}?t=${isToday ? "today" : "perma"}&n=${note ? 1 : 0}`, ttl, () => dafPageResponse(env, ctx, origin, ref, date, isToday), bypass);
+      // Pages without a note yet are cached briefly so the self-healed note shows up soon.
+      const ttl = (res: Response) => (isToday ? 600 : res.headers.get("x-daf-note") === "yes" ? 3600 : 120);
+      return cachedResponse(ck(`${dafPath(ref.tractate, ref.daf)}?t=${isToday ? "today" : "perma"}`), ttl, () => dafPageResponse(env, ctx, origin, ref, date, isToday), bypass);
     }
     case "tractate": {
       const todayRef = dafForDate(today);
-      return cachedResponse(`${origin}/${route.tractate.slug}?d=${ymd(today)}`, 1800, async () => {
+      return cachedResponse(ck(`/${route.tractate.slug}?d=${ymd(today)}`), 1800, async () => {
         const [noted, intro] = await Promise.all([
           notedDafim(env.DAF_KV, route.tractate),
           (async () => { const r = tractateIntroRef(route.tractate); if (!r) return null; try { return await fetchText(r, env.DAF_KV); } catch { return null; } })(),
@@ -121,12 +123,12 @@ async function handle(request: Request, env: Env, ctx: ExecutionContext): Promis
     }
     case "tractates": {
       const todayRef = dafForDate(today);
-      return cachedResponse(`${origin}/tractates?d=${ymd(today)}`, 3600, async () => html(renderTractatesIndex(env, origin, todayRef, today)), bypass);
+      return cachedResponse(ck(`/tractates?d=${ymd(today)}`), 3600, async () => html(renderTractatesIndex(env, origin, todayRef, today)), bypass);
     }
-    case "about": return cachedResponse(`${origin}/about`, 3600, async () => html(renderAbout(env, origin)), bypass);
+    case "about": return cachedResponse(ck("/about"), 3600, async () => html(renderAbout(env, origin)), bypass);
     case "feed": {
       const utcToday = todayIn("UTC");
-      return cachedResponse(`${origin}/feed.xml?d=${ymd(utcToday)}`, 1800, async () => {
+      return cachedResponse(ck(`/feed.xml?d=${ymd(utcToday)}`), 1800, async () => {
         const items: FeedItem[] = [];
         for (let i = 0; i < 14; i++) {
           const d = addDays(utcToday, -i);
@@ -138,7 +140,7 @@ async function handle(request: Request, env: Env, ctx: ExecutionContext): Promis
     }
     case "sitemap": {
       const cycle = dafForDate(today).cycle;
-      return cachedResponse(`${origin}/sitemap.xml`, 86400, async () => {
+      return cachedResponse(ck("/sitemap.xml"), 86400, async () => {
         const urls: string[] = [`${origin}/`, `${origin}/about`, `${origin}/tractates`];
         for (const t of TRACTATES) {
           urls.push(`${origin}/${t.slug}`);
