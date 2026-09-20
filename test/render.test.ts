@@ -63,7 +63,7 @@ describe("about", () => {
     expect(html).toContain("You are here: day 2,451, Bekhorot 2");
     expect((html.match(/class="seg tractate/g) ?? []).length).toBe(40);
     expect((html.match(/class="seg seder/g) ?? []).length).toBe(6);
-    expect(html).not.toContain("0 tractates");
+    expect(html).not.toMatch(/\b0 tractates/);
   });
   it("places every tractate in one of the six Orders", () => {
     const names = new Set(SEDARIM.map((s) => s.name));

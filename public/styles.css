@@ -174,7 +174,7 @@ a.ref { color: inherit; text-decoration: underline dotted var(--ink-3); }
 .dy-bar .seg:last-child { border-right: 0; }
 .dy-bar .seg .lbl { position: absolute; left: .4rem; top: 50%; transform: translateY(-50%); font-size: .78rem; white-space: nowrap; overflow: hidden; text-overflow: clip; max-width: calc(100% - .5rem); }
 .dy-tractates .seg { height: 1.4rem; }
-.dy-tractates .seg .lbl { font-size: .7rem; }
+.dy-bar .seg.narrow .lbl { display: none; }
 .dy-bar .seg.now { outline: 2px solid var(--accent); outline-offset: 1px; z-index: 1; }
 .dy-bar a.seg:hover { filter: brightness(1.12); }
 .s1 { background: var(--s1); } .s2 { background: var(--s2); } .s3 { background: var(--s3); } .s4 { background: var(--s4); } .s5 { background: var(--s5); } .s6 { background: var(--s6); }

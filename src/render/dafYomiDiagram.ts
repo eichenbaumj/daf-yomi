@@ -41,7 +41,8 @@ export function renderDafYomiDiagram(today: DafRef): string {
   const sederSegments = SEDARIM.map((s, i) => {
     const list = bySeder.get(s.name) ?? [];
     const days = list.reduce((a, t) => a + t.days, 0);
-    const seg = `<div class="seg seder s${i + 1}" style="width:${pct(days)}" title="${esc(s.name)}: ${days} days"><span class="lbl">${esc(s.name.replace("Seder ", ""))}</span></div>`;
+    const narrow = days / CYCLE_LENGTH < 0.06 ? " narrow" : "";
+    const seg = `<div class="seg seder s${i + 1}${narrow}" style="width:${pct(days)}" title="${esc(s.name)}: ${days} days"><span class="lbl">${esc(s.name.replace("Seder ", ""))}</span></div>`;
     offset += days;
     return { html: seg, days };
   });
@@ -50,7 +51,7 @@ export function renderDafYomiDiagram(today: DafRef): string {
   const tractateSegments = TRACTATES.map((t) => {
     const si = SEDARIM.findIndex((s) => s.name === t.seder) + 1;
     const isNow = t.slug === today.tractate.slug;
-    return `<a class="seg tractate s${si}${isNow ? " now" : ""}" style="width:${pct(t.days)}" href="/${esc(t.slug)}" title="${esc(t.name)}: ${t.days} days"><span class="lbl">${esc(t.name)}</span></a>`;
+    return `<a class="seg tractate s${si}${isNow ? " now" : ""}" style="width:${pct(t.days)}" href="/${esc(t.slug)}" title="${esc(t.name)}: ${t.days} days" aria-label="${esc(t.name)}, ${t.days} days"></a>`;
   });
 
   // Year ticks along the cycle.
@@ -96,7 +97,7 @@ export function renderDafYomiDiagram(today: DafRef): string {
 
   <p class="dy-label">The six Orders of the Talmud, sized by how many days each takes</p>
   <div class="dy-bar" role="img" aria-label="Six Orders as a proportional bar">${sederSegments.map((s) => s.html).join("")}</div>
-  <p class="dy-label">The ${TRACTATES.length} tractates inside them (tap any to open it)</p>
+  <p class="dy-label">The ${TRACTATES.length} tractates inside them (hover or tap one to see which)</p>
   <div class="dy-bar dy-tractates">${tractateSegments.join("")}</div>
   <div class="dy-axis">
     ${ticks.join("")}
