@@ -35,6 +35,22 @@ for a zone on this account and deploy; Cloudflare creates the DNS record and cer
 `SITE_URL` if anything ever needs an absolute URL outside the request origin (nothing does today: the
 pages derive `origin` from the request).
 
+## Measured CPU (wrangler tail, 2026-09-20, after the formatter/cache fixes)
+
+| Request | CPU | Notes |
+|---|---|---|
+| Daf page, first visit ever (Sefaria fetch + sanitize + KV write) | 14 ms | once per daf per 30 days |
+| Daf page, KV-warm, edge-bypassed | 7 ms | |
+| Daf page, edge hit | 1 ms | what almost every visitor gets |
+| `/` today (edge hit) | 2–3 ms | |
+| Tractate page (KV list + 100+ cells) | 11–13 ms | cached 30 min |
+| `/feed.xml` | 7 ms | 14 KV reads |
+
+Before the fixes, an uncached tractate page cost 55 ms and still returned OK. So either the free plan's
+documented 10 ms is enforced softly or this account is on Workers Paid. **I am uncertain which**; check
+Workers & Pages → Plans in the dashboard. Either way, keep an eye on `wrangler tail` after changes to
+rendering, and remember the cron run (up to 3 note generations) is the heaviest single invocation.
+
 ## Limits that matter (free plan, verified 2026-09-20 in Cloudflare docs)
 
 - 100,000 requests/day, 10 ms CPU per request and per cron invocation, 50 subrequests per request.
@@ -50,3 +66,8 @@ pages derive `origin` from the request).
 - **502 "The text did not load"**: Sefaria unreachable or returned an error for that ref. Cached texts
   keep serving for 30 days; only never-visited pages fail.
 - **Wrong daf**: the schedule is offline and deterministic. Run `npm run verify:cycle` before believing it.
+  Sefaria's calendar endpoint returns 429 (`retry-after: 30`) after a burst of roughly 75 requests; the
+  script paces itself (default 1.2 s) and honours Retry-After, so a full remaining-cycle check takes minutes.
+- **Stale page after a deploy**: edge-cache keys include the build id (`--var BUILD:<sha>` in `npm run deploy`),
+  so a deploy never serves the previous version. A bare `wrangler deploy` (without the var) falls back to the
+  key `dev` and can serve stale HTML for up to an hour; use `npm run deploy`.

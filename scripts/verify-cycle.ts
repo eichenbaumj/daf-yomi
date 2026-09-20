@@ -23,7 +23,13 @@ async function sefariaDaf(d: Date): Promise<{ name: string; daf: number } | null
   const url = `https://www.sefaria.org/api/calendars?year=${d.getFullYear()}&month=${d.getMonth() + 1}&day=${d.getDate()}&timezone=UTC`;
   for (let attempt = 0; attempt < 5; attempt++) {
     const res = await fetch(url, { headers: { "User-Agent": UA } });
-    if (res.status === 429 || res.status >= 500) { await new Promise((r) => setTimeout(r, 15000 * (attempt + 1))); continue; }
+    if (res.status === 429 || res.status >= 500) {
+      const retryAfter = Number(res.headers.get("retry-after") ?? 0);
+      const wait = (retryAfter > 0 ? retryAfter * 1000 : 15000 * (attempt + 1)) + 5000;
+      process.stderr.write(`HTTP ${res.status} for ${ymd(d)}; waiting ${Math.round(wait / 1000)}s\n`);
+      await new Promise((r) => setTimeout(r, wait));
+      continue;
+    }
     if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
     const j: any = await res.json();
     const item = (j.calendar_items ?? []).find((i: any) => i?.title?.en === "Daf Yomi");
