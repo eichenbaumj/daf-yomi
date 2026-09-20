@@ -28,7 +28,7 @@ export function renderPositionMini(ref: DafRef, learnedThroughDaf: number): stri
     const cur = s.name === t.seder ? " cur" : "";
     const short = s.name.replace("Seder ", "");
     const label = days / CYCLE_LENGTH >= 0.09 ? `<span class="lbl">${esc(short)}</span>` : "";
-    return `<span class="seg s${i + 1}${cur}" style="width:${pct(days)}" title="${esc(s.name)}: ${days} days">${label}</span>`;
+    return `<span class="ms s${i + 1}${cur}" style="width:${pct(days)}" title="${esc(s.name)}: ${days} days">${label}</span>`;
   }).join("");
   const mark = `<span class="mark" style="left:${pct(ref.dayInCycle - 0.5)}" title="Day ${ref.dayInCycle} of ${CYCLE_LENGTH}"></span>`;
 
@@ -40,7 +40,7 @@ export function renderPositionMini(ref: DafRef, learnedThroughDaf: number): stri
   const sederBar = inSeder.map((x) => {
     const cur = x.slug === t.slug ? " cur" : "";
     const label = x.days / sederDays >= 0.1 ? `<span class="lbl">${esc(x.name)}</span>` : "";
-    return `<a class="seg t s${si + 1}${cur}" style="width:${sederPct(x.days)}" href="/${esc(x.slug)}" title="${esc(x.name)}: ${x.days} days">${label}</a>`;
+    return `<a class="ms t s${si + 1}${cur}" style="width:${sederPct(x.days)}" href="/${esc(x.slug)}" title="${esc(x.name)}: ${x.days} days">${label}</a>`;
   }).join("");
   const sederShort = t.seder.replace("Seder ", "");
   const tractateIndex = inSeder.findIndex((x) => x.slug === t.slug) + 1;

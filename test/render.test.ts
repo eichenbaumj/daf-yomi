@@ -36,9 +36,9 @@ describe("daf page", () => {
     expect(html).toContain("Day 2,451 of 2,711");
     expect((html.match(/class="dc/g) ?? []).length).toBe(60); // Bekhorot 2..61
     expect((html.match(/class="dc today"/g) ?? []).length).toBe(1);
-    expect((html.match(/class="seg s\d cur"/g) ?? []).length).toBe(1);
+    expect((html.match(/class="ms s\d cur"/g) ?? []).length).toBe(1);
     expect(html).toContain("Tractate 4 of 11"); // Bekhorot after Zevachim, Menachot, Chullin in Kodashim
-    expect((html.match(/class="seg t s\d( cur)?"/g) ?? []).length).toBe(11);
+    expect((html.match(/class="ms t s\d( cur)?"/g) ?? []).length).toBe(11);
     expect(html).toContain('<span class="lbl">Kodashim</span>');
     expect(html).toContain('data-toggle="he"');
     expect(html).toContain('data-toggle="talmudOnly"');
@@ -67,8 +67,8 @@ describe("about", () => {
     expect(html).not.toMatch(/—/);
     expect(html).not.toMatch(/\b(leverage|robust|seamless|holistic|delve)\b/i);
     expect(html).toContain("You are here: day 2,451, Bekhorot 2");
-    expect((html.match(/class="seg tractate/g) ?? []).length).toBe(40);
-    expect((html.match(/class="seg seder/g) ?? []).length).toBe(6);
+    expect((html.match(/class="dseg tractate/g) ?? []).length).toBe(40);
+    expect((html.match(/class="dseg seder/g) ?? []).length).toBe(6);
     expect(html).not.toMatch(/\b0 tractates/);
   });
   it("places every tractate in one of the six Orders", () => {
