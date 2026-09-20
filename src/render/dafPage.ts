@@ -6,6 +6,7 @@ import type { SefariaText } from "../sefaria/client";
 import { plainText } from "../sefaria/sanitize";
 import type { DafNote } from "../note/store";
 import { esc, page } from "./layout";
+import { renderPositionMini } from "./positionMini";
 
 export interface DafPageModel {
   env: Env;
@@ -16,20 +17,20 @@ export interface DafPageModel {
   texts: { label: string; text: SefariaText }[];
   note: DafNote | null;
   notesEnabled: boolean;
+  /** Today's daf, for the "learned so far" fill; defaults to the page's own daf. */
+  todayRef?: DafRef;
 }
 
 export const AI_LABEL = "Written by Claude, an AI, from the English translation on this page. Not a scholar. Here to get you thinking, not to tell you what it means.";
 /** Introduces the translator the first time a reader meets him; most first-time visitors will not know the name. */
 export const LEGEND = `<b>Bold</b> is the Talmud's own words. The regular text between is explanation woven in by Rabbi Adin Steinsaltz (1937 to 2020), whose English translation this is.`;
 
+/** The words that the miniature bars do not already say: which Order, which chapter. */
 export function positionStrip(p: Position): string {
   const items: string[] = [];
   if (p.seder) items.push(`<span>${esc(p.seder)}${p.sederHe ? ` <span lang="he" dir="rtl" class="he-inline">${esc(p.sederHe)}</span>` : ""}</span>`);
-  items.push(`<span>${esc(p.tractate)}${p.tractateHe ? ` <span lang="he" dir="rtl" class="he-inline">${esc(p.tractateHe)}</span>` : ""}</span>`);
   if (p.chapterLabel) items.push(`<span>${esc(p.chapterLabel)}${p.chapterTitles.length ? `, <i>${esc(p.chapterTitles.join(" / "))}</i>` : ""}</span>`);
-  items.push(`<span>${esc(p.dafOfTractate)}</span>`);
-  items.push(`<span>Day ${p.dayInCycle.toLocaleString("en-US")} of ${p.cycleLength.toLocaleString("en-US")}</span>`);
-  return `<p class="position">${items.join('<span class="sep" aria-hidden="true">·</span>')}</p>`;
+  return items.length ? `<p class="position">${items.join('<span class="sep" aria-hidden="true">·</span>')}</p>` : "";
 }
 
 function noteBox(m: DafPageModel): string {
@@ -95,6 +96,8 @@ export function renderDafPage(m: DafPageModel): string {
   const label = dafLabel(t, ref.daf);
   const prev = adjacentDaf(t, ref.daf, -1);
   const next = adjacentDaf(t, ref.daf, 1);
+  // Dapim before today's are "learned" in the mini map; on a permalink for a future daf nothing is filled past today.
+  const learnedThrough = m.todayRef && m.todayRef.tractate.slug === t.slug ? m.todayRef.daf : m.todayRef && m.todayRef.tractate.order > t.order ? t.lastDaf + 1 : t.firstDaf;
   const prevWord = m.isToday ? "Yesterday" : "Before";
   const nextWord = m.isToday ? "Tomorrow" : "Next";
   const firstText = m.texts[0]?.text;
@@ -113,6 +116,7 @@ export function renderDafPage(m: DafPageModel): string {
   <header class="daf-head">
     <p class="date">${dateLine}${m.isToday ? "" : ` <span class="sep" aria-hidden="true">·</span> <a href="/date/${ymd(m.date)}" class="muted">learned on this date</a>`}</p>
     <h1>${esc(headline)} <span lang="he" dir="rtl" class="he-title">${esc(t.heTitle)}</span></h1>
+    ${renderPositionMini(ref, learnedThrough)}
     ${positionStrip(p)}
     <p class="cycle muted">Cycle ${p.cycle} ends ${esc(longDate(p.cycleEnd))}. ${p.percentThroughCycle}% of the way through the Talmud.</p>
   </header>

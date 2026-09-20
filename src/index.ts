@@ -44,14 +44,14 @@ async function loadDafTexts(ref: DafRef, kv: KVNamespace): Promise<{ label: stri
   return out;
 }
 
-async function dafPageResponse(env: Env, ctx: ExecutionContext, origin: string, ref: DafRef, date: Date, isToday: boolean): Promise<Response> {
+async function dafPageResponse(env: Env, ctx: ExecutionContext, origin: string, ref: DafRef, date: Date, isToday: boolean, todayRef: DafRef): Promise<Response> {
   const [texts, note] = await Promise.all([loadDafTexts(ref, env.DAF_KV), getNote(env.DAF_KV, ref.tractate, ref.daf)]);
   const notesEnabled = Boolean(env.ANTHROPIC_API_KEY);
   if (!note && notesEnabled) {
     // Self-heal: write the note in the background; the next visitor sees it.
     ctx.waitUntil(ensureNote(env, ref).then((o) => console.log(`[heal] ${ref.tractate.name} ${ref.daf}: ${o.status}${"reason" in o ? ` ${o.reason}` : ""}`)).catch((e) => console.error("[heal]", e)));
   }
-  const body = renderDafPage({ env, origin, ref, date, isToday, texts, note, notesEnabled });
+  const body = renderDafPage({ env, origin, ref, date, isToday, texts, note, notesEnabled, todayRef });
   return html(body, 200, { "x-daf": `${ref.tractate.slug}/${ref.daf}`, "x-daf-note": note ? "yes" : "pending" });
 }
 
@@ -100,16 +100,17 @@ async function handle(request: Request, env: Env, ctx: ExecutionContext): Promis
     }
     case "today": {
       const ref = dafForDate(today);
-      return cachedResponse(ck(`/today/${ref.tractate.slug}/${ref.daf}`), 600, () => dafPageResponse(env, ctx, origin, ref, today, true), bypass);
+      return cachedResponse(ck(`/today/${ref.tractate.slug}/${ref.daf}`), 600, () => dafPageResponse(env, ctx, origin, ref, today, true, ref), bypass);
     }
     case "daf": {
-      const cycle = dafForDate(today).cycle;
+      const todayRef = dafForDate(today);
+      const cycle = todayRef.cycle;
       const date = dateForDaf(route.tractate, route.daf, cycle);
       const ref: DafRef = { tractate: route.tractate, daf: route.daf, cycle, dayInCycle: Math.round((date.getTime() - dateForDaf(TRACTATES[0]!, TRACTATES[0]!.firstDaf, cycle).getTime()) / 86400000) + 1 };
       const isToday = ymd(date) === ymd(today);
       // Pages without a note yet are cached briefly so the self-healed note shows up soon.
       const ttl = (res: Response) => (isToday ? 600 : res.headers.get("x-daf-note") === "yes" ? 3600 : 120);
-      return cachedResponse(ck(`${dafPath(ref.tractate, ref.daf)}?t=${isToday ? "today" : "perma"}`), ttl, () => dafPageResponse(env, ctx, origin, ref, date, isToday), bypass);
+      return cachedResponse(ck(`${dafPath(ref.tractate, ref.daf)}?t=${isToday ? "today" : "perma"}&d=${ymd(today)}`), ttl, () => dafPageResponse(env, ctx, origin, ref, date, isToday, todayRef), bypass);
     }
     case "tractate": {
       const todayRef = dafForDate(today);

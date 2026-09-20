@@ -1,4 +1,5 @@
-/* Today's Daf. Warm paper, brown ink, oxblood and a little gold: the desk of an old scholar, not a dashboard. */
+/* Today's Daf. Warm paper, brown ink, oxblood and a little gold: the desk of an old scholar, not a dashboard.
+   One palette only: Joe found the dark variant too dark, and parchment reads right at night too. */
 :root {
   --paper: #f3ead7;
   --paper-2: #e8dcc2;
@@ -14,16 +15,6 @@
   --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
   --hebrew: "Frank Ruhl Libre", "Noto Serif Hebrew", "David", serif;
   --measure: 42rem;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --paper: #1e1711; --paper-2: #2a2119; --ink: #efe3cc; --ink-2: #c3b194; --ink-3: #8c7c64;
-    --rule: #3e3225; --accent: #e2926f; --accent-soft: #3a261c; --gold: #d4a75a; --note-bg: #261e16; --shadow: rgba(0,0,0,.35);
-  }
-}
-:root[data-theme="dark"] {
-  --paper: #1e1711; --paper-2: #2a2119; --ink: #efe3cc; --ink-2: #c3b194; --ink-3: #8c7c64;
-  --rule: #3e3225; --accent: #e2926f; --accent-soft: #3a261c; --gold: #d4a75a; --note-bg: #261e16; --shadow: rgba(0,0,0,.35);
 }
 
 * { box-sizing: border-box; }
@@ -155,9 +146,6 @@ a.ref { color: inherit; text-decoration: underline dotted var(--ink-3); }
 
 /* How Daf Yomi works (About page). Ordinal ramp for the six Orders: one hue, darkening in canonical order. */
 :root { --s1: #b9893a; --s2: #a4702f; --s3: #8c5828; --s4: #734322; --s5: #5b311c; --s6: #432116; --seg-ink: #fff7e6; }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) { --s1: #e2b56b; --s2: #cf9c55; --s3: #b98444; --s4: #a06d37; --s5: #86582d; --s6: #6b4526; --seg-ink: #1e1711; }
-}
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 .dy-diagram { margin: 1.4rem 0 2rem; overflow-x: clip; }
 .dy-stats { display: flex; flex-wrap: wrap; gap: .8rem 2rem; margin: 0 0 1.4rem; }
@@ -198,3 +186,19 @@ a.ref { color: inherit; text-decoration: underline dotted var(--ink-3); }
   .dy-axis .tick { display: none; }
   .dy-page { flex-direction: column; }
 }
+
+/* Where today sits: two thin bars under the title. Orders across the whole Talmud, then the dapim of this tractate. */
+.mini { margin: .9rem 0 .5rem; display: grid; grid-template-columns: auto 1fr auto; gap: .35rem .7rem; align-items: center; font-size: .82rem; color: var(--ink-2); }
+.mini-cap { white-space: nowrap; }
+.mini-val { white-space: nowrap; font-variant-numeric: tabular-nums; }
+.mini-bar { position: relative; display: flex; height: 9px; }
+.mini-bar .seg { box-sizing: border-box; height: 100%; border-right: 1px solid var(--paper); opacity: .45; border-radius: 1px; }
+.mini-bar .seg:last-child { border-right: 0; }
+.mini-bar .seg.cur { opacity: 1; }
+.mini-bar .mark { position: absolute; top: -3px; bottom: -3px; width: 2px; margin-left: -1px; background: var(--accent); border-radius: 1px; }
+.mini-bar.dapim .cell { box-sizing: border-box; flex: 1 1 0; min-width: 1px; height: 100%; margin-right: 1px; background: var(--paper-2); border: 1px solid var(--rule); border-radius: 1px; }
+.mini-bar.dapim .cell.past { background: var(--ink-3); border-color: var(--ink-3); }
+.mini-bar.dapim .cell.today { background: var(--accent); border-color: var(--accent); transform: scaleY(1.45); }
+.mini-bar.dapim .cell.chapter-start { margin-left: 2px; }
+.mini-bar.dapim .cell:last-child { margin-right: 0; }
+@media (max-width: 40rem) { .mini { grid-template-columns: auto 1fr; } .mini-val { grid-column: 2; justify-self: end; margin-top: -.2rem; } }
