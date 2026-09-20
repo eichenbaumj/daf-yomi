@@ -16,7 +16,7 @@ import { acquireLock, getNote, putNote, releaseLock, type DafNote } from "./stor
 
 export type GenerateOutcome =
   | { status: "exists"; note: DafNote }
-  | { status: "generated"; note: DafNote; attempts: number }
+  | { status: "generated"; note: DafNote; attempts: number; firstAttemptProblems?: string[] }
   | { status: "skipped"; reason: string }
   | { status: "failed"; reason: string; problems?: string[] };
 
@@ -82,6 +82,7 @@ export async function ensureNote(env: Env, ref: DafRef, opts: { force?: boolean;
     const model = env.NOTE_MODEL || "claude-opus-5";
     let feedback: string | undefined;
     let inputTokens = 0, outputTokens = 0;
+    let firstAttemptProblems: string[] | undefined;
     for (let attempt = 1; attempt <= 2; attempt++) {
       const { draft, refusal, usage } = await draftNote(client, model, { ...input, feedback });
       inputTokens += usage.inputTokens; outputTokens += usage.outputTokens;
@@ -90,8 +91,10 @@ export async function ensureNote(env: Env, ref: DafRef, opts: { force?: boolean;
       if (check.ok) {
         const note: DafNote = { ...draft, model, promptVersion: hashPrompt(), generatedAt: new Date().toISOString(), sources, usage: { inputTokens, outputTokens, attempts: attempt, estUsd: estimateUsd(model, inputTokens, outputTokens) } };
         await putNote(env.DAF_KV, t, daf, note);
-        return { status: "generated", note, attempts: attempt };
+        return { status: "generated", note, attempts: attempt, firstAttemptProblems };
       }
+      firstAttemptProblems ??= check.problems;
+      console.log(`[note] ${t.slug}/${daf} attempt ${attempt} rejected: ${check.problems.join(" | ")}`);
       feedback = check.problems.join(" ");
       if (attempt === 2) return { status: "failed", reason: "note failed grounding twice", problems: check.problems };
     }

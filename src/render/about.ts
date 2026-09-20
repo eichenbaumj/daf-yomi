@@ -8,7 +8,7 @@ export function renderAbout(env: Env, origin: string, today: DafRef): string {
 <article class="prose">
   <header class="daf-head"><h1>About</h1></header>
 
-  <p>I wanted a page that shows me the day's daf in English, tells me where it sits in the Talmud, and gives me one thing to think about. Everything I found was either Hebrew-first or an email longer than the daf. So I built this.</p>
+  <p>I wanted a page that shows me the day's daf in English, tells me where it sits in the Talmud, and gives me one thing to think about. Everything I found was either Hebrew-first or an email longer than the daf.</p>
 
   <h2>What you get</h2>
   <ul>

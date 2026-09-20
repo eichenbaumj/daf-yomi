@@ -51,7 +51,7 @@ export function articleSlips(text: string): string[] {
  * The page's own vocabulary (mishna, Gemara, baraita, tanna, amora) is glossed once in the page legend
  * instead, so it is deliberately not listed here.
  */
-export const GLOSS_TERMS = ["issar", "zuz", "sela", "dinar", "perutah", "maneh", "kav", "seah", "log", "kor", "tefach", "mil", "parasang", "teruma", "terumah", "maaser", "tithe", "korban", "olah", "chatat", "asham", "minchah", "shelamim", "todah", "bikkurim", "challah", "orlah", "kilayim", "shemitta", "yovel", "eruv", "muktzeh", "melakhah", "karet", "lashes", "get", "ketubah", "chalitzah", "yibbum", "sotah", "nazirite", "tosefta", "mitzva", "mitzvah", "mitzvot", "halakha", "halakhah", "halacha"];
+export const GLOSS_TERMS = ["issar", "zuz", "sela", "dinar", "perutah", "maneh", "kav", "seah", "kor", "tefach", "parasang", "teruma", "terumah", "maaser", "korban", "olah", "chatat", "asham", "minchah", "shelamim", "todah", "bikkurim", "orlah", "kilayim", "shemitta", "yovel", "eruv", "muktzeh", "melakhah", "karet", "ketubah", "chalitzah", "yibbum", "nazirite", "tosefta", "mitzva", "mitzvah", "mitzvot", "halakha", "halakhah", "halacha"];
 export function unglossed(text: string): string[] {
   const out: string[] = [];
   for (const term of GLOSS_TERMS) {
