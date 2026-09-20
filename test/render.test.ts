@@ -37,6 +37,9 @@ describe("daf page", () => {
     expect((html.match(/class="dc/g) ?? []).length).toBe(60); // Bekhorot 2..61
     expect((html.match(/class="dc today"/g) ?? []).length).toBe(1);
     expect((html.match(/class="seg s\d cur"/g) ?? []).length).toBe(1);
+    expect(html).toContain("Tractate 4 of 11"); // Bekhorot after Zevachim, Menachot, Chullin in Kodashim
+    expect((html.match(/class="seg t s\d( cur)?"/g) ?? []).length).toBe(11);
+    expect(html).toContain('<span class="lbl">Kodashim</span>');
     expect(html).toContain('data-toggle="he"');
     expect(html).toContain('data-toggle="talmudOnly"');
     expect(html).toContain('<span class="elu">');

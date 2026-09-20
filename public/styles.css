@@ -192,7 +192,11 @@ a.ref { color: inherit; text-decoration: underline dotted var(--ink-3); }
 .mini-cap { white-space: nowrap; }
 .mini-val { white-space: nowrap; font-variant-numeric: tabular-nums; }
 .mini-bar { position: relative; display: flex; height: 9px; min-width: 0; width: 100%; overflow: visible; }
-.mini-bar .seg { box-sizing: border-box; height: 100%; border-right: 1px solid var(--paper); opacity: .45; border-radius: 1px; }
+.mini-bar.labeled { height: 15px; }
+.mini-bar .seg { box-sizing: border-box; height: 100%; border-right: 1px solid var(--paper); opacity: .45; border-radius: 1px; overflow: hidden; text-decoration: none; }
+.mini-bar .seg .lbl { display: block; padding-left: 4px; font-size: .64rem; line-height: 15px; color: var(--seg-ink); white-space: nowrap; letter-spacing: .02em; }
+.mini-bar a.seg:hover { opacity: .8; }
+.mini-bar a.seg.cur:hover { opacity: 1; }
 .mini-bar .seg:last-child { border-right: 0; }
 .mini-bar .seg.cur { opacity: 1; }
 .mini-bar .mark { position: absolute; top: -3px; bottom: -3px; width: 2px; margin-left: -1px; background: var(--accent); border-radius: 1px; }
@@ -201,4 +205,4 @@ a.ref { color: inherit; text-decoration: underline dotted var(--ink-3); }
 .mini-bar.dapim .dc.today { background: var(--accent); border-color: var(--accent); transform: scaleY(1.45); }
 .mini-bar.dapim .dc.chapter-start { margin-left: 2px; }
 .mini-bar.dapim .dc:last-child { margin-right: 0; }
-@media (max-width: 40rem) { .mini { grid-template-columns: auto minmax(0, 1fr); } .mini-val { grid-column: 2; justify-self: end; margin-top: -.2rem; } }
+@media (max-width: 40rem) { .mini .seg .lbl { display: none; } .mini-bar.labeled { height: 11px; } .mini { grid-template-columns: auto minmax(0, 1fr); } .mini-val { grid-column: 2; justify-self: end; margin-top: -.2rem; } }
