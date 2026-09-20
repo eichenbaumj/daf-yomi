@@ -4,7 +4,7 @@
 import type { NoteDraft } from "./prompt";
 
 export const BANNED_WORDS = ["leverage", "robust", "seamless", "holistic", "delve", "tapestry", "nuanced", "profound", "timeless", "resonate", "unpack", "journey", "testament", "underscore"];
-const BANNED_PHRASES = ["teaches us", "reminds us", "wants us", "we learn", "we see", "we are", "let us", "in this daf", "this page,", "this page "];
+const BANNED_PHRASES = ["a fortiori", "a priori", "prima facie", "ipso facto", "mutatis mutandis", "teaches us", "reminds us", "wants us", "we learn", "we see", "we are", "let us", "in this daf", "this page,", "this page "];
 
 export function normalize(s: string): string {
   return s
@@ -51,7 +51,7 @@ export function articleSlips(text: string): string[] {
  * The page's own vocabulary (mishna, Gemara, baraita, tanna, amora) is glossed once in the page legend
  * instead, so it is deliberately not listed here.
  */
-export const GLOSS_TERMS = ["issar", "zuz", "sela", "dinar", "perutah", "maneh", "kav", "seah", "log", "kor", "tefach", "mil", "parasang", "teruma", "terumah", "maaser", "tithe", "korban", "olah", "chatat", "asham", "minchah", "shelamim", "todah", "bikkurim", "challah", "orlah", "kilayim", "shemitta", "yovel", "eruv", "muktzeh", "melakhah", "karet", "lashes", "get", "ketubah", "chalitzah", "yibbum", "sotah", "nazirite", "tosefta"];
+export const GLOSS_TERMS = ["issar", "zuz", "sela", "dinar", "perutah", "maneh", "kav", "seah", "log", "kor", "tefach", "mil", "parasang", "teruma", "terumah", "maaser", "tithe", "korban", "olah", "chatat", "asham", "minchah", "shelamim", "todah", "bikkurim", "challah", "orlah", "kilayim", "shemitta", "yovel", "eruv", "muktzeh", "melakhah", "karet", "lashes", "get", "ketubah", "chalitzah", "yibbum", "sotah", "nazirite", "tosefta", "mitzva", "mitzvah", "mitzvot", "halakha", "halakhah", "halacha"];
 export function unglossed(text: string): string[] {
   const out: string[] = [];
   for (const term of GLOSS_TERMS) {

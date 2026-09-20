@@ -34,6 +34,9 @@ describe("grounding", () => {
     expect(unglossed("brings a sin offering called a chatat")).toEqual([]);
     expect(unglossed("the priests eat their teruma, the priestly portion")).toEqual([]);
     expect(unglossed("The Mishna lists thirty-six; the Gemara asks")).toEqual([]); // page vocabulary is glossed in the legend
+    expect(unglossed("the harder mitzvot earn no less")).toEqual(["mitzvot"]);
+    expect(unglossed("the harder mitzvot, the commandments that cost more, earn no less")).toEqual([]);
+    expect(checkNote({ ...good, summary: "The mishna sets up an a fortiori argument. " + good.summary }, source).problems).toContainEqual(expect.stringMatching(/a fortiori/));
     expect(checkNote({ ...good, summary: good.summary + " It costs an issar." }, source).problems).toContainEqual(expect.stringMatching(/gloss "issar"/));
   });
   it("rejects a teaser-and-colon opener", () => {

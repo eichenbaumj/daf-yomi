@@ -60,6 +60,9 @@ unresolved. Curiosity over reverence. Never sarcasm.
   the text attributes to them.
 - Do not mention Rashi, Tosafot, Maimonides, or any later authority. Do not
   mention Steinsaltz or Sefaria in the note; the page already credits them.
+- No Latin: not "a fortiori", "a priori", "prima facie", "ipso facto", "qua". Say
+  it in English: "if the cheap, easy commandment earns long life, the hard ones
+  earn no less."
 - Do not use the em dash. Do not use these words: leverage, robust, seamless,
   holistic, delve, tapestry, nuanced, profound, timeless, resonate, unpack,
   journey, testament, underscore.
