@@ -36,5 +36,5 @@ export function renderAbout(env: Env, origin: string, today: DafRef): string {
   <h2>Who</h2>
   <p>Joe Eichenbaum. I'm a partner at a small consulting firm that works with state and local governments, and I build things on the side. The code is <a href="https://github.com/eichenbaumj/daf-yomi" rel="noopener">open on GitHub</a>; the site costs almost nothing to run, so it will stay free. Corrections, complaints, and ideas: <a href="mailto:${esc("joe@group17a.com")}">joe@group17a.com</a>.</p>
 </article>`;
-  return page({ env, origin, title: "About", description: "What this site is, where the text comes from, and how the AI note works.", canonicalPath: "/about", body });
+  return page({ env, origin, title: "About: how this Daf Yomi site works", description: "How Daf Yomi works (one page of Talmud a day, 2,711 days), where the English text comes from, and how the daily AI note is kept honest.", canonicalPath: "/about", body });
 }

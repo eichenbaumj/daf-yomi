@@ -30,5 +30,5 @@ export function renderTractatesIndex(env: Env, origin: string, today: DafRef, to
   </header>
   ${groups.join("\n")}
 </article>`;
-  return page({ env, origin, title: "Tractates", description: "Every tractate in the Daf Yomi cycle, with dates for the current cycle.", canonicalPath: "/tractates", body });
+  return page({ env, origin, title: "The tractates of the Talmud, in Daf Yomi order", description: "All 37 tractates of the Babylonian Talmud in Daf Yomi order, grouped by Seder, with dates for the current cycle and every daf in English.", canonicalPath: "/tractates", body });
 }

@@ -15,6 +15,8 @@ export interface PageOptions {
   bodyClass?: string;
   extraHead?: string;
   ogType?: "website" | "article";
+  /** Structured data objects, emitted as one JSON-LD script. */
+  jsonLd?: unknown[];
 }
 
 const FONTS = "https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=Frank+Ruhl+Libre:wght@400;700&display=swap";
@@ -36,7 +38,12 @@ export function page(o: PageOptions): string {
 <meta property="og:title" content="${esc(fullTitle)}">
 <meta property="og:description" content="${esc(o.description)}">
 <meta property="og:url" content="${esc(canonical)}">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="${esc(o.origin)}/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="${esc(siteName)}: the day's page of Talmud, in English">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#f3ead7">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="alternate" type="application/rss+xml" title="${esc(siteName)}" href="/feed.xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -44,6 +51,7 @@ export function page(o: PageOptions): string {
 <link rel="stylesheet" href="${FONTS}">
 <link rel="stylesheet" href="/styles.css">
 <script>try{var s=localStorage;document.documentElement.className+=(s.getItem("daf:he")==="1"?" show-he":"")+(s.getItem("daf:talmudOnly")==="1"?" talmud-only":"")}catch(e){}</script>
+${o.jsonLd && o.jsonLd.length ? `<script type="application/ld+json">${JSON.stringify(o.jsonLd.length === 1 ? o.jsonLd[0] : o.jsonLd).replace(/</g, "\\u003c")}</script>` : ""}
 ${o.extraHead ?? ""}
 </head>
 <body class="${esc(o.bodyClass ?? "")}">

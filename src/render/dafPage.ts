@@ -101,9 +101,10 @@ export function renderDafPage(m: DafPageModel): string {
   const prevWord = m.isToday ? "Yesterday" : "Before";
   const nextWord = m.isToday ? "Tomorrow" : "Next";
   const firstText = m.texts[0]?.text;
+  const dateWords = longDate(m.date);
   const description = m.note
-    ? m.note.summary
-    : `${label}: the day's page of Talmud in English, with where it sits in the cycle.`;
+    ? `${label}, the Daf Yomi page for ${dateWords}, in English with Rabbi Steinsaltz's explanation. ${m.note.summary}`
+    : `${label}, the Daf Yomi page for ${dateWords}, in English with Rabbi Steinsaltz's explanation woven in, where it sits in the Talmud, and a short note to get you thinking.`;
   const headline = m.isToday ? `Today's daf is ${label}` : label;
   const dateLine = `${longDate(m.date)} <span class="sep" aria-hidden="true">·</span> ${esc(hebrewDate(m.date))} <span lang="he" dir="rtl" class="he-inline">${esc(hebrewDateHe(m.date))}</span>`;
 
@@ -146,14 +147,47 @@ export function renderDafPage(m: DafPageModel): string {
   </section>
 </article>`;
 
+  const canonicalPath = m.isToday ? "/" : dafPath(t, ref.daf);
+  const url = `${m.origin}${canonicalPath}`;
+  const jsonLd: unknown[] = [
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      headline: m.isToday ? `Today's daf: ${label} (Daf Yomi in English)` : `${label} (Daf Yomi in English)`,
+      description: plainText(description).slice(0, 300),
+      datePublished: ymd(m.date),
+      dateModified: m.note?.generatedAt ?? ymd(m.date),
+      inLanguage: "en",
+      isAccessibleForFree: true,
+      url,
+      mainEntityOfPage: url,
+      image: `${m.origin}/og.png`,
+      author: { "@type": "Person", name: "Joe Eichenbaum", url: `${m.origin}/about` },
+      publisher: { "@type": "Organization", name: env.SITE_NAME, url: `${m.origin}/`, logo: { "@type": "ImageObject", url: `${m.origin}/og.png` } },
+      about: { "@type": "CreativeWork", name: `${t.sefariaTitle} ${ref.daf}`, alternateName: t.heTitle, isPartOf: { "@type": "CreativeWork", name: "Babylonian Talmud" } },
+      isBasedOn: { "@type": "CreativeWork", name: "The William Davidson Talmud", url: "https://www.sefaria.org/william-davidson-talmud", license: "https://creativecommons.org/licenses/by-nc/4.0/" },
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: env.SITE_NAME, item: `${m.origin}/` },
+        { "@type": "ListItem", position: 2, name: "Tractates", item: `${m.origin}/tractates` },
+        { "@type": "ListItem", position: 3, name: t.name, item: `${m.origin}/${t.slug}` },
+        { "@type": "ListItem", position: 4, name: label, item: `${m.origin}${dafPath(t, ref.daf)}` },
+      ],
+    },
+  ];
+  if (m.isToday) jsonLd.push({ "@context": "https://schema.org", "@type": "WebSite", name: env.SITE_NAME, alternateName: "Daf Yomi Dot Dev", url: `${m.origin}/`, description: env.SITE_TAGLINE, inLanguage: "en" });
   return page({
     env,
     origin: m.origin,
-    title: m.isToday ? `Today: ${label}` : label,
+    title: m.isToday ? `Today's Daf Yomi: ${label} in English` : `${label}: Daf Yomi in English`,
     description: plainText(description).slice(0, 300),
-    canonicalPath: dafPath(t, ref.daf),
+    canonicalPath,
     body,
     bodyClass: "daf-page",
     ogType: "article",
+    jsonLd,
   });
 }

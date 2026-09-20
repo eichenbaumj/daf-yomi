@@ -61,8 +61,8 @@ export function renderTractatePage(m: TractatePageModel): string {
   return page({
     env: m.env,
     origin: m.origin,
-    title: t.name,
-    description: t.shortDesc || `${t.name}: every daf, with dates for the current Daf Yomi cycle.`,
+    title: `${t.name}: every daf, Daf Yomi in English`,
+    description: `Tractate ${t.name} (${t.heTitle}) of the Babylonian Talmud in English: all ${t.days} dapim with their Daf Yomi dates, chapters, and Rabbi Steinsaltz's introduction. ${t.shortDesc}`.trim(),
     canonicalPath: `/${t.slug}`,
     body,
     bodyClass: "tractate-page",

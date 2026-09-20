@@ -47,8 +47,18 @@ describe("daf page", () => {
     expect(html).toContain('lang="he" dir="rtl"');
     expect(html).toContain('href="https://www.sefaria.org/Bekhorot.2a?lang=bi"');
     expect(html).toContain("9 Tishrei 5787");
-    expect(html).toContain('<link rel="canonical" href="https://example.test/bekhorot/2">');
+    expect(html).toContain('<link rel="canonical" href="https://example.test/">'); // today's page is the homepage
+    expect(html).toContain('<title>Today&#39;s Daf Yomi: Bekhorot 2 in English · Today&#39;s Daf</title>');
+    expect(html).toContain('application/ld+json');
+    const ld = JSON.parse(/<script type="application\/ld\+json">(.*?)<\/script>/s.exec(html)![1]!);
+    expect(ld.map((x: { "@type": string }) => x["@type"])).toEqual(["Article", "BreadcrumbList", "WebSite"]);
+    expect(ld[1].itemListElement[3].item).toBe("https://example.test/bekhorot/2");
     expect(html).not.toMatch(/—/); // no em dashes in the chrome
+  });
+  it("gives a permalink its own canonical", () => {
+    const html = renderDafPage({ ...base, isToday: false, note: null });
+    expect(html).toContain('<link rel="canonical" href="https://example.test/bekhorot/2">');
+    expect(html).toContain("<title>Bekhorot 2: Daf Yomi in English · Today&#39;s Daf</title>");
   });
   it("says when the note is pending instead of hiding the box", () => {
     const html = renderDafPage({ ...base, note: null });
