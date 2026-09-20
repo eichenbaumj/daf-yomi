@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-20T15:38:31.212Z",
+ "generatedAt": "2026-09-20T17:17:37.787Z",
  "cycleLength": 2711,
  "tractates": [
   {
@@ -15,6 +15,7 @@
    "lastDaf": 64,
    "days": 63,
    "refMode": "talmud",
+   "lastAmud": "a",
    "shortDesc": "Blessings and prayers, focusing on Shema and the Amidah.",
    "description": "Berakhot (“Blessings”) is the first tractate of Zeraim (“Seeds”), the first order of the Mishnah, and the only tractate in Zeraim included in the Babylonian Talmud. Its nine chapters discuss the laws of prayers, focusing on the Shema, the Amidah, and blessings, including those recited in the context of eating.",
    "chapters": [
@@ -102,8 +103,7 @@
     "Summary of Perek VIII",
     "Introduction to Perek IX",
     "Summary of Perek IX"
-   ],
-   "hadranSlug": "berakhot"
+   ]
   },
   {
    "hebcalName": "Shabbat",
@@ -118,6 +118,7 @@
    "lastDaf": 157,
    "days": 156,
    "refMode": "talmud",
+   "lastAmud": "b",
    "shortDesc": "Creative work prohibited on Shabbat and other laws that preserve the sanctity of the day.",
    "description": "Shabbat (“Sabbath”) is the first tractate in Seder Moed (Order of Festivals). Its 24 chapters discuss the 39 melachot (creative labors prohibited on Shabbat), prohibitions of carrying on Shabbat, and positive commandments that preserve the sanctity of the day, such as lighting candles and eating three meals. The tractate also contains the Talmud’s main discussion about the holiday of Chanukah.\n.",
    "chapters": [
@@ -340,8 +341,7 @@
     "Summary of Perek XXIII",
     "Introduction to Perek XXIV",
     "Summary of Perek XXIV"
-   ],
-   "hadranSlug": "shabbat"
+   ]
   },
   {
    "hebcalName": "Eruvin",
@@ -356,6 +356,7 @@
    "lastDaf": 105,
    "days": 104,
    "refMode": "talmud",
+   "lastAmud": "a",
    "shortDesc": "Enclosures that legally expand the areas in which one can carry and travel on Shabbat.",
    "description": "Eruvin (literally, “mixtures” referring to the symbolic combination of separate domains) is the second tractate in Seder Moed (Order of Festivals) and consists of ten chapters. It serves as a continuation of tractate Shabbat, discussing the rabbinic enactments - namely, ritual enclosures and designated food items - that legally expand the areas in which one can carry and travel on Shabbat.",
    "chapters": [
@@ -452,8 +453,7 @@
     "Summary of Perek IX",
     "Introduction to Perek X",
     "Summary of Perek X"
-   ],
-   "hadranSlug": "eruvin"
+   ]
   },
   {
    "hebcalName": "Pesachim",
@@ -468,6 +468,7 @@
    "lastDaf": 121,
    "days": 120,
    "refMode": "talmud",
+   "lastAmud": "b",
    "shortDesc": "Passover: ridding of chametz, the Paschal lamb offering, matzah, maror, and the Seder.",
    "description": "Pesachim (“Passover Festivals”) is the third tractate in Seder Moed (“Festivals”). Its ten chapters discuss laws relating to Passover: the consumption of matzah (unleavened bread) and maror (bitter herbs), the prohibitions against owning or consuming chametz (leavened bread) on the festival, the paschal lamb that used to be offered at the Temple in Jerusalem, and the order of the seder (ritual feast) held on the first evening of the holiday.\n.",
    "chapters": [
@@ -564,8 +565,7 @@
     "Summary of Perek IX",
     "Introduction to Perek X",
     "Summary of Perek X"
-   ],
-   "hadranSlug": "pesachim"
+   ]
   },
   {
    "hebcalName": "Shekalim",
@@ -580,11 +580,11 @@
    "lastDaf": 22,
    "days": 21,
    "refMode": "calendar",
+   "lastAmud": "b",
    "shortDesc": "Annual half-shekel donations to the Temple, administration and inventory of the Temple.",
    "description": "Sheqalim (Shekels) belongs to the second order, Moed (Festivals) and discusses the collection of the half-Shekel as well as the expenses and expenditure of the Temple. It has eight chapters.",
    "chapters": [],
-   "introNodes": [],
-   "hadranSlug": "shekalim"
+   "introNodes": []
   },
   {
    "hebcalName": "Yoma",
@@ -599,6 +599,7 @@
    "lastDaf": 88,
    "days": 87,
    "refMode": "talmud",
+   "lastAmud": "a",
    "shortDesc": "Yom Kippur: the High Priest’s preparation, the Temple service, the fast, and repentance.",
    "description": "Tractate Yoma (“The Day,” referring to Yom Kippur) is located in Seder Moed (“the Order of Festivals”). It consists of eight chapters; the first seven discuss the preparation for and service of the High Priest in the Temple on Yom Kippur day. The last chapter discusses the laws of fasting, other prohibitions of Yom Kippur, and the process of repentance.",
    "chapters": [
@@ -677,8 +678,7 @@
     "Summary of Perek VII",
     "Introduction to Perek VIII",
     "Summary of Perek VIII"
-   ],
-   "hadranSlug": "yoma"
+   ]
   },
   {
    "hebcalName": "Sukkah",
@@ -693,6 +693,7 @@
    "lastDaf": 56,
    "days": 55,
    "refMode": "talmud",
+   "lastAmud": "b",
    "shortDesc": "The structure of and obligation to dwell in the sukkah, the four species, and celebrating the holiday in the Temple.",
    "description": "Tractate Sukkah is located in Seder Moed (“the Order of Festivals”) and discusses the holiday of Sukkot. It consists of five chapters; the first two chapters discuss the structure of and obligation to dwell in the sukkah. The remaining chapters discuss laws of the four species and the celebration of Sukkot in the Temple, describing ceremonies involving willow branches and water libations.",
    "chapters": [
@@ -744,8 +745,7 @@
     "Summary of Perek IV",
     "Introduction to Perek V",
     "Summary of Perek V"
-   ],
-   "hadranSlug": "sukkah"
+   ]
   },
   {
    "hebcalName": "Beitzah",
@@ -760,6 +760,7 @@
    "lastDaf": 40,
    "days": 39,
    "refMode": "talmud",
+   "lastAmud": "b",
    "shortDesc": "Holiday laws governing which objects can be used, how food is prepared, and what labor is permitted.",
    "description": "Tractate Beitzah (“Egg,” named for the first word in the tractate) is located in Seder Moed (“the Order of Festivals”) and discusses the laws of Yom Tov (biblical holidays). In medieval commentaries, it is often referred to as tractate Yom Tov. The tractate opens with discussions about muktzeh, or items that are set-aside and cannot be used on Shabbat or Yom Tov. The remaining chapters mainly focus on preparation of food on Yom Tov, a form of labor that is prohibited on Shabbat.\n\n.",
    "chapters": [
@@ -811,8 +812,7 @@
     "Summary of Perek IV",
     "Introduction to Perek V",
     "Summary of Perek V"
-   ],
-   "hadranSlug": "beitzah"
+   ]
   },
   {
    "hebcalName": "Rosh Hashana",
@@ -827,6 +827,7 @@
    "lastDaf": 35,
    "days": 34,
    "refMode": "talmud",
+   "lastAmud": "a",
    "shortDesc": "The four Jewish New Years, the process of sanctifying a new month, and laws of blowing the shofar.",
    "description": "Tractate Rosh Hashanah, located in Seder Moed (“The Order of Festivals”) opens with the statement that there are four days of the calendar, each of which is a New Year for its own purpose. The bulk of the tractate's discussion is elaboration of the laws concerning the holiday of Rosh Hashanah, its religious significance, and the details of the sounding of the shofar. The tractate also discusses the process of sanctifying a new month in the Temple period, which involved witnesses testifying in front of the high rabbinic court that they saw the new moon.",
    "chapters": [
@@ -869,8 +870,7 @@
     "Summary of Perek III",
     "Introduction to Perek IV",
     "Summary of Perek IV"
-   ],
-   "hadranSlug": "rosh-hashanah"
+   ]
   },
   {
    "hebcalName": "Taanit",
@@ -885,6 +885,7 @@
    "lastDaf": 31,
    "days": 30,
    "refMode": "talmud",
+   "lastAmud": "a",
    "shortDesc": "Praying for rain, fasting in times of drought, and annual fast days marking Jerusalem’s destruction.",
    "description": "Tractate Taanit (“Fast”) is located in Seder Moed (“the Order of Festivals”). Its four chapters discuss laws and stories relating to fast days, with a focus on fast days enacted by Jewish courts in times of drought. The tractate also discusses praying for rain, the fast days of the 17th of Tamuz and Tisha B’Av, and the concept of ma’amadot, in which groups of laypeople witnessed sacrifices in the Temple or gathered to read Torah, pray, and fast while sacrifices were being offered.",
    "chapters": [
@@ -927,8 +928,7 @@
     "Summary of Perek III",
     "Introduction to Perek IV",
     "Summary of Perek IV"
-   ],
-   "hadranSlug": "taanit"
+   ]
   },
   {
    "hebcalName": "Megillah",
@@ -943,6 +943,7 @@
    "lastDaf": 32,
    "days": 31,
    "refMode": "talmud",
+   "lastAmud": "a",
    "shortDesc": "Reading the scroll of Esther on Purim, expansions on the Esther story, synagogue rituals, and treatment of sacred objects.",
    "description": "Tractate Megillah (“Scroll”) is located in Seder Moed (“the Order of Festivals”). The first two chapters discuss the laws of reading the scroll of Esther on the holiday of Purim and include interpretations of and elaborations upon the scroll’s story. The remaining two chapters discuss laws of public reading of the Torah and Prophets, public prayer, and treatment and selling of sacred objects and synagogues.",
    "chapters": [
@@ -985,8 +986,7 @@
     "Summary of Perek III",
     "Introduction to Perek IV",
     "Summary of Perek IV"
-   ],
-   "hadranSlug": "megillah"
+   ]
   },
   {
    "hebcalName": "Moed Katan",
@@ -1001,6 +1001,7 @@
    "lastDaf": 29,
    "days": 28,
    "refMode": "talmud",
+   "lastAmud": "a",
    "shortDesc": "Chol HaMoed (the intermediate days of Passover and Sukkot), mourning and ex-communication.",
    "description": "Tractate Moed Katan (“Minor Holiday”) is located in Seder Moed (“the Order of Festivals”). The tractate’s first two chapters discuss the laws of Chol Hamoed, or the intermediate days of Passover and Sukkot, with a focus on permitted and prohibited work on these days. The last chapter discusses laws of mourning, ex-communication, leprosy and stories about the deaths of different talmudic sages.",
    "chapters": [
@@ -1034,8 +1035,7 @@
     "Summary of Perek II",
     "Introduction to Perek III",
     "Summary of Perek III"
-   ],
-   "hadranSlug": "moed-katan"
+   ]
   },
   {
    "hebcalName": "Chagigah",
@@ -1050,6 +1050,7 @@
    "lastDaf": 27,
    "days": 26,
    "refMode": "talmud",
+   "lastAmud": "a",
    "shortDesc": "Sacrifices offered on pilgrimage to Jerusalem on the Festivals, ritual purity, and esoteric discussions of creation.",
    "description": "Tractate Chagigah (“Festival Offering”) is located in Seder Moed (“the Order of Festivals”) and addresses the commandment to make a pilgrimage to the Temple on the holidays of Passover, Shavuot, and Sukkot. The tractate focuses on the sacrifices offered then and the ritual purity required of those who visit the Temple. Chagigah also includes long digressions with esoteric interpretations of the biblical stories of creation in the Book of Genesis and the divine chariot in the Book of Ezekiel.",
    "chapters": [
@@ -1083,8 +1084,7 @@
     "Summary of Perek II",
     "Introduction to Perek III",
     "Summary of Perek III"
-   ],
-   "hadranSlug": "chagigah"
+   ]
   },
   {
    "hebcalName": "Yevamot",
@@ -1099,6 +1099,7 @@
    "lastDaf": 122,
    "days": 121,
    "refMode": "talmud",
+   "lastAmud": "b",
    "shortDesc": "The mandated marriage of a widow to the brother of her childless husband and the alternative rite discharging that obligation.",
    "description": "Yevamot (the plural of the word used to refer to one’s childless brother’s widow) is the first tractate in Seder Nashim (“Order of Women,” which addresses family law). Its sixteen chapters discuss yibum, the Torah-mandated marriage of a widow to the brother of her childless husband as well as chalitzah, the alternative rite discharging that obligation, in which the widow takes off the shoe of her husband’s brother and spits on the floor. Included in the tractate are also sections on the laws of marriage, prohibitted sexual relations, and conversion.",
    "chapters": [
@@ -1249,8 +1250,7 @@
     "Summary of Perek XV",
     "Introduction to Perek XVI",
     "Summary of Perek XVI"
-   ],
-   "hadranSlug": "yevamot"
+   ]
   },
   {
    "hebcalName": "Ketubot",
@@ -1265,6 +1265,7 @@
    "lastDaf": 112,
    "days": 111,
    "refMode": "talmud",
+   "lastAmud": "b",
    "shortDesc": "The marital contract (Ketubah) and obligations between husband and wife.",
    "description": "Ketubot is the second tractate in Seder Nashim (“Order of Women,” which addresses family law). Its thirteen chapters primarily discuss the ketubah (marriage contract) and obligations between a husband and wife during marriage and after the dissolution of marriage. The tractate also addresses topics such as giving testimony, vows, and slander.",
    "chapters": [
@@ -1388,8 +1389,7 @@
     "Summary of Perek XII",
     "Introduction to Perek XIII",
     "Summary of Perek XIII"
-   ],
-   "hadranSlug": "ketubot"
+   ]
   },
   {
    "hebcalName": "Nedarim",
@@ -1404,6 +1404,7 @@
    "lastDaf": 91,
    "days": 90,
    "refMode": "talmud",
+   "lastAmud": "b",
    "shortDesc": "Vows taken voluntarily, particularly those that forbid specific actions or objects.",
    "description": "Nedarim (“Vows”) is a tractate in Seder Nashim (“Order of Women,” which addresses family law). Its eleven chapters primarily discuss vows taken voluntarily, particularly those that forbid specific actions or objects. The tractate analyzes the conditions under which vows take effect, interpretations and implications of different vows, and the process of nullifying or dissolving vows. Nedarim also includes discussions on topics such as circumcision and visiting the sick.",
    "chapters": [
@@ -1509,8 +1510,7 @@
     "Summary of Perek X",
     "Introduction to Perek XI",
     "Summary of Perek XI"
-   ],
-   "hadranSlug": "nedarim"
+   ]
   },
   {
    "hebcalName": "Nazir",
@@ -1525,6 +1525,7 @@
    "lastDaf": 66,
    "days": 65,
    "refMode": "talmud",
+   "lastAmud": "b",
    "shortDesc": "The Nazirite, or one who vows abstinence from wine, haircuts, and ritual impurity generated from contact with corpses.",
    "description": "Nazir is a tractate in Seder Nashim (“Order of Women,” which addresses family law). Its nine chapters discuss laws relating to the Nazirite, or one who vows abstinence from wine, haircuts, and ritual impurity generated from contact with corpses. Among the topics analyzed are different types of Nazirite vows and their implications, the sacrifices brought at the end of the fulfillment of a Nazirite vow, and cases of uncertainty with regards to a Nazirite’s purity status.",
    "chapters": [
@@ -1612,8 +1613,7 @@
     "Summary of Perek VIII",
     "Introduction to Perek IX",
     "Summary of Perek IX"
-   ],
-   "hadranSlug": "nazir"
+   ]
   },
   {
    "hebcalName": "Sotah",
@@ -1628,6 +1628,7 @@
    "lastDaf": 49,
    "days": 48,
    "refMode": "talmud",
+   "lastAmud": "b",
    "shortDesc": "A woman suspected of adultery, the ritual determining her culpability, and other rituals involving recitation.",
    "description": "Sotah is a tractate in Seder Nashim (“Order of Women,” which addresses family law). Its first six chapters discuss laws relating to a sotah, or woman whose husband suspects her of adultery. The tractate outlines the process the sotah experiences, beginning with a warning issued by her husband and her seclusion with another man and through the steps of the ritual performed in the Temple in order to determine her culpability. The last three chapters discuss other rituals that involve recitation.",
    "chapters": [
@@ -1715,8 +1716,7 @@
     "Summary of Perek VIII",
     "Introduction to Perek IX",
     "Summary of Perek IX"
-   ],
-   "hadranSlug": "sotah"
+   ]
   },
   {
    "hebcalName": "Gitin",
@@ -1731,6 +1731,7 @@
    "lastDaf": 90,
    "days": 89,
    "refMode": "talmud",
+   "lastAmud": "b",
    "shortDesc": "Laws relating to divorce, focusing on the get (bill of divorce) and its delivery.",
    "description": "Gittin (plural of “Get,” or writ of divorce) is a tractate in Seder Nashim (“Order of Women,” which addresses family law). Its nine chapters primarily discuss the process of writing and transmitting a get. Also included in the tractate are sections about tikkun ha’olam, or enactments instituted by the sages for the betterment of the world, stories about the destruction of the Temple, and discussions of medical advice.",
    "chapters": [
@@ -1818,8 +1819,7 @@
     "Summary of Perek VIII",
     "Introduction to Perek IX",
     "Summary of Perek IX"
-   ],
-   "hadranSlug": "gittin"
+   ]
   },
   {
    "hebcalName": "Kiddushin",
@@ -1834,6 +1834,7 @@
    "lastDaf": 82,
    "days": 81,
    "refMode": "talmud",
+   "lastAmud": "b",
    "shortDesc": "Betrothal, marriage, acquisitions, and lineage.",
    "description": "Kiddushin (“Betrothal”)  is the last tractate in Seder Nashim (“Order of Women,” which addresses family law). Its four chapters primarily discuss laws relating to betrothal. Also addressed are laws of acquisition, sending representatives to perform legal actions, lineage, and the prohibition of seclusion between a man and a woman not married to each other.",
    "chapters": [
@@ -1876,8 +1877,7 @@
     "Summary of Perek III",
     "Introduction to Perek IV",
     "Summary of Perek IV"
-   ],
-   "hadranSlug": "kiddushin"
+   ]
   },
   {
    "hebcalName": "Baba Kamma",
@@ -1892,6 +1892,7 @@
    "lastDaf": 119,
    "days": 118,
    "refMode": "talmud",
+   "lastAmud": "b",
    "shortDesc": "Liability and compensation for damages inflicted on people or property.",
    "description": "Bava Kamma (״The First Gate״) is the first of a series of three tractates in Seder Nezikin (“Order of Damages\") that deal with civil matters. Bava Kamma focuses on the laws of torts: the first six chapters mostly address damages inflicted by one’s property, while the last four chapters discuss damages inflicted by people, such as theft and injury.",
    "chapters": [
@@ -1988,8 +1989,7 @@
     "Summary of Perek IX",
     "Introduction to Perek X",
     "Summary of Perek X"
-   ],
-   "hadranSlug": "bava-kamma"
+   ]
   },
   {
    "hebcalName": "Baba Metzia",
@@ -2004,6 +2004,7 @@
    "lastDaf": 119,
    "days": 118,
    "refMode": "talmud",
+   "lastAmud": "a",
    "shortDesc": "Disputed property, returning lost objects, guarding, renting, borrowing, and responsibilities of workers and employers.",
    "description": "Bava Metzia (״The Middle Gate״) is the second of a series of three tractates in Seder Nezikin (“Order of Damages\") that deal with civil laws. It mainly focuses on interpersonal matters that are not connected to damages, such as disputed property, usury, returning lost objects, guarding, renting, borrowing, and responsibilities of workers and employers.",
    "chapters": [
@@ -2100,8 +2101,7 @@
     "Summary of Perek IX",
     "Introduction to Perek X",
     "Summary of Perek X"
-   ],
-   "hadranSlug": "bava-metzia"
+   ]
   },
   {
    "hebcalName": "Baba Batra",
@@ -2116,6 +2116,7 @@
    "lastDaf": 176,
    "days": 175,
    "refMode": "talmud",
+   "lastAmud": "b",
    "shortDesc": "Relationships between neighbors, land ownership, sales, and inheritance.",
    "description": "Bava Batra (״The Last Gate״) is the third of a series of three tractates in Seder Nezikin (“Order of Damages\") that deal with civil laws. It addresses relations between neighbors, presumptions of ownership and deeds, and laws of sales and inheritance. Bava Batra stands out from its surrounding tractates in that the vast majority of its laws are not explicitly biblical in origin, but rather rabbinic ordinances based on the sages’ understanding of human nature, societal conventions, and the need to establish limits and guidelines to regulate business relationships.",
    "chapters": [
@@ -2212,8 +2213,7 @@
     "Summary of Perek IX",
     "Introduction to Perek X",
     "Summary of Perek X"
-   ],
-   "hadranSlug": "bava-batra"
+   ]
   },
   {
    "hebcalName": "Sanhedrin",
@@ -2228,6 +2228,7 @@
    "lastDaf": 113,
    "days": 112,
    "refMode": "talmud",
+   "lastAmud": "b",
    "shortDesc": "The judicial system, forming the court, accepting testimony, and executing capital punishment.",
    "description": "Tractate Sanhedrin (“Assembly of Judges”) is a tractate in Seder Nezikin (“Order of Damages\") that addresses the judicial system. Its eleven chapters discuss the selection of judges and forming a court, the process of accepting testimony, and monetary, corporal, and capital punishment. The last chapter, known as “perek chelek,” addresses the World to Come and who does not receive it.",
    "chapters": [
@@ -2333,8 +2334,7 @@
     "Summary of Perek X",
     "Introduction to Perek XI",
     "Summary of Perek XI"
-   ],
-   "hadranSlug": "sanhedrin"
+   ]
   },
   {
    "hebcalName": "Makkot",
@@ -2349,6 +2349,7 @@
    "lastDaf": 24,
    "days": 23,
    "refMode": "talmud",
+   "lastAmud": "b",
    "shortDesc": "Court-administered lashing, false witnesses, and cities of refuge for inadvertent murderers.",
    "description": "Tractate Makkot (“Lashes”) is a tractate in Seder Nezikin (“Order of Damages\") that serves as a companion tractate to Sanhedrin. Makkot addresses court-administered punishments: the first chapter discusses false witnesses (eidim zomemim) and the process of administering their punishments, the second chapter discusses exile to cities of refuge for inadvertent murderers, and the third and final chapter discusses the punishment of lashes.",
    "chapters": [
@@ -2382,8 +2383,7 @@
     "Summary of Perek II",
     "Introduction to Perek III",
     "Summary of Perek III"
-   ],
-   "hadranSlug": "makkot"
+   ]
   },
   {
    "hebcalName": "Shevuot",
@@ -2398,6 +2398,7 @@
    "lastDaf": 49,
    "days": 48,
    "refMode": "talmud",
+   "lastAmud": "b",
    "shortDesc": "Oaths and the process of atoning for entering the Temple or eating from a sacrifice while impure.",
    "description": "Tractate Shevuot (“Oaths”) is a tractate in Seder Nezikin (“Order of Damages\"). Its first two chapters discuss the sacrifices brought to atone for entering the Temple or eating from a sacrifice while impure. The remaining six chapters discuss different types of oaths, like those taken by litigants in court or a false promise made by an individual.",
    "chapters": [
@@ -2476,8 +2477,7 @@
     "Summary of Perek VII",
     "Introduction to Perek VIII",
     "Summary of Perek VIII"
-   ],
-   "hadranSlug": "shevuot"
+   ]
   },
   {
    "hebcalName": "Avodah Zarah",
@@ -2492,6 +2492,7 @@
    "lastDaf": 76,
    "days": 75,
    "refMode": "talmud",
+   "lastAmud": "b",
    "shortDesc": "Disassociating from idolatry, regulations on business interactions between Jews and idolaters.",
    "description": "Tractate Avodah Zara (“Idolatry”) is a tractate in Seder Nezikin (“Order of Damages\") that discusses the prohibition of idolatry and regulations on interactions between Jews and idolaters. The first two chapters address economic relationships with idolaters and consumption of their food. The third and fourth chapters discuss laws related to forbidden idols and images and the process of their nullification, and the fifth chapter discusses the prohibition of deriving benefit from wine that was poured as libation for idol worship.",
    "chapters": [
@@ -2543,8 +2544,7 @@
     "Summary of Perek IV",
     "Introduction to Perek V",
     "Summary of Perek V"
-   ],
-   "hadranSlug": "avodah-zarah"
+   ]
   },
   {
    "hebcalName": "Horayot",
@@ -2559,6 +2559,7 @@
    "lastDaf": 14,
    "days": 13,
    "refMode": "talmud",
+   "lastAmud": "a",
    "shortDesc": "Atoning for erroneous rulings of the court and inadvertent sins of leaders.",
    "description": "Horayot (“Decisions”) is the last tractate in Seder Nezikin (“Order of Damages\"). Its three chapters discuss erroneous rulings of the court, inadvertent sins of kings, High Priests, or political leaders, and the sacrifices brought as atonement. The conclusion of the tractate addresses the statuses of various members of the Jewish people and how to prioritize them when necessary. Horayat is the shortest tractate in the Talmud that has commentary on the entirety of the Mishnah, at just 13 folio.",
    "chapters": [
@@ -2592,8 +2593,7 @@
     "Summary of Perek II",
     "Introduction to Perek III",
     "Summary of Perek III"
-   ],
-   "hadranSlug": "horayot"
+   ]
   },
   {
    "hebcalName": "Zevachim",
@@ -2608,6 +2608,7 @@
    "lastDaf": 120,
    "days": 119,
    "refMode": "talmud",
+   "lastAmud": "b",
    "shortDesc": "Animal and bird sacrifices in the Temple.",
    "description": "Zevachim (Animal Sacrifices) belongs in the fifth order, Kodashim (Sacrifices) and discusses the procedure of animal and bird offerings. It has fourteen chapters.\n",
    "chapters": [
@@ -2740,8 +2741,7 @@
     "Summary of Perek XIII",
     "Introduction to Perek XIV",
     "Summary of Perek XIV"
-   ],
-   "hadranSlug": "zevachim"
+   ]
   },
   {
    "hebcalName": "Menachot",
@@ -2756,6 +2756,7 @@
    "lastDaf": 110,
    "days": 109,
    "refMode": "talmud",
+   "lastAmud": "a",
    "shortDesc": "Flour offerings, usually mixed with oil, wine libations, and bread loaf offerings in the Temple.",
    "description": "Menachot (“Meal Offerings”) is the second tractate in Seder Kodashim (“Order of Holy Things\"). Its thirteen chapters mainly discuss flour-based offerings brought in the Temple, as well as oil and wine libations. Among the topics addressed are intentions that nullify an offering’s validity, details of the process of removing a handful of meal-offering, sanctifying it in a vessel, carrying it, and burning it on the altar, and the preparation and consumption of showbread (loaves that were always present on a dedicated table in the Temple). Menachot also contains the Talmud’s main discussions about the commandments of mezuzah (doorpost marker) , tzitzit (ritual fringes), and tefillin (phylacteries), included in the third and fourth chapters.",
    "chapters": [
@@ -2879,8 +2880,7 @@
     "Summary of Perek XII",
     "Introduction to Perek XIII",
     "Summary of Perek XIII"
-   ],
-   "hadranSlug": "menachot"
+   ]
   },
   {
    "hebcalName": "Chullin",
@@ -2895,6 +2895,7 @@
    "lastDaf": 142,
    "days": 141,
    "refMode": "talmud",
+   "lastAmud": "a",
    "shortDesc": "Slaughter of animals and birds for non-consecrated purposes, other aspects of kashrut.",
    "description": "Chullin (lit: “Ordinary,” referring to animal and birds consumed in non-consecrated contexts) is the third tractate in Seder Kodashim (“Order of Holy Things\"). Its twelve chapters discuss laws related to non-sacred consumption of meat, such as ritual slaughter of non-consecrated animals and birds, kosher and non-kosher living beings, the obligation to cover the blood of slaughtered animals, and the prohibitions of mixing meat and dairy products and of slaughtering an animal and its offspring on the same day. The tractate’s last chapter discusses the obligation to send away a mother bird when taking her young or eggs (shiluach hakein).",
    "chapters": [
@@ -3009,8 +3010,7 @@
     "Summary of Perek XI",
     "Introduction to Perek XII",
     "Summary of Perek XII"
-   ],
-   "hadranSlug": "chullin"
+   ]
   },
   {
    "hebcalName": "Bechorot",
@@ -3025,6 +3025,7 @@
    "lastDaf": 61,
    "days": 60,
    "refMode": "talmud",
+   "lastAmud": "a",
    "shortDesc": "Transfer of first-born kosher animals to a priest, redemption of first-born donkeys and people.",
    "description": "Bekhorot (“Firstborns”) is a tractate in Seder Kodashim (“Order of Holy Things\") that discusses three categories of firstborns: a woman’s firstborn son, the male firstborn of a kosher domesticated animal, and a male firstborn donkey. The Torah assigns a sacred status to each of these and requires them to be consecrated - either through transfer to a priest, redemption, or sacrifice, depending on the firstborn and the circumstances. Bekhorot discusses details of this process, such as determining whether an animal is a firstborn in questionable cases and blemishes that disqualify a firstborn animal from being sacrificed in the Temple.",
    "chapters": [
@@ -3112,8 +3113,7 @@
     "Summary of Perek VIII",
     "Introduction to Perek IX",
     "Summary of Perek IX"
-   ],
-   "hadranSlug": "bekhorot"
+   ]
   },
   {
    "hebcalName": "Arachin",
@@ -3128,6 +3128,7 @@
    "lastDaf": 34,
    "days": 33,
    "refMode": "talmud",
+   "lastAmud": "a",
    "shortDesc": "Vowing to donate a person’s prescribed value delineated in the Torah to the Temple, donations of land to the Temple.",
    "description": "Arakhin (“Values”) is a tractate within Seder Kodashim (“Order of Holy Things”). Its nine chapters address the process of vowing to donate a person’s prescribed value to provide for Temple maintenance (as described in Leviticus chapter 27), discussing details such as limitations on who can take a vow of donation and methods of collecting these donations. The tractate also discusses donations of land to the Temple and the sale of ancestral fields, houses of walled cities, and houses of unwalled courtyards.",
    "chapters": [
@@ -3215,8 +3216,7 @@
     "Summary of Perek VIII",
     "Introduction to Perek IX",
     "Summary of Perek IX"
-   ],
-   "hadranSlug": "arakhin"
+   ]
   },
   {
    "hebcalName": "Temurah",
@@ -3231,6 +3231,7 @@
    "lastDaf": 34,
    "days": 33,
    "refMode": "talmud",
+   "lastAmud": "a",
    "shortDesc": "The sanctity of animals dedicated for sacrifice and the prohibition of exchanging them for others.",
    "description": "Temurah (“Substitution”) is a tractate within Seder Kodashim (“Order of Holy Things”). It mainly discusses the prohibition, based in Leviticus 27:10 and 27:33, against substituting a non-consecrated animal for an animal consecrated for sacrifice in the Temple, and the sacred status that both animals receive if this prohibition is violated. Temurah’s seven chapters address details such as the status of fetuses of substituted animals and the status of money set aside for sacrifices.",
    "chapters": [
@@ -3300,8 +3301,7 @@
     "Summary of Perek VI",
     "Introduction to Perek VII",
     "Summary of Perek VII"
-   ],
-   "hadranSlug": "temurah"
+   ]
   },
   {
    "hebcalName": "Keritot",
@@ -3316,6 +3316,7 @@
    "lastDaf": 28,
    "days": 27,
    "refMode": "talmud",
+   "lastAmud": "b",
    "shortDesc": "Karet, divinely-issued severance from the Jewish people, and sacrifices for unintentional sin.",
    "description": "Keritot (plural of “Karet,” or the punishment of divinely-issued severance from the Jewish people) is a tractate within Seder Kodashim (“Order of Holy Things”). It mainly discusses prohibitions for which the Torah imposes karet for those who knowingly transgress. It also discusses the sin offering brought when one unintentionally violates these prohibitions (chatat), as well as the provisional guilt offering brought when one is unsure if they violated these prohibitions (asham).",
    "chapters": [
@@ -3376,8 +3377,7 @@
     "Summary of Perek V",
     "Introduction to Perek VI",
     "Summary of Perek VI"
-   ],
-   "hadranSlug": "keritot"
+   ]
   },
   {
    "hebcalName": "Meilah",
@@ -3392,6 +3392,7 @@
    "lastDaf": 22,
    "days": 21,
    "refMode": "talmud",
+   "lastAmud": "a",
    "shortDesc": "Prohibited benefit from Temple property, the sacrifice and restitution offered as atonement.",
    "description": "Meilah (“Misuse of Property”) is a tractate within Seder Kodashim (“Order of Holy Things”). It discusses the prohibition against deriving benefit from property dedicated to the Temple, and the sacrifice and restitution brought as atonement by those who violate the prohibition (as detailed in Leviticus 5:15-16). The tractate’s six chapters address details such as which consecrated items are subject to the laws of meilah and culpability when an agent is sent to derive benefit from Temple property.",
    "chapters": [
@@ -3452,8 +3453,7 @@
     "Summary of Perek V",
     "Introduction to Perek VI",
     "Summary of Perek VI"
-   ],
-   "hadranSlug": "meilah"
+   ]
   },
   {
    "hebcalName": "Kinnim",
@@ -3468,11 +3468,11 @@
    "lastDaf": 25,
    "days": 3,
    "refMode": "calendar",
+   "lastAmud": "b",
    "shortDesc": "Bird-offerings that are mixed up and the complex math involved in determining their status.",
    "description": "Kinnim (Nests) belongs to the fifth order, Kodshim (Holy things) and discusses the complex laws for situations where the mixing of bird-offerings occurred. It has three chapters.",
    "chapters": [],
-   "introNodes": [],
-   "hadranSlug": "kinnim"
+   "introNodes": []
   },
   {
    "hebcalName": "Tamid",
@@ -3487,6 +3487,7 @@
    "lastDaf": 33,
    "days": 8,
    "refMode": "talmud",
+   "lastAmud": "b",
    "shortDesc": "The daily Temple service, including the burnt-offerings brought every morning and afternoon.",
    "description": "Tractate Tamid (“Daily Burnt Offering”) is a tractate within Seder Kodashim (“Order of Holy Things”). It discusses the daily Temple service, with a focus on the burnt-offerings brought every morning and afternoon. The mishnayot (plural of mishnah) of Tamid stand out from those of other tractates in that they contain almost no disputes, instead telling a narrative about what happened in the Temple..",
    "chapters": [
@@ -3528,8 +3529,7 @@
    ],
    "introNodes": [
     "Introduction to Tamid"
-   ],
-   "hadranSlug": "tamid"
+   ]
   },
   {
    "hebcalName": "Midot",
@@ -3544,11 +3544,11 @@
    "lastDaf": 37,
    "days": 4,
    "refMode": "calendar",
+   "lastAmud": "b",
    "shortDesc": "Measurements and descriptions of the Second Temple and the Temple Mount.",
    "description": "Middot (Measurements) belongs to the fifth order, Kodshim (Holy things) and discusses the measurements of the second Temple. It has four chapters.",
    "chapters": [],
-   "introNodes": [],
-   "hadranSlug": "middot"
+   "introNodes": []
   },
   {
    "hebcalName": "Niddah",
@@ -3563,6 +3563,7 @@
    "lastDaf": 73,
    "days": 72,
    "refMode": "talmud",
+   "lastAmud": "a",
    "shortDesc": "The ritual impurity of a woman in her menstrual cycle or experiencing particular discharges.",
    "description": "Niddah (“Woman who is Menstruating”) is a tractate in Seder Taharot (“Order of Purities”) that discusses the ritual impurity of a woman in her menstrual cycle or experiencing particular discharges and the accompanying prohibition of intercourse. Its ten chapters address details such as the status of blood stains, hymenal bleeding, and blood from an internal wound.",
    "chapters": [
@@ -3659,8 +3660,7 @@
     "Summary of Perek IX",
     "Introduction to Perek X",
     "Summary of Perek X"
-   ],
-   "hadranSlug": "niddah"
+   ]
   }
  ]
 }

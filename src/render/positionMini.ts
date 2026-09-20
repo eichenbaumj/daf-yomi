@@ -33,7 +33,7 @@ export function renderPositionMini(ref: DafRef, learnedThroughDaf: number): stri
   const chapterStarts = new Set(t.chapters.map((c) => amudToDaf(c.startDaf)).filter((n) => n > t.firstDaf));
   const cells: string[] = [];
   for (let d = t.firstDaf; d <= t.lastDaf; d++) {
-    const cls = ["cell", d === ref.daf ? "today" : d < learnedThroughDaf ? "past" : "", chapterStarts.has(d) ? "chapter-start" : ""].filter(Boolean).join(" ");
+    const cls = ["dc", d === ref.daf ? "today" : d < learnedThroughDaf ? "past" : "", chapterStarts.has(d) ? "chapter-start" : ""].filter(Boolean).join(" ");
     cells.push(`<span class="${cls}" title="${esc(t.name)} ${d}"></span>`);
   }
   const si = sederIndex(t.seder);

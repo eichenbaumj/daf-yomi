@@ -69,6 +69,12 @@ describe("tractate table", () => {
     expect(TRACTATES[0]!.slug).toBe("berakhot");
     expect(TRACTATES[39]!.slug).toBe("niddah");
   });
+  it("knows which side each tractate ends on", () => {
+    expect(tractateBySlug("chullin")!.lastAmud).toBe("a");
+    expect(tractateBySlug("bekhorot")!.lastAmud).toBe("a");
+    expect(tractateBySlug("shevuot")!.lastAmud).toBe("b");
+    expect(tractateBySlug("berakhot")!.lastAmud).toBe("a");
+  });
   it("has chapter ranges for Bavli tractates", () => {
     const b = tractateBySlug("bekhorot")!;
     expect(b.chapters.length).toBe(9);

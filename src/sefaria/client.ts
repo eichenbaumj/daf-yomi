@@ -114,7 +114,8 @@ export interface ResolvedDaf {
 export async function resolveDafRefs(t: Tractate, daf: number, cycle: number, kv?: KVNamespace): Promise<ResolvedDaf> {
   if (t.refMode === "talmud") {
     const title = t.sefariaTitle.replace(/ /g, "_");
-    return { urlRefs: [`${title}.${daf}a`, `${title}.${daf}b`], labels: [`${t.name} ${daf}a`, `${t.name} ${daf}b`] };
+    const sides = daf === t.lastDaf && t.lastAmud === "a" ? ["a"] : ["a", "b"];
+    return { urlRefs: sides.map((x) => `${title}.${daf}${x}`), labels: sides.map((x) => `${t.name} ${daf}${x}`) };
   }
   const key = `ref:v1:${t.slug}:${daf}`;
   if (kv) {

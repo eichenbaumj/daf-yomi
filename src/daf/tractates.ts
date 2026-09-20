@@ -16,6 +16,8 @@ export interface Tractate {
   days: number;
   /** "talmud": Sefaria ref is `{sefariaTitle} {n}a`; "calendar": ask Sefaria's calendar for the day's ref. */
   refMode: "talmud" | "calendar";
+  /** Side the tractate ends on; when "a", the last daf has no b side to fetch. */
+  lastAmud: "a" | "b";
   shortDesc: string;
   description: string;
   chapters: Chapter[];

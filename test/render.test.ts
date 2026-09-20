@@ -34,8 +34,8 @@ describe("daf page", () => {
     expect(html).toContain("Chapter 1 of 9");
     expect(html).toContain("Daf 2 of 61");
     expect(html).toContain("Day 2,451 of 2,711");
-    expect((html.match(/class="cell/g) ?? []).length).toBe(60); // Bekhorot 2..61
-    expect((html.match(/class="cell today"/g) ?? []).length).toBe(1);
+    expect((html.match(/class="dc/g) ?? []).length).toBe(60); // Bekhorot 2..61
+    expect((html.match(/class="dc today"/g) ?? []).length).toBe(1);
     expect((html.match(/class="seg s\d cur"/g) ?? []).length).toBe(1);
     expect(html).toContain('data-toggle="he"');
     expect(html).toContain('data-toggle="talmudOnly"');

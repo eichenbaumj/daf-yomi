@@ -30,6 +30,8 @@ export interface TractateRow {
   hebcalName: string; sefariaTitle: string; name: string; slug: string; heTitle: string;
   seder: string; sederHe: string; order: number; firstDaf: number; lastDaf: number; days: number;
   refMode: "talmud" | "calendar"; shortDesc: string; description: string;
+  /** Side the tractate ends on. Sefaria numbers amudim 1a=1, 1b=2, 2a=3 …, so an odd count ends on side a. */
+  lastAmud: "a" | "b";
   chapters: Chapter[]; introNodes: string[];
 }
 
@@ -76,15 +78,18 @@ async function main() {
       ? []
       : chapterNodes.map((n, k) => parseChapter(n, k + 1)).filter((c): c is Chapter => !!c);
     const name = displayName(sefariaTitle);
+    const amudim: number | undefined = idx.schema?.lengths?.[0];
+    const lastAmud: "a" | "b" = CALENDAR_REF.has(hebcalName) ? "b" : amudim && amudim % 2 === 0 ? "b" : "a";
+    if (!CALENDAR_REF.has(hebcalName) && amudim && Math.ceil(amudim / 2) !== lastDaf) throw new Error(`${name}: Sefaria has ${amudim} amudim (last daf ${Math.ceil(amudim / 2)}) but the schedule ends at ${lastDaf}`);
     rows.push({
       hebcalName, sefariaTitle, name, slug: slugOf(name), heTitle: String(idx.heTitle ?? "").replace(/^(משנה|תלמוד ירושלמי)\s+/, ""),
       seder: sederIx >= 0 ? cats[sederIx]! : "", sederHe: sederIx >= 0 ? heCats[sederIx] ?? "" : "",
       order: i, firstDaf, lastDaf, days: lastDaf - firstDaf + 1,
-      refMode: CALENDAR_REF.has(hebcalName) ? "calendar" : "talmud",
+      refMode: CALENDAR_REF.has(hebcalName) ? "calendar" : "talmud", lastAmud,
       shortDesc: String(idx.enShortDesc ?? ""), description: String(idx.enDesc ?? ""),
       chapters, introNodes: introByTitle.get(sefariaTitle) ?? [],
     });
-    process.stderr.write(`${name}: ${firstDaf}–${lastDaf} (${lastDaf - firstDaf + 1}d), ${chapters.length} ch, ${(introByTitle.get(sefariaTitle) ?? []).length} intro nodes\n`);
+    process.stderr.write(`${name}: ${firstDaf}–${lastDaf}${lastAmud} (${lastDaf - firstDaf + 1}d), ${chapters.length} ch, ${(introByTitle.get(sefariaTitle) ?? []).length} intro nodes\n`);
   }
   const total = rows.reduce((s, r) => s + r.days, 0);
   if (total !== 2711) throw new Error(`days sum to ${total}, expected 2711`);
