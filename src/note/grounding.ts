@@ -45,6 +45,27 @@ export function articleSlips(text: string): string[] {
   return out;
 }
 
+/**
+ * Terms the translation leaves untranslated that a newcomer will not know. If one appears, the
+ * sentence must gloss it: a parenthesis, or ", a …"/", the …"/" or …" within a few words after it.
+ * The page's own vocabulary (mishna, Gemara, baraita, tanna, amora) is glossed once in the page legend
+ * instead, so it is deliberately not listed here.
+ */
+export const GLOSS_TERMS = ["issar", "zuz", "sela", "dinar", "perutah", "maneh", "kav", "seah", "log", "kor", "tefach", "mil", "parasang", "teruma", "terumah", "maaser", "tithe", "korban", "olah", "chatat", "asham", "minchah", "shelamim", "todah", "bikkurim", "challah", "orlah", "kilayim", "shemitta", "yovel", "eruv", "muktzeh", "melakhah", "karet", "lashes", "get", "ketubah", "chalitzah", "yibbum", "sotah", "nazirite", "tosefta"];
+export function unglossed(text: string): string[] {
+  const out: string[] = [];
+  for (const term of GLOSS_TERMS) {
+    const re = new RegExp(`\\b${term}s?\\b`, "i");
+    const m = re.exec(text);
+    if (!m) continue;
+    const after = text.slice(m.index + m[0].length, m.index + m[0].length + 60);
+    const before = text.slice(Math.max(0, m.index - 40), m.index);
+    const glossed = /^\s*[,(]\s*(a|an|the|which|that|meaning|i\.e\.|or)\b/i.test(after) || /^\s*\(/.test(after) || /\((?:[^)]*)$/.test(before) || /\b(called|known as|termed)\s+(a|an|the)?\s*$/i.test(before);
+    if (!glossed) out.push(m[0]);
+  }
+  return out;
+}
+
 export interface GroundingResult { ok: boolean; problems: string[] }
 
 export function checkNote(note: NoteDraft, sourcePlainText: string): GroundingResult {
@@ -54,6 +75,7 @@ export function checkNote(note: NoteDraft, sourcePlainText: string): GroundingRe
 
   if (wordCount(note.summary) > 92) problems.push(`summary is ${wordCount(note.summary)} words; keep it to about 80, never past 90.`);
   for (const slip of articleSlips(prose)) problems.push(`article does not agree with the next word: "${slip}".`);
+  for (const term of unglossed(note.summary)) problems.push(`gloss "${term}" in a few words the first time it appears; the reader has never opened a Talmud.`);
   if (wordCount(note.summary) < 15) problems.push("summary is too short to say anything.");
   if (!/\?\s*$/.test(note.question.trim())) problems.push("question must end with a question mark.");
   if ((note.question.match(/\?/g) ?? []).length > 1) problems.push("ask exactly one question.");

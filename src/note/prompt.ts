@@ -2,7 +2,7 @@ import styleGuide from "../../prompts/daf-note.md";
 import { z } from "zod";
 
 /** Bumped by hand when the house style changes in a way that should re-bake the archive. */
-export const PROMPT_VERSION = "2026-09-20.3";
+export const PROMPT_VERSION = "2026-09-20.4";
 
 export const NoteSchema = z.object({
   summary: z.string().describe("Three plain sentences, about 80 words, never past 90."),

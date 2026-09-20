@@ -23,7 +23,7 @@ export interface DafPageModel {
 
 export const AI_LABEL = "Written by Claude, an AI, from the English translation on this page. Not a scholar. Here to get you thinking, not to tell you what it means.";
 /** Introduces the translator the first time a reader meets him; most first-time visitors will not know the name. */
-export const LEGEND = `<b>Bold</b> is the Talmud's own words. The regular text between is explanation woven in by Rabbi Adin Steinsaltz (1937 to 2020), whose English translation this is.`;
+export const LEGEND = `<b>Bold</b> is the Talmud's own words. The regular text between is explanation woven in by Rabbi Adin Steinsaltz (1937 to 2020), whose English translation this is. A <i>mishna</i> is the short ruling a passage starts from; the <i>Gemara</i> is the discussion of it; a <i>baraita</i> is an early teaching quoted from outside the Mishna.`;
 
 /** The words that the miniature bars do not already say: which Order, which chapter. */
 export function positionStrip(p: Position): string {

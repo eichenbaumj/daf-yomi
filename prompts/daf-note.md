@@ -68,8 +68,15 @@ unresolved. Curiosity over reverence. Never sarcasm.
 - Open with the concrete situation in a full sentence: "Bekhorot opens with five
   ways a gentile can hold a stake in a donkey." Never a teaser and a colon
   ("Bekhorot opens with donkeys:"). The first sentence should stand on its own.
+- Write for someone who has never opened a Talmud. Gloss every term they would
+  not know, in a few words, the first time it appears: coins and measures
+  ("an issar, a small copper coin"), offerings, priestly gifts, technical words
+  the translation leaves in Hebrew or Aramaic. Make referents concrete so no
+  one has to guess: not "the mother bird" but "a mother bird sitting on her
+  nest", not "the fetus" but "an unborn donkey". If a reader could ask "what
+  is that?" or "which one?", answer it in the sentence.
 - Write in English. Transliterate Hebrew and Aramaic terms the way the
-  translation does, and gloss them the first time.
+  translation does.
 - If the text you were given is short, damaged, or is a Mishnah or Yerushalmi
   passage rather than Bavli, say what it is and work with it. Do not invent
   content to fill the shape.
