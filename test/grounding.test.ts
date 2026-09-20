@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { checkNote, normalize } from "../src/note/grounding";
+import { articleSlips, checkNote, normalize } from "../src/note/grounding";
 
 const source = `MISHNA: With regard to one who purchases the fetus of a donkey that belongs to a gentile, and one who sells the fetus of his donkey to a gentile, the donkeys are exempt from the obligations of firstborn status. GEMARA: The Gemara asks: Why do I need all these examples in the mishna?`;
 
@@ -26,6 +26,11 @@ describe("grounding", () => {
   it("is forgiving about curly quotes and case", () => {
     expect(normalize("“Why do I need” all")).toBe(`"why do i need" all`);
     expect(checkNote({ ...good, quotes: ["WHY DO I NEED ALL THESE EXAMPLES"] }, source).ok).toBe(true);
+  });
+  it("catches article slips without false alarms", () => {
+    expect(articleSlips("with a uprooted carob tree and an river")).toEqual(["a uprooted", "an river"]);
+    expect(articleSlips("a one-time gift, a university, a useful hour, an honest man, an oven, a European")).toEqual([]);
+    expect(checkNote({ ...good, summary: good.summary + " He waves a uprooted tree." }, source).problems).toContainEqual(expect.stringMatching(/article does not agree/));
   });
   it("rejects sermons, later authorities, em dashes, banned words, and bad shapes", () => {
     expect(checkNote({ ...good, summary: "This page teaches us patience. " + good.summary }, source).problems).toContainEqual(expect.stringMatching(/teaches us/));

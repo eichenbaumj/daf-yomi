@@ -2,10 +2,10 @@ import styleGuide from "../../prompts/daf-note.md";
 import { z } from "zod";
 
 /** Bumped by hand when the house style changes in a way that should re-bake the archive. */
-export const PROMPT_VERSION = "2026-09-20.1";
+export const PROMPT_VERSION = "2026-09-20.2";
 
 export const NoteSchema = z.object({
-  summary: z.string().describe("Two or three plain sentences, under 80 words."),
+  summary: z.string().describe("Three plain sentences, about 80 words, never past 90."),
   question: z.string().describe("One sentence ending in a question mark."),
   quotes: z.array(z.string()).max(2).describe("0-2 phrases of 12 words or fewer copied exactly from the English text."),
 });

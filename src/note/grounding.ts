@@ -31,6 +31,20 @@ function quotedSpans(s: string): string[] {
   return out;
 }
 
+/** "a uprooted", "an carob": the one grammar slip the model makes often enough to check for. */
+const A_BEFORE_VOWEL_OK = /^(one|uni|use|usu|eu|ur[aeiou]|ubi|uti|unani|u\b)/i; // "a one-time", "a university", "a useful", "a European", "a urine"
+export function articleSlips(text: string): string[] {
+  const out: string[] = [];
+  for (const m of text.matchAll(/\b(a|an) ([A-Za-z][a-z]+)/g)) {
+    const article = m[1]!.toLowerCase();
+    const word = m[2]!;
+    const vowelStart = /^[aeiou]/i.test(word);
+    if (article === "a" && vowelStart && !A_BEFORE_VOWEL_OK.test(word)) out.push(`${m[1]} ${word}`);
+    if (article === "an" && !vowelStart && !/^h/i.test(word)) out.push(`${m[1]} ${word}`);
+  }
+  return out;
+}
+
 export interface GroundingResult { ok: boolean; problems: string[] }
 
 export function checkNote(note: NoteDraft, sourcePlainText: string): GroundingResult {
@@ -38,7 +52,8 @@ export function checkNote(note: NoteDraft, sourcePlainText: string): GroundingRe
   const src = normalize(sourcePlainText);
   const prose = `${note.summary} ${note.question}`;
 
-  if (wordCount(note.summary) > 95) problems.push(`summary is ${wordCount(note.summary)} words; keep it under 80.`);
+  if (wordCount(note.summary) > 92) problems.push(`summary is ${wordCount(note.summary)} words; keep it to about 80, never past 90.`);
+  for (const slip of articleSlips(prose)) problems.push(`article does not agree with the next word: "${slip}".`);
   if (wordCount(note.summary) < 15) problems.push("summary is too short to say anything.");
   if (!/\?\s*$/.test(note.question.trim())) problems.push("question must end with a question mark.");
   if ((note.question.match(/\?/g) ?? []).length > 1) problems.push("ask exactly one question.");
