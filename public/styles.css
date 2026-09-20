@@ -152,3 +152,41 @@ a.ref { color: inherit; text-decoration: underline dotted var(--ink-3); }
   header.site nav, .tools, .deeper-wrap, .prevnext, footer.site, body::before { display: none; }
   body { background: #fff; color: #000; }
 }
+
+/* How Daf Yomi works (About page). Ordinal ramp for the six Orders: one hue, darkening in canonical order. */
+:root { --s1: #b9893a; --s2: #a4702f; --s3: #8c5828; --s4: #734322; --s5: #5b311c; --s6: #432116; --seg-ink: #fff7e6; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --s1: #e2b56b; --s2: #cf9c55; --s3: #b98444; --s4: #a06d37; --s5: #86582d; --s6: #6b4526; --seg-ink: #1e1711; }
+}
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.dy-diagram { margin: 1.4rem 0 2rem; }
+.dy-stats { display: flex; flex-wrap: wrap; gap: .8rem 2rem; margin: 0 0 1.4rem; }
+.dy-stats div { display: flex; flex-direction: column; }
+.dy-stats .num { font-weight: 700; font-size: 1.6rem; line-height: 1.1; color: var(--accent); }
+.dy-stats .what { color: var(--ink-2); font-size: .92rem; }
+.dy-page { display: flex; gap: 1.1rem; align-items: flex-start; margin: 0 0 1.6rem; }
+.dy-page svg { flex: none; }
+.dy-page p { margin: 0; font-size: .98rem; }
+.dy-label { margin: 1rem 0 .3rem; font-size: .9rem; color: var(--ink-2); }
+.dy-bar { display: flex; width: 100%; gap: 2px; }
+.dy-bar .seg { display: block; min-width: 2px; height: 2rem; overflow: hidden; border-radius: 2px; color: var(--seg-ink); text-decoration: none; position: relative; }
+.dy-bar .seg .lbl { position: absolute; left: .4rem; top: 50%; transform: translateY(-50%); font-size: .78rem; white-space: nowrap; overflow: hidden; text-overflow: clip; max-width: calc(100% - .5rem); }
+.dy-tractates .seg { height: 1.4rem; }
+.dy-tractates .seg .lbl { font-size: .7rem; }
+.dy-bar .seg.now { outline: 2px solid var(--accent); outline-offset: 1px; z-index: 1; }
+.dy-bar a.seg:hover { filter: brightness(1.12); }
+.s1 { background: var(--s1); } .s2 { background: var(--s2); } .s3 { background: var(--s3); } .s4 { background: var(--s4); } .s5 { background: var(--s5); } .s6 { background: var(--s6); }
+.dy-axis { position: relative; height: 3.4rem; margin-top: .3rem; border-top: 1px solid var(--rule); }
+.dy-axis .tick { position: absolute; top: 0; transform: translateX(-50%); font-size: .75rem; color: var(--ink-3); padding-top: .55rem; }
+.dy-axis .tick i { position: absolute; left: 50%; top: 0; height: .4rem; border-left: 1px solid var(--rule); }
+.dy-axis .today { position: absolute; top: 0; transform: translateX(-50%); }
+.dy-axis .today i { display: block; margin: -1px auto 0; width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-top: 8px solid var(--accent); }
+.dy-axis .today .you { position: absolute; top: 1.6rem; left: 50%; transform: translateX(-50%); white-space: nowrap; font-size: .8rem; color: var(--accent); font-weight: 600; }
+.dy-legend { list-style: none; padding: 0; margin: .8rem 0 .6rem; }
+.dy-legend li { margin: .35rem 0; font-size: .95rem; }
+.dy-legend .chip { display: inline-block; width: .8rem; height: .8rem; border-radius: 2px; vertical-align: -.1rem; margin-right: .45rem; }
+@media (max-width: 40rem) {
+  .dy-bar .seg .lbl { display: none; }
+  .dy-axis .today .you { transform: none; left: auto; right: 0; }
+  .dy-page { flex-direction: column; }
+}

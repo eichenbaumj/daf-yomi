@@ -125,7 +125,10 @@ async function handle(request: Request, env: Env, ctx: ExecutionContext): Promis
       const todayRef = dafForDate(today);
       return cachedResponse(ck(`/tractates?d=${ymd(today)}`), 3600, async () => html(renderTractatesIndex(env, origin, todayRef, today)), bypass);
     }
-    case "about": return cachedResponse(ck("/about"), 3600, async () => html(renderAbout(env, origin)), bypass);
+    case "about": {
+      const todayRef = dafForDate(today);
+      return cachedResponse(ck(`/about?d=${ymd(today)}`), 3600, async () => html(renderAbout(env, origin, todayRef)), bypass);
+    }
     case "feed": {
       const utcToday = todayIn("UTC");
       return cachedResponse(ck(`/feed.xml?d=${ymd(utcToday)}`), 1800, async () => {

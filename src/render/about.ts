@@ -1,7 +1,9 @@
 import type { Env } from "../types";
 import { esc, page } from "./layout";
+import { renderDafYomiDiagram } from "./dafYomiDiagram";
+import type { DafRef } from "../daf/schedule";
 
-export function renderAbout(env: Env, origin: string): string {
+export function renderAbout(env: Env, origin: string, today: DafRef): string {
   const body = `
 <article class="prose">
   <header class="daf-head"><h1>About</h1></header>
@@ -15,6 +17,10 @@ export function renderAbout(env: Env, origin: string): string {
     <li><strong>A short note, written by an AI.</strong> Two or three sentences on what the page argues about, and one question with no settled answer. It is labelled as an AI note every single time, because that is what it is.</li>
     <li><strong>A permalink for every daf</strong>, so yesterday is one tap back and any page can be shared.</li>
   </ul>
+
+  <h2>How Daf Yomi works</h2>
+  <p>Daf Yomi ("a page a day") is a shared reading schedule: one leaf of the Babylonian Talmud every day, in print order, until you have read all of it. Then you start again. It was proposed by Rabbi Meir Shapiro in 1923 and has run continuously since.</p>
+  ${renderDafYomiDiagram(today)}
 
   <h2>About the AI note, plainly</h2>
   <p>The note is written each night by Claude, a large language model made by Anthropic, from the English text of that day's daf and nothing else. It is not a rabbi. It is not a scholar. It has not read Rashi. It is asked to summarize and to raise a question, not to tell you what the page means or what you should do.</p>

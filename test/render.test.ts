@@ -55,8 +55,11 @@ describe("daf page", () => {
 
 describe("about", () => {
   it("has no em dashes or AI tells", () => {
-    const html = renderAbout(env, "https://example.test");
+    const html = renderAbout(env, "https://example.test", dafForDate(d("2026-09-20")));
     expect(html).not.toMatch(/—/);
     expect(html).not.toMatch(/\b(leverage|robust|seamless|holistic|delve)\b/i);
+    expect(html).toContain("You are here: day 2,451, Bekhorot 2");
+    expect((html.match(/class="seg tractate/g) ?? []).length).toBe(40);
+    expect((html.match(/class="seg seder/g) ?? []).length).toBe(6);
   });
 });
