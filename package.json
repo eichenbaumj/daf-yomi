@@ -14,7 +14,11 @@
     "backfill": "tsx scripts/backfill.ts",
     "tail": "wrangler tail --format pretty",
     "check:links": "tsx scripts/check-scholar-links.ts",
-    "fill:missing": "tsx scripts/fill-missing.ts"
+    "fill:missing": "tsx scripts/fill-missing.ts",
+    "d1:migrate:local": "wrangler d1 migrations apply daf-yomi-newsletter --local",
+    "d1:migrate": "wrangler d1 migrations apply daf-yomi-newsletter --remote",
+    "email:preview": "tsx scripts/email-preview.ts",
+    "newsletter:test": "tsx scripts/newsletter-send-test.ts"
   },
   "keywords": [
     "daf yomi",

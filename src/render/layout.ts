@@ -62,7 +62,8 @@ ${o.extraHead ?? ""}
     <a href="/">Today</a>
     <a href="/tractates">Tractates</a>
     <a href="/about">About</a>
-    <a href="/feed.xml" title="RSS feed">Feed</a>
+    <a href="/feed.xml" title="RSS feed">Feed</a>${o.env.NEWSLETTER_PUBLIC === "1" ? `
+    <a href="/newsletter">Newsletter</a>` : ""}
   </nav>
 </header>
 <main id="main">
@@ -71,7 +72,7 @@ ${o.body}
 <footer class="site">
   <p class="ornament" aria-hidden="true">✦ ✦ ✦</p>
   <p>The text is <a href="https://www.sefaria.org/william-davidson-talmud" rel="noopener">The William Davidson Talmud</a>: Rabbi Adin Even-Israel Steinsaltz's English translation and explanation (Koren Noé edition), served by <a href="https://www.sefaria.org" rel="noopener">Sefaria</a> under <a href="https://creativecommons.org/licenses/by-nc/4.0/" rel="noopener">CC BY-NC 4.0</a>. Other texts are credited where they appear.</p>
-  <p>The daily note is written by an AI and says so. <a href="/about">How this works.</a> Free, no accounts, no tracking cookies. A good day of learning to you.</p>
+  <p>The daily note is written by an AI and says so. <a href="/about">How this works.</a> ${o.env.NEWSLETTER_PUBLIC === "1" ? "Free, no accounts, no tracking. The <a href=\"/newsletter\">daily email</a> keeps only your address and your chosen hour." : "Free, no accounts, no tracking cookies."} A good day of learning to you.</p>
 </footer>
 <script src="/app.js" defer></script>
 </body>

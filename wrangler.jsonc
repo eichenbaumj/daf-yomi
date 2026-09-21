@@ -18,10 +18,13 @@
     { "pattern": "www.daf-yomi.dev", "custom_domain": true }
   ],
   "kv_namespaces": [{ "binding": "DAF_KV", "id": "34d5b074f78b4c5da60c9fcf989315c7" }],
-  // UTC. 06:00 bakes tomorrow's note (ready before any timezone's midnight);
-  // 18:00 retries anything still missing. Free plan: 10 ms CPU per invocation,
-  // so each run bakes at most two dapim (see src/cron.ts).
-  "triggers": { "crons": ["0 6 * * *", "0 18 * * *"] },
+  // Newsletter storage (subscribers, deliveries, rendered editions). Free plan: 100k row writes/day, 50 queries per invocation.
+  "d1_databases": [{ "binding": "NEWSLETTER_DB", "database_name": "daf-yomi-newsletter", "database_id": "537f857a-40d5-4dd5-aaf7-57fa81031f07", "migrations_dir": "migrations" }],
+  // UTC. 06:00 bakes tomorrow's, today's and the day after tomorrow's notes (the newsletter sends at each
+  // reader's local hour, so notes exist a day early everywhere); 18:00 retries anything still missing;
+  // the hourly tick sends the newsletter (src/newsletter/send.ts). Free plan: 10 ms CPU per invocation,
+  // so each bake run generates at most three notes (see src/cron.ts). 3 of the account's 5 cron slots.
+  "triggers": { "crons": ["0 6 * * *", "0 18 * * *", "0 * * * *"] },
   "rules": [{ "type": "Text", "globs": ["**/*.md"], "fallthrough": true }],
   "observability": { "enabled": true },
   "vars": {
@@ -32,6 +35,12 @@
     "DEFAULT_TIMEZONE": "America/New_York",
     "NOTE_MODEL": "claude-opus-5",
     // Hard cap on paid generations per UTC day from cron + on-visit self-heal (admin --force bakes are exempt).
-    "DAILY_GENERATION_CAP": "12"
+    "DAILY_GENERATION_CAP": "12",
+    // Newsletter. Secrets (RESEND_API_KEY, TOKEN_HMAC_SECRET, TURNSTILE_SECRET_KEY, RESEND_WEBHOOK_SECRET) via wrangler secret put.
+    "NEWSLETTER_PUBLIC": "0",
+    "NEWSLETTER_FROM": "Today's Daf <daf@news.daf-yomi.dev>",
+    "NEWSLETTER_REPLY_TO": "daf@daf-yomi.dev",
+    "CATCHUP_HOURS": "3",
+    "EMAIL_HEBREW": "1"
   }
 }

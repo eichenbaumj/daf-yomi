@@ -12,6 +12,8 @@ export interface DafNote {
   sources: string[];
   /** Token usage summed over attempts, and the estimated cost at the model's list price. */
   usage?: { inputTokens: number; outputTokens: number; attempts: number; estUsd: number };
+  /** Words in the English source the note was written from; lets the email say "about N words" without fetching anything. */
+  wordCount?: number;
 }
 
 export const noteKey = (t: Tractate, daf: number) => `note:v1:${t.slug}:${daf}`;

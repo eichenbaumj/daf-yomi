@@ -38,6 +38,23 @@ domains are proxied by design, unlike the Lovable gray-cloud rule for the wareho
 we keep it on so the old URL redirects instead of dying. Pages derive absolute URLs from the request
 origin, so nothing else needed changing.
 
+## Newsletter (added 2026-09-20)
+
+- D1 database `daf-yomi-newsletter` (id in `wrangler.jsonc`). Create once with `npx wrangler d1 create`,
+  then `npm run d1:migrate` after any new file in `migrations/`.
+- Secrets: `RESEND_API_KEY` (Resend, sending only), `TOKEN_HMAC_SECRET` (32 random bytes hex), and for the
+  public form `TURNSTILE_SECRET_KEY`, `RESEND_WEBHOOK_SECRET`. Vars in `wrangler.jsonc`: `NEWSLETTER_FROM`,
+  `NEWSLETTER_REPLY_TO`, `CATCHUP_HOURS`, `EMAIL_HEBREW`, `NEWSLETTER_PUBLIC`, `TURNSTILE_SITE_KEY`.
+- DNS for sending (Resend dashboard gives the values; all records DNS-only, not proxied): sending domain
+  `news.daf-yomi.dev`: MX `send.news`, TXT SPF on `send.news`, TXT `resend._domainkey.news`; add
+  `_dmarc.news.daf-yomi.dev` `v=DMARC1; p=none; rua=mailto:dmarc@daf-yomi.dev`, and on the apex
+  `_dmarc.daf-yomi.dev` `v=DMARC1; p=reject; rua=mailto:dmarc@daf-yomi.dev`. Email Routing (free) on the
+  apex so `daf@daf-yomi.dev` (Reply-To) and `dmarc@` reach Joe; its MX/SPF records live on the apex and do
+  not collide with Resend's, which live on subdomains.
+- The third cron (`0 * * * *`) is the send tick; 3 of the account's 5 free cron slots are now used.
+- Limits the tick lives inside: D1 free 50 queries per invocation (a tick uses about a dozen), 50 external
+  subrequests (one per batch of 50 readers), 10 ms CPU. Operator notes in NEWSLETTER.md.
+
 ## Measured CPU (wrangler tail, 2026-09-20, after the formatter/cache fixes)
 
 | Request | CPU | Notes |
@@ -57,7 +74,7 @@ rendering, and remember the cron run (up to 3 note generations) is the heaviest 
 ## Limits that matter (free plan, verified 2026-09-20 in Cloudflare docs)
 
 - 100,000 requests/day, 10 ms CPU per request and per cron invocation, 50 subrequests per request.
-- 5 cron triggers per account; this Worker uses 2.
+- 5 cron triggers per account; this Worker uses 3 (two bakes, one hourly newsletter tick).
 - **KV: 1,000 writes/day on free, hard-enforced** (hit it 2026-09-20 during re-bakes: "KV put() limit exceeded
   for the day"; resets at midnight UTC). That is why Sefaria text and generation locks live in the edge Cache
   API, not KV: a crawl of all 2,711 permalinks would otherwise burn 5,000 writes. KV now takes roughly one

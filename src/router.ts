@@ -14,8 +14,19 @@ export type Route =
   | { kind: "robots" }
   | { kind: "sitemap" }
   | { kind: "admin-bake" }
+  | { kind: "newsletter" }
+  | { kind: "newsletter-confirm" }
+  | { kind: "newsletter-privacy" }
+  | { kind: "newsletter-unsub"; token: string }
+  | { kind: "newsletter-prefs"; token: string }
+  | { kind: "newsletter-issue"; ymd: string }
+  | { kind: "newsletter-hook-resend" }
+  | { kind: "admin-newsletter"; action: AdminNewsletterAction }
   | { kind: "redirect"; to: string }
   | { kind: "not-found" };
+
+export type AdminNewsletterAction = "status" | "send" | "tick" | "rebuild-edition";
+export type NewsletterRoute = Extract<Route, { kind: `newsletter${string}` | "admin-newsletter" }>;
 
 export function parseRoute(pathname: string): Route {
   const path = pathname.length > 1 ? pathname.replace(/\/+$/, "").toLowerCase() || "/" : pathname;
@@ -39,6 +50,21 @@ export function parseRoute(pathname: string): Route {
   }
   m = /^\/date\/(\d{4}-\d{2}-\d{2})$/.exec(path);
   if (m) return { kind: "date", ymd: m[1]! };
+  // Newsletter routes sit before the tractate patterns, which would otherwise swallow "/newsletter".
+  // Reader tokens are 48 lowercase hex characters because paths are lower-cased above; the confirmation
+  // token travels in the query string for the same reason.
+  if (path === "/newsletter") return { kind: "newsletter" };
+  if (path === "/newsletter/confirm") return { kind: "newsletter-confirm" };
+  if (path === "/newsletter/privacy") return { kind: "newsletter-privacy" };
+  if (path === "/newsletter/hooks/resend") return { kind: "newsletter-hook-resend" };
+  m = /^\/newsletter\/u\/([0-9a-f]{48})$/.exec(path);
+  if (m) return { kind: "newsletter-unsub", token: m[1]! };
+  m = /^\/newsletter\/prefs\/([0-9a-f]{48})$/.exec(path);
+  if (m) return { kind: "newsletter-prefs", token: m[1]! };
+  m = /^\/newsletter\/issue\/(\d{4}-\d{2}-\d{2})$/.exec(path);
+  if (m) return { kind: "newsletter-issue", ymd: m[1]! };
+  m = /^\/admin\/newsletter\/(status|send|tick|rebuild-edition)$/.exec(path);
+  if (m) return { kind: "admin-newsletter", action: m[1] as AdminNewsletterAction };
   m = /^\/([a-z-]+)$/.exec(path);
   if (m) {
     const t = tractateBySlug(m[1]!);

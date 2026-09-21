@@ -23,7 +23,8 @@ cron; permalinks for every daf.
 ## Layout
 
 `src/daf` schedule + tractate table · `src/sefaria` fetch + sanitize · `src/note` prompt, grounding,
-generate, KV store · `src/render` HTML · `src/index.ts` routes · `src/cron.ts` nightly bake ·
+generate, KV store · `src/render` HTML (and `email.ts`, the daily issue) · `src/newsletter` readers, the
+hourly send tick, opt-in, provider (see NEWSLETTER.md) · `src/index.ts` routes · `src/cron.ts` nightly bake ·
 `prompts/daf-note.md` the house style (bump `PROMPT_VERSION` in `src/note/prompt.ts` when it changes
 enough to re-bake) · `scripts/` bake table, verify cycle, try notes, backfill, check links ·
 `data/tractates.json` generated, commit it.
@@ -35,6 +36,12 @@ enough to re-bake) · `scripts/` bake table, verify cycle, try notes, backfill, 
 - Free-plan Workers: 10 ms CPU per invocation. Rendering is cached at the edge; the cron bakes at most
   three dapim per run. If CPU limits ever bite, Workers Paid ($5/mo) is the fix, not a rewrite.
 - Push ≠ deploy here either: `npm run deploy` is the deploy. Verify the live URL after.
-- KV keys: `text:v1:<urlRef>` (30 d), `ref:v1:<slug>:<daf>`, `note:v1:<slug>:<daf>`, `notelock:*`.
+- KV keys: `ref:v1:<slug>:<daf>`, `note:v1:<slug>:<daf>`, `gen:<date>` and `confirm:<date>` (daily counters).
+  Sefaria text (`text:v2:`) and generation locks live in the edge Cache API, not KV (free plan: 1,000 KV
+  writes a day). Readers live in D1 (`NEWSLETTER_DB`), never in KV.
+- Newsletter rules: the send path never fetches from Sefaria (a test greps for it); the AI label travels
+  into the email verbatim except for its pointer ("of this daf, linked below"); every issue carries
+  RFC 8058 one-click unsubscribe headers and a footer link; no images, no tracking, no postal address (Joe's
+  call: non-commercial); `NEWSLETTER_PUBLIC` gates the nav tab and the form until launch.
 - Style iteration is a review round with Joe: `npm run bake:note -- <targets>` on 5 varied dapim, edit
   `prompts/daf-note.md`, repeat. Re-bake the archive with `npm run backfill -- --force`.

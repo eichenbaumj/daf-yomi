@@ -14,6 +14,8 @@ import { renderFeed, type FeedItem } from "./render/feed";
 import { renderError, renderNotFound } from "./render/simple";
 import { cachedResponse } from "./cache";
 import { runCron } from "./cron";
+import { handleNewsletter } from "./newsletter/http";
+import { SEND_CRON, runSendTick } from "./newsletter/send";
 
 const HTML = { "content-type": "text/html; charset=utf-8" };
 /** On-visit note generation happens only within this many days of today. */
@@ -23,7 +25,7 @@ const JSON_H = { "content-type": "application/json; charset=utf-8" };
 function html(body: string, status = 200, extra: Record<string, string> = {}): Response {
   return new Response(body, { status, headers: { ...HTML, ...extra } });
 }
-function redirect(to: string, status: 301 | 302 = 302): Response {
+function redirect(to: string, status: 301 | 302 | 308 = 302): Response {
   return new Response(null, { status, headers: { location: to } });
 }
 
@@ -91,7 +93,7 @@ async function handle(request: Request, env: Env, ctx: ExecutionContext): Promis
   switch (route.kind) {
     case "redirect": return redirect(route.to, 301);
     case "not-found": return html(renderNotFound(env, origin, url.pathname), 404);
-    case "robots": return new Response(`User-agent: *\nAllow: /\nDisallow: /admin/\nSitemap: ${origin}/sitemap.xml\n`, { headers: { "content-type": "text/plain" } });
+    case "robots": return new Response(`User-agent: *\nAllow: /\nDisallow: /admin/\nDisallow: /newsletter/u/\nDisallow: /newsletter/prefs/\nDisallow: /newsletter/confirm\nDisallow: /newsletter/hooks/\nSitemap: ${origin}/sitemap.xml\n`, { headers: { "content-type": "text/plain" } });
     case "relative": {
       const ref = dafForDate(addDays(today, route.offset));
       return redirect(dafPath(ref.tractate, ref.daf));
@@ -151,7 +153,7 @@ async function handle(request: Request, env: Env, ctx: ExecutionContext): Promis
     case "sitemap": {
       const cycle = dafForDate(today).cycle;
       return cachedResponse(ck("/sitemap.xml"), 86400, async () => {
-        const urls: string[] = [`${origin}/`, `${origin}/about`, `${origin}/tractates`];
+        const urls: string[] = [`${origin}/`, `${origin}/about`, `${origin}/tractates`, `${origin}/newsletter`];
         for (const t of TRACTATES) {
           urls.push(`${origin}/${t.slug}`);
           for (let d = t.firstDaf; d <= t.lastDaf; d++) urls.push(`${origin}${dafPath(t, d)}`);
@@ -174,6 +176,15 @@ async function handle(request: Request, env: Env, ctx: ExecutionContext): Promis
       return new Response(JSON.stringify(apiPayload(ref, date, note, origin), null, 2), { headers: { ...JSON_H, "cache-control": "public, max-age=3600", "access-control-allow-origin": "*" } });
     }
     case "admin-bake": return adminBake(request, env, today);
+    case "newsletter":
+    case "newsletter-confirm":
+    case "newsletter-privacy":
+    case "newsletter-unsub":
+    case "newsletter-prefs":
+    case "newsletter-issue":
+    case "newsletter-hook-resend":
+    case "admin-newsletter":
+      return handleNewsletter(request, env, ctx, route, { origin, tz, today, bypass, ck });
   }
 }
 
@@ -213,7 +224,8 @@ export default {
     const url = new URL(request.url);
     if (env.CANONICAL_HOST && url.hostname !== env.CANONICAL_HOST && !isLocalHost(url.hostname)) {
       // The old workers.dev URL and www keep working as permanent redirects, so shared links never break.
-      return redirect(`https://${env.CANONICAL_HOST}${url.pathname}${url.search}`, 301);
+      // A 308 keeps a form POST a POST (a 301 would turn it into a GET on the way to the canonical host).
+      return redirect(`https://${env.CANONICAL_HOST}${url.pathname}${url.search}`, request.method === "GET" || request.method === "HEAD" ? 301 : 308);
     }
     const origin = url.origin;
     try {
@@ -225,6 +237,12 @@ export default {
     }
   },
   async scheduled(controller: ScheduledController, env: Env, ctx: ExecutionContext): Promise<void> {
-    ctx.waitUntil(runCron(env, controller.scheduledTime).catch((e) => console.error("[cron]", e)));
+    // Three triggers share this Worker. The hourly one sends the newsletter; anything else runs the bake,
+    // so a mistyped cron string degrades to "bake twice", never to "never send".
+    const cron = (controller.cron ?? "").trim().replace(/\s+/g, " ");
+    const job = cron === SEND_CRON
+      ? runSendTick(env, controller.scheduledTime).catch((e) => console.error("[tick]", e))
+      : runCron(env, controller.scheduledTime).catch((e) => console.error("[cron]", e));
+    ctx.waitUntil(job);
   },
 };

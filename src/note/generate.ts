@@ -98,7 +98,11 @@ export async function ensureNote(env: Env, ref: DafRef, opts: { force?: boolean;
       if (!draft) return { status: "failed", reason: refusal ? `refused: ${refusal}` : "unparseable response" };
       const check = checkNote(draft, sourceText);
       if (check.ok) {
-        const note: DafNote = { ...draft, model, promptVersion: hashPrompt(), generatedAt: new Date().toISOString(), sources, usage: { inputTokens, outputTokens, attempts: attempt, estUsd: estimateUsd(model, inputTokens, outputTokens) } };
+        const note: DafNote = {
+          ...draft, model, promptVersion: hashPrompt(), generatedAt: new Date().toISOString(), sources,
+          usage: { inputTokens, outputTokens, attempts: attempt, estUsd: estimateUsd(model, inputTokens, outputTokens) },
+          wordCount: sourceText.split(/\s+/).filter(Boolean).length,
+        };
         await putNote(env.DAF_KV, t, daf, note);
         return { status: "generated", note, attempts: attempt, firstAttemptProblems };
       }

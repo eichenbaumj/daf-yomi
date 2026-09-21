@@ -12,6 +12,7 @@ Live at **https://daf-yomi.dev**. Free, no accounts, no tracking. One Cloudflare
 - `/bekhorot/2` a permalink for every one of the 2,711 dapim
 - `/bekhorot` a tractate page: chapters, Steinsaltz's introduction, every daf with its date
 - `/tractates`, `/about`, `/feed.xml` (RSS, last 14 days), `/api/today.json`, `/api/<slug>/<n>.json`
+- `/newsletter` the daf by email: one message a day at the reader's own hour (see [NEWSLETTER.md](NEWSLETTER.md))
 - `/yesterday`, `/tomorrow`, `/date/YYYY-MM-DD` redirect to the right page
 - Toggles: Hebrew/Aramaic alongside the English; "Talmud only" hides the interpolated explanation
 
@@ -20,9 +21,10 @@ Live at **https://daf-yomi.dev**. Free, no accounts, no tracking. One Cloudflare
 ```
 visitor → Worker fetch()
            ├─ date (request.cf.timezone) → daf     offline, @hebcal/learning (public-domain daf.el port)
-           ├─ text: KV cache (30 d) → Sefaria v3 texts API (both amudim, English + Hebrew)
+           ├─ text: edge cache (30 d) → Sefaria v3 texts API (both amudim, English + Hebrew)
            └─ note: KV → else render "pending" and generate in ctx.waitUntil
-cron (06:00 and 18:00 UTC) → bake tomorrow's + today's note, backfill the last 7 days, ≤3 generations/run
+cron (06:00 and 18:00 UTC) → bake tomorrow's, today's and the day after's note, backfill the last 7 days, ≤3 generations/run
+cron (hourly) → the newsletter tick: render the issue once, send it to every reader whose local hour has come (D1 + Resend)
 ```
 
 - **Schedule**: `src/daf/schedule.ts`. Cycle 14 runs 5 Jan 2020 to 7 Jun 2027. The tractate table

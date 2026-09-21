@@ -22,6 +22,21 @@ const text = (urlRef: string): SefariaText => ({
   next: null, prev: null, fetchedAt: "2026-09-20T00:00:00Z",
 });
 
+describe("site chrome", () => {
+  const ref = dafForDate(d("2026-09-20"));
+  it("shows the Newsletter tab right of Feed only once the newsletter is public", () => {
+    const closed = renderAbout(env, "https://example.test", ref);
+    expect(closed).not.toContain('href="/newsletter"');
+    expect(closed).toContain("no tracking cookies");
+    const open = renderAbout({ ...env, NEWSLETTER_PUBLIC: "1" } as Env, "https://example.test", ref);
+    const nav = /<nav aria-label="Site">([\s\S]*?)<\/nav>/.exec(open)![1]!;
+    const labels = [...nav.matchAll(/<a [^>]*>([^<]+)<\/a>/g)].map((m) => m[1]);
+    expect(labels).toEqual(["Today", "Tractates", "About", "Feed", "Newsletter"]);
+    expect(open).toContain("keeps only your address and your chosen hour");
+    expect(open).not.toMatch(/—/);
+  });
+});
+
 describe("daf page", () => {
   const ref = dafForDate(d("2026-09-20"));
   const base = { env, origin: "https://example.test", ref, date: d("2026-09-20"), isToday: true, texts: [{ label: "Bekhorot 2a", text: text("Bekhorot.2a") }, { label: "Bekhorot 2b", text: text("Bekhorot.2b") }], notesEnabled: true };
