@@ -45,6 +45,12 @@ describe("checkTranslation", () => {
     expect(checkTranslation({ ...good, summary: "בדף זה " + good.summary }, heSource, english).problems).toContain("do not open with 'on this daf' or 'this page'.");
     expect(checkTranslation({ ...good, question: good.question.slice(0, -1) }, heSource, english).problems).toContain("question must end with a question mark.");
   });
+  it("does not count a question mark inside a quotation from the daf", () => {
+    const src = heSource + "\nאַטּוּ דַּרְכָּהּ שֶׁל מִלְחָמָה לִסְחוֹרָה?!";
+    const r = checkTranslation({ ...good, summary: good.summary + " הגמרא דוחה: \"אַטּוּ דַּרְכָּהּ שֶׁל מִלְחָמָה לִסְחוֹרָה?!\"" }, src, english);
+    expect(r.problems).not.toContain("ask exactly one question.");
+    expect(r.ok).toBe(true);
+  });
   it("rejects a summary that dropped most of the English", () => {
     const longEnglish = { ...english, summary: Array(12).fill("The Gemara asks about the donkey and the gentile partner.").join(" ") };
     const r = checkTranslation({ ...good, summary: "המשנה פוטרת מן הבכורה עובר חמורו של נכרי בחמישה מקרים שונים." }, heSource, longEnglish);

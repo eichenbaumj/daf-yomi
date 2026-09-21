@@ -112,7 +112,9 @@ export function checkTranslation(draft: TranslationDraft, heSource: string, engl
   if (sw < 12) problems.push("summary is too short.");
   if (words(draft.question) > 35) problems.push("question is too long; one plain sentence.");
   if (!draft.question.trim().endsWith("?")) problems.push("question must end with a question mark.");
-  if ((prose.match(/\?/g) ?? []).length !== 1) problems.push("ask exactly one question.");
+  // A question mark inside a quotation from the daf ("?!" is common in the Gemara's rhetoric) is the text's, not ours.
+  const unquoted = prose.replace(/[“"„][^”"]{1,200}[”"]/g, "");
+  if ((unquoted.match(/\?/g) ?? []).length !== 1) problems.push("ask exactly one question.");
   if (/[—]/.test(prose)) problems.push("no em dashes.");
   if (/[A-Za-z]/.test(prose)) problems.push("Hebrew letters only in the prose; no Latin letters.");
   if (!/\p{Script=Hebrew}/u.test(draft.summary)) problems.push("the summary is not in Hebrew.");
