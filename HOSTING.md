@@ -94,6 +94,14 @@ counter, admin `--force` exempt); text cache and locks moved off KV. Side effect
 have notes (style .5), the rest say "not written". Last line of defence is the monthly spend limit in the
 Anthropic Console, which the code cannot set.
 
+## Style changes and re-bakes (Joe, 2026-09-21)
+
+Every daf already has a note, so the nightly cron re-bakes the near targets (tomorrow, today, the day
+after) whenever their note predates the current `PROMPT_VERSION` (≈3 notes, ~25¢). New rules therefore
+reach the live page within a day. The archive (2,711 notes, ~$200 a pass) is re-baked deliberately and
+rarely, once or twice a year at most, and must be spread over 3 days on the free plan (1,000 KV
+writes/day) or run on Workers Paid.
+
 ## Failure modes
 
 - **Note missing on today's page**: the cron either had no API key, hit the generation budget, or the

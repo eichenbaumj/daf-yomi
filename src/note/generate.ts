@@ -65,7 +65,7 @@ export async function draftNote(client: Anthropic, model: string, input: PromptI
 /**
  * Generate (or fetch) the note for a daf. `force` re-bakes even if one exists.
  */
-export async function ensureNote(env: Env, ref: DafRef, opts: { force?: boolean; skipLock?: boolean } = {}): Promise<GenerateOutcome> {
+export async function ensureNote(env: Env, ref: DafRef, opts: { force?: boolean; skipLock?: boolean; countAgainstCap?: boolean } = {}): Promise<GenerateOutcome> {
   const { tractate: t, daf } = ref;
   if (!opts.force) {
     const existing = await getNote(env.DAF_KV, t, daf);
@@ -74,7 +74,7 @@ export async function ensureNote(env: Env, ref: DafRef, opts: { force?: boolean;
   if (!env.ANTHROPIC_API_KEY) return { status: "skipped", reason: "ANTHROPIC_API_KEY is not set" };
   // Hard daily cap on paid generations, whatever the trigger (cron, self-heal, admin without ?force).
   // The counter is one KV write per generation; the cap is far below anything a normal day needs.
-  if (!opts.force) {
+  if (!opts.force || opts.countAgainstCap) {
     const dayKey = `gen:${new Date().toISOString().slice(0, 10)}`;
     const used = Number((await env.DAF_KV.get(dayKey)) ?? 0);
     const cap = Number(env.DAILY_GENERATION_CAP ?? 12);
