@@ -45,12 +45,14 @@ origin, so nothing else needed changing.
 - Secrets: `RESEND_API_KEY` (Resend, sending only), `TOKEN_HMAC_SECRET` (32 random bytes hex), and for the
   public form `TURNSTILE_SECRET_KEY`, `RESEND_WEBHOOK_SECRET`. Vars in `wrangler.jsonc`: `NEWSLETTER_FROM`,
   `NEWSLETTER_REPLY_TO`, `CATCHUP_HOURS`, `EMAIL_HEBREW`, `NEWSLETTER_PUBLIC`, `TURNSTILE_SITE_KEY`.
-- DNS for sending (Resend dashboard gives the values; all records DNS-only, not proxied): sending domain
-  `news.daf-yomi.dev`: MX `send.news`, TXT SPF on `send.news`, TXT `resend._domainkey.news`; add
-  `_dmarc.news.daf-yomi.dev` `v=DMARC1; p=none; rua=mailto:dmarc@daf-yomi.dev`, and on the apex
-  `_dmarc.daf-yomi.dev` `v=DMARC1; p=reject; rua=mailto:dmarc@daf-yomi.dev`. Email Routing (free) on the
-  apex so `daf@daf-yomi.dev` (Reply-To) and `dmarc@` reach Joe; its MX/SPF records live on the apex and do
-  not collide with Resend's, which live on subdomains.
+- DNS for sending, as configured 2026-09-20 (all DNS-only, not proxied): sending domain `news.daf-yomi.dev`
+  on Resend with TXT `resend._domainkey.news` (DKIM), CNAME `send.news` → `send.forge.rmta.net` and CNAME
+  `rsend.news` → `rsend.forge.rmta.net` (Resend's CNAME-based SPF/return-path), TXT `_dmarc.news`
+  `v=DMARC1; p=none; rua=mailto:dmarc@daf-yomi.dev`; on the apex TXT `_dmarc` `v=DMARC1; p=quarantine;
+  rua=mailto:dmarc@daf-yomi.dev` (tighten to `p=reject` once the alert sender is set up and reports are clean).
+  Email Routing (free) is enabled on the apex (Cloudflare's MX, SPF and DKIM records) with rules
+  `daf@daf-yomi.dev` (the Reply-To) and `dmarc@daf-yomi.dev` forwarding to Joe; the destination address needs
+  the one-time verification click. Resend's records live on subdomains and do not collide with these.
 - The third cron (`0 * * * *`) is the send tick; 3 of the account's 5 free cron slots are now used.
 - Limits the tick lives inside: D1 free 50 queries per invocation (a tick uses about a dozen), 50 external
   subrequests (one per batch of 50 readers), 10 ms CPU. Operator notes in NEWSLETTER.md.
