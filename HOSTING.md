@@ -29,6 +29,34 @@ Without `ANTHROPIC_API_KEY` the site works and the note box says notes are off.
 - Cron: `wrangler triggers` are in the config (06:00 and 18:00 UTC). Check the Workers dashboard →
   Triggers → Cron events after the first night.
 
+## Analytics (where the numbers live)
+
+**Cloudflare Web Analytics** for `daf-yomi.dev`, enabled 2026-09-21 with **Automatic setup** (site tag
+`9d7ec4faabf643559ab764ae86087a7d`). Dashboard: account → Analytics → Web analytics → daf-yomi.dev, or
+`https://dash.cloudflare.com/2a01eeec070de6ec176aaba37d4010fd/web-analytics/overview?siteTag~in=9d7ec4faabf643559ab764ae86087a7d&excludeBots=Yes`.
+Page views, visits, top URLs, referrers, countries, browsers, Core Web Vitals; free, cookie-free; the default
+view filters bots out (`Exclude bots = Yes`). Within two minutes of creation it showed the previous 24 hours
+(238 views / 165 visits), so for a proxied zone the page-view counts come from Cloudflare's edge, not the
+beacon; the beacon adds the browser-side measurements (this is inferred from that observation, not from docs).
+Data retention is not stated in the docs I checked.
+
+- Cloudflare injects the RUM beacon into Worker-served HTML at the edge. **Do not add the JS snippet to
+  `src/render/layout.ts`**: automatic setup is on, and a second copy would load the beacon twice.
+- Injection only happens when the request sends `Accept: text/html`. Plain `curl` shows no beacon; check with
+  `curl -sH "Accept: text/html" https://daf-yomi.dev/ | grep -c cloudflareinsights` (expect 1). Verified in a
+  real browser 2026-09-21: script present in the DOM and `POST /cdn-cgi/rum` → 204.
+
+Other surfaces, all already on:
+
+- **Worker metrics**: Workers & Pages → daf-yomi. Requests, errors, subrequests, CPU and wall time, invocation
+  statuses; three months back. Counts every invocation, so crawlers and the cron are in it (the 2026-09-20 crawl
+  is a spike here).
+- **Workers Logs**: same Worker → Observability tab (`observability.enabled` in `wrangler.jsonc`). Per-request
+  method + URL, console output, errors. Free plan: 3 days, 200,000 events a day.
+- **Zone HTTP traffic**: daf-yomi.dev → Analytics & Logs → HTTP Traffic. Requests, bandwidth, unique visitors
+  (unique IPs), country. Free plan includes bots and crawlers; path and status breakdowns need Pro.
+- **API spend**: Anthropic Console → Usage / Cost. Code side: the `gen:<date>` KV counter, capped at 12 a day.
+
 ## Custom domain
 
 `wrangler.jsonc` carries `routes` for `daf-yomi.dev` and `www.daf-yomi.dev` as custom domains; Cloudflare
