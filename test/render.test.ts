@@ -34,6 +34,7 @@ describe("site chrome", () => {
     const labels = [...nav.matchAll(/<a [^>]*>([^<]+)<\/a>/g)].map((m) => m[1]);
     expect(labels).toEqual(["Today", "Tractates", "About", "Feed", "Newsletter"]);
     expect(open).toContain("keeps only your address and your chosen hour");
+    expect(open).toMatch(/<a class="brand" [^>]*>.*Daf Yomi<span class="brand-tld">Dot Dev<\/span><\/a>/); // the wordmark
     expect(open).toContain('<a href="/newsletter">the daf by email</a> arrives once a day at the hour you choose.');
     expect(open).not.toMatch(/—/);
   });

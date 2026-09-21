@@ -57,7 +57,7 @@ ${o.extraHead ?? ""}
 <body class="${esc(o.bodyClass ?? "")}">
 <a class="skip" href="#main">Skip to the text</a>
 <header class="site">
-  <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">✦</span>${esc(siteName)}</a>
+  <a class="brand" href="/" aria-label="${esc(siteName)}: home"><span class="brand-mark" aria-hidden="true">✦</span>Daf Yomi<span class="brand-tld">Dot Dev</span></a>
   <nav aria-label="Site">
     <a href="/">Today</a>
     <a href="/tractates">Tractates</a>
