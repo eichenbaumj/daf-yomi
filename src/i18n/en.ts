@@ -4,7 +4,7 @@ import type { Strings } from "./strings";
 export const en: Strings = {
   lang: "en",
   langSwitchAria: "Language",
-  langName: { en: "EN", he: "עברית", yi: "ייִדיש" },
+  langName: { en: "English", he: "עברית", yi: "ייִדיש" },
   preReleaseTag: "Pre-Release",
   preReleaseNotice: (englishHref) => `This language is a pre-release: the translations are still being reviewed. <a href="${englishHref}">Read this page in English.</a>`,
 

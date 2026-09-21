@@ -9,7 +9,7 @@ import type { Strings } from "./strings";
 export const he: Strings = {
   lang: "he",
   langSwitchAria: "שפה",
-  langName: { en: "EN", he: "עברית", yi: "ייִדיש" },
+  langName: { en: "English", he: "עברית", yi: "ייִדיש" },
   preReleaseTag: "Pre-Release",
   preReleaseNotice: (englishHref) => `גרסה מוקדמת (Pre-Release): התרגום לעברית עדיין בבדיקה. <a href="${englishHref}">לקריאת העמוד באנגלית.</a>`,
 

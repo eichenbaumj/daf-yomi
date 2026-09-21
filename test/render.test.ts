@@ -130,7 +130,7 @@ describe("Hebrew pages (Pre-Release)", () => {
     expect(html).not.toContain('hreflang=');
     expect(html).toContain('<link rel="canonical" href="https://example.test/he">');
     expect(html).toContain('<nav class="lang" aria-label="שפה">');
-    expect(html).toContain('<a lang="en" href="/lang/en?to=%2F">EN</a>');
+    expect(html).toContain('<a lang="en" href="/lang/en?to=%2F">English</a>');
     expect(html).toContain('<span class="cur" lang="he" aria-current="true">עברית <span class="prerelease">Pre-Release</span></span>');
     expect(html).toContain('<p class="prerelease-notice">');
     expect(html).toContain('href="/"'); // the notice links the English page
