@@ -58,6 +58,8 @@ describe("daf page", () => {
     expect((html.match(/class="ms t s\d( cur)?"/g) ?? []).length).toBe(11);
     expect(html).toMatch(/>Kodashim<\/span>/);
     expect(html).toContain('data-regions=');
+    expect(html).toMatch(/<div class="zoom-stage">[\s\S]*<p class="zoom-line">/); // bar first, its caption line beneath
+    for (const hook of ['class="zcap"', 'class="zval"', 'class="zoom-hint"']) expect(html).toContain(hook); // app.js finds these by class
     expect(html).toContain('data-toggle="he"');
     expect(html).toContain('data-toggle="talmudOnly"');
     expect(html).toContain('<span class="elu">');

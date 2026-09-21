@@ -78,7 +78,6 @@ export function renderPositionMini(ref: DafRef, learnedThroughDaf: number): stri
 
   return `<div class="zoom" tabindex="0" role="button" aria-label="${esc(aria)}"
   data-regions='${JSON.stringify(regions)}' data-today="${todayFrac.toFixed(6)}" data-caps='${esc(JSON.stringify(caps))}' data-vals='${esc(JSON.stringify(vals))}'>
-  <span class="mini-cap zcap">${esc(caps[0])}</span>
   <div class="zoom-stage">
     <div class="zl on" data-l="0"><div class="geo"><span class="ms plain" style="width:100%"></span></div></div>
     <div class="zl" data-l="1"><div class="geo">${orderGeo.join("")}</div><div class="labels">${orderLabels.join("")}</div></div>
@@ -86,7 +85,6 @@ export function renderPositionMini(ref: DafRef, learnedThroughDaf: number): stri
     <div class="zl" data-l="3"><div class="geo dapim s${si + 1}">${cells.join("")}</div></div>
     <span class="zmark" style="left:${pc(todayFrac)}"></span>
   </div>
-  <span class="mini-val zval">${esc(vals[0])}</span>
-  <span class="zoom-hint muted">tap to zoom in</span>
+  <p class="zoom-line"><span class="zcap">${esc(caps[0])}</span><span class="sep" aria-hidden="true">·</span><span class="zval">${esc(vals[0])}</span><span class="zoom-hint">tap to zoom in</span></p>
 </div>`;
 }

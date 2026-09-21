@@ -50,16 +50,23 @@ header.site nav a { color: var(--ink-2); text-decoration: none; }
 header.site nav a:hover { color: var(--accent); }
 footer.site { border-top: 1px solid var(--rule); margin-top: 3rem; padding-top: .4rem; padding-bottom: 2.5rem; color: var(--ink-2); font-size: .92rem; }
 
-.daf-head { margin: 1.8rem 0 1.2rem; }
-.daf-head .date { margin: 0 0 .35rem; color: var(--ink-2); font-size: .95rem; letter-spacing: .01em; }
+/* The page head is one block on one scale: four steps on a 4 px base. `tight` binds a pair (date and headline;
+   Seder line and Cycle line; lede and its small print), `band` gives the position bar equal air above and below
+   and is the default step, `after` hands off to the first content block (the note card's own top margin
+   collapses into it). Children carry no margins of their own; the scale owns every gap. */
+.daf-head { --head-tight: .375rem; --head-band: 1rem; --head-after: 1.5rem; --head-before: 1.75rem; margin: var(--head-before) 0 var(--head-after); }
+.daf-head > * { margin: 0; }
+.daf-head > * + * { margin-top: var(--head-band); }
+.daf-head .date + h1, .daf-head .position + .cycle, .daf-head .lede + .small { margin-top: var(--head-tight); }
+.daf-head .date { color: var(--ink-2); font-size: .95rem; letter-spacing: .01em; }
 h1 { font-weight: 700; font-size: clamp(1.8rem, 4.8vw, 2.5rem); line-height: 1.12; margin: 0 0 .55rem; letter-spacing: -.012em; }
 h2 { font-weight: 600; font-size: 1.25rem; margin: 2rem 0 .6rem; }
 .he-title { font-family: var(--hebrew); font-weight: 400; color: var(--ink-2); font-size: .8em; margin-inline-start: .35em; }
 .he-inline { font-family: var(--hebrew); color: var(--ink-3); }
-.lede { font-size: 1.15rem; margin: .6rem 0; }
-.position { margin: .2rem 0; color: var(--ink-2); font-size: .95rem; line-height: 1.55; }
+.lede { font-size: 1.15rem; }
+.position { color: var(--ink-2); font-size: .95rem; line-height: 1.55; }
 .sep { margin: 0 .45em; color: var(--gold); }
-.cycle { margin: .45rem 0 0; font-size: .92rem; }
+.cycle { font-size: .95rem; }
 
 /* The note: a card laid on the page. */
 .note {
@@ -188,12 +195,14 @@ a.ref { color: inherit; text-decoration: underline dotted var(--ink-3); }
 }
 
 /* Where today sits: one bar that zooms (see src/render/positionMini.ts and app.js). */
-.zoom { margin: .9rem 0 .5rem; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: .3rem .7rem; align-items: center; font-size: .82rem; color: var(--ink-2); cursor: zoom-in; outline: none; }
+/* Bar flush with the text, then one caption line in the Seder line's idiom (caption · value), hint at the right. */
+.zoom { color: var(--ink-2); cursor: zoom-in; outline: none; }
 .zoom.max { cursor: zoom-out; }
 .zoom:focus-visible .zoom-stage { outline: 2px solid var(--accent); outline-offset: 3px; }
-.zoom .mini-cap, .zoom .mini-val { white-space: nowrap; }
-.zoom .mini-val { font-variant-numeric: tabular-nums; }
-.zoom-hint { grid-column: 2; font-size: .72rem; margin-top: -.15rem; letter-spacing: .02em; }
+.zoom-line { display: flex; flex-wrap: wrap; align-items: baseline; margin: var(--head-tight, .375rem) 0 0; font-size: .95rem; line-height: 1.55; }
+.zoom-line .zcap, .zoom-line .zval { white-space: nowrap; }
+.zoom-line .zval { font-variant-numeric: tabular-nums; }
+.zoom-hint { margin-left: auto; color: var(--ink-3); font-size: .82rem; letter-spacing: .02em; }
 .zoom-stage { position: relative; height: 16px; overflow: hidden; border-radius: 2px; }
 .zl { position: absolute; inset: 0; transform-origin: 0 50%; opacity: 0; transition: transform .7s cubic-bezier(.4, 0, .2, 1), opacity .45s ease; will-change: transform, opacity; pointer-events: none; }
 .zl.on { opacity: 1; pointer-events: auto; }
@@ -211,7 +220,7 @@ a.ref { color: inherit; text-decoration: underline dotted var(--ink-3); }
 .geo.dapim .dc:last-child { margin-right: 0; }
 .zmark { position: absolute; top: -2px; bottom: -2px; width: 2px; margin-left: -1px; background: var(--accent); border-radius: 1px; transition: left .7s cubic-bezier(.4, 0, .2, 1); pointer-events: none; z-index: 2; }
 @media (prefers-reduced-motion: reduce) { .zl, .zmark { transition: none; } }
-@media (max-width: 40rem) { .zoom { grid-template-columns: auto minmax(0, 1fr); } .zoom .mini-val { grid-column: 2; justify-self: end; margin-top: -.2rem; } .zl .labels span { font-size: .6rem; } }
+@media (max-width: 40rem) { .zl .labels span { font-size: .6rem; } }
 
 /* ---- newsletter forms (/newsletter, /newsletter/prefs) ---- */
 .subscribe-form { margin: 1.5rem 0; padding: 1.25rem 1.4rem; background: var(--note-bg); border: 1px solid var(--rule); border-top: 3px solid var(--gold); border-radius: 3px; }
