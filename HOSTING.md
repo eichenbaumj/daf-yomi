@@ -55,7 +55,12 @@ Other surfaces, all already on:
   method + URL, console output, errors. Free plan: 3 days, 200,000 events a day.
 - **Zone HTTP traffic**: daf-yomi.dev → Analytics & Logs → HTTP Traffic. Requests, bandwidth, unique visitors
   (unique IPs), country. Free plan includes bots and crawlers; path and status breakdowns need Pro.
-- **API spend**: Anthropic Console → Usage / Cost. Code side: the `gen:<date>` KV counter, capped at 12 a day.
+- **API spend**: Anthropic Console → Usage / Cost. Code side: the `gen:<date>` KV counter, capped at 12 a day
+  (absent = no cron or self-heal generation that UTC day; forced admin bakes do not count). Read it with
+  `npx wrangler kv key get --remote --namespace-id 34d5b074f78b4c5da60c9fcf989315c7 gen:YYYY-MM-DD`.
+  **Wrangler's `kv key get/list` default to the local dev store**: without `--remote` every production key is
+  "not found" and the listing shows a handful of stale `wrangler dev` keys. Same for counting notes
+  (`kv key list --remote --prefix note:v1:`; 2,711 on 2026-09-21).
 
 ## Custom domain
 
