@@ -8,6 +8,7 @@ import { dateForDaf } from "../daf/schedule";
 import type { Tractate } from "../daf/tractates";
 import { plainText, sanitize } from "./sanitize";
 import { edgeGet, edgePut } from "../edgecache";
+import { shekalimDafYomiMap } from "@hebcal/learning/DafPageEvent";
 
 export const SEFARIA = "https://www.sefaria.org";
 const UA = "daf-yomi-site (Cloudflare Worker; joe@group17a.com)";
@@ -139,4 +140,50 @@ export async function resolveDafRefs(t: Tractate, daf: number, cycle: number, kv
   const resolved: ResolvedDaf = { urlRefs: [String(item.url)], labels: [`${t.name} ${daf}`] };
   if (kv) await kv.put(key, JSON.stringify(resolved));
   return resolved;
+}
+
+
+export interface DafSection { label: string; text: SefariaText }
+
+/** hebcal's own Shekalim mapping (Yerushalmi chapter:halakha:segment), used when Sefaria's calendar ref has no text. */
+function hebcalShekalimRef(daf: number): string | null {
+  const map = shekalimDafYomiMap as Record<string, string>;
+  const a = map[`${daf}a`]; const b = map[`${daf}b`];
+  if (!a || !b) return null;
+  const aStart = a.split("-")[0]!; const bEnd = b.includes("-") ? b.split("-")[1]! : b;
+  return `Jerusalem_Talmud_Shekalim.${`${aStart}-${bEnd}`.replaceAll(":", ".")}`;
+}
+
+/**
+ * All the text that makes up a daf, tolerating two quirks of the source:
+ *  - a side that does not exist (Nazir 33b is blank in the printed Talmud; Sefaria 404s) is skipped;
+ *  - a Shekalim range from Sefaria's calendar that returns no text falls back to hebcal's mapping,
+ *    and the working ref replaces the cached one.
+ * Throws only if nothing at all could be loaded.
+ */
+export async function loadDafSections(t: Tractate, daf: number, cycle: number, kv?: KVNamespace): Promise<DafSection[]> {
+  const resolved = await resolveDafRefs(t, daf, cycle, kv);
+  const out: DafSection[] = [];
+  let firstError: unknown = null;
+  for (let i = 0; i < resolved.urlRefs.length; i++) {
+    const urlRef = resolved.urlRefs[i]!;
+    try {
+      out.push({ label: resolved.labels[i] ?? urlRef, text: await fetchText(urlRef, kv) });
+    } catch (e) {
+      const missing = e instanceof SefariaError && (e.status === 404 || /no text/i.test(e.message));
+      if (missing && i > 0) continue; // e.g. Nazir 33b: side a stands alone
+      if (missing && t.slug === "shekalim") {
+        const alt = hebcalShekalimRef(daf);
+        if (alt && alt !== urlRef) {
+          const text = await fetchText(alt, kv);
+          out.push({ label: resolved.labels[i] ?? alt, text });
+          if (kv) await kv.put(`ref:v1:${t.slug}:${daf}`, JSON.stringify({ urlRefs: [alt], labels: resolved.labels } satisfies ResolvedDaf));
+          continue;
+        }
+      }
+      firstError ??= e;
+    }
+  }
+  if (out.length === 0) throw firstError ?? new SefariaError(`No text could be loaded for ${t.name} ${daf}`);
+  return out;
 }

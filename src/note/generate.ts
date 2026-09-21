@@ -9,7 +9,7 @@ import type { Env } from "../types";
 import type { Tractate } from "../daf/tractates";
 import { positionFor } from "../daf/position";
 import type { DafRef } from "../daf/schedule";
-import { fetchText, resolveDafRefs } from "../sefaria/client";
+import { loadDafSections } from "../sefaria/client";
 import { checkNote } from "./grounding";
 import { NoteSchema, SYSTEM_PROMPT, hashPrompt, userMessage, type NoteDraft, type PromptInput } from "./prompt";
 import { acquireLock, getNote, putNote, releaseLock, type DafNote } from "./store";
@@ -27,17 +27,15 @@ export function positionLine(ref: DafRef): string {
 
 /** Assemble the plain-English source for a daf. Exported for scripts. */
 export async function buildPromptInput(ref: DafRef, kv?: KVNamespace): Promise<{ input: PromptInput; sources: string[]; sourceText: string }> {
-  const resolved = await resolveDafRefs(ref.tractate, ref.daf, ref.cycle, kv);
-  const sections: PromptInput["sections"] = [];
-  for (let i = 0; i < resolved.urlRefs.length; i++) {
-    const text = await fetchText(resolved.urlRefs[i]!, kv);
-    const en = text.enPlain.filter(Boolean).join("\n\n");
-    sections.push({ label: resolved.labels[i] ?? text.ref, text: en || "(no English text available for this section)" });
-  }
+  const loaded = await loadDafSections(ref.tractate, ref.daf, ref.cycle, kv);
+  const sections: PromptInput["sections"] = loaded.map((x) => ({
+    label: x.label,
+    text: x.text.enPlain.filter(Boolean).join("\n\n") || "(no English text available for this section)",
+  }));
   const sourceText = sections.map((s) => s.text).join("\n\n");
   return {
     input: { label: `${ref.tractate.name} ${ref.daf}`, positionLine: positionLine(ref), sections },
-    sources: resolved.urlRefs,
+    sources: loaded.map((x) => x.text.urlRef),
     sourceText,
   };
 }

@@ -59,19 +59,25 @@ export function unglossed(text: string): string[] {
   const terms = [...GLOSS_TERMS, ...GLOSS_PHRASES];
   for (const term of terms) {
     const pattern = term.split(/[\s-]+/).map((w) => w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("[\\s-]+");
-    const re = new RegExp(`\\b${pattern}s?\\b`, "i");
-    const m = re.exec(text);
-    if (!m) continue;
-    const after = text.slice(m.index + m[0].length, m.index + m[0].length + 60);
-    const before = text.slice(Math.max(0, m.index - 40), m.index);
-    const glossed =
-      /^\s*[,(]/.test(after) ||                                   // "issar, a small coin" / "dinars, silver coins" / "(…)"
-      /^\s*(of|worth|in|per|called|known as|that is|meaning)\s/i.test(after) || // "dinars of silver", "a sin offering called a chatat"
-      /\((?:[^)]*)$/.test(before) ||                                // inside an open parenthesis
-      /\b(called|known as|termed)\s+(a|an|the)?\s*$/i.test(before) ||
-      /\b(silver|copper|gold|bronze|small|large|liquid|dry)\s+(coins?\s+(called|of)\s+)?$/i.test(before) || // "silver dinars", "small copper coin called an issar"
-      /\b(a|an|the|one|two|three|four|five|six|ten|hundred|thousand)\s+(measures?|coins?|portions?|offerings?|gifts?)\s+(of|called)\s+(a|an|the)?\s*$/i.test(before); // "a measure of…", "two coins of…"
-    if (!glossed) out.push(m[0]);
+    const re = new RegExp(`\\b${pattern}s?(?:'s)?\\b`, "gi");
+    let seen = false;
+    let glossed = false;
+    for (const m of text.matchAll(re)) {
+      seen = true;
+      const after = text.slice(m.index! + m[0].length, m.index! + m[0].length + 80);
+      const before = text.slice(Math.max(0, m.index! - 60), m.index!);
+      // Any one occurrence carrying a gloss is enough ("three seah each, a seah being a dry measure…").
+      if (
+        /^\s*[,(]/.test(after) ||                                                                       // "dinars, silver coins" / "issar (a small coin)"
+        /^[^.;?!]{0,32}?[,(]\s*(a|an|the|which|that|meaning|i\.e\.|or|about|roughly)\b/i.test(after) || // "…dinar's worth as he works, a coin…"
+        /^\s*(of|worth|in|per|called|known as|that is|meaning|being)\s/i.test(after) ||            // "dinars of silver", "a parasang being…"
+        /\((?:[^)]*)$/.test(before) ||                                                              // inside an open parenthesis
+        /\b(called|known as|termed)\s+(a|an|the)?\s*$/i.test(before) ||
+        /\b(silver|copper|gold|bronze|small|large|liquid|dry)\s+(coins?\s+(called|of)\s+)?$/i.test(before) ||
+        /\b(a|an|the|one|two|three|four|five|six|ten|hundred|thousand)\s+(measures?|coins?|portions?|offerings?|gifts?)\s+(of|called)\s+(a|an|the)?\s*$/i.test(before)
+      ) { glossed = true; break; }
+    }
+    if (seen && !glossed) out.push(text.match(re)![0]!);
   }
   return out;
 }

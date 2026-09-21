@@ -3,7 +3,7 @@ import { parseRoute } from "./router";
 import { TRACTATES, dafPath, dafLabel, isValidDaf, type Tractate } from "./daf/tractates";
 import { addDays, dafForDate, dateForDaf, hebrewDate, parseYmd, todayIn, ymd, type DafRef } from "./daf/schedule";
 import { positionFor } from "./daf/position";
-import { SefariaError, fetchText, resolveDafRefs, type SefariaText } from "./sefaria/client";
+import { SefariaError, fetchText, loadDafSections, type SefariaText } from "./sefaria/client";
 import { getNote, notedDafim, type DafNote } from "./note/store";
 import { ensureNote } from "./note/generate";
 import { renderDafPage } from "./render/dafPage";
@@ -40,12 +40,7 @@ function visitorTimezone(request: Request, env: Env): string {
 }
 
 async function loadDafTexts(ref: DafRef, kv: KVNamespace): Promise<{ label: string; text: SefariaText }[]> {
-  const resolved = await resolveDafRefs(ref.tractate, ref.daf, ref.cycle, kv);
-  const out: { label: string; text: SefariaText }[] = [];
-  for (let i = 0; i < resolved.urlRefs.length; i++) {
-    out.push({ label: resolved.labels[i] ?? resolved.urlRefs[i]!, text: await fetchText(resolved.urlRefs[i]!, kv) });
-  }
-  return out;
+  return loadDafSections(ref.tractate, ref.daf, ref.cycle, kv);
 }
 
 async function dafPageResponse(env: Env, ctx: ExecutionContext, origin: string, ref: DafRef, date: Date, isToday: boolean, todayRef: DafRef, todayDate: Date): Promise<Response> {

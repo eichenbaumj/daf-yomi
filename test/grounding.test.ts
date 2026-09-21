@@ -41,6 +41,14 @@ describe("grounding", () => {
     expect(unglossed("exempts him from the priestly gifts entirely")).toEqual(["priestly gifts"]);
     expect(unglossed("exempts him from the priestly gifts (the foreleg, jaw and stomach owed to a priest)")).toEqual([]);
     expect(unglossed("brings a sin-offering, an animal offered for an unwitting sin,")).toEqual([]);
+    // Real drafts my earlier check wrongly rejected:
+    expect(unglossed("three boxes holding three seah each, a seah being a dry measure of several quarts")).toEqual([]);
+    expect(unglossed("waves three hundred parasangs high, a parasang being roughly four kilometers")).toEqual([]);
+    expect(unglossed("may eat a dinar's worth as he works, a coin six times the wage he was hired for")).toEqual([]);
+    // Money context alone is not a gloss: "costs an issar" was the sentence Joe could not follow.
+    expect(unglossed("until Rav Ashi hangs a pearl worth a thousand dinars on it")).toEqual(["dinars"]);
+    expect(unglossed("sets payment for humiliation at two hundred dinars for a slap")).toEqual(["dinars"]);
+    expect(unglossed("he walked ten parasangs before dawn and slept.")).toEqual(["parasangs"]);
     expect(unglossed("worth two hundred dinars, silver coins, at the time")).toEqual([]);
     expect(unglossed("paid in silver dinars and a copper issar")).toEqual([]);
     expect(unglossed("a measure of teruma set aside for the priests")).toEqual([]);
