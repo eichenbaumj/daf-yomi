@@ -16,6 +16,37 @@ function tzSelect(options: string[], selected: string, chosen = false): string {
   return `<select name="tz"${chosen ? ' data-chosen="1"' : ""}>${all.map((z) => `<option value="${esc(z)}"${z === selected ? " selected" : ""}>${esc(z.replace(/_/g, " "))}</option>`).join("")}</select>`;
 }
 
+/** Sets the hidden zone field of the inline box from the browser; the server default stands if this never runs. */
+const INLINE_TZ_SCRIPT = `<script>try{var z=Intl.DateTimeFormat().resolvedOptions().timeZone,i=document.querySelector('.note-subscribe input[name=tz]');if(z&&i)i.value=z}catch(e){}</script>`;
+
+/** What the daf page needs in <head> for the inline box: the Turnstile loader and the zone script. */
+export const INLINE_SUBSCRIBE_HEAD = `<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>${INLINE_TZ_SCRIPT}`;
+
+/**
+ * The one-line sign-up under the AI note. Same POST as the full form, with the choices the full form
+ * offers collapsed to their defaults (morning, the reader's own zone, no Shabbat hold); a link leads to
+ * the rest. Turnstile runs invisibly and only shows itself when it needs an interaction.
+ */
+export function renderInlineSubscribe(o: { siteKey: string; defaultTz: string; hasNote: boolean }): string {
+  const lead = o.hasNote ? "This note, in your inbox, every morning." : "The daf and its note, in your inbox, every morning.";
+  return `<aside class="note-subscribe" aria-labelledby="sub-h">
+  <form method="post" action="/newsletter" novalidate>
+    <p class="note-subscribe-lead" id="sub-h">${lead}</p>
+    <div class="note-subscribe-row">
+      <label class="sr-only" for="sub-email">Your email</label>
+      <input id="sub-email" type="email" name="email" required autocomplete="email" inputmode="email" placeholder="your@email">
+      <button type="submit" class="btn">Send me the daf</button>
+    </div>
+    <input type="hidden" name="slot" value="morning">
+    <input type="hidden" name="tz" value="${esc(o.defaultTz)}">
+    <input type="hidden" name="consent" value="${CONSENT_VERSION}">
+    <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <div class="cf-turnstile" data-sitekey="${esc(o.siteKey)}" data-theme="light" data-appearance="interaction-only" data-size="flexible"></div>
+    <p class="muted small">Free. Arrives at 6 am your time; one click to stop. <a href="/newsletter">The evening edition and other settings.</a> A confirmation email comes first.</p>
+  </form>
+</aside>`;
+}
+
 export interface FormState { email?: string; slot?: "morning" | "evening"; tz?: string; hold?: boolean; error?: string }
 
 /** GET /newsletter. Cacheable: nothing in it is per visitor except the zone list order, which is fixed. */

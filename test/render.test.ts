@@ -87,6 +87,34 @@ describe("daf page", () => {
     expect(html).toContain("has not been written yet");
     expect(html).toContain(esc(AI_LABEL));
   });
+  it("puts a one-line sign-up under the note once the newsletter is public, on English pages only", () => {
+    const open = { ...env, NEWSLETTER_PUBLIC: "1", TURNSTILE_SITE_KEY: "0xKEY" } as Env;
+    const html = renderDafPage({ ...base, env: open, note: { summary: "S.", question: "Q?", quotes: [], model: "m", promptVersion: "v", generatedAt: "t", sources: [] } });
+    expect(html).toContain('<aside class="note-subscribe" aria-labelledby="sub-h">');
+    expect(html.indexOf('class="note"')).toBeLessThan(html.indexOf('class="note-subscribe"'));
+    expect(html.indexOf('class="note-subscribe"')).toBeLessThan(html.indexOf('class="ornament"'));
+    expect(html).toContain("This note, in your inbox, every morning.");
+    expect(html).toContain('<form method="post" action="/newsletter" novalidate>');
+    expect(html).toContain('<input type="hidden" name="slot" value="morning">');
+    expect(html).toContain('<input type="hidden" name="tz" value="UTC">');
+    expect(html).toContain('name="consent" value="2026-09-v1"');
+    expect(html).toContain('name="website" class="hp"');
+    expect(html).toContain('data-sitekey="0xKEY" data-theme="light" data-appearance="interaction-only"');
+    expect(html).toContain('<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>');
+    expect(html).toContain("input[name=tz]");
+    expect(html).toContain('<a href="/newsletter">The evening edition and other settings.</a>');
+    expect(html).not.toMatch(/—/);
+    const pending = renderDafPage({ ...base, env: open, note: null });
+    expect(pending).toContain("The daf and its note, in your inbox, every morning.");
+    const closed = renderDafPage({ ...base, note: null });
+    expect(closed).not.toContain("note-subscribe");
+    expect(closed).not.toContain("challenges.cloudflare.com");
+    const noKey = renderDafPage({ ...base, env: { ...env, NEWSLETTER_PUBLIC: "1" } as Env, note: null });
+    expect(noKey).not.toContain("note-subscribe");
+    const he = renderDafPage({ ...base, env: open, lang: "he", note: null, translation: null });
+    expect(he).not.toContain("note-subscribe");
+    expect(he).not.toContain('href="/newsletter"');
+  });
   it("links the four teaching sites in Go deeper, per daf where the site has a page", () => {
     const html = renderDafPage({ ...base, isToday: false, note: null }); // 2026-09-20 is in the past
     expect(html).toContain('<a href="https://hadran.org.il/daf/bekhorot-2/" rel="noopener">Hadran</a>');

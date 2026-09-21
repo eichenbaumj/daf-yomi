@@ -11,6 +11,7 @@ import { dafLabelL, hebrewDateL, longDateL, strings, tractateName } from "../i18
 import { en } from "../i18n/en";
 import { esc, page } from "./layout";
 import { renderPositionMini } from "./positionMini";
+import { INLINE_SUBSCRIBE_HEAD, renderInlineSubscribe } from "./newsletterPages";
 
 export interface DafPageModel {
   env: Env;
@@ -186,6 +187,11 @@ export function renderDafPage(m: DafPageModel): string {
   const heTitleSpan = lang === "en" ? ` <span lang="he" dir="rtl" class="he-title">${esc(t.heTitle)}</span>` : "";
   const legend = lang !== "en" && !anyBiur ? `<p class="legend muted">${esc(S.noBiurNotice)}</p>` : `<p class="legend muted">${S.legend}</p>`;
 
+  // English pages only, once the newsletter is public; the box needs the Turnstile site key to be worth showing.
+  const subscribeBox = lang === "en" && env.NEWSLETTER_PUBLIC === "1" && env.TURNSTILE_SITE_KEY
+    ? renderInlineSubscribe({ siteKey: env.TURNSTILE_SITE_KEY, defaultTz: env.DEFAULT_TIMEZONE || "America/New_York", hasNote: Boolean(shownNote) })
+    : null;
+
   const body = `
 <article class="daf">
   <header class="daf-head">
@@ -197,6 +203,7 @@ export function renderDafPage(m: DafPageModel): string {
   </header>
 
   ${noteBox(m, lang)}
+  ${subscribeBox ?? ""}
 
   <p class="ornament" aria-hidden="true">✦</p>
 
@@ -264,6 +271,7 @@ export function renderDafPage(m: DafPageModel): string {
     canonicalPath,
     body,
     bodyClass: "daf-page",
+    extraHead: subscribeBox ? INLINE_SUBSCRIBE_HEAD : undefined,
     ogType: "article",
     jsonLd,
   });
