@@ -63,6 +63,7 @@ describe("daf page", () => {
     for (const hook of ['class="zcap"', 'class="zval"', 'class="zoom-hint"']) expect(html).toContain(hook); // app.js finds these by class
     expect(html).toContain('data-toggle="he"');
     expect(html).toContain('data-toggle="talmudOnly"');
+    expect(html).toContain('data-toggle="text"'); // hide/show the daf, remembered across pages
     expect(html).toContain('<span class="elu">');
     expect(html).toContain('lang="he" dir="rtl"');
     expect(html).toContain('href="https://www.sefaria.org/Bekhorot.2a?lang=bi"');

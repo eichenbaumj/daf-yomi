@@ -50,7 +50,7 @@ export function page(o: PageOptions): string {
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="${FONTS}">
 <link rel="stylesheet" href="/styles.css">
-<script>try{var s=localStorage;document.documentElement.className+=(s.getItem("daf:he")==="1"?" show-he":"")+(s.getItem("daf:talmudOnly")==="1"?" talmud-only":"")}catch(e){}</script>
+<script>try{var s=localStorage;document.documentElement.className+=(s.getItem("daf:he")==="1"?" show-he":"")+(s.getItem("daf:talmudOnly")==="1"?" talmud-only":"")+(s.getItem("daf:textHidden")==="1"?" text-hidden":"")}catch(e){}</script>
 ${o.jsonLd && o.jsonLd.length ? `<script type="application/ld+json">${JSON.stringify(o.jsonLd.length === 1 ? o.jsonLd[0] : o.jsonLd).replace(/</g, "\\u003c")}</script>` : ""}
 ${o.extraHead ?? ""}
 </head>

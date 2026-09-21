@@ -1,8 +1,10 @@
 (function () {
   var root = document.documentElement;
-  var KEYS = { he: "daf:he", talmudOnly: "daf:talmudOnly" };
-  var CLASSES = { he: "show-he", talmudOnly: "talmud-only" };
-  var LABELS = { he: ["Show Hebrew / Aramaic", "Hide Hebrew / Aramaic"], talmudOnly: ["Talmud only", "Show explanations"] };
+  // Three reading options, each remembered in this browser and applied as a class on <html>. "text" hides the daf itself
+  // so a reader can browse the notes day to day; it stays hidden across pages until they bring the text back.
+  var KEYS = { he: "daf:he", talmudOnly: "daf:talmudOnly", text: "daf:textHidden" };
+  var CLASSES = { he: "show-he", talmudOnly: "talmud-only", text: "text-hidden" };
+  var LABELS = { he: ["Show Hebrew / Aramaic", "Hide Hebrew / Aramaic"], talmudOnly: ["Talmud only", "Show explanations"], text: ["Hide the daf", "Show the daf"] };
   function read(k) { try { return localStorage.getItem(k) === "1"; } catch (e) { return false; } }
   function write(k, v) { try { localStorage.setItem(k, v ? "1" : "0"); } catch (e) {} }
   function sync(btn, on) {

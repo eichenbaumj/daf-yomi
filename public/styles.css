@@ -92,6 +92,9 @@ h2 { font-weight: 600; font-size: 1.25rem; margin: 2rem 0 .6rem; }
 .toggle:hover { border-color: var(--ink-3); }
 .toggle[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
 .legend { flex-basis: 100%; margin: .1rem 0 0; font-size: .88rem; }
+/* "Hide the daf": just the note and the day-to-day links, for browsing notes. The two text toggles have nothing to act on, so they go too. */
+html.text-hidden .amud, html.text-hidden .legend, html.text-hidden .toggle[data-toggle="he"], html.text-hidden .toggle[data-toggle="talmudOnly"] { display: none; }
+html.text-hidden .tools { margin-bottom: 0; }
 
 /* Text */
 .amud { margin: 1.6rem 0 2.2rem; }

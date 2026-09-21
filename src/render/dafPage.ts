@@ -134,6 +134,7 @@ export function renderDafPage(m: DafPageModel): string {
   <div class="tools" role="group" aria-label="Reading options">
     ${anyHebrew ? `<button type="button" class="toggle" data-toggle="he" aria-pressed="false">Show Hebrew / Aramaic</button>` : ""}
     ${anyElu ? `<button type="button" class="toggle" data-toggle="talmudOnly" aria-pressed="false">Talmud only</button>` : ""}
+    <button type="button" class="toggle toggle-text" data-toggle="text" aria-pressed="false">Hide the daf</button>
     <p class="legend muted">${LEGEND}</p>
   </div>
 
