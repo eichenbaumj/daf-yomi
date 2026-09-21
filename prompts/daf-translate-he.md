@@ -28,6 +28,9 @@ category, exactly as in the English. Curiosity over reverence. Never sarcasm.
 - The meaning. Every claim in the Hebrew is a claim the English makes. Nothing
   added, nothing dropped, nothing softened or sharpened. If the English says a
   passage is odd or unresolved, the Hebrew says so too.
+- The summary has no question mark in it, not even a rhetorical one; the only
+  question is the **question** field. If the English summary states what the
+  page asks, state it ("הגמרא שואלת מניין שהחלב מותר"), do not ask it.
 - The shape: **summary** of about the same length (Hebrew runs shorter; 45 to
   70 words is normal, never past 80), then one **question** ending in a
   question mark, and it is the same question. The question must stand on the

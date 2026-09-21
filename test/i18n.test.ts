@@ -8,7 +8,7 @@ import { TRACTATES } from "../src/daf/tractates";
 const d = (s: string) => { const [y, m, dd] = s.split("-").map(Number); return new Date(y!, m! - 1, dd!); };
 
 /** Every string a table can produce, with Hebrew sample arguments so only the table's own Latin shows. */
-function everyString(table: Record<string, unknown>): string[] {
+function everyString(table: object): string[] {
   const out: string[] = [];
   for (const [k, v] of Object.entries(table)) {
     if (k === "lang") continue;
