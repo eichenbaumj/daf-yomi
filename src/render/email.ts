@@ -158,7 +158,7 @@ export function renderIssue(m: IssueModel): RenderedIssue {
   const legend = note && mentionsLegendTerms(note.summary, note.question) ? legendSentence() : "";
   const words = note?.wordCount ? `The whole daf in English, about ${roundWords(note.wordCount)} words today, with the Hebrew and Aramaic one tap away.` : "The whole daf in English, with the Hebrew and Aramaic one tap away.";
   const sefaria = sefariaUrl(t, daf);
-  const hadran = (t as Tractate & { hadranSlug?: string }).hadranSlug;
+  const hadran = t.hadranSlug;
   const hadranUrl = hadran ? `https://hadran.org.il/daf/${hadran}-${daf}/` : null;
   const attr = attribution(t);
   const aiSentence = "The note above is written by an AI and says so. It may quote only words that are on the page, may not cite later authorities, and may not state a ruling as practice.";

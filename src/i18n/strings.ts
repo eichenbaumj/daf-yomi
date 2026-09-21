@@ -64,6 +64,7 @@ export interface Strings {
   /** Kinnim/Middot in Hebrew: there is no Steinsaltz biur for the Mishnah days. */
   noBiurNotice: string;
   hadranBlurb: string;
+  mjlBlurb: string;
   kollelBlurb: string;
   steinsaltzCenterBlurb: string;
   sefariaBlurb: string;

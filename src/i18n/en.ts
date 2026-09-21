@@ -36,6 +36,7 @@ export const en: Strings = {
   noTextForSegment: "(no English for this segment)",
   noBiurNotice: "Rabbi Steinsaltz's Hebrew explanation is not available for the Mishnah days; the Mishnah is shown on its own.",
   hadranBlurb: "(Rabbanit Michelle Farber's daily shiur and summary)",
+  mjlBlurb: "(a short daily essay written for newcomers)",
   kollelBlurb: "(Point by Point summaries, Insights, Background)",
   steinsaltzCenterBlurb: "(daily essays)",
   sefariaBlurb: "(the text with commentaries)",

@@ -1,7 +1,11 @@
 /**
- * Verify Hadran's per-daf URL slug for every tractate (HEAD request on the
- * first daf) and record it in data/tractates.json as `hadranSlug`. Tractates
- * with no confirmed slug get no Hadran link on the site.
+ * Verify the per-daf URL slugs of the teaching sites the "Go deeper" box links to, and record them in
+ * data/tractates.json. Each probe is a GET on the tractate's first daf; a redirect to some other page
+ * does not count. Tractates with no confirmed slug get no per-daf link on the site (Hadran: no link at
+ * all; My Jewish Learning: the series page instead).
+ *
+ * My Jewish Learning publishes an article per daf on the morning of that daf, so a tractate the cycle
+ * has not reached yet cannot be confirmed; re-run this once it starts.
  *   npm run check:links
  */
 import { readFileSync, writeFileSync } from "node:fs";
@@ -18,16 +22,24 @@ async function exists(url: string): Promise<boolean> {
   } catch { return false; }
 }
 
+const pause = () => new Promise((r) => setTimeout(r, 200));
+
+async function firstSlug(candidates: string[], urlFor: (slug: string) => string): Promise<string | undefined> {
+  for (const c of [...new Set(candidates)]) {
+    if (await exists(urlFor(c))) return c;
+    await pause();
+  }
+  return undefined;
+}
+
 async function main() {
   for (const t of data.tractates) {
-    const candidates = [t.slug, t.hebcalName.toLowerCase().replace(/ /g, "-"), t.name.toLowerCase().replace(/ /g, "-").replace("kh", "ch")];
-    let found: string | null = null;
-    for (const c of [...new Set(candidates)]) {
-      if (await exists(`https://hadran.org.il/daf/${c}-${t.firstDaf}/`)) { found = c; break; }
-      await new Promise((r) => setTimeout(r, 200));
-    }
-    t.hadranSlug = found ?? undefined;
-    console.log(`${t.name}: ${found ?? "— no Hadran page found"}`);
+    const candidates = [t.slug, t.hebcalName.toLowerCase().replace(/ /g, "-"), t.name.toLowerCase().replace(/ /g, "-"), t.name.toLowerCase().replace(/ /g, "-").replace("kh", "ch")];
+    const hadran = await firstSlug(candidates, (c) => `https://hadran.org.il/daf/${c}-${t.firstDaf}/`);
+    const mjl = await firstSlug(candidates, (c) => `https://www.myjewishlearning.com/article/${c}-${t.firstDaf}/`);
+    if (hadran) t.hadranSlug = hadran; else delete t.hadranSlug;
+    if (mjl) t.mjlSlug = mjl; else delete t.mjlSlug;
+    console.log(`${t.name}: hadran=${hadran ?? "none"} mjl=${mjl ?? "none (not reached yet?)"}`);
   }
   writeFileSync("data/tractates.json", JSON.stringify(data, null, 1) + "\n");
 }

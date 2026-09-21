@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { AI_LABEL, renderDafPage } from "../src/render/dafPage";
+import { AI_LABEL, MJL_SERIES_URL, mjlUrl, renderDafPage, scholarLinks } from "../src/render/dafPage";
+import { tractateBySlug } from "../src/daf/tractates";
 import { esc } from "../src/render/layout";
 import { renderAbout } from "../src/render/about";
 import { SEDARIM } from "../src/render/dafYomiDiagram";
@@ -85,6 +86,31 @@ describe("daf page", () => {
     const html = renderDafPage({ ...base, note: null });
     expect(html).toContain("has not been written yet");
     expect(html).toContain(esc(AI_LABEL));
+  });
+  it("links the four teaching sites in Go deeper, per daf where the site has a page", () => {
+    const html = renderDafPage({ ...base, isToday: false, note: null }); // 2026-09-20 is in the past
+    expect(html).toContain('<a href="https://hadran.org.il/daf/bekhorot-2/" rel="noopener">Hadran</a>');
+    expect(html).toContain('<a href="https://www.myjewishlearning.com/article/bekhorot-2/" rel="noopener">My Jewish Learning</a> <span class="muted">(a short daily essay written for newcomers)</span>');
+    expect(html).toContain('<a href="https://www.dafyomi.co.il/" rel="noopener">Kollel Iyun Hadaf</a>');
+    expect(html).toContain('<a href="https://steinsaltz.org/todays-daf/" rel="noopener">Steinsaltz Center</a>');
+    expect(html).toContain('rel="noopener">Sefaria</a>');
+    expect(html.indexOf(">Hadran<")).toBeLessThan(html.indexOf(">My Jewish Learning<"));
+  });
+  it("sends a future daf, or an unverified tractate, to the My Jewish Learning series page instead of a 404", () => {
+    const bekhorot = tractateBySlug("bekhorot")!;
+    const niddah = tractateBySlug("niddah")!; // not reached in this cycle; no mjlSlug recorded
+    expect(mjlUrl(bekhorot, 40, true)).toBe("https://www.myjewishlearning.com/article/bekhorot-40/");
+    expect(mjlUrl(bekhorot, 40, false)).toBe(MJL_SERIES_URL);
+    expect(mjlUrl(niddah, 2, true)).toBe(MJL_SERIES_URL);
+    const future = renderDafPage({ ...base, isToday: false, date: new Date(Date.now() + 30 * 86400000), note: null });
+    expect(future).toContain(`<a href="${MJL_SERIES_URL}" rel="noopener">My Jewish Learning</a>`);
+    expect(scholarLinks(niddah, 2, undefined, "he")).toContain(`<a href="${MJL_SERIES_URL}" rel="noopener">My Jewish Learning</a> <span class="muted">(מסה יומית`);
+    expect(scholarLinks(niddah, 2, undefined, "he")).toContain('href="https://hadran.org.il/he/daf/niddah-2/"');
+  });
+  it("records a verified Hadran slug for every tractate and a My Jewish Learning slug for every tractate the cycle has reached", () => {
+    for (const t of TRACTATES) expect(t.hadranSlug, t.name).toBeTruthy();
+    const reached = TRACTATES.filter((t) => t.order <= tractateBySlug("bekhorot")!.order);
+    for (const t of reached) expect(t.mjlSlug, t.name).toBe(t.slug);
   });
   it("escapes note text", () => {
     const html = renderDafPage({ ...base, note: { summary: "<script>x</script>", question: "Q?", quotes: [], model: "m", promptVersion: "v", generatedAt: "t", sources: [] } });
@@ -190,6 +216,7 @@ describe("Hebrew pages (Pre-Release)", () => {
     expect(about).toContain('<html lang="he" dir="rtl">');
     expect(about).toContain("אתם כאן: יום 2,451, בכורות ב׳");
     expect(about).not.toMatch(/—/);
+    expect(about).toContain('href="https://www.myjewishlearning.com/article/daf-yomi/"');
     expect((about.match(/class="dseg tractate/g) ?? []).length).toBe(40);
   });
 });

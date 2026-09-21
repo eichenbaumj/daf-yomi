@@ -104,7 +104,9 @@
     "Introduction to Perek IX",
     "Summary of Perek IX"
    ],
-   "heShortDesc": "ברכות ותפילות, בדגש על קריאת שמע ועל תפילת העמידה."
+   "heShortDesc": "ברכות ותפילות, בדגש על קריאת שמע ועל תפילת העמידה.",
+   "hadranSlug": "berakhot",
+   "mjlSlug": "berakhot"
   },
   {
    "hebcalName": "Shabbat",
@@ -343,7 +345,9 @@
     "Introduction to Perek XXIV",
     "Summary of Perek XXIV"
    ],
-   "heShortDesc": "מלאכות האסורות בשבת ודינים הקשורים לקדושת היום."
+   "heShortDesc": "מלאכות האסורות בשבת ודינים הקשורים לקדושת היום.",
+   "hadranSlug": "shabbat",
+   "mjlSlug": "shabbat"
   },
   {
    "hebcalName": "Eruvin",
@@ -456,7 +460,9 @@
     "Introduction to Perek X",
     "Summary of Perek X"
    ],
-   "heShortDesc": "תיחום המרחיב באופן סמלי את התחומים שמותר ללכת ולשאת בהם חפצים בשבת."
+   "heShortDesc": "תיחום המרחיב באופן סמלי את התחומים שמותר ללכת ולשאת בהם חפצים בשבת.",
+   "hadranSlug": "eruvin",
+   "mjlSlug": "eruvin"
   },
   {
    "hebcalName": "Pesachim",
@@ -569,7 +575,9 @@
     "Introduction to Perek X",
     "Summary of Perek X"
    ],
-   "heShortDesc": "דינים הקשורים לחג הפסח: איסור חמץ, קורבן הפסח, מצה, מרור וליל הסדר."
+   "heShortDesc": "דינים הקשורים לחג הפסח: איסור חמץ, קורבן הפסח, מצה, מרור וליל הסדר.",
+   "hadranSlug": "pesachim",
+   "mjlSlug": "pesachim"
   },
   {
    "hebcalName": "Shekalim",
@@ -589,7 +597,9 @@
    "description": "Sheqalim (Shekels) belongs to the second order, Moed (Festivals) and discusses the collection of the half-Shekel as well as the expenses and expenditure of the Temple. It has eight chapters.",
    "chapters": [],
    "introNodes": [],
-   "heShortDesc": "תרומה של מחצית השקל הניתנת לבית המקדש בכל שנה וענייני ניהולו ותפעולו של בית המקדש."
+   "heShortDesc": "תרומה של מחצית השקל הניתנת לבית המקדש בכל שנה וענייני ניהולו ותפעולו של בית המקדש.",
+   "hadranSlug": "shekalim",
+   "mjlSlug": "shekalim"
   },
   {
    "hebcalName": "Yoma",
@@ -684,7 +694,9 @@
     "Introduction to Perek VIII",
     "Summary of Perek VIII"
    ],
-   "heShortDesc": "יום הכיפורים: הכנות הכהן הגדול, העבודה בבית המקדש, הצום והתשובה."
+   "heShortDesc": "יום הכיפורים: הכנות הכהן הגדול, העבודה בבית המקדש, הצום והתשובה.",
+   "hadranSlug": "yoma",
+   "mjlSlug": "yoma"
   },
   {
    "hebcalName": "Sukkah",
@@ -752,7 +764,9 @@
     "Introduction to Perek V",
     "Summary of Perek V"
    ],
-   "heShortDesc": "מבנה הסוכה, החובה לשבת בסוכה, ארבעת המינים ושמחת החג בבית המקדש."
+   "heShortDesc": "מבנה הסוכה, החובה לשבת בסוכה, ארבעת המינים ושמחת החג בבית המקדש.",
+   "hadranSlug": "sukkah",
+   "mjlSlug": "sukkah"
   },
   {
    "hebcalName": "Beitzah",
@@ -820,7 +834,9 @@
     "Introduction to Perek V",
     "Summary of Perek V"
    ],
-   "heShortDesc": "דיני יום טוב: חפצים האסורים בשימוש, הכנת אוכל בחג לצורך החג והמלאכות האסורות."
+   "heShortDesc": "דיני יום טוב: חפצים האסורים בשימוש, הכנת אוכל בחג לצורך החג והמלאכות האסורות.",
+   "hadranSlug": "beitzah",
+   "mjlSlug": "beitzah"
   },
   {
    "hebcalName": "Rosh Hashana",
@@ -879,7 +895,9 @@
     "Introduction to Perek IV",
     "Summary of Perek IV"
    ],
-   "heShortDesc": "ארבעת ראשי השנה, הליך קידוש החודש ודיני תקיעת שופר."
+   "heShortDesc": "ארבעת ראשי השנה, הליך קידוש החודש ודיני תקיעת שופר.",
+   "hadranSlug": "rosh-hashanah",
+   "mjlSlug": "rosh-hashanah"
   },
   {
    "hebcalName": "Taanit",
@@ -938,7 +956,9 @@
     "Introduction to Perek IV",
     "Summary of Perek IV"
    ],
-   "heShortDesc": "תפילה על הגשם, צום בימי בצורת והצומות שנקבעו לזכר חורבן ירושלים."
+   "heShortDesc": "תפילה על הגשם, צום בימי בצורת והצומות שנקבעו לזכר חורבן ירושלים.",
+   "hadranSlug": "taanit",
+   "mjlSlug": "taanit"
   },
   {
    "hebcalName": "Megillah",
@@ -997,7 +1017,9 @@
     "Introduction to Perek IV",
     "Summary of Perek IV"
    ],
-   "heShortDesc": "קריאת מגילת אסתר בפורים, קריאת התורה וההפטרות בבית הכנסת ודיני קדושת בית הכנסת ותשמישי קדושה."
+   "heShortDesc": "קריאת מגילת אסתר בפורים, קריאת התורה וההפטרות בבית הכנסת ודיני קדושת בית הכנסת ותשמישי קדושה.",
+   "hadranSlug": "megillah",
+   "mjlSlug": "megillah"
   },
   {
    "hebcalName": "Moed Katan",
@@ -1047,7 +1069,9 @@
     "Introduction to Perek III",
     "Summary of Perek III"
    ],
-   "heShortDesc": "חול המועד (הימים בסוכות ובפסח שאינם ימים טובים), אבלות ונידוי."
+   "heShortDesc": "חול המועד (הימים בסוכות ובפסח שאינם ימים טובים), אבלות ונידוי.",
+   "hadranSlug": "moed-katan",
+   "mjlSlug": "moed-katan"
   },
   {
    "hebcalName": "Chagigah",
@@ -1097,7 +1121,9 @@
     "Introduction to Perek III",
     "Summary of Perek III"
    ],
-   "heShortDesc": "קורבנות המוקרבים בעת העלייה לרגל לירושלים בשלושת הרגלים (פסח, שבועות וסוכות), דיני טהרה ודיונים העוסקים בבריאת העולם ובמעשה מרכבה."
+   "heShortDesc": "קורבנות המוקרבים בעת העלייה לרגל לירושלים בשלושת הרגלים (פסח, שבועות וסוכות), דיני טהרה ודיונים העוסקים בבריאת העולם ובמעשה מרכבה.",
+   "hadranSlug": "chagigah",
+   "mjlSlug": "chagigah"
   },
   {
    "hebcalName": "Yevamot",
@@ -1264,7 +1290,9 @@
     "Introduction to Perek XVI",
     "Summary of Perek XVI"
    ],
-   "heShortDesc": "ייבום, חליצה ואיסורי עריות."
+   "heShortDesc": "ייבום, חליצה ואיסורי עריות.",
+   "hadranSlug": "yevamot",
+   "mjlSlug": "yevamot"
   },
   {
    "hebcalName": "Ketubot",
@@ -1404,7 +1432,9 @@
     "Introduction to Perek XIII",
     "Summary of Perek XIII"
    ],
-   "heShortDesc": "שטר הכתובה, חובות הבעל לאשתו וחובות האישה לבעלה."
+   "heShortDesc": "שטר הכתובה, חובות הבעל לאשתו וחובות האישה לבעלה.",
+   "hadranSlug": "ketubot",
+   "mjlSlug": "ketubot"
   },
   {
    "hebcalName": "Nedarim",
@@ -1526,7 +1556,9 @@
     "Introduction to Perek XI",
     "Summary of Perek XI"
    ],
-   "heShortDesc": "נדרים שאדם נודר מרצונו, לרוב נדרים האוסרים על הנודר מעשים או חפצים מסוימים."
+   "heShortDesc": "נדרים שאדם נודר מרצונו, לרוב נדרים האוסרים על הנודר מעשים או חפצים מסוימים.",
+   "hadranSlug": "nedarim",
+   "mjlSlug": "nedarim"
   },
   {
    "hebcalName": "Nazir",
@@ -1630,7 +1662,9 @@
     "Introduction to Perek IX",
     "Summary of Perek IX"
    ],
-   "heShortDesc": "הנזיר: אדם שנודר להימנע מיין, מתספורת ומהיטמאות למת לפרק זמן מוגדר."
+   "heShortDesc": "הנזיר: אדם שנודר להימנע מיין, מתספורת ומהיטמאות למת לפרק זמן מוגדר.",
+   "hadranSlug": "nazir",
+   "mjlSlug": "nazir"
   },
   {
    "hebcalName": "Sotah",
@@ -1734,7 +1768,9 @@
     "Introduction to Perek IX",
     "Summary of Perek IX"
    ],
-   "heShortDesc": "אישה החשודה בבגידה בבעלה, טקס בירור מעמדה וטקסים אחרים הכרוכים באמירה."
+   "heShortDesc": "אישה החשודה בבגידה בבעלה, טקס בירור מעמדה וטקסים אחרים הכרוכים באמירה.",
+   "hadranSlug": "sotah",
+   "mjlSlug": "sotah"
   },
   {
    "hebcalName": "Gitin",
@@ -1838,7 +1874,9 @@
     "Introduction to Perek IX",
     "Summary of Perek IX"
    ],
-   "heShortDesc": "דיני גירושין, בדגש על כתיבת שטר הגט ונתינתו."
+   "heShortDesc": "דיני גירושין, בדגש על כתיבת שטר הגט ונתינתו.",
+   "hadranSlug": "gittin",
+   "mjlSlug": "gittin"
   },
   {
    "hebcalName": "Kiddushin",
@@ -1897,7 +1935,9 @@
     "Introduction to Perek IV",
     "Summary of Perek IV"
    ],
-   "heShortDesc": "קידושין, נישואין, דיני קניין וענייני יוחסין."
+   "heShortDesc": "קידושין, נישואין, דיני קניין וענייני יוחסין.",
+   "hadranSlug": "kiddushin",
+   "mjlSlug": "kiddushin"
   },
   {
    "hebcalName": "Baba Kamma",
@@ -2010,7 +2050,9 @@
     "Introduction to Perek X",
     "Summary of Perek X"
    ],
-   "heShortDesc": "אחריות לנזקי אדם או רכוש והפיצויים עליהם."
+   "heShortDesc": "אחריות לנזקי אדם או רכוש והפיצויים עליהם.",
+   "hadranSlug": "bava-kamma",
+   "mjlSlug": "bava-kamma"
   },
   {
    "hebcalName": "Baba Metzia",
@@ -2123,7 +2165,9 @@
     "Introduction to Perek X",
     "Summary of Perek X"
    ],
-   "heShortDesc": "רכוש שיש עליו מחלוקת, השבת אבדה, דיני שמירה, שכירה ושאילה וחובותיהם של מעסיקים ושל עובדים."
+   "heShortDesc": "רכוש שיש עליו מחלוקת, השבת אבדה, דיני שמירה, שכירה ושאילה וחובותיהם של מעסיקים ושל עובדים.",
+   "hadranSlug": "bava-metzia",
+   "mjlSlug": "bava-metzia"
   },
   {
    "hebcalName": "Baba Batra",
@@ -2236,7 +2280,9 @@
     "Introduction to Perek X",
     "Summary of Perek X"
    ],
-   "heShortDesc": "יחסים בין שכנים, בעלות על קרקע, מכירת קרקעות ודיני ירושה."
+   "heShortDesc": "יחסים בין שכנים, בעלות על קרקע, מכירת קרקעות ודיני ירושה.",
+   "hadranSlug": "bava-batra",
+   "mjlSlug": "bava-batra"
   },
   {
    "hebcalName": "Sanhedrin",
@@ -2358,7 +2404,9 @@
     "Introduction to Perek XI",
     "Summary of Perek XI"
    ],
-   "heShortDesc": "מערכת המשפט, הקמת בית הדין, קבלת עדות וביצוע גזר דין מוות."
+   "heShortDesc": "מערכת המשפט, הקמת בית הדין, קבלת עדות וביצוע גזר דין מוות.",
+   "hadranSlug": "sanhedrin",
+   "mjlSlug": "sanhedrin"
   },
   {
    "hebcalName": "Makkot",
@@ -2408,7 +2456,9 @@
     "Introduction to Perek III",
     "Summary of Perek III"
    ],
-   "heShortDesc": "עדים זוממים, ערי מקלט לרוצחים בשגגה ועונש מלקות."
+   "heShortDesc": "עדים זוממים, ערי מקלט לרוצחים בשגגה ועונש מלקות.",
+   "hadranSlug": "makkot",
+   "mjlSlug": "makkot"
   },
   {
    "hebcalName": "Shevuot",
@@ -2503,7 +2553,9 @@
     "Introduction to Perek VIII",
     "Summary of Perek VIII"
    ],
-   "heShortDesc": "דיני הנכנס לבית המקדש או אוכל בשר קורבן בהיותו טמא, דיני שבועות."
+   "heShortDesc": "דיני הנכנס לבית המקדש או אוכל בשר קורבן בהיותו טמא, דיני שבועות.",
+   "hadranSlug": "shevuot",
+   "mjlSlug": "shevuot"
   },
   {
    "hebcalName": "Avodah Zarah",
@@ -2571,7 +2623,9 @@
     "Introduction to Perek V",
     "Summary of Perek V"
    ],
-   "heShortDesc": "התרחקות מעבודת אלילים וכללים המסדירים את הקשר בין יהודים ועובדי אלילים."
+   "heShortDesc": "התרחקות מעבודת אלילים וכללים המסדירים את הקשר בין יהודים ועובדי אלילים.",
+   "hadranSlug": "avodah-zarah",
+   "mjlSlug": "avodah-zarah"
   },
   {
    "hebcalName": "Horayot",
@@ -2621,7 +2675,9 @@
     "Introduction to Perek III",
     "Summary of Perek III"
    ],
-   "heShortDesc": "כפרה על פסיקות שגויות שהורו בבית הדין ועל חטאים בשגגה של כהנים גדולים ומלכים."
+   "heShortDesc": "כפרה על פסיקות שגויות שהורו בבית הדין ועל חטאים בשגגה של כהנים גדולים ומלכים.",
+   "hadranSlug": "horayot",
+   "mjlSlug": "horayot"
   },
   {
    "hebcalName": "Zevachim",
@@ -2770,7 +2826,9 @@
     "Introduction to Perek XIV",
     "Summary of Perek XIV"
    ],
-   "heShortDesc": "קורבנות בהמה ועוף ודינים הנוגעים לבית המקדש."
+   "heShortDesc": "קורבנות בהמה ועוף ודינים הנוגעים לבית המקדש.",
+   "hadranSlug": "zevachim",
+   "mjlSlug": "zevachim"
   },
   {
    "hebcalName": "Menachot",
@@ -2910,7 +2968,9 @@
     "Introduction to Perek XIII",
     "Summary of Perek XIII"
    ],
-   "heShortDesc": "מנחות עשויות קמח, לחם הפנים ונסכי יין ושמן."
+   "heShortDesc": "מנחות עשויות קמח, לחם הפנים ונסכי יין ושמן.",
+   "hadranSlug": "menachot",
+   "mjlSlug": "menachot"
   },
   {
    "hebcalName": "Chullin",
@@ -3041,7 +3101,9 @@
     "Introduction to Perek XII",
     "Summary of Perek XII"
    ],
-   "heShortDesc": "שחיטת חיות ועופות שלא לשם קורבן וענייני כשרות נוספים."
+   "heShortDesc": "שחיטת חיות ועופות שלא לשם קורבן וענייני כשרות נוספים.",
+   "hadranSlug": "chullin",
+   "mjlSlug": "chullin"
   },
   {
    "hebcalName": "Bechorot",
@@ -3145,7 +3207,9 @@
     "Introduction to Perek IX",
     "Summary of Perek IX"
    ],
-   "heShortDesc": "נתינת בכורות של בהמות טהורות לכהן, פדיון הוולד הבכור של החמור, פדיון בכור האדם ומעשר בהמה."
+   "heShortDesc": "נתינת בכורות של בהמות טהורות לכהן, פדיון הוולד הבכור של החמור, פדיון בכור האדם ומעשר בהמה.",
+   "hadranSlug": "bekhorot",
+   "mjlSlug": "bekhorot"
   },
   {
    "hebcalName": "Arachin",
@@ -3249,7 +3313,8 @@
     "Introduction to Perek IX",
     "Summary of Perek IX"
    ],
-   "heShortDesc": "נדר לתרום לבית המקדש ממון בשווי ערכו של אדם לפי המפורט בתורה, תרומות קרקע לבית המקדש."
+   "heShortDesc": "נדר לתרום לבית המקדש ממון בשווי ערכו של אדם לפי המפורט בתורה, תרומות קרקע לבית המקדש.",
+   "hadranSlug": "arakhin"
   },
   {
    "hebcalName": "Temurah",
@@ -3335,7 +3400,8 @@
     "Introduction to Perek VII",
     "Summary of Perek VII"
    ],
-   "heShortDesc": "קדושת הבהמות שיועדו לקורבן והאיסור להחליפן באחרות."
+   "heShortDesc": "קדושת הבהמות שיועדו לקורבן והאיסור להחליפן באחרות.",
+   "hadranSlug": "temurah"
   },
   {
    "hebcalName": "Keritot",
@@ -3412,7 +3478,8 @@
     "Introduction to Perek VI",
     "Summary of Perek VI"
    ],
-   "heShortDesc": "עונש כרת וקורבנות על חטאים שנעשו בשגגה."
+   "heShortDesc": "עונש כרת וקורבנות על חטאים שנעשו בשגגה.",
+   "hadranSlug": "keritot"
   },
   {
    "hebcalName": "Meilah",
@@ -3489,7 +3556,8 @@
     "Introduction to Perek VI",
     "Summary of Perek VI"
    ],
-   "heShortDesc": "הנאה אסורה מחפץ, מבהמה או מכסף השייכים לבית המקדש."
+   "heShortDesc": "הנאה אסורה מחפץ, מבהמה או מכסף השייכים לבית המקדש.",
+   "hadranSlug": "meilah"
   },
   {
    "hebcalName": "Kinnim",
@@ -3509,7 +3577,8 @@
    "description": "Kinnim (Nests) belongs to the fifth order, Kodshim (Holy things) and discusses the complex laws for situations where the mixing of bird-offerings occurred. It has three chapters.",
    "chapters": [],
    "introNodes": [],
-   "heShortDesc": "עופות שנועדו לקורבן והתערבו זה בזה והחישובים המורכבים שיש לחשב כדי לקבוע את מעמדם."
+   "heShortDesc": "עופות שנועדו לקורבן והתערבו זה בזה והחישובים המורכבים שיש לחשב כדי לקבוע את מעמדם.",
+   "hadranSlug": "kinnim"
   },
   {
    "hebcalName": "Tamid",
@@ -3567,7 +3636,8 @@
    "introNodes": [
     "Introduction to Tamid"
    ],
-   "heShortDesc": "העבודה הנעשית במקדש בכל יום הכוללת את קורבן התמיד המוקרב בבוקר ובין הערביים."
+   "heShortDesc": "העבודה הנעשית במקדש בכל יום הכוללת את קורבן התמיד המוקרב בבוקר ובין הערביים.",
+   "hadranSlug": "tamid"
   },
   {
    "hebcalName": "Midot",
@@ -3587,7 +3657,8 @@
    "description": "Middot (Measurements) belongs to the fifth order, Kodshim (Holy things) and discusses the measurements of the second Temple. It has four chapters.",
    "chapters": [],
    "introNodes": [],
-   "heShortDesc": "מידותיהם ותיאורם של בית המקדש השני ושל הר הבית."
+   "heShortDesc": "מידותיהם ותיאורם של בית המקדש השני ושל הר הבית.",
+   "hadranSlug": "middot"
   },
   {
    "hebcalName": "Niddah",
@@ -3700,7 +3771,8 @@
     "Introduction to Perek X",
     "Summary of Perek X"
    ],
-   "heShortDesc": "טומאת האישה בנידתה ובמצבים נוספים."
+   "heShortDesc": "טומאת האישה בנידתה ובמצבים נוספים.",
+   "hadranSlug": "niddah"
   }
  ]
 }

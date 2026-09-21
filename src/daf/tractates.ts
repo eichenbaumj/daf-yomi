@@ -24,6 +24,10 @@ export interface Tractate {
   description: string;
   chapters: Chapter[];
   introNodes: string[];
+  /** Hadran's per-daf URL slug, verified by scripts/check-scholar-links.ts; absent = no Hadran link. */
+  hadranSlug?: string;
+  /** My Jewish Learning's per-daf article slug, verified the same way; absent = link the series page. */
+  mjlSlug?: string;
 }
 
 export const CYCLE_LENGTH: number = data.cycleLength;

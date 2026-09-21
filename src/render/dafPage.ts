@@ -122,11 +122,22 @@ function amudSection(lang: Lang, label: string, t: SefariaText, biur: BiurText |
 </section>`;
 }
 
-export function scholarLinks(t: Tractate, daf: number, urlRef: string | undefined, lang: Lang = "en"): string {
+export const MJL_SERIES_URL = "https://www.myjewishlearning.com/article/daf-yomi/";
+
+/**
+ * My Jewish Learning publishes one short essay per daf, on the morning of that daf. A daf that has
+ * already arrived gets its own article; a future daf, or a tractate whose slug is unverified, gets
+ * the series page so the link never lands on a 404.
+ */
+export function mjlUrl(t: Tractate, daf: number, published: boolean): string {
+  return published && t.mjlSlug ? `https://www.myjewishlearning.com/article/${t.mjlSlug}-${daf}/` : MJL_SERIES_URL;
+}
+
+export function scholarLinks(t: Tractate, daf: number, urlRef: string | undefined, lang: Lang = "en", mjlPublished = true): string {
   const S = strings(lang);
   const links: string[] = [];
-  const hadran = (t as Tractate & { hadranSlug?: string }).hadranSlug;
-  if (hadran) links.push(`<a href="https://hadran.org.il/${lang === "he" ? "he/" : ""}daf/${esc(hadran)}-${daf}/" rel="noopener">Hadran</a> <span class="muted">${esc(S.hadranBlurb)}</span>`);
+  if (t.hadranSlug) links.push(`<a href="https://hadran.org.il/${lang === "he" ? "he/" : ""}daf/${esc(t.hadranSlug)}-${daf}/" rel="noopener">Hadran</a> <span class="muted">${esc(S.hadranBlurb)}</span>`);
+  links.push(`<a href="${esc(mjlUrl(t, daf, mjlPublished))}" rel="noopener">My Jewish Learning</a> <span class="muted">${esc(S.mjlBlurb)}</span>`);
   links.push(`<a href="https://www.dafyomi.co.il/" rel="noopener">Kollel Iyun Hadaf</a> <span class="muted">${esc(S.kollelBlurb)}</span>`);
   links.push(`<a href="https://steinsaltz.org/todays-daf/" rel="noopener">Steinsaltz Center</a> <span class="muted">${esc(S.steinsaltzCenterBlurb)}</span>`);
   if (urlRef) links.push(`<a href="https://www.sefaria.org/${esc(urlRef)}?lang=${lang === "en" ? "bi" : "he"}" rel="noopener">Sefaria</a> <span class="muted">${esc(S.sefariaBlurb)}</span>`);
@@ -207,7 +218,7 @@ export function renderDafPage(m: DafPageModel): string {
   <section class="deeper-wrap">
     <h2>${esc(S.goDeeper)}</h2>
     <p class="muted">${esc(S.teachersLine)}</p>
-    ${scholarLinks(t, ref.daf, firstText?.urlRef, lang)}
+    ${scholarLinks(t, ref.daf, firstText?.urlRef, lang, m.isToday || m.date.getTime() < Date.now())}
   </section>
 </article>`;
 
