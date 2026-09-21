@@ -43,7 +43,7 @@ origin, so nothing else needed changing.
 - D1 database `daf-yomi-newsletter` (id in `wrangler.jsonc`). Create once with `npx wrangler d1 create`,
   then `npm run d1:migrate` after any new file in `migrations/`.
 - Secrets: `RESEND_API_KEY` (Resend, sending only), `TOKEN_HMAC_SECRET` (32 random bytes hex), and for the
-  public form `TURNSTILE_SECRET_KEY`, `RESEND_WEBHOOK_SECRET`. Vars in `wrangler.jsonc`: `NEWSLETTER_FROM`,
+  public form `TURNSTILE_SECRET_KEY`, `RESEND_WEBHOOK_SECRET` (all four set 2026-09-21; the form opened that night). Vars in `wrangler.jsonc`: `NEWSLETTER_FROM`,
   `NEWSLETTER_REPLY_TO`, `CATCHUP_HOURS`, `EMAIL_HEBREW`, `NEWSLETTER_PUBLIC`, `TURNSTILE_SITE_KEY`.
 - DNS for sending, as configured 2026-09-20 (all DNS-only, not proxied): sending domain `news.daf-yomi.dev`
   on Resend with TXT `resend._domainkey.news` (DKIM), CNAME `send.news` → `send.forge.rmta.net` and CNAME

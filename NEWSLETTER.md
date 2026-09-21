@@ -23,8 +23,19 @@ Joe's `~/.claude/plans/feature-idea-for-daf-ancient-salamander.md`); code under 
 | Admin | `GET /admin/newsletter/status`, `POST /admin/newsletter/{send,tick,rebuild-edition,subscribe}` | Bearer `ADMIN_TOKEN`. `send?date=&dry=1` returns the HTML; `send?date=&to=` mails one issue; `tick?time=<ms>` runs a tick now; `subscribe?email=&tz=&hour=&edition=&hold=` adds a reader by hand with the right hash and token. |
 
 Bindings and vars: see `wrangler.jsonc`. Secrets: `RESEND_API_KEY`, `TOKEN_HMAC_SECRET`, `TURNSTILE_SECRET_KEY`,
-`RESEND_WEBHOOK_SECRET` (plus the existing `ADMIN_TOKEN`, `ANTHROPIC_API_KEY`). `NEWSLETTER_PUBLIC=1` shows
-the nav tab and opens the form; until then `/newsletter` says the email is not open yet.
+`RESEND_WEBHOOK_SECRET` (plus the existing `ADMIN_TOKEN`, `ANTHROPIC_API_KEY`); all six are set in production.
+`NEWSLETTER_PUBLIC=1` shows the nav tab and opens the form; with `0`, `/newsletter` says the email is not open yet.
+
+**Public since 2026-09-21** (deploy `591c5f07`). Turnstile widget "daf-yomi newsletter" (hostname `daf-yomi.dev`,
+Managed mode, no pre-clearance); its site key is the `TURNSTILE_SITE_KEY` var. Resend webhook
+`https://daf-yomi.dev/newsletter/hooks/resend` listens for `email.bounced`, `email.complained`, `email.failed`
+(the handler acts on the first two and logs the third as ignored). An unsigned POST to the hook returns 401.
+
+Two things to know when testing by hand: the admin `send?to=` action stamps an all-zero token into the footer,
+so a test issue's unsubscribe and preferences links do not point at a real row (use the reader's `unsub_token`
+from D1 instead); and Cisco Umbrella / OpenDNS classified `daf-yomi.dev` as malware on 2026-09-21 (block page
+`malware.opendns.com`), so any machine behind Umbrella, including Joe's work Mac, cannot reach the site or its
+email links until Cisco recategorizes the domain. Public resolvers (1.1.1.1, 8.8.8.8) are unaffected.
 
 ## A day, in UTC
 
