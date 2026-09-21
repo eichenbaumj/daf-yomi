@@ -13,6 +13,15 @@ describe("grounding", () => {
   it("passes a grounded note", () => {
     expect(checkNote(good, source)).toEqual({ ok: true, problems: [] });
   });
+  it("keeps the question readable from the summary alone", () => {
+    const stranger = { ...good, question: "What was Kontrokos relying on when he audited Moses?" };
+    expect(checkNote(stranger, source).problems.some((p) => p.includes('"Kontrokos"'))).toBe(true);
+    const idiom = { ...good, question: "If a single principle covers all five cases, what was the mishna standing on when it listed them?" };
+    expect(checkNote(idiom, source).problems.some((p) => p.includes("no idioms"))).toBe(true);
+    // Household names and words the summary already carries pass.
+    const fine = { ...good, question: "If the Gemara accepts one principle for all five cases, why does the mishna spell out a list for the gentile?" };
+    expect(checkNote(fine, source)).toEqual({ ok: true, problems: [] });
+  });
   it("rejects a quote that is not in the text", () => {
     const r = checkNote({ ...good, quotes: ["the donkey was very tired"] }, source);
     expect(r.ok).toBe(false);

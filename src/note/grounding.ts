@@ -94,6 +94,25 @@ export function danglingLegalVerbs(text: string): string[] {
   return out;
 }
 
+/** Capitalised words a reader knows without introduction; anything else capitalised in the question must already be in the summary. */
+const HOUSEHOLD_NAMES = new Set(["gemara", "talmud", "torah", "mishna", "mishnah", "bible", "rabbi", "rav", "rabban", "sages", "god", "heaven", "temple", "sanctuary", "shabbat", "sabbath", "israel", "jerusalem", "egypt", "jew", "jews", "jewish", "levite", "levites", "priest", "priests", "moses", "aaron", "david", "abraham", "isaac", "jacob", "exodus", "genesis", "leviticus", "numbers", "deuteronomy", "if", "when", "why", "what", "who", "how", "does", "is", "can", "should", "the", "a", "an", "in", "on", "once", "since", "after", "before", "given", "suppose", "i"]);
+
+/**
+ * Names the question introduces that the summary never mentioned. The reader has only the three sentences above
+ * to go on, so a stranger arriving in the question ("what was Kontrokos standing on?") makes it unreadable.
+ */
+export function strangersInQuestion(question: string, summary: string): string[] {
+  const seen = normalize(summary).toLowerCase();
+  const out: string[] = [];
+  for (const m of question.matchAll(/\b([A-Z][\p{L}'’]+)\b/gu)) {
+    const w = m[1]!;
+    const key = normalize(w).toLowerCase();
+    if (HOUSEHOLD_NAMES.has(key) || key.length < 3) continue;
+    if (!seen.includes(key) && !out.includes(w)) out.push(w);
+  }
+  return out;
+}
+
 export interface GroundingResult { ok: boolean; problems: string[] }
 
 export function checkNote(note: NoteDraft, sourcePlainText: string): GroundingResult {
@@ -108,6 +127,8 @@ export function checkNote(note: NoteDraft, sourcePlainText: string): GroundingRe
   if (wordCount(note.summary) < 15) problems.push("summary is too short to say anything.");
   if (!/\?\s*$/.test(note.question.trim())) problems.push("question must end with a question mark.");
   if ((note.question.match(/\?/g) ?? []).length > 1) problems.push("ask exactly one question.");
+  for (const n of strangersInQuestion(note.question, note.summary)) problems.push(`the question brings in "${n}", which the summary never mentions; the question must stand on the summary alone, so introduce it there or leave it out.`);
+  if (/\b(standing on|hold water|on the spot|square with|at stake|beg the question|in play)\b/i.test(note.question)) problems.push("no idioms in the question; say it plainly (rely on, prove, permit).");
   if (/[—]/.test(prose)) problems.push("no em dashes.");
   const lower = prose.toLowerCase();
   for (const w of BANNED_WORDS) if (new RegExp(`\\b${w}\\w*`, "i").test(prose)) problems.push(`banned word: ${w}.`);

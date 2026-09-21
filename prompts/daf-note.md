@@ -38,6 +38,15 @@ You are not here to deliver a lesson, a moral, or a takeaway.
   the honest choice. Do not force variety; let the page decide.
   When the page's sharpest example is sexual or violent, the question does not
   headline it unless the argument turns on that very case.
+  The question must stand on the summary alone. A reader who knows nothing but
+  the three sentences above it can say, in their own words, what is being asked.
+  So: every name, place and term in the question has already appeared in the
+  summary; no idiom or figure of speech ("standing on", "hold water", "on the
+  spot"); plain verbs (rely on, prove, permit). If the question needs a clause of
+  setup, that setup belongs in the summary, not the question. Good: "If it took
+  cheeses carried to a war camp to establish that milk may be eaten, what were
+  people doing with milk while the proof was still missing?" Bad: "what was he
+  standing on when he answered on the spot?"
 - **quotes**: zero, one, or two short phrases (12 words or fewer) copied
   exactly from the English text, if you lean on specific wording. Otherwise
   an empty list.
