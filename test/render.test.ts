@@ -90,7 +90,8 @@ describe("daf page", () => {
   it("puts a one-line sign-up under the note once the newsletter is public, on English pages only", () => {
     const open = { ...env, NEWSLETTER_PUBLIC: "1", TURNSTILE_SITE_KEY: "0xKEY" } as Env;
     const html = renderDafPage({ ...base, env: open, note: { summary: "S.", question: "Q?", quotes: [], model: "m", promptVersion: "v", generatedAt: "t", sources: [] } });
-    expect(html).toContain('<aside class="note-subscribe" aria-labelledby="sub-h">');
+    expect(html).toContain('<details class="note-subscribe">\n  <summary><span class="note-subscribe-lead">This note, in your inbox, every morning.</span></summary>');
+    expect(html).not.toContain("note-subscribe\" open"); // folded by default
     expect(html.indexOf('class="note"')).toBeLessThan(html.indexOf('class="note-subscribe"'));
     expect(html.indexOf('class="note-subscribe"')).toBeLessThan(html.indexOf('class="ornament"'));
     expect(html).toContain("This note, in your inbox, every morning.");
@@ -99,9 +100,10 @@ describe("daf page", () => {
     expect(html).toContain('<input type="hidden" name="tz" value="UTC">');
     expect(html).toContain('name="consent" value="2026-09-v1"');
     expect(html).toContain('name="website" class="hp"');
-    expect(html).toContain('data-sitekey="0xKEY" data-theme="light" data-appearance="interaction-only"');
-    expect(html).toContain('<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>');
-    expect(html).toContain("input[name=tz]");
+    expect(html).toContain('<div class="cf-turnstile" data-sitekey="0xKEY"></div>');
+    expect(html).toContain('<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=dafTurnstileReady" async defer></script>');
+    expect(html).toContain("appearance:'interaction-only'");
+    expect(html.indexOf("</article>")).toBeLessThan(html.indexOf("details.note-subscribe")); // the script runs after the markup exists
     expect(html).toContain('<a href="/newsletter">The evening edition and other settings.</a>');
     expect(html).not.toMatch(/—/);
     const pending = renderDafPage({ ...base, env: open, note: null });

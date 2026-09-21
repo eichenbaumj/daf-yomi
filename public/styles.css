@@ -82,10 +82,16 @@ h2 { font-weight: 600; font-size: 1.25rem; margin: 2rem 0 .6rem; }
 .note-question { margin: 0; font-style: italic; color: var(--ink); }
 .note-question::before { content: "✦ "; color: var(--gold); font-style: normal; font-size: .75em; }
 .note-pending .note-summary { font-size: .95rem; }
-/* The sign-up under the note: a footnote to the note, not a second panel. */
+/* The sign-up under the note: folded to one line by default; the summary is the whole pitch. */
 .note:has(+ .note-subscribe) { margin-bottom: 0; border-radius: 3px 3px 0 0; }
-.note-subscribe { margin: 0 0 .4rem; padding: .85rem 1.2rem .8rem; border: 1px solid var(--rule); border-top: 0; border-radius: 0 0 3px 3px; background: color-mix(in srgb, var(--note-bg) 55%, var(--paper)); }
-.note-subscribe-lead { margin: 0 0 .55rem; font-family: var(--serif); font-size: 1.02rem; font-style: italic; }
+.note-subscribe { margin: 0 0 .4rem; border: 1px solid var(--rule); border-top: 0; border-radius: 0 0 3px 3px; background: color-mix(in srgb, var(--note-bg) 55%, var(--paper)); }
+.note-subscribe summary { list-style: none; cursor: pointer; padding: .5rem 1.2rem; font-family: var(--serif); font-size: .98rem; font-style: italic; color: var(--ink-2); display: flex; align-items: baseline; gap: .55rem; }
+.note-subscribe summary::-webkit-details-marker { display: none; }
+.note-subscribe summary::before { content: "✉"; font-style: normal; font-size: .95em; color: var(--gold); flex: 0 0 auto; }
+.note-subscribe summary::after { content: "›"; margin-inline-start: auto; font-style: normal; font-size: 1.15em; line-height: 1; color: var(--gold); transition: transform .15s; }
+.note-subscribe summary:hover, .note-subscribe[open] summary { color: var(--ink); }
+.note-subscribe[open] summary::after { transform: rotate(90deg); }
+.note-subscribe form { padding: .25rem 1.2rem .85rem; }
 .note-subscribe-row { display: flex; flex-wrap: wrap; gap: .5rem; }
 .note-subscribe-row input[type="email"] { flex: 1 1 14rem; min-width: 0; padding: .55rem .7rem; font: inherit; color: var(--ink); background: var(--paper); border: 1px solid var(--rule); border-radius: 3px; }
 .note-subscribe-row .btn { flex: 0 0 auto; padding-block: .55rem; }

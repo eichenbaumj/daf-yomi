@@ -16,22 +16,28 @@ function tzSelect(options: string[], selected: string, chosen = false): string {
   return `<select name="tz"${chosen ? ' data-chosen="1"' : ""}>${all.map((z) => `<option value="${esc(z)}"${z === selected ? " selected" : ""}>${esc(z.replace(/_/g, " "))}</option>`).join("")}</select>`;
 }
 
-/** Sets the hidden zone field of the inline box from the browser; the server default stands if this never runs. */
-const INLINE_TZ_SCRIPT = `<script>try{var z=Intl.DateTimeFormat().resolvedOptions().timeZone,i=document.querySelector('.note-subscribe input[name=tz]');if(z&&i)i.value=z}catch(e){}</script>`;
+/**
+ * Head script for the inline box. Turnstile is rendered explicitly, the first time the box is opened,
+ * because a widget rendered inside a closed <details> measures a zero-width container. The zone field
+ * is filled from the browser; the server default stands if none of this runs.
+ */
+const INLINE_SCRIPT = `<script>(function(){var d=document.querySelector('details.note-subscribe');if(!d)return;try{var z=Intl.DateTimeFormat().resolvedOptions().timeZone,i=d.querySelector('input[name=tz]');if(z&&i)i.value=z}catch(e){}var done=false;function go(){if(done||!d.open||!window.turnstile)return;var w=d.querySelector('.cf-turnstile');if(!w)return;done=true;turnstile.render(w,{sitekey:w.getAttribute('data-sitekey'),theme:'light',appearance:'interaction-only',size:'flexible'})}window.dafTurnstileReady=go;d.addEventListener('toggle',function(){if(d.open){go();var e=d.querySelector('input[type=email]');if(e)setTimeout(function(){e.focus()},0)}})})()</script>`;
 
-/** What the daf page needs in <head> for the inline box: the Turnstile loader and the zone script. */
-export const INLINE_SUBSCRIBE_HEAD = `<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>${INLINE_TZ_SCRIPT}`;
+/** What the daf page needs in <head> for the inline box: the Turnstile loader (explicit render) and the script above. */
+export const INLINE_SUBSCRIBE_HEAD = `<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=dafTurnstileReady" async defer></script>`;
+/** The script goes at the end of the body so the <details> exists when it runs. */
+export const INLINE_SUBSCRIBE_TAIL = INLINE_SCRIPT;
 
 /**
- * The one-line sign-up under the AI note. Same POST as the full form, with the choices the full form
- * offers collapsed to their defaults (morning, the reader's own zone, no Shabbat hold); a link leads to
- * the rest. Turnstile runs invisibly and only shows itself when it needs an interaction.
+ * The one-line sign-up under the AI note: a folded <details> whose summary is the whole pitch. Open, it
+ * is the same POST as the full form with the choices collapsed to their defaults (morning, the reader's
+ * own zone, no Shabbat hold); a link leads to the rest. Turnstile shows itself only when it must.
  */
 export function renderInlineSubscribe(o: { siteKey: string; defaultTz: string; hasNote: boolean }): string {
   const lead = o.hasNote ? "This note, in your inbox, every morning." : "The daf and its note, in your inbox, every morning.";
-  return `<aside class="note-subscribe" aria-labelledby="sub-h">
+  return `<details class="note-subscribe">
+  <summary><span class="note-subscribe-lead">${lead}</span></summary>
   <form method="post" action="/newsletter" novalidate>
-    <p class="note-subscribe-lead" id="sub-h">${lead}</p>
     <div class="note-subscribe-row">
       <label class="sr-only" for="sub-email">Your email</label>
       <input id="sub-email" type="email" name="email" required autocomplete="email" inputmode="email" placeholder="your@email">
@@ -41,10 +47,10 @@ export function renderInlineSubscribe(o: { siteKey: string; defaultTz: string; h
     <input type="hidden" name="tz" value="${esc(o.defaultTz)}">
     <input type="hidden" name="consent" value="${CONSENT_VERSION}">
     <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
-    <div class="cf-turnstile" data-sitekey="${esc(o.siteKey)}" data-theme="light" data-appearance="interaction-only" data-size="flexible"></div>
+    <div class="cf-turnstile" data-sitekey="${esc(o.siteKey)}"></div>
     <p class="muted small">Free. Arrives at 6 am your time; one click to stop. <a href="/newsletter">The evening edition and other settings.</a> A confirmation email comes first.</p>
   </form>
-</aside>`;
+</details>`;
 }
 
 export interface FormState { email?: string; slot?: "morning" | "evening"; tz?: string; hold?: boolean; error?: string }

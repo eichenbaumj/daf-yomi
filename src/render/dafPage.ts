@@ -11,7 +11,7 @@ import { dafLabelL, hebrewDateL, longDateL, strings, tractateName } from "../i18
 import { en } from "../i18n/en";
 import { esc, page } from "./layout";
 import { renderPositionMini } from "./positionMini";
-import { INLINE_SUBSCRIBE_HEAD, renderInlineSubscribe } from "./newsletterPages";
+import { INLINE_SUBSCRIBE_HEAD, INLINE_SUBSCRIBE_TAIL, renderInlineSubscribe } from "./newsletterPages";
 
 export interface DafPageModel {
   env: Env;
@@ -227,7 +227,7 @@ export function renderDafPage(m: DafPageModel): string {
     <p class="muted">${esc(S.teachersLine)}</p>
     ${scholarLinks(t, ref.daf, firstText?.urlRef, lang, m.isToday || m.date.getTime() < Date.now())}
   </section>
-</article>`;
+</article>${subscribeBox ? INLINE_SUBSCRIBE_TAIL : ""}`;
 
   const canonicalPath = m.isToday ? "/" : dafPath(t, ref.daf);
   const url = `${m.origin}${p(lang, canonicalPath)}`;
