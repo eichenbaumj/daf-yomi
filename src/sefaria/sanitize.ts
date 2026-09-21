@@ -34,8 +34,11 @@ function safeHref(raw: string): string | null {
 }
 
 export interface SanitizeOptions {
-  /** Wrap non-bold runs in <span class="elu">. English Talmud only. */
+  /** Wrap non-bold runs in <span class="elu">. English Talmud and the Hebrew Steinsaltz biur. */
   markElucidation?: boolean;
+  /** Treat <big> as bold. The Hebrew biur marks its section labels ("א משנה", "ב גמרא") with <big>, which the
+   *  default unwrap would fold into the explanation run and hide under "Talmud only". */
+  bigAsLabel?: boolean;
 }
 
 export function sanitize(html: string, opts: SanitizeOptions = {}): string {
@@ -87,10 +90,12 @@ export function sanitize(html: string, opts: SanitizeOptions = {}): string {
       else spanStack.push("unwrap");
       continue;
     }
-    if (!KEEP_BARE.has(name)) continue; // anything else (big, small, div, p, img, script…): unwrap
-    if (BOLD.has(name)) {
-      if (!closing) { flushRun(); boldDepth++; out.push(`<${name}>`); }
-      else if (boldDepth > 0) { boldDepth--; out.push(`</${name}>`); }
+    const bold = BOLD.has(name) || (opts.bigAsLabel && name === "big");
+    if (!bold && !KEEP_BARE.has(name)) continue; // anything else (big, small, div, p, img, script…): unwrap
+    if (bold) {
+      const tag = name === "big" ? "strong" : name;
+      if (!closing) { flushRun(); boldDepth++; out.push(`<${tag}>`); }
+      else if (boldDepth > 0) { boldDepth--; out.push(`</${tag}>`); }
       continue;
     }
     emit(closing ? `</${name}>` : `<${name}>`);

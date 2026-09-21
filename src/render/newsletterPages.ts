@@ -51,19 +51,20 @@ export function renderNewsletterPage(env: Env, origin: string, o: { siteKey: str
     env, origin, title: "The daf by email", canonicalPath: "/newsletter",
     description: "One email a day. The day's daf, the AI note and its question, and a link to the full page. Free, no accounts, one-click unsubscribe.",
     body, extraHead: `<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>${TZ_SCRIPT}`,
+    noLangSwitch: true,
   });
 }
 
 export function renderNewsletterClosed(env: Env, origin: string): string {
   const body = `<article class="prose"><header class="daf-head"><h1>The daf by email</h1></header>
 <p>A daily email is on its way. It is not open for sign-ups yet; the <a href="/feed.xml">RSS feed</a> carries the same note each day in the meantime.</p></article>`;
-  return page({ env, origin, title: "The daf by email", description: "The daily email is not open yet.", canonicalPath: "/newsletter", body });
+  return page({ env, origin, title: "The daf by email", description: "The daily email is not open yet.", canonicalPath: "/newsletter", body, noLangSwitch: true });
 }
 
 /** A short parchment notice with one heading and a few paragraphs (already HTML). */
 export function renderNotice(env: Env, origin: string, title: string, paragraphsHtml: string[], canonicalPath = "/newsletter"): string {
   const body = `<article class="prose"><header class="daf-head"><h1>${esc(title)}</h1></header>\n${paragraphsHtml.map((p) => `<p>${p}</p>`).join("\n")}</article>`;
-  return page({ env, origin, title, description: title, canonicalPath, body });
+  return page({ env, origin, title, description: title, canonicalPath, body, noLangSwitch: true });
 }
 
 export function renderCheckInbox(env: Env, origin: string): string {
@@ -96,7 +97,7 @@ export function renderUnsubPage(env: Env, origin: string, token: string, sub: Su
   const body = `<article class="prose"><header class="daf-head"><h1>Stop the daf${who}?</h1></header>
 <form method="post" action="/newsletter/u/${esc(token)}"><button type="submit" class="btn">Yes, stop it</button></form>
 <p class="muted small">Nothing else happens on this page. If a link scanner brought you here by accident, close it and nothing changes.</p></article>`;
-  return page({ env, origin, title: "Unsubscribe", description: "Stop the daily email.", canonicalPath: "/newsletter", body });
+  return page({ env, origin, title: "Unsubscribe", description: "Stop the daily email.", canonicalPath: "/newsletter", body, noLangSwitch: true });
 }
 
 export function renderGoodbye(env: Env, origin: string, sub: SubscriberRow | null): string {
@@ -134,19 +135,19 @@ export function renderPrefsPage(env: Env, origin: string, sub: SubscriberRow, tz
   </form>
   <form method="post" action="/newsletter/u/${esc(sub.unsub_token)}"><button type="submit" class="btn quiet">Stop the email</button></form>
 </article>`;
-  return page({ env, origin, title: "Your daf by email", description: "Change the hour, the time zone, or stop.", canonicalPath: "/newsletter", body });
+  return page({ env, origin, title: "Your daf by email", description: "Change the hour, the time zone, or stop.", canonicalPath: "/newsletter", body, noLangSwitch: true });
 }
 
 export function renderPrivacyPage(env: Env, origin: string): string {
   const body = `
 <article class="prose">
   <header class="daf-head"><h1>What I keep, and why</h1></header>
-  <p>The site itself keeps nothing about you: no accounts, no cookies, no analytics.</p>
+  <p>The site itself keeps nothing about you: no accounts, no tracking cookies, no analytics.</p>
   <p>If you subscribe to the daily email, I keep your address, your time zone, the hour and edition you chose, whether you asked to hold Shabbat and Yom Tov issues, the version of the sign-up text you agreed to, and the dates you confirmed and, if you leave, unsubscribed. I also keep a log of which issue went to which subscriber for sixty days, so the same issue is never sent twice. Nothing else: no opens, no clicks, no tracking pixel, no IP addresses.</p>
   <p>Two companies touch it: the email provider that carries the mail (Resend, in the United States), and Cloudflare, which hosts the site and its database, also in the United States.</p>
   <p>When you unsubscribe, I delete your address and time zone right away. If an address bounces, or a reader reports an issue as spam, I keep a one-way hash of the address so it is never added again by mistake.</p>
   <p>You can stop at any time from the link at the bottom of every issue, change your settings from the same place, or write to me to see or erase whatever I hold. The legal basis for all of this is your consent, which you gave by confirming your address.</p>
   <p>Questions: <a href="mailto:joe@group17a.com">joe@group17a.com</a>.</p>
 </article>`;
-  return page({ env, origin, title: "Privacy", description: "What the daily email keeps about you, and why.", canonicalPath: "/newsletter/privacy", body });
+  return page({ env, origin, title: "Privacy", description: "What the daily email keeps about you, and why.", canonicalPath: "/newsletter/privacy", body, noLangSwitch: true });
 }

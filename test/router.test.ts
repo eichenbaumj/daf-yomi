@@ -51,3 +51,40 @@ describe("router", () => {
     expect(parseRoute("/api/bava-kamma/120.json").kind).toBe("not-found");
   });
 });
+
+describe("language prefixes", () => {
+  it("wraps the page routes under /he", () => {
+    expect(parseRoute("/he")).toEqual({ kind: "today", lang: "he" });
+    expect(parseRoute("/he/")).toEqual({ kind: "redirect", to: "/he" });
+    expect(parseRoute("/he/today")).toEqual({ kind: "redirect", to: "/he" });
+    expect(parseRoute("/HE/Bekhorot/2")).toEqual({ kind: "redirect", to: "/he/bekhorot/2" });
+    const r = parseRoute("/he/bekhorot/2");
+    expect(r.kind).toBe("daf");
+    if (r.kind === "daf") { expect(r.tractate.slug).toBe("bekhorot"); expect(r.daf).toBe(2); expect(r.lang).toBe("he"); }
+    expect(parseRoute("/he/bekhorot/2b")).toEqual({ kind: "redirect", to: "/he/bekhorot/2#b" });
+    expect(parseRoute("/he/bekhorot/62")).toEqual({ kind: "not-found", lang: "he" });
+    expect(parseRoute("/he/tractates")).toEqual({ kind: "tractates", lang: "he" });
+    expect(parseRoute("/he/about")).toEqual({ kind: "about", lang: "he" });
+    expect(parseRoute("/he/feed.xml")).toEqual({ kind: "feed", lang: "he" });
+    expect(parseRoute("/he/yesterday")).toEqual({ kind: "relative", offset: -1, lang: "he" });
+    expect(parseRoute("/he/date/2026-09-21")).toEqual({ kind: "date", ymd: "2026-09-21", lang: "he" });
+    expect(parseRoute("/he/bava-kamma").kind).toBe("tractate");
+    expect(parseRoute("/he/nope")).toEqual({ kind: "not-found", lang: "he" });
+  });
+  it("keeps api, admin, newsletter and the machine routes English-only", () => {
+    expect(parseRoute("/he/newsletter")).toEqual({ kind: "redirect", to: "/newsletter" });
+    for (const path of ["/he/api/today.json", "/he/api/bekhorot/2.json", "/he/admin/bake", "/he/robots.txt", "/he/sitemap.xml", "/he/newsletter/privacy", "/he/lang/he"]) {
+      expect(parseRoute(path), path).toEqual({ kind: "not-found", lang: "he" });
+    }
+    expect(parseRoute("/yi/bekhorot/2").kind).toBe("not-found"); // Yiddish is not enabled yet
+    expect(parseRoute("/en/bekhorot/2").kind).toBe("not-found"); // English has no prefix
+  });
+  it("routes the language switch and the translation admin endpoints", () => {
+    expect(parseRoute("/lang/he")).toEqual({ kind: "lang", lang: "he" });
+    expect(parseRoute("/lang/en")).toEqual({ kind: "lang", lang: "en" });
+    expect(parseRoute("/lang/fr").kind).toBe("not-found");
+    expect(parseRoute("/admin/translate")).toEqual({ kind: "admin-translate", action: "run" });
+    expect(parseRoute("/admin/translate/put")).toEqual({ kind: "admin-translate", action: "put" });
+    expect(parseRoute("/admin/note")).toEqual({ kind: "admin-translate", action: "note" });
+  });
+});

@@ -4,12 +4,16 @@
  * inline SVG for the page itself. Colours for the six Orders are an ordinal ramp
  * (one hue, darkening in canonical order) set as CSS tokens in styles.css; the
  * legend and direct labels carry identity so colour is never the only cue.
+ * The bars and the axis are a time line and stay left-to-right in every language.
  */
 import { CYCLE_LENGTH, TRACTATES, type Tractate } from "../daf/tractates";
-import { cycleEndDate, cycleStartDate, longDate, shortDate, type DafRef } from "../daf/schedule";
+import { cycleEndDate, cycleStartDate, type DafRef } from "../daf/schedule";
+import type { Lang } from "../i18n/strings";
+import { dafLabelL, longDateL, num, shortDateL, strings, tractateName } from "../i18n/format";
+import { p } from "../i18n/strings";
 import { esc } from "./layout";
 
-/** Canonical order of the six Sedarim with a plain gloss for newcomers. */
+/** Canonical order of the six Sedarim with a plain gloss for newcomers (the gloss text lives in src/i18n). */
 export const SEDARIM: { name: string; he: string; gloss: string }[] = [
   { name: "Seder Zeraim", he: "זרעים", gloss: "Seeds: blessings and prayer (the farming laws have no Babylonian Gemara)" },
   { name: "Seder Moed", he: "מועד", gloss: "Appointed times: Shabbat and the festivals" },
@@ -19,13 +23,8 @@ export const SEDARIM: { name: string; he: string; gloss: string }[] = [
   { name: "Seder Tahorot", he: "טהרות", gloss: "Purities: only Niddah has a Babylonian Gemara" },
 ];
 
-function yearsMonths(days: number): string {
-  const years = Math.floor(days / 365.25);
-  const months = Math.round((days - years * 365.25) / 30.44);
-  return `${years} years and ${months} months`;
-}
-
-export function renderDafYomiDiagram(today: DafRef): string {
+export function renderDafYomiDiagram(today: DafRef, lang: Lang = "en"): string {
+  const S = strings(lang);
   const cycle = today.cycle;
   const start = cycleStartDate(cycle);
   const end = cycleEndDate(cycle);
@@ -35,6 +34,8 @@ export function renderDafYomiDiagram(today: DafRef): string {
     bySeder.get(t.seder)!.push(t);
   }
   const pct = (days: number) => `${((days / CYCLE_LENGTH) * 100).toFixed(3)}%`;
+  const sederLabel = (s: { name: string; he: string }) => (lang === "he" ? s.he : s.name.replace("Seder ", ""));
+  const sederFull = (s: { name: string; he: string }) => (lang === "he" ? `סדר ${s.he}` : s.name);
 
   // Row 1: the six Orders, proportional to their days.
   let offset = 0;
@@ -42,7 +43,7 @@ export function renderDafYomiDiagram(today: DafRef): string {
     const list = bySeder.get(s.name) ?? [];
     const days = list.reduce((a, t) => a + t.days, 0);
     const narrow = days / CYCLE_LENGTH < 0.06 ? " narrow" : "";
-    const seg = `<div class="dseg seder s${i + 1}${narrow}" style="width:${pct(days)}" title="${esc(s.name)}: ${days} days"><span class="lbl">${esc(s.name.replace("Seder ", ""))}</span></div>`;
+    const seg = `<div class="dseg seder s${i + 1}${narrow}" style="width:${pct(days)}" title="${esc(sederFull(s))}: ${esc(S.daysN(days))}"><span class="lbl">${esc(sederLabel(s))}</span></div>`;
     offset += days;
     return { html: seg, days };
   });
@@ -51,7 +52,8 @@ export function renderDafYomiDiagram(today: DafRef): string {
   const tractateSegments = TRACTATES.map((t) => {
     const si = SEDARIM.findIndex((s) => s.name === t.seder) + 1;
     const isNow = t.slug === today.tractate.slug;
-    return `<a class="dseg tractate s${si}${isNow ? " now" : ""}" style="width:${pct(t.days)}" href="/${esc(t.slug)}" title="${esc(t.name)}: ${t.days} days" aria-label="${esc(t.name)}, ${t.days} days"></a>`;
+    const name = tractateName(lang, t);
+    return `<a class="dseg tractate s${si}${isNow ? " now" : ""}" style="width:${pct(t.days)}" href="${p(lang, `/${esc(t.slug)}`)}" title="${esc(name)}: ${esc(S.daysN(t.days))}" aria-label="${esc(S.tractateAria(name, t.days))}"></a>`;
   });
 
   // Year ticks along the cycle.
@@ -68,21 +70,24 @@ export function renderDafYomiDiagram(today: DafRef): string {
   const legend = SEDARIM.map((s, i) => {
     const list = bySeder.get(s.name) ?? [];
     const days = list.reduce((a, t) => a + t.days, 0);
-    return `<li><span class="chip s${i + 1}" aria-hidden="true"></span><b>${esc(s.name.replace("Seder ", ""))}</b> <span lang="he" dir="rtl" class="he-inline">${esc(s.he)}</span> <span class="muted">${esc(s.gloss)}. ${list.length} tractate${list.length === 1 ? "" : "s"}, ${days} days.</span></li>`;
+    const heInline = lang === "en" ? ` <span lang="he" dir="rtl" class="he-inline">${esc(s.he)}</span>` : "";
+    return `<li><span class="chip s${i + 1}" aria-hidden="true"></span><b>${esc(sederLabel(s))}</b>${heInline} <span class="muted">${esc(S.sederGloss[i]!)}. ${esc(S.legendCount(list.length, days))}</span></li>`;
   }).join("");
+  const years = Math.floor(CYCLE_LENGTH / 365.25);
+  const months = Math.round((CYCLE_LENGTH - years * 365.25) / 30.44);
 
   return `
 <figure class="dy-diagram" aria-labelledby="dy-title">
-  <figcaption id="dy-title" class="sr-only">How the Daf Yomi cycle is laid out</figcaption>
+  <figcaption id="dy-title" class="sr-only">${esc(S.diagramCaption)}</figcaption>
 
   <div class="dy-stats">
-    <div><span class="num">1</span><span class="what">daf a day</span></div>
-    <div><span class="num">2,711</span><span class="what">dapim in the Babylonian Talmud</span></div>
-    <div><span class="num">${esc(yearsMonths(CYCLE_LENGTH))}</span><span class="what">to read the whole thing</span></div>
+    <div><span class="num">1</span><span class="what">${esc(S.statDafADay)}</span></div>
+    <div><span class="num">${num(lang, CYCLE_LENGTH)}</span><span class="what">${esc(S.statDapim)}</span></div>
+    <div><span class="num">${esc(S.yearsMonths(years, months))}</span><span class="what">${esc(S.statToRead)}</span></div>
   </div>
 
   <div class="dy-page">
-    <svg viewBox="0 0 120 84" width="120" height="84" role="img" aria-label="One daf: a leaf with two sides, a and b">
+    <svg viewBox="0 0 120 84" width="120" height="84" role="img" aria-label="${esc(S.dafSvgAria)}">
       <rect x="4" y="4" width="112" height="76" rx="3" fill="var(--paper-2)" stroke="var(--rule)"/>
       <line x1="60" y1="4" x2="60" y2="80" stroke="var(--rule)"/>
       <g stroke="var(--ink-3)" stroke-width="1.5" stroke-linecap="round">
@@ -92,20 +97,20 @@ export function renderDafYomiDiagram(today: DafRef): string {
       <text x="32" y="15" text-anchor="middle" font-size="8" fill="var(--accent)" font-family="var(--serif)">2a</text>
       <text x="88" y="15" text-anchor="middle" font-size="8" fill="var(--accent)" font-family="var(--serif)">2b</text>
     </svg>
-    <p><b>A daf is one leaf, both sides.</b> Side a, then side b. The Talmud's pages have been numbered the same way since the first printed editions five hundred years ago, so "Berakhot 2a" means the same page in every edition and every language. Numbering starts at 2 because the title page is 1; each tractate starts fresh.</p>
+    <p>${S.dafExplainer}</p>
   </div>
 
-  <p class="dy-label">The six Orders of the Talmud, sized by how many days each takes</p>
-  <div class="dy-bar" role="img" aria-label="Six Orders as a proportional bar">${sederSegments.map((s) => s.html).join("")}</div>
-  <p class="dy-label">The ${TRACTATES.length} tractates inside them (hover or tap one to see which)</p>
+  <p class="dy-label">${esc(S.ordersLabel)}</p>
+  <div class="dy-bar" role="img" aria-label="${esc(S.ordersAria)}">${sederSegments.map((s) => s.html).join("")}</div>
+  <p class="dy-label">${esc(S.tractatesLabel(TRACTATES.length))}</p>
   <div class="dy-bar dy-tractates">${tractateSegments.join("")}</div>
   <div class="dy-axis">
     ${ticks.join("")}
-    <span class="${todayClass}" style="left:${todayLeft}"><i></i><span class="you">You are here: day ${today.dayInCycle.toLocaleString("en-US")}, ${esc(today.tractate.name)} ${today.daf}</span></span>
+    <span class="${todayClass}" style="left:${todayLeft}"><i></i><span class="you">${esc(S.youAreHere(num(lang, today.dayInCycle), dafLabelL(lang, today.tractate, today.daf)))}</span></span>
   </div>
-  <p class="dy-label muted">Cycle ${cycle}: ${esc(longDate(start))} to ${esc(longDate(end))}. The cycle has run without a break since 1923; everyone learning Daf Yomi anywhere in the world is on the same page today.</p>
+  <p class="dy-label muted">${esc(S.cycleCaption(cycle, longDateL(lang, start), longDateL(lang, end)))}</p>
 
   <ul class="dy-legend">${legend}</ul>
-  <p class="muted small">Shekalim is read from the Jerusalem Talmud and three short tractates near the end of Kodashim (Kinnim, Tamid, Middot) are mostly Mishnah, which is why the count is 40 blocks and not the 37 tractates with a Babylonian Gemara. First and last: Berakhot 2 on ${esc(shortDate(start))}, Niddah 73 on ${esc(shortDate(end))}.</p>
+  <p class="muted small">${esc(S.diagramFootnote(shortDateL(lang, start), shortDateL(lang, end)))}</p>
 </figure>`;
 }

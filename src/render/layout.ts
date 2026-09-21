@@ -1,4 +1,6 @@
 import type { Env } from "../types";
+import { ENABLED_LANGS, dirOf, p, type Lang } from "../i18n/strings";
+import { strings } from "../i18n/format";
 
 export function esc(s: unknown): string {
   return String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
@@ -7,9 +9,11 @@ export function esc(s: unknown): string {
 export interface PageOptions {
   env: Env;
   origin: string;
+  /** Page language; English when absent. */
+  lang?: Lang;
   title: string;
   description: string;
-  /** Path for the canonical link, e.g. "/bekhorot/2". */
+  /** Path for the canonical link, e.g. "/bekhorot/2". Language-neutral: the prefix is added here. */
   canonicalPath: string;
   body: string;
   bodyClass?: string;
@@ -17,35 +21,59 @@ export interface PageOptions {
   ogType?: "website" | "article";
   /** Structured data objects, emitted as one JSON-LD script. */
   jsonLd?: unknown[];
+  /** No language switch, no alternates (newsletter and error pages). */
+  noLangSwitch?: boolean;
 }
 
 const FONTS = "https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=Frank+Ruhl+Libre:wght@400;700&display=swap";
 
+/** Languages besides English are Pre-Release (noindex, no sitemap, no alternates) until their reviewer round is done. */
+export function isPublicLang(env: Env, lang: Lang): boolean {
+  return lang === "en" || (lang === "he" && env.HE_PUBLIC === "1");
+}
+
 export function page(o: PageOptions): string {
+  const lang = o.lang ?? "en";
+  const S = strings(lang);
   const siteName = o.env.SITE_NAME;
   const fullTitle = o.title === siteName ? siteName : `${o.title} · ${siteName}`;
-  const canonical = `${o.origin}${o.canonicalPath}`;
+  const canonical = `${o.origin}${p(lang, o.canonicalPath)}`;
+  const prerelease = !isPublicLang(o.env, lang);
+  const newsletterPublic = o.env.NEWSLETTER_PUBLIC === "1" && lang === "en";
+  const ogImage = lang === "he" ? "/og-he.png" : "/og.png";
+  // Alternates only once every listed language is public, so search engines never see an unreviewed translation.
+  const alternates = !o.noLangSwitch && ENABLED_LANGS.every((l) => isPublicLang(o.env, l))
+    ? ENABLED_LANGS.map((l) => `<link rel="alternate" hreflang="${l}" href="${esc(o.origin)}${esc(p(l, o.canonicalPath))}">`).join("\n") + `\n<link rel="alternate" hreflang="x-default" href="${esc(o.origin)}${esc(o.canonicalPath)}">`
+    : "";
+  const langSwitch = o.noLangSwitch ? "" : `
+  <nav class="lang" aria-label="${esc(S.langSwitchAria)}">${ENABLED_LANGS.map((l) => {
+    const tag = isPublicLang(o.env, l) ? "" : ` <span class="prerelease">${esc(S.preReleaseTag)}</span>`;
+    return l === lang
+      ? `<span class="cur" lang="${l}" aria-current="true">${esc(S.langName[l])}${tag}</span>`
+      : `<a lang="${l}" href="/lang/${l}?to=${encodeURIComponent(o.canonicalPath)}">${esc(S.langName[l])}${tag}</a>`;
+  }).join('<span class="sep" aria-hidden="true">·</span>')}</nav>`;
+  const notice = prerelease && !o.noLangSwitch ? `<p class="prerelease-notice">${S.preReleaseNotice(esc(o.canonicalPath))}</p>\n` : "";
   return `<!doctype html>
-<html lang="en">
+<html lang="${lang}" dir="${dirOf(lang)}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(fullTitle)}</title>
 <meta name="description" content="${esc(o.description)}">
-<link rel="canonical" href="${esc(canonical)}">
-<meta property="og:site_name" content="${esc(siteName)}">
+${prerelease ? '<meta name="robots" content="noindex">\n' : ""}<link rel="canonical" href="${esc(canonical)}">
+${alternates ? alternates + "\n" : ""}<meta property="og:site_name" content="${esc(siteName)}">
 <meta property="og:type" content="${o.ogType ?? "website"}">
 <meta property="og:title" content="${esc(fullTitle)}">
 <meta property="og:description" content="${esc(o.description)}">
 <meta property="og:url" content="${esc(canonical)}">
-<meta property="og:image" content="${esc(o.origin)}/og.png">
+<meta property="og:image" content="${esc(o.origin)}${ogImage}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="${esc(siteName)}: the day's page of Talmud, in English">
+<meta property="og:image:alt" content="${esc(S.ogImageAlt(siteName))}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#f3ead7">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="alternate" type="application/rss+xml" title="${esc(siteName)}" href="/feed.xml">
+<link rel="alternate" type="application/rss+xml" title="${esc(siteName)}" href="${p(lang, "/feed.xml")}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="${FONTS}">
@@ -55,24 +83,24 @@ ${o.jsonLd && o.jsonLd.length ? `<script type="application/ld+json">${JSON.strin
 ${o.extraHead ?? ""}
 </head>
 <body class="${esc(o.bodyClass ?? "")}">
-<a class="skip" href="#main">Skip to the text</a>
+<a class="skip" href="#main">${esc(S.skipToText)}</a>
 <header class="site">
-  <a class="brand" href="/" aria-label="${esc(siteName)}: home"><span class="brand-mark" aria-hidden="true">✦</span>Daf Yomi<span class="brand-tld">Dot Dev</span></a>
+  <a class="brand" href="${p(lang, "/")}" aria-label="${esc(S.homeAria(siteName))}"><span class="brand-mark" aria-hidden="true">✦</span>Daf Yomi<span class="brand-tld">Dot Dev</span></a>
   <nav aria-label="Site">
-    <a href="/">Today</a>
-    <a href="/tractates">Tractates</a>
-    <a href="/about">About</a>
-    <a href="/feed.xml" title="RSS feed">Feed</a>${o.env.NEWSLETTER_PUBLIC === "1" ? `
-    <a href="/newsletter">Newsletter</a>` : ""}
-  </nav>
+    <a href="${p(lang, "/")}">${esc(S.navToday)}</a>
+    <a href="${p(lang, "/tractates")}">${esc(S.navTractates)}</a>
+    <a href="${p(lang, "/about")}">${esc(S.navAbout)}</a>
+    <a href="${p(lang, "/feed.xml")}" title="${esc(S.navFeedTitle)}">${esc(S.navFeed)}</a>${newsletterPublic ? `
+    <a href="/newsletter">${esc(S.navNewsletter)}</a>` : ""}
+  </nav>${langSwitch}
 </header>
-<main id="main">
+${notice}<main id="main">
 ${o.body}
 </main>
 <footer class="site">
   <p class="ornament" aria-hidden="true">✦ ✦ ✦</p>
-  <p>The text is <a href="https://www.sefaria.org/william-davidson-talmud" rel="noopener">The William Davidson Talmud</a>: Rabbi Adin Even-Israel Steinsaltz's English translation and explanation (Koren Noé edition), served by <a href="https://www.sefaria.org" rel="noopener">Sefaria</a> under <a href="https://creativecommons.org/licenses/by-nc/4.0/" rel="noopener">CC BY-NC 4.0</a>. Other texts are credited where they appear.</p>
-  <p>The daily note is written by an AI and says so. <a href="/about">How this works.</a> ${o.env.NEWSLETTER_PUBLIC === "1" ? "Free, no accounts, no tracking. The <a href=\"/newsletter\">daily email</a> keeps only your address and your chosen hour." : "Free, no accounts, no tracking cookies."} A good day of learning to you.</p>
+  <p>${S.footerAttribution}</p>
+  <p>${S.footerNote(p(lang, "/about"), newsletterPublic, "/newsletter")}</p>
 </footer>
 <script src="/app.js" defer></script>
 </body>

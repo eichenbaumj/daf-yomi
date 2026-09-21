@@ -43,6 +43,9 @@
     "NEWSLETTER_FROM": "Daf Yomi Dot Dev <daf@news.daf-yomi.dev>",
     "NEWSLETTER_REPLY_TO": "daf@daf-yomi.dev",
     "CATCHUP_HOURS": "3",
-    "EMAIL_HEBREW": "1"
+    "EMAIL_HEBREW": "1",
+    // Hebrew mode (/he). "0" = Pre-Release: noindex, no sitemap entries, no hreflang, a notice on every Hebrew page.
+    // Flip to "1" after the Israeli reviewer round.
+    "HE_PUBLIC": "0"
   }
 }

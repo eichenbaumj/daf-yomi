@@ -13,8 +13,13 @@ import { addDays, dafForDate, todayIn, ymd } from "./daf/schedule";
 import { ensureNote, type GenerateOutcome } from "./note/generate";
 import { getNote } from "./note/store";
 import { hashPrompt } from "./note/prompt";
+import { ENABLED_LANGS } from "./i18n/strings";
+import { ensureTranslation, translationCurrent, type TranslatableLang } from "./note/translate";
+import { getTranslation } from "./note/tstore";
 
 const MAX_GENERATIONS_PER_RUN = 3;
+/** Translations of the near days' notes, per run; they never fire from a page visit. */
+const MAX_TRANSLATIONS_PER_RUN = 3;
 const BACKFILL_DAYS = 7;
 const AHEAD_DAYS = 2;
 
@@ -49,6 +54,28 @@ export async function runCron(env: Env, scheduledTime: number): Promise<{ log: s
     if (outcome.status === "generated") say(`${label}: generated in ${outcome.attempts} attempt(s)`);
     else if (outcome.status === "failed") say(`${label}: FAILED ${outcome.reason} ${(outcome.problems ?? []).join(" | ")}`);
     else say(`${label}: ${outcome.status} ${"reason" in outcome ? outcome.reason : ""}`);
+  }
+
+  // The near days' notes in every enabled language. A translation is current only while it belongs to the note that
+  // is stored now (its `of`) and to the current translation style; otherwise it is made again.
+  let translations = 0;
+  const langs = ENABLED_LANGS.filter((l): l is TranslatableLang => l !== "en");
+  for (const [i, date] of bakeTargets(nowUtc).entries()) {
+    if (i > AHEAD_DAYS || langs.length === 0) break;
+    const ref = dafForDate(date);
+    const note = await getNote(env.DAF_KV, ref.tractate, ref.daf);
+    if (!note) continue;
+    for (const lang of langs) {
+      if (translations >= MAX_TRANSLATIONS_PER_RUN) break;
+      const label = `${ref.tractate.name} ${ref.daf} (${ymd(date)}) [${lang}]`;
+      const existing = await getTranslation(env.DAF_KV, lang, ref.tractate, ref.daf);
+      if (translationCurrent(note, existing, lang)) { say(`${label}: translation exists (current)`); continue; }
+      const outcome = await ensureTranslation(env, ref, lang, { force: true, countAgainstCap: true });
+      translations++;
+      if (outcome.status === "generated") say(`${label}: translated in ${outcome.attempts} attempt(s)`);
+      else if (outcome.status === "failed") say(`${label}: FAILED ${outcome.reason} ${(outcome.problems ?? []).join(" | ")}`);
+      else say(`${label}: ${outcome.status} ${"reason" in outcome ? outcome.reason : ""}`);
+    }
   }
   return { log };
 }

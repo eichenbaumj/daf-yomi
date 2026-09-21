@@ -19,6 +19,8 @@ export interface Tractate {
   /** Side the tractate ends on; when "a", the last daf has no b side to fetch. */
   lastAmud: "a" | "b";
   shortDesc: string;
+  /** Sefaria's own Hebrew one-liner (heShortDesc), for the Hebrew pages. */
+  heShortDesc?: string;
   description: string;
   chapters: Chapter[];
   introNodes: string[];

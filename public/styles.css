@@ -33,20 +33,20 @@ body::before {
 }
 a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
 a:hover { text-decoration-thickness: 2px; }
-.skip { position: absolute; left: -999px; top: 0; background: var(--accent); color: #fff; padding: .5rem 1rem; }
-.skip:focus { left: 1rem; z-index: 10; }
+.skip { position: absolute; inset-inline-start: -999px; top: 0; background: var(--accent); color: #fff; padding: .5rem 1rem; }
+.skip:focus { inset-inline-start: 1rem; z-index: 10; }
 .muted { color: var(--ink-2); }
 .small { font-size: .9rem; }
-.right { text-align: right; }
+.right { text-align: end; }
 code { font-family: ui-monospace, Menlo, monospace; font-size: .9em; background: var(--paper-2); padding: .05em .3em; border-radius: 3px; }
 .ornament { text-align: center; color: var(--gold); letter-spacing: .6em; margin: 1.6rem 0 1.2rem; font-size: .85rem; user-select: none; }
 
 header.site, footer.site, main { width: 100%; max-width: var(--measure); margin: 0 auto; padding: 0 16px; }
 header.site { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; padding-top: 1.2rem; padding-bottom: .9rem; border-bottom: 1px solid var(--rule); flex-wrap: wrap; }
 .brand { font-weight: 600; text-decoration: none; color: var(--ink); letter-spacing: .01em; font-size: 1.1rem; }
-.brand-mark { color: var(--gold); margin-right: .45rem; font-size: .8em; }
+.brand-mark { color: var(--gold); margin-inline-end: .45rem; font-size: .8em; }
 /* The wordmark: "Daf Yomi" carries the weight, "Dot Dev" trails in small caps-sized type, a little cute on purpose. */
-.brand-tld { font-weight: 400; font-size: .72em; color: var(--ink-2); margin-left: .45em; letter-spacing: .04em; }
+.brand-tld { font-weight: 400; font-size: .72em; color: var(--ink-2); margin-inline-start: .45em; letter-spacing: .04em; }
 header.site nav { display: flex; flex-wrap: wrap; gap: .3rem 1.1rem; font-size: .95rem; }
 header.site nav a { color: var(--ink-2); text-decoration: none; }
 header.site nav a:hover { color: var(--accent); }
@@ -77,7 +77,7 @@ h2 { font-weight: 600; font-size: 1.25rem; margin: 2rem 0 .6rem; }
   box-shadow: 0 1px 2px var(--shadow), 0 8px 24px -18px var(--shadow);
 }
 .note-label { margin: 0 0 .6rem; font-size: .82rem; color: var(--ink-2); line-height: 1.45; }
-.note-label .ai { display: inline-block; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; font-size: .7rem; color: var(--accent); margin-right: .4rem; }
+.note-label .ai { display: inline-block; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; font-size: .7rem; color: var(--accent); margin-inline-end: .4rem; }
 .note-summary { margin: 0 0 .55rem; font-size: 1.08rem; }
 .note-question { margin: 0; font-style: italic; color: var(--ink); }
 .note-question::before { content: "✦ "; color: var(--gold); font-style: normal; font-size: .75em; }
@@ -101,8 +101,8 @@ html.text-hidden .tools { margin-bottom: 0; }
 .amud-title { display: flex; align-items: center; gap: .8rem; margin: 0 0 1rem; }
 .amud-title::after { content: ""; flex: 1; border-top: 1px solid var(--rule); }
 .segments { list-style: none; margin: 0; padding: 0; }
-.seg { position: relative; margin: 0 0 1.1rem; padding-left: 2.1rem; }
-.segno { position: absolute; left: 0; top: .42rem; font-size: .7rem; color: var(--ink-3); text-decoration: none; font-variant-numeric: tabular-nums; }
+.seg { position: relative; margin: 0 0 1.1rem; padding-inline-start: 2.1rem; }
+.segno { position: absolute; inset-inline-start: 0; top: .42rem; font-size: .7rem; color: var(--ink-3); text-decoration: none; font-variant-numeric: tabular-nums; }
 .segno:hover { color: var(--accent); }
 .seg:target { background: var(--accent-soft); outline: .5rem solid var(--accent-soft); border-radius: 2px; }
 .seg p { margin: 0; }
@@ -130,8 +130,24 @@ a.ref { color: inherit; text-decoration: underline dotted var(--ink-3); }
 .deeper { list-style: none; padding: 0; margin: .3rem 0 0; }
 .deeper li { margin: .35rem 0; }
 
+/* ---- Languages ---- */
+/* The switch sits after the Site nav; the current language is plain text. A pre-release language wears a small tag. */
+header.site nav.lang { font-size: .85rem; gap: .2rem .55rem; align-items: baseline; }
+header.site nav.lang .cur { color: var(--ink); }
+header.site nav.lang .sep { margin: 0 .1em; }
+.prerelease { display: inline-block; font-size: .62rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); border: 1px solid var(--accent); border-radius: 3px; padding: 0 .3em; vertical-align: .15em; margin-inline-start: .25em; }
+.prerelease-notice { width: 100%; max-width: var(--measure); margin: .9rem auto 0; padding: 0 16px; font-size: .9rem; color: var(--ink-2); }
+/* Hebrew pages: the Hebrew face for everything, the serif back for English runs; no letter-spacing on Hebrew. */
+html[lang="he"] body { font-family: var(--hebrew); }
+html[lang="he"] [lang="en"] { font-family: var(--serif); }
+html[lang="he"] .brand, html[lang="he"] .brand-tld, html[lang="he"] .prerelease, html[lang="he"] nav.lang [lang="en"] { font-family: var(--serif); }
+html[dir="rtl"] .daf-head .date, html[dir="rtl"] h1, html[dir="rtl"] .brand, html[dir="rtl"] .note-label .ai, html[dir="rtl"] .now, html[dir="rtl"] .zoom-hint { letter-spacing: 0; }
+html[dir="rtl"] .seg .en.biur { font-size: 1.15rem; line-height: 1.8; }
+html[dir="rtl"] .seg .he { font-size: 1.1rem; color: var(--ink-2); }
+html[dir="rtl"] .zoom-line, html[dir="rtl"] .dy-label, html[dir="rtl"] .dy-legend, html[dir="rtl"] .dy-stats { direction: rtl; }
+
 /* Tractate page */
-.chapters { padding-left: 1.3rem; margin: 0; }
+.chapters { padding-inline-start: 1.3rem; margin: 0; }
 .chapters li { margin: .25rem 0; }
 .intro { margin: 1.5rem 0; border: 1px solid var(--rule); border-radius: 3px; padding: .6rem .9rem; background: var(--paper-2); }
 .intro summary { cursor: pointer; font-weight: 600; }
@@ -142,14 +158,14 @@ a.ref { color: inherit; text-decoration: underline dotted var(--ink-3); }
 .cell .d { font-size: .68rem; color: var(--ink-3); }
 .cell.future { opacity: .55; }
 .cell.today { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
-.cell.noted::after { content: ""; position: absolute; top: .3rem; right: .3rem; width: .4rem; height: .4rem; border-radius: 50%; background: var(--gold); }
+.cell.noted::after { content: ""; position: absolute; top: .3rem; inset-inline-end: .3rem; width: .4rem; height: .4rem; border-radius: 50%; background: var(--gold); }
 .tractate-list { list-style: none; padding: 0; margin: 0; }
 .tractate-list li { padding: .35rem 0; border-bottom: 1px solid var(--rule); }
 .tractate-list li.past, .tractate-list li.future { color: var(--ink-2); }
-.now { font-size: .7rem; text-transform: uppercase; letter-spacing: .08em; color: var(--accent); font-weight: 600; margin-left: .4rem; }
+.now { font-size: .7rem; text-transform: uppercase; letter-spacing: .08em; color: var(--accent); font-weight: 600; margin-inline-start: .4rem; }
 
 .prose p, .prose li { max-width: 40rem; }
-.prose ul { padding-left: 1.2rem; }
+.prose ul { padding-inline-start: 1.2rem; }
 
 @media print {
   header.site nav, .tools, .deeper-wrap, .prevnext, footer.site, body::before, .zoom-hint { display: none; }
@@ -168,7 +184,7 @@ a.ref { color: inherit; text-decoration: underline dotted var(--ink-3); }
 .dy-page svg { flex: none; }
 .dy-page p { margin: 0; font-size: .98rem; }
 .dy-label { margin: 1rem 0 .3rem; font-size: .9rem; color: var(--ink-2); }
-.dy-bar { display: flex; width: 100%; }
+.dy-bar { display: flex; width: 100%; direction: ltr; }
 /* Widths sum to exactly 100%; the 2px paper-coloured right border is the gap between fills. */
 .dy-bar .dseg { display: block; box-sizing: border-box; min-width: 3px; height: 2rem; overflow: hidden; border-radius: 2px; color: var(--seg-ink); text-decoration: none; position: relative; border-right: 2px solid var(--paper); }
 .dy-bar .dseg:last-child { border-right: 0; }
@@ -178,7 +194,7 @@ a.ref { color: inherit; text-decoration: underline dotted var(--ink-3); }
 .dy-bar .dseg.now { outline: 2px solid var(--accent); outline-offset: 1px; z-index: 1; }
 .dy-bar a.dseg:hover { filter: brightness(1.12); }
 .s1 { background: var(--s1); } .s2 { background: var(--s2); } .s3 { background: var(--s3); } .s4 { background: var(--s4); } .s5 { background: var(--s5); } .s6 { background: var(--s6); }
-.dy-axis { position: relative; height: 3.4rem; margin-top: .3rem; border-top: 1px solid var(--rule); }
+.dy-axis { direction: ltr; position: relative; height: 3.4rem; margin-top: .3rem; border-top: 1px solid var(--rule); }
 .dy-axis .tick { position: absolute; top: 0; transform: translateX(-50%); font-size: .75rem; color: var(--ink-3); padding-top: .55rem; }
 .dy-axis .tick i { position: absolute; left: 50%; top: 0; height: .4rem; border-left: 1px solid var(--rule); }
 .dy-axis .today { position: absolute; top: 0; transform: translateX(-50%); }
@@ -188,7 +204,7 @@ a.ref { color: inherit; text-decoration: underline dotted var(--ink-3); }
 .dy-axis .today.early .you { left: 0; transform: none; }
 .dy-legend { list-style: none; padding: 0; margin: .8rem 0 .6rem; }
 .dy-legend li { margin: .35rem 0; font-size: .95rem; }
-.dy-legend .chip { display: inline-block; width: .8rem; height: .8rem; border-radius: 2px; vertical-align: -.1rem; margin-right: .45rem; }
+.dy-legend .chip { display: inline-block; width: .8rem; height: .8rem; border-radius: 2px; vertical-align: -.1rem; margin-inline-end: .45rem; }
 @media (max-width: 40rem) {
   .dy-bar .dseg .lbl { display: none; }
   .dy-axis .today .you { position: static; display: block; transform: none; margin-top: .2rem; text-align: right; }
@@ -207,8 +223,8 @@ a.ref { color: inherit; text-decoration: underline dotted var(--ink-3); }
 .zoom-line { display: flex; flex-wrap: wrap; align-items: baseline; margin: var(--head-tight, .375rem) 0 0; font-size: .95rem; line-height: 1.55; }
 .zoom-line .zcap, .zoom-line .zval { white-space: nowrap; }
 .zoom-line .zval { font-variant-numeric: tabular-nums; }
-.zoom-hint { margin-left: auto; color: var(--ink-3); font-size: .82rem; letter-spacing: .02em; }
-.zoom-stage { position: relative; height: 16px; overflow: hidden; border-radius: 2px; }
+.zoom-hint { margin-inline-start: auto; color: var(--ink-3); font-size: .82rem; letter-spacing: .02em; }
+.zoom-stage { direction: ltr; position: relative; height: 16px; overflow: hidden; border-radius: 2px; }
 .zl { position: absolute; inset: 0; transform-origin: 0 50%; opacity: 0; transition: transform .7s cubic-bezier(.4, 0, .2, 1), opacity .45s ease; will-change: transform, opacity; pointer-events: none; }
 .zl.on { opacity: 1; pointer-events: auto; }
 .zl .geo { display: flex; height: 100%; }
@@ -234,7 +250,7 @@ a.ref { color: inherit; text-decoration: underline dotted var(--ink-3); }
 .subscribe-form legend { font-weight: 600; margin-bottom: .2rem; }
 .subscribe-form fieldset label, .subscribe-form label.check { margin: .35rem 0; }
 .subscribe-form input[type="email"], .subscribe-form select { display: block; width: 100%; max-width: 26rem; margin-top: .3rem; padding: .55rem .7rem; font: inherit; color: var(--ink); background: var(--paper); border: 1px solid var(--rule); border-radius: 3px; }
-.subscribe-form input[type="radio"], .subscribe-form input[type="checkbox"] { margin-right: .45rem; accent-color: var(--accent); }
+.subscribe-form input[type="radio"], .subscribe-form input[type="checkbox"] { margin-inline-end: .45rem; accent-color: var(--accent); }
 .subscribe-form .hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
 .subscribe-form .cf-turnstile { margin: 1rem 0; }
 .btn { display: inline-block; padding: .75rem 1.5rem; font: inherit; font-weight: 600; color: var(--paper); background: var(--accent); border: 1px solid #6e2418; border-radius: 3px; cursor: pointer; text-decoration: none; }

@@ -29,6 +29,21 @@ hourly send tick, opt-in, provider (see NEWSLETTER.md) · `src/index.ts` routes 
 enough to re-bake) · `scripts/` bake table, verify cycle, try notes, backfill, check links ·
 `data/tractates.json` generated, commit it.
 
+## Languages
+
+English, Hebrew (`/he`, Pre-Release until `HE_PUBLIC=1`), Yiddish later on the same machinery. Rules:
+
+- Chrome strings live in `src/i18n/` (one table per language, same keys); never a literal in a renderer. Hebrew assumes a
+  reader who knows what a Seder and a mishna are: no glossing, no Steinsaltz introduction. `test/i18n.test.ts` guards it.
+- The Talmud text is never AI-translated. Hebrew pages show Sefaria's Steinsaltz biur; the original sits behind a toggle.
+- Notes are **translated from the approved English note** (`prompts/daf-translate-he.md`, `src/note/translate.ts`), quotes
+  swapped for the original words and checked verbatim against the Hebrew/Aramaic. A translation belongs to one English
+  bake (`of`); a re-bake retires it. Translations never generate on a visit (the crawler incident): cron for the near
+  days, `npm run translate` for the rest. Bump `TRANSLATE_PROMPT_VERSION` when the Hebrew style changes enough to re-do.
+- A language stays Pre-Release (noindex, unlisted, a notice on every page) until its native reviewer round is done.
+- Time axes (the position bar, the About diagram) stay left-to-right in every language; everything else is RTL via
+  logical CSS properties.
+
 ## Working here
 
 - `npm test` and `npm run typecheck` before any deploy. `npm run verify:cycle -- --sample 80` after
@@ -36,7 +51,8 @@ enough to re-bake) · `scripts/` bake table, verify cycle, try notes, backfill, 
 - Free-plan Workers: 10 ms CPU per invocation. Rendering is cached at the edge; the cron bakes at most
   three dapim per run. If CPU limits ever bite, Workers Paid ($5/mo) is the fix, not a rewrite.
 - Push ≠ deploy here either: `npm run deploy` is the deploy. Verify the live URL after.
-- KV keys: `ref:v1:<slug>:<daf>`, `note:v1:<slug>:<daf>`, `gen:<date>` and `confirm:<date>` (daily counters).
+- KV keys: `ref:v1:<slug>:<daf>`, `note:v1:<slug>:<daf>`, `tnote:v1:<lang>:<slug>:<daf>` (translated notes),
+  `gen:<date>` and `confirm:<date>` (daily counters).
   Sefaria text (`text:v2:`) and generation locks live in the edge Cache API, not KV (free plan: 1,000 KV
   writes a day). Readers live in D1 (`NEWSLETTER_DB`), never in KV.
 - Newsletter rules: the send path never fetches from Sefaria (a test greps for it); the AI label travels

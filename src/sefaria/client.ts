@@ -100,6 +100,56 @@ export async function fetchText(urlRef: string, _kv?: KVNamespace): Promise<Sefa
   return text;
 }
 
+/** Rabbi Steinsaltz's Hebrew biur for one Sefaria ref: the Talmud's words in bold, his explanation between. */
+export interface BiurText {
+  urlRef: string;
+  ref: string;
+  heRef: string;
+  /** Sanitized HTML per segment, explanation runs wrapped in <span class="elu">, section labels bold. */
+  html: string[];
+  plain: string[];
+  version: TextVersion | null;
+  fetchedAt: string;
+}
+
+/**
+ * "Bekhorot.2a" → "Steinsaltz_on_Bekhorot.2a"; "Jerusalem_Talmud_Shekalim.1.1.1-2.2.3" → "Steinsaltz_on_Jerusalem_Talmud_Shekalim…".
+ * Null for the Mishnah days (Kinnim, Middot), which have no Steinsaltz commentary on Sefaria.
+ */
+export function biurRef(urlRef: string): string | null {
+  if (/^Mishnah_/.test(urlRef)) return null;
+  return `Steinsaltz_on_${urlRef}`;
+}
+
+/** The biur is cached like the text: on the edge, 30 days, never in KV. Null when this ref has none. */
+export async function fetchBiur(urlRef: string): Promise<BiurText | null> {
+  const ref = biurRef(urlRef);
+  if (!ref) return null;
+  const key = `text:v2:${ref}`;
+  const cached = await edgeGet<BiurText>(key);
+  if (cached) return cached;
+  const url = `${SEFARIA}/api/v3/texts/${encodeURI(ref)}?version=hebrew`;
+  const res = await fetch(url, { headers: { "User-Agent": UA, Accept: "application/json" } });
+  if (res.status === 404) return null;
+  if (!res.ok) throw new SefariaError(`Sefaria returned HTTP ${res.status} for ${ref}`, res.status);
+  const j: any = await res.json();
+  if (j.error) return null;
+  const heV = pickVersion(Array.isArray(j.versions) ? j.versions : [], "he");
+  const he = heV ? flatten(heV.text) : [];
+  if (he.length === 0) return null;
+  const biur: BiurText = {
+    urlRef: ref,
+    ref: String(j.ref ?? ref),
+    heRef: String(j.heRef ?? ""),
+    html: he.map((x) => sanitize(x, { markElucidation: true, bigAsLabel: true })),
+    plain: he.map((x) => plainText(x)),
+    version: heV ? { language: "he", versionTitle: String(heV.versionTitle ?? ""), license: String(heV.license ?? ""), versionSource: heV.versionSource ? String(heV.versionSource) : undefined } : null,
+    fetchedAt: new Date().toISOString(),
+  };
+  await edgePut(key, biur, TEXT_TTL_SECONDS);
+  return biur;
+}
+
 export interface ResolvedDaf {
   /** One or two Sefaria URL refs covering the daf (two amudim for Bavli; one range for Shekalim/Kinnim/Middot). */
   urlRefs: string[];
@@ -143,7 +193,7 @@ export async function resolveDafRefs(t: Tractate, daf: number, cycle: number, kv
 }
 
 
-export interface DafSection { label: string; text: SefariaText }
+export interface DafSection { label: string; text: SefariaText; biur?: BiurText | null }
 
 /** hebcal's own Shekalim mapping (Yerushalmi chapter:halakha:segment), used when Sefaria's calendar ref has no text. */
 function hebcalShekalimRef(daf: number): string | null {
@@ -161,22 +211,25 @@ function hebcalShekalimRef(daf: number): string | null {
  *    and the working ref replaces the cached one.
  * Throws only if nothing at all could be loaded.
  */
-export async function loadDafSections(t: Tractate, daf: number, cycle: number, kv?: KVNamespace): Promise<DafSection[]> {
+export async function loadDafSections(t: Tractate, daf: number, cycle: number, kv?: KVNamespace, opts: { withBiur?: boolean } = {}): Promise<DafSection[]> {
   const resolved = await resolveDafRefs(t, daf, cycle, kv);
   const out: DafSection[] = [];
   let firstError: unknown = null;
+  // The biur is decoration for the Hebrew page: a failure to load it never fails the page.
+  const biurFor = async (urlRef: string) => (opts.withBiur ? fetchBiur(urlRef).catch(() => null) : undefined);
   for (let i = 0; i < resolved.urlRefs.length; i++) {
     const urlRef = resolved.urlRefs[i]!;
     try {
-      out.push({ label: resolved.labels[i] ?? urlRef, text: await fetchText(urlRef, kv) });
+      const [text, biur] = await Promise.all([fetchText(urlRef, kv), biurFor(urlRef)]);
+      out.push({ label: resolved.labels[i] ?? urlRef, text, biur });
     } catch (e) {
       const missing = e instanceof SefariaError && (e.status === 404 || /no text/i.test(e.message));
       if (missing && i > 0) continue; // e.g. Nazir 33b: side a stands alone
       if (missing && t.slug === "shekalim") {
         const alt = hebcalShekalimRef(daf);
         if (alt && alt !== urlRef) {
-          const text = await fetchText(alt, kv);
-          out.push({ label: resolved.labels[i] ?? alt, text });
+          const [text, biur] = await Promise.all([fetchText(alt, kv), biurFor(alt)]);
+          out.push({ label: resolved.labels[i] ?? alt, text, biur });
           if (kv) await kv.put(`ref:v1:${t.slug}:${daf}`, JSON.stringify({ urlRefs: [alt], labels: resolved.labels } satisfies ResolvedDaf));
           continue;
         }

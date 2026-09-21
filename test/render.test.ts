@@ -110,3 +110,86 @@ describe("about", () => {
     expect(days).toBe(2711);
   });
 });
+
+describe("Hebrew pages (Pre-Release)", () => {
+  const ref = dafForDate(d("2026-09-20"));
+  const biur = (urlRef: string) => ({
+    urlRef: `Steinsaltz_on_${urlRef}`, ref: `Steinsaltz on ${urlRef.replace(".", " ")}`, heRef: "ביאור שטיינזלץ על בכורות ב׳ א",
+    html: ['<strong>א משנה</strong><span class="elu"> </span><b>הלוקח</b><span class="elu"> (הקונה) </span><b>עובר חמורו של נכרי</b>', '<strong>ב גמרא</strong><span class="elu"> ושואלים: </span><b>כל הני</b><span class="elu"> ששנינו </span><b>למה לי?</b>'],
+    plain: ["א משנה הלוקח (הקונה) עובר חמורו של נכרי", "ב גמרא ושואלים: כל הני ששנינו למה לי?"],
+    version: { language: "he" as const, versionTitle: "William Davidson Edition - Hebrew", license: "CC-BY-NC" },
+    fetchedAt: "2026-09-20T00:00:00Z",
+  });
+  const note = { summary: "S.", question: "Q?", quotes: [], model: "m", promptVersion: "v", generatedAt: "2026-09-21T00:00:00Z", sources: [] };
+  const tr = { summary: "המשנה מונה חמישה מקרים.", question: "למה חמישה?", quotes: [], of: note.generatedAt, sourcePromptVersion: "v", model: "m", promptVersion: "tv", generatedAt: "2026-09-21T01:00:00Z" };
+  const base = { env, origin: "https://example.test", lang: "he" as const, ref, date: d("2026-09-20"), isToday: true, texts: [{ label: "Bekhorot 2a", text: text("Bekhorot.2a"), biur: biur("Bekhorot.2a") }, { label: "Bekhorot 2b", text: text("Bekhorot.2b"), biur: biur("Bekhorot.2b") }], notesEnabled: true };
+  it("renders right to left with the biur as the text, noindex and the Pre-Release switch", () => {
+    const html = renderDafPage({ ...base, note, translation: tr });
+    expect(html).toContain('<html lang="he" dir="rtl">');
+    expect(html).toContain('<meta name="robots" content="noindex">');
+    expect(html).not.toContain('hreflang=');
+    expect(html).toContain('<link rel="canonical" href="https://example.test/he">');
+    expect(html).toContain('<nav class="lang" aria-label="שפה">');
+    expect(html).toContain('<a lang="en" href="/lang/en?to=%2F">EN</a>');
+    expect(html).toContain('<span class="cur" lang="he" aria-current="true">עברית <span class="prerelease">Pre-Release</span></span>');
+    expect(html).toContain('<p class="prerelease-notice">');
+    expect(html).toContain('href="/"'); // the notice links the English page
+    expect(html).toContain('<p class="en biur" lang="he"><strong>א משנה</strong><span class="elu">');
+    expect(html).toContain('<p class="he" lang="he" dir="rtl">מַתְנִי׳'); // the original behind the toggle
+    expect(html).toContain('data-toggle="he" data-off="הצגת המקור" data-on="הסתרת המקור"');
+    expect(html).toContain('data-toggle="talmudOnly" data-off="גמרא בלבד"');
+    expect(html).toContain("הדף של היום: בכורות ב׳");
+    expect(html).toContain("<title>הדף היומי של היום: בכורות ב׳ · Today&#39;s Daf</title>");
+    expect(html).toContain("ט׳ תשרי תשפ״ז");
+    expect(html).toContain("יום ראשון, 20 בספטמבר 2026");
+    expect(html).toContain("המשנה מונה חמישה מקרים."); // the translation, not the English note
+    expect(html).not.toContain(">S.<");
+    expect(html).toContain('href="/he/bekhorot/3"');
+    expect(html).toContain('href="/he/tractates"');
+    expect(html).toContain('<link rel="alternate" type="application/rss+xml" title="Today&#39;s Daf" href="/he/feed.xml">');
+    expect(html).toContain("/og-he.png");
+    expect(html).not.toContain('href="/newsletter"'); // no newsletter in Hebrew yet
+    expect(html).not.toMatch(/—/);
+    const ld = JSON.parse(/<script type="application\/ld\+json">(.*?)<\/script>/s.exec(html)![1]!);
+    expect(ld[0].inLanguage).toBe("he");
+    expect(ld[1].itemListElement[3].item).toBe("https://example.test/he/bekhorot/2");
+  });
+  it("says the note is not translated yet when the translation is missing or stale", () => {
+    const missing = renderDafPage({ ...base, note, translation: null });
+    expect(missing).toContain("טרם תורגמה לעברית");
+    expect(missing).toContain('<a href="/bekhorot/2">');
+    const stale = renderDafPage({ ...base, note, translation: { ...tr, of: "2026-09-01T00:00:00Z" } });
+    expect(stale).toContain("טרם תורגמה לעברית");
+    expect(stale).not.toContain("המשנה מונה");
+  });
+  it("shows the Mishnah alone when there is no biur", () => {
+    const html = renderDafPage({ ...base, texts: [{ label: "Kinnim", text: text("Mishnah_Kinnim.1"), biur: null }], note: null, translation: null });
+    expect(html).toContain("לימי המשנה אין ביאור שטיינזלץ");
+    expect(html).not.toContain('data-toggle="he"');
+    expect(html).toContain('<p class="en biur" lang="he">מַתְנִי׳');
+  });
+  it("indexes and offers alternates once HE_PUBLIC is set", () => {
+    const html = renderDafPage({ ...base, env: { ...env, HE_PUBLIC: "1" } as Env, note, translation: tr, isToday: false });
+    expect(html).not.toContain('name="robots"');
+    expect(html).toContain('<link rel="alternate" hreflang="en" href="https://example.test/bekhorot/2">');
+    expect(html).toContain('<link rel="alternate" hreflang="he" href="https://example.test/he/bekhorot/2">');
+    expect(html).toContain('<link rel="alternate" hreflang="x-default" href="https://example.test/bekhorot/2">');
+    expect(html).not.toContain("prerelease");
+  });
+  it("leaves the English page as it was, plus the switch", () => {
+    const html = renderDafPage({ ...base, lang: "en", note, translation: null });
+    expect(html).toContain('<html lang="en" dir="ltr">');
+    expect(html).not.toContain('name="robots"');
+    expect(html).toContain('<a lang="he" href="/lang/he?to=%2F">עברית <span class="prerelease">Pre-Release</span></a>');
+    expect(html).toContain('data-toggle="he" data-off="Show Hebrew / Aramaic" data-on="Hide Hebrew / Aramaic"');
+    expect(html).toContain(">S.<");
+    expect(html).not.toContain("biur");
+  });
+  it("renders the Hebrew About and tractate pages without em dashes", () => {
+    const about = renderAbout(env, "https://example.test", ref, "he");
+    expect(about).toContain('<html lang="he" dir="rtl">');
+    expect(about).toContain("אתם כאן: יום 2,451, בכורות ב׳");
+    expect(about).not.toMatch(/—/);
+    expect((about.match(/class="dseg tractate/g) ?? []).length).toBe(40);
+  });
+});

@@ -103,7 +103,8 @@
     "Summary of Perek VIII",
     "Introduction to Perek IX",
     "Summary of Perek IX"
-   ]
+   ],
+   "heShortDesc": "ברכות ותפילות, בדגש על קריאת שמע ועל תפילת העמידה."
   },
   {
    "hebcalName": "Shabbat",
@@ -341,7 +342,8 @@
     "Summary of Perek XXIII",
     "Introduction to Perek XXIV",
     "Summary of Perek XXIV"
-   ]
+   ],
+   "heShortDesc": "מלאכות האסורות בשבת ודינים הקשורים לקדושת היום."
   },
   {
    "hebcalName": "Eruvin",
@@ -453,7 +455,8 @@
     "Summary of Perek IX",
     "Introduction to Perek X",
     "Summary of Perek X"
-   ]
+   ],
+   "heShortDesc": "תיחום המרחיב באופן סמלי את התחומים שמותר ללכת ולשאת בהם חפצים בשבת."
   },
   {
    "hebcalName": "Pesachim",
@@ -565,7 +568,8 @@
     "Summary of Perek IX",
     "Introduction to Perek X",
     "Summary of Perek X"
-   ]
+   ],
+   "heShortDesc": "דינים הקשורים לחג הפסח: איסור חמץ, קורבן הפסח, מצה, מרור וליל הסדר."
   },
   {
    "hebcalName": "Shekalim",
@@ -584,7 +588,8 @@
    "shortDesc": "Annual half-shekel donations to the Temple, administration and inventory of the Temple.",
    "description": "Sheqalim (Shekels) belongs to the second order, Moed (Festivals) and discusses the collection of the half-Shekel as well as the expenses and expenditure of the Temple. It has eight chapters.",
    "chapters": [],
-   "introNodes": []
+   "introNodes": [],
+   "heShortDesc": "תרומה של מחצית השקל הניתנת לבית המקדש בכל שנה וענייני ניהולו ותפעולו של בית המקדש."
   },
   {
    "hebcalName": "Yoma",
@@ -678,7 +683,8 @@
     "Summary of Perek VII",
     "Introduction to Perek VIII",
     "Summary of Perek VIII"
-   ]
+   ],
+   "heShortDesc": "יום הכיפורים: הכנות הכהן הגדול, העבודה בבית המקדש, הצום והתשובה."
   },
   {
    "hebcalName": "Sukkah",
@@ -745,7 +751,8 @@
     "Summary of Perek IV",
     "Introduction to Perek V",
     "Summary of Perek V"
-   ]
+   ],
+   "heShortDesc": "מבנה הסוכה, החובה לשבת בסוכה, ארבעת המינים ושמחת החג בבית המקדש."
   },
   {
    "hebcalName": "Beitzah",
@@ -812,7 +819,8 @@
     "Summary of Perek IV",
     "Introduction to Perek V",
     "Summary of Perek V"
-   ]
+   ],
+   "heShortDesc": "דיני יום טוב: חפצים האסורים בשימוש, הכנת אוכל בחג לצורך החג והמלאכות האסורות."
   },
   {
    "hebcalName": "Rosh Hashana",
@@ -870,7 +878,8 @@
     "Summary of Perek III",
     "Introduction to Perek IV",
     "Summary of Perek IV"
-   ]
+   ],
+   "heShortDesc": "ארבעת ראשי השנה, הליך קידוש החודש ודיני תקיעת שופר."
   },
   {
    "hebcalName": "Taanit",
@@ -928,7 +937,8 @@
     "Summary of Perek III",
     "Introduction to Perek IV",
     "Summary of Perek IV"
-   ]
+   ],
+   "heShortDesc": "תפילה על הגשם, צום בימי בצורת והצומות שנקבעו לזכר חורבן ירושלים."
   },
   {
    "hebcalName": "Megillah",
@@ -986,7 +996,8 @@
     "Summary of Perek III",
     "Introduction to Perek IV",
     "Summary of Perek IV"
-   ]
+   ],
+   "heShortDesc": "קריאת מגילת אסתר בפורים, קריאת התורה וההפטרות בבית הכנסת ודיני קדושת בית הכנסת ותשמישי קדושה."
   },
   {
    "hebcalName": "Moed Katan",
@@ -1035,7 +1046,8 @@
     "Summary of Perek II",
     "Introduction to Perek III",
     "Summary of Perek III"
-   ]
+   ],
+   "heShortDesc": "חול המועד (הימים בסוכות ובפסח שאינם ימים טובים), אבלות ונידוי."
   },
   {
    "hebcalName": "Chagigah",
@@ -1084,7 +1096,8 @@
     "Summary of Perek II",
     "Introduction to Perek III",
     "Summary of Perek III"
-   ]
+   ],
+   "heShortDesc": "קורבנות המוקרבים בעת העלייה לרגל לירושלים בשלושת הרגלים (פסח, שבועות וסוכות), דיני טהרה ודיונים העוסקים בבריאת העולם ובמעשה מרכבה."
   },
   {
    "hebcalName": "Yevamot",
@@ -1250,7 +1263,8 @@
     "Summary of Perek XV",
     "Introduction to Perek XVI",
     "Summary of Perek XVI"
-   ]
+   ],
+   "heShortDesc": "ייבום, חליצה ואיסורי עריות."
   },
   {
    "hebcalName": "Ketubot",
@@ -1389,7 +1403,8 @@
     "Summary of Perek XII",
     "Introduction to Perek XIII",
     "Summary of Perek XIII"
-   ]
+   ],
+   "heShortDesc": "שטר הכתובה, חובות הבעל לאשתו וחובות האישה לבעלה."
   },
   {
    "hebcalName": "Nedarim",
@@ -1510,7 +1525,8 @@
     "Summary of Perek X",
     "Introduction to Perek XI",
     "Summary of Perek XI"
-   ]
+   ],
+   "heShortDesc": "נדרים שאדם נודר מרצונו, לרוב נדרים האוסרים על הנודר מעשים או חפצים מסוימים."
   },
   {
    "hebcalName": "Nazir",
@@ -1613,7 +1629,8 @@
     "Summary of Perek VIII",
     "Introduction to Perek IX",
     "Summary of Perek IX"
-   ]
+   ],
+   "heShortDesc": "הנזיר: אדם שנודר להימנע מיין, מתספורת ומהיטמאות למת לפרק זמן מוגדר."
   },
   {
    "hebcalName": "Sotah",
@@ -1716,7 +1733,8 @@
     "Summary of Perek VIII",
     "Introduction to Perek IX",
     "Summary of Perek IX"
-   ]
+   ],
+   "heShortDesc": "אישה החשודה בבגידה בבעלה, טקס בירור מעמדה וטקסים אחרים הכרוכים באמירה."
   },
   {
    "hebcalName": "Gitin",
@@ -1819,7 +1837,8 @@
     "Summary of Perek VIII",
     "Introduction to Perek IX",
     "Summary of Perek IX"
-   ]
+   ],
+   "heShortDesc": "דיני גירושין, בדגש על כתיבת שטר הגט ונתינתו."
   },
   {
    "hebcalName": "Kiddushin",
@@ -1877,7 +1896,8 @@
     "Summary of Perek III",
     "Introduction to Perek IV",
     "Summary of Perek IV"
-   ]
+   ],
+   "heShortDesc": "קידושין, נישואין, דיני קניין וענייני יוחסין."
   },
   {
    "hebcalName": "Baba Kamma",
@@ -1989,7 +2009,8 @@
     "Summary of Perek IX",
     "Introduction to Perek X",
     "Summary of Perek X"
-   ]
+   ],
+   "heShortDesc": "אחריות לנזקי אדם או רכוש והפיצויים עליהם."
   },
   {
    "hebcalName": "Baba Metzia",
@@ -2101,7 +2122,8 @@
     "Summary of Perek IX",
     "Introduction to Perek X",
     "Summary of Perek X"
-   ]
+   ],
+   "heShortDesc": "רכוש שיש עליו מחלוקת, השבת אבדה, דיני שמירה, שכירה ושאילה וחובותיהם של מעסיקים ושל עובדים."
   },
   {
    "hebcalName": "Baba Batra",
@@ -2213,7 +2235,8 @@
     "Summary of Perek IX",
     "Introduction to Perek X",
     "Summary of Perek X"
-   ]
+   ],
+   "heShortDesc": "יחסים בין שכנים, בעלות על קרקע, מכירת קרקעות ודיני ירושה."
   },
   {
    "hebcalName": "Sanhedrin",
@@ -2334,7 +2357,8 @@
     "Summary of Perek X",
     "Introduction to Perek XI",
     "Summary of Perek XI"
-   ]
+   ],
+   "heShortDesc": "מערכת המשפט, הקמת בית הדין, קבלת עדות וביצוע גזר דין מוות."
   },
   {
    "hebcalName": "Makkot",
@@ -2383,7 +2407,8 @@
     "Summary of Perek II",
     "Introduction to Perek III",
     "Summary of Perek III"
-   ]
+   ],
+   "heShortDesc": "עדים זוממים, ערי מקלט לרוצחים בשגגה ועונש מלקות."
   },
   {
    "hebcalName": "Shevuot",
@@ -2477,7 +2502,8 @@
     "Summary of Perek VII",
     "Introduction to Perek VIII",
     "Summary of Perek VIII"
-   ]
+   ],
+   "heShortDesc": "דיני הנכנס לבית המקדש או אוכל בשר קורבן בהיותו טמא, דיני שבועות."
   },
   {
    "hebcalName": "Avodah Zarah",
@@ -2544,7 +2570,8 @@
     "Summary of Perek IV",
     "Introduction to Perek V",
     "Summary of Perek V"
-   ]
+   ],
+   "heShortDesc": "התרחקות מעבודת אלילים וכללים המסדירים את הקשר בין יהודים ועובדי אלילים."
   },
   {
    "hebcalName": "Horayot",
@@ -2593,7 +2620,8 @@
     "Summary of Perek II",
     "Introduction to Perek III",
     "Summary of Perek III"
-   ]
+   ],
+   "heShortDesc": "כפרה על פסיקות שגויות שהורו בבית הדין ועל חטאים בשגגה של כהנים גדולים ומלכים."
   },
   {
    "hebcalName": "Zevachim",
@@ -2741,7 +2769,8 @@
     "Summary of Perek XIII",
     "Introduction to Perek XIV",
     "Summary of Perek XIV"
-   ]
+   ],
+   "heShortDesc": "קורבנות בהמה ועוף ודינים הנוגעים לבית המקדש."
   },
   {
    "hebcalName": "Menachot",
@@ -2880,7 +2909,8 @@
     "Summary of Perek XII",
     "Introduction to Perek XIII",
     "Summary of Perek XIII"
-   ]
+   ],
+   "heShortDesc": "מנחות עשויות קמח, לחם הפנים ונסכי יין ושמן."
   },
   {
    "hebcalName": "Chullin",
@@ -3010,7 +3040,8 @@
     "Summary of Perek XI",
     "Introduction to Perek XII",
     "Summary of Perek XII"
-   ]
+   ],
+   "heShortDesc": "שחיטת חיות ועופות שלא לשם קורבן וענייני כשרות נוספים."
   },
   {
    "hebcalName": "Bechorot",
@@ -3113,7 +3144,8 @@
     "Summary of Perek VIII",
     "Introduction to Perek IX",
     "Summary of Perek IX"
-   ]
+   ],
+   "heShortDesc": "נתינת בכורות של בהמות טהורות לכהן, פדיון הוולד הבכור של החמור, פדיון בכור האדם ומעשר בהמה."
   },
   {
    "hebcalName": "Arachin",
@@ -3216,7 +3248,8 @@
     "Summary of Perek VIII",
     "Introduction to Perek IX",
     "Summary of Perek IX"
-   ]
+   ],
+   "heShortDesc": "נדר לתרום לבית המקדש ממון בשווי ערכו של אדם לפי המפורט בתורה, תרומות קרקע לבית המקדש."
   },
   {
    "hebcalName": "Temurah",
@@ -3301,7 +3334,8 @@
     "Summary of Perek VI",
     "Introduction to Perek VII",
     "Summary of Perek VII"
-   ]
+   ],
+   "heShortDesc": "קדושת הבהמות שיועדו לקורבן והאיסור להחליפן באחרות."
   },
   {
    "hebcalName": "Keritot",
@@ -3377,7 +3411,8 @@
     "Summary of Perek V",
     "Introduction to Perek VI",
     "Summary of Perek VI"
-   ]
+   ],
+   "heShortDesc": "עונש כרת וקורבנות על חטאים שנעשו בשגגה."
   },
   {
    "hebcalName": "Meilah",
@@ -3453,7 +3488,8 @@
     "Summary of Perek V",
     "Introduction to Perek VI",
     "Summary of Perek VI"
-   ]
+   ],
+   "heShortDesc": "הנאה אסורה מחפץ, מבהמה או מכסף השייכים לבית המקדש."
   },
   {
    "hebcalName": "Kinnim",
@@ -3472,7 +3508,8 @@
    "shortDesc": "Bird-offerings that are mixed up and the complex math involved in determining their status.",
    "description": "Kinnim (Nests) belongs to the fifth order, Kodshim (Holy things) and discusses the complex laws for situations where the mixing of bird-offerings occurred. It has three chapters.",
    "chapters": [],
-   "introNodes": []
+   "introNodes": [],
+   "heShortDesc": "עופות שנועדו לקורבן והתערבו זה בזה והחישובים המורכבים שיש לחשב כדי לקבוע את מעמדם."
   },
   {
    "hebcalName": "Tamid",
@@ -3529,7 +3566,8 @@
    ],
    "introNodes": [
     "Introduction to Tamid"
-   ]
+   ],
+   "heShortDesc": "העבודה הנעשית במקדש בכל יום הכוללת את קורבן התמיד המוקרב בבוקר ובין הערביים."
   },
   {
    "hebcalName": "Midot",
@@ -3548,7 +3586,8 @@
    "shortDesc": "Measurements and descriptions of the Second Temple and the Temple Mount.",
    "description": "Middot (Measurements) belongs to the fifth order, Kodshim (Holy things) and discusses the measurements of the second Temple. It has four chapters.",
    "chapters": [],
-   "introNodes": []
+   "introNodes": [],
+   "heShortDesc": "מידותיהם ותיאורם של בית המקדש השני ושל הר הבית."
   },
   {
    "hebcalName": "Niddah",
@@ -3660,7 +3699,8 @@
     "Summary of Perek IX",
     "Introduction to Perek X",
     "Summary of Perek X"
-   ]
+   ],
+   "heShortDesc": "טומאת האישה בנידתה ובמצבים נוספים."
   }
  ]
 }

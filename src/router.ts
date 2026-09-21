@@ -1,16 +1,20 @@
 import { tractateBySlug, type Tractate } from "./daf/tractates";
+import { isLang, type Lang } from "./i18n/strings";
 
+/** Page routes carry the language they were asked for; `lang` is absent for English so existing equality tests hold. */
 export type Route =
-  | { kind: "today" }
-  | { kind: "daf"; tractate: Tractate; daf: number }
-  | { kind: "tractate"; tractate: Tractate }
-  | { kind: "tractates" }
-  | { kind: "about" }
-  | { kind: "feed" }
+  | { kind: "today"; lang?: Lang }
+  | { kind: "daf"; tractate: Tractate; daf: number; lang?: Lang }
+  | { kind: "tractate"; tractate: Tractate; lang?: Lang }
+  | { kind: "tractates"; lang?: Lang }
+  | { kind: "about"; lang?: Lang }
+  | { kind: "feed"; lang?: Lang }
+  | { kind: "lang"; lang: Lang }
+  | { kind: "admin-translate"; action: "run" | "put" | "note" }
   | { kind: "api-today" }
   | { kind: "api-daf"; tractate: Tractate; daf: number }
-  | { kind: "date"; ymd: string }
-  | { kind: "relative"; offset: number }
+  | { kind: "date"; ymd: string; lang?: Lang }
+  | { kind: "relative"; offset: number; lang?: Lang }
   | { kind: "robots" }
   | { kind: "sitemap" }
   | { kind: "admin-bake" }
@@ -23,14 +27,39 @@ export type Route =
   | { kind: "newsletter-hook-resend" }
   | { kind: "admin-newsletter"; action: AdminNewsletterAction }
   | { kind: "redirect"; to: string }
-  | { kind: "not-found" };
+  | { kind: "not-found"; lang?: Lang };
 
 export type AdminNewsletterAction = "status" | "send" | "tick" | "rebuild-edition" | "subscribe";
 export type NewsletterRoute = Extract<Route, { kind: `newsletter${string}` | "admin-newsletter" }>;
 
+/** Route kinds that exist under a language prefix. Everything else (api, admin, newsletter, robots, sitemap, lang) is English-only. */
+const PREFIXABLE = new Set<Route["kind"]>(["today", "daf", "tractate", "tractates", "about", "feed", "relative", "date", "not-found"]);
+
 export function parseRoute(pathname: string): Route {
   const path = pathname.length > 1 ? pathname.replace(/\/+$/, "").toLowerCase() || "/" : pathname;
   if (path !== pathname) return { kind: "redirect", to: path };
+  // A language prefix ("/he", "/he/bekhorot/2") wraps the page routes. It is stripped here, the rest is parsed as
+  // usual, and redirects get the prefix back. No tractate slug is two letters, so nothing collides.
+  const lm = /^\/([a-z]{2})(\/.*)?$/.exec(path);
+  if (lm && lm[1] !== "en" && isLang(lm[1]!)) {
+    const lang = lm[1] as Lang;
+    const rest = lm[2] || "/";
+    if (rest === "/today") return { kind: "redirect", to: `/${lang}` };
+    if (rest === "/newsletter") return { kind: "redirect", to: "/newsletter" };
+    const r = parsePage(rest);
+    if (r.kind === "redirect") return { kind: "redirect", to: `/${lang}${r.to}` };
+    if (!PREFIXABLE.has(r.kind)) return { kind: "not-found", lang };
+    return { ...r, lang } as Route;
+  }
+  const sw = /^\/lang\/([a-z]{2})$/.exec(path);
+  if (sw) return isLang(sw[1]!) ? { kind: "lang", lang: sw[1] as Lang } : { kind: "not-found" };
+  if (path === "/admin/translate") return { kind: "admin-translate", action: "run" };
+  if (path === "/admin/translate/put") return { kind: "admin-translate", action: "put" };
+  if (path === "/admin/note") return { kind: "admin-translate", action: "note" };
+  return parsePage(path);
+}
+
+function parsePage(path: string): Route {
   if (path === "/") return { kind: "today" };
   if (path === "/today") return { kind: "redirect", to: "/" };
   if (path === "/yesterday") return { kind: "relative", offset: -1 };

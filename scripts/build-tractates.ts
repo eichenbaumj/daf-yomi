@@ -29,7 +29,7 @@ interface Chapter { n: number; title: string; heTitle: string; startDaf: string;
 export interface TractateRow {
   hebcalName: string; sefariaTitle: string; name: string; slug: string; heTitle: string;
   seder: string; sederHe: string; order: number; firstDaf: number; lastDaf: number; days: number;
-  refMode: "talmud" | "calendar"; shortDesc: string; description: string;
+  refMode: "talmud" | "calendar"; shortDesc: string; heShortDesc: string; description: string;
   /** Side the tractate ends on. Sefaria numbers amudim 1a=1, 1b=2, 2a=3 …, so an odd count ends on side a. */
   lastAmud: "a" | "b";
   chapters: Chapter[]; introNodes: string[];
@@ -86,7 +86,7 @@ async function main() {
       seder: sederIx >= 0 ? cats[sederIx]! : "", sederHe: sederIx >= 0 ? heCats[sederIx] ?? "" : "",
       order: i, firstDaf, lastDaf, days: lastDaf - firstDaf + 1,
       refMode: CALENDAR_REF.has(hebcalName) ? "calendar" : "talmud", lastAmud,
-      shortDesc: String(idx.enShortDesc ?? ""), description: String(idx.enDesc ?? ""),
+      shortDesc: String(idx.enShortDesc ?? ""), heShortDesc: String(idx.heShortDesc ?? ""), description: String(idx.enDesc ?? ""),
       chapters, introNodes: introByTitle.get(sefariaTitle) ?? [],
     });
     process.stderr.write(`${name}: ${firstDaf}–${lastDaf}${lastAmud} (${lastDaf - firstDaf + 1}d), ${chapters.length} ch, ${(introByTitle.get(sefariaTitle) ?? []).length} intro nodes\n`);

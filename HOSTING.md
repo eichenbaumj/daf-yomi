@@ -90,6 +90,36 @@ origin, so nothing else needed changing.
 - Limits the tick lives inside: D1 free 50 queries per invocation (a tick uses about a dozen), 50 external
   subrequests (one per batch of 50 readers), 10 ms CPU. Operator notes in NEWSLETTER.md.
 
+## Languages (Hebrew added 2026-09-21, Pre-Release)
+
+- **Paths.** English has no prefix. Hebrew lives under `/he` (`/he`, `/he/bekhorot/2`, `/he/tractates`, `/he/about`,
+  `/he/feed.xml`, `/he/yesterday`, `/he/date/…`). Only page routes take a prefix; api, admin, newsletter, robots and the
+  sitemap are English-only (`/he/newsletter` 302s to `/newsletter`). `src/router.ts` strips the prefix and re-parses.
+- **The switch.** `GET /lang/he?to=/bekhorot/2` sets the `daf_lang` cookie (a year, HttpOnly, SameSite=Lax) and 302s to the
+  rebuilt Hebrew path; `to` is parsed with the router and never echoed. Only `/` reads the cookie (302 to `/he`); every
+  other path says its language in the URL. `/lang/en` clears it. `Disallow: /lang/` in robots.
+- **Cache keys** carry the language (`/_c/<build>/he<path>`); there is still no Vary header anywhere.
+- **Text layer.** Hebrew pages show Rabbi Steinsaltz's Hebrew biur (`Steinsaltz on <Tractate>` on Sefaria, CC BY-NC,
+  one segment per segment of the daf) as the text, with the vocalized Aramaic behind the "show the original" toggle.
+  Kinnim and Middot have no biur; the Mishnah is shown alone. `fetchBiur` in `src/sefaria/client.ts`, edge-cached 30 days.
+- **Translated notes** are stored at `tnote:v1:<lang>:<slug>:<daf>` (one KV write each), bound to the English note by
+  `of` = its `generatedAt`, and shown only while they match and the translation style (`TRANSLATE_PROMPT_VERSION` in
+  `src/note/translate.ts`) is current. They **never self-heal on a visit**: the 06:00/18:00 cron translates the three near
+  days (`MAX_TRANSLATIONS_PER_RUN`, counted against `DAILY_GENERATION_CAP`); everything else is `npm run translate`.
+- **`npm run translate -- --lang he --window 7 [--dapim slug/daf,…] [--all] [--mode batch|worker] [--force]`.** Batch
+  mode (default) needs `ANTHROPIC_API_KEY` locally, runs one Message Batch (half price), checks every result with the
+  same `checkTranslation` the Worker uses, and stores via `POST /admin/translate/put` (which checks again and refuses a
+  translation of a stale note). Worker mode is one `POST /admin/translate` per daf. Cost anchor: about 13 cents list per
+  note at Opus 5, half that in a batch; the archive is 2,711 KV writes (free plan: 1,000 a day, or Workers Paid).
+- **`HE_PUBLIC`** (wrangler var). `"0"`: Pre-Release, meaning `<meta name="robots" content="noindex">` on every `/he`
+  page, no `/he` URLs in the sitemap, no hreflang, a notice under the header and a tag on the switch. `"1"` after the
+  Israeli reviewer round: indexed, in the sitemap with `xhtml:link` alternates, `hreflang` in every page head.
+- **Strings.** Every chrome string is in `src/i18n/{en,he}.ts` (`test/i18n.test.ts`: same keys, no em dashes, no Latin
+  in Hebrew outside an allowlist). The About page's Hebrew is `src/render/aboutHe.ts`. Social card: `python3
+  scripts/og-card.py --lang he` → `public/og-he.png`.
+- **Yiddish** rides the same machinery: add it to `ENABLED_LANGS`, a `yi.ts` table, a style guide, and the router,
+  templates, cache keys, sitemap and cron follow.
+
 ## Measured CPU (wrangler tail, 2026-09-20, after the formatter/cache fixes)
 
 | Request | CPU | Notes |

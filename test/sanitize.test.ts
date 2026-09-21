@@ -38,3 +38,14 @@ describe("sanitize", () => {
     expect(decodeEntities("&#x27;&#39;&ldquo;x&rdquo;&nbsp;")).toBe(`''“x” `);
   });
 });
+
+describe("the Hebrew biur", () => {
+  it("keeps the section label bold and wraps the explanation as elucidation", async () => {
+    const { sanitize, plainText } = await import("../src/sefaria/sanitize");
+    const seg = '<big>ב גמרא</big> ושואלים: <b>כל הני</b> <small>[</small>המקרים <small>הללו]</small> ששנינו במשנתנו <b>למה לי?</b>';
+    const html = sanitize(seg, { markElucidation: true, bigAsLabel: true });
+    expect(html).toBe('<strong>ב גמרא</strong><span class="elu"> ושואלים: </span><b>כל הני</b><span class="elu"> [המקרים הללו] ששנינו במשנתנו </span><b>למה לי?</b>');
+    expect(sanitize(seg)).not.toContain("<strong>"); // the default still unwraps <big>
+    expect(plainText(seg)).toBe("ב גמרא ושואלים: כל הני [המקרים הללו] ששנינו במשנתנו למה לי?");
+  });
+});

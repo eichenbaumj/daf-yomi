@@ -2,15 +2,15 @@
   var root = document.documentElement;
   // Three reading options, each remembered in this browser and applied as a class on <html>. "text" hides the daf itself
   // so a reader can browse the notes day to day; it stays hidden across pages until they bring the text back.
+  // Button labels come from the page (data-off / data-on), so every language renders its own.
   var KEYS = { he: "daf:he", talmudOnly: "daf:talmudOnly", text: "daf:textHidden" };
   var CLASSES = { he: "show-he", talmudOnly: "talmud-only", text: "text-hidden" };
-  var LABELS = { he: ["Show Hebrew / Aramaic", "Hide Hebrew / Aramaic"], talmudOnly: ["Talmud only", "Show explanations"], text: ["Hide the daf", "Show the daf"] };
   function read(k) { try { return localStorage.getItem(k) === "1"; } catch (e) { return false; } }
   function write(k, v) { try { localStorage.setItem(k, v ? "1" : "0"); } catch (e) {} }
   function sync(btn, on) {
-    var name = btn.getAttribute("data-toggle");
     btn.setAttribute("aria-pressed", on ? "true" : "false");
-    btn.textContent = LABELS[name][on ? 1 : 0];
+    var label = btn.getAttribute(on ? "data-on" : "data-off");
+    if (label) btn.textContent = label;
   }
   var buttons = document.querySelectorAll("button[data-toggle]");
   Array.prototype.forEach.call(buttons, function (btn) {
@@ -29,6 +29,7 @@
 
 // The zooming position bar. Each layer is drawn in its own frame (fraction of the
 // cycle); showing level L means mapping L's region onto the stage in every layer.
+// The stage is always left-to-right (a time axis), whatever the page direction.
 (function () {
   var zoom = document.querySelector(".zoom");
   if (!zoom) return;
@@ -36,6 +37,8 @@
   var today = parseFloat(zoom.getAttribute("data-today"));
   var caps = JSON.parse(zoom.getAttribute("data-caps"));
   var vals = JSON.parse(zoom.getAttribute("data-vals"));
+  var hintIn = zoom.getAttribute("data-hint-in") || "tap to zoom in";
+  var hintOut = zoom.getAttribute("data-hint-out") || "tap to zoom out";
   var layers = zoom.querySelectorAll(".zl");
   var mark = zoom.querySelector(".zmark");
   var cap = zoom.querySelector(".zcap"), val = zoom.querySelector(".zval"), hint = zoom.querySelector(".zoom-hint");
@@ -54,7 +57,7 @@
     cap.textContent = caps[L];
     val.textContent = vals[L];
     zoom.classList.toggle("max", L === max);
-    hint.textContent = L === max ? "tap to zoom out" : "tap to zoom in";
+    hint.textContent = L === max ? hintOut : hintIn;
     zoom.setAttribute("aria-pressed", L > 0 ? "true" : "false");
   }
   zoom.addEventListener("click", function (e) {
