@@ -28,11 +28,13 @@ describe("site chrome", () => {
     const closed = renderAbout(env, "https://example.test", ref);
     expect(closed).not.toContain('href="/newsletter"');
     expect(closed).toContain("no tracking cookies");
+    expect(closed).not.toContain("the daf by email");
     const open = renderAbout({ ...env, NEWSLETTER_PUBLIC: "1" } as Env, "https://example.test", ref);
     const nav = /<nav aria-label="Site">([\s\S]*?)<\/nav>/.exec(open)![1]!;
     const labels = [...nav.matchAll(/<a [^>]*>([^<]+)<\/a>/g)].map((m) => m[1]);
     expect(labels).toEqual(["Today", "Tractates", "About", "Feed", "Newsletter"]);
     expect(open).toContain("keeps only your address and your chosen hour");
+    expect(open).toContain('<a href="/newsletter">the daf by email</a> arrives once a day at the hour you choose.');
     expect(open).not.toMatch(/—/);
   });
 });
