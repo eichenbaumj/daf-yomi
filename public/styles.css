@@ -147,7 +147,7 @@ a.ref { color: inherit; text-decoration: underline dotted var(--ink-3); }
 .prose ul { padding-left: 1.2rem; }
 
 @media print {
-  header.site nav, .tools, .deeper-wrap, .prevnext, footer.site, body::before { display: none; }
+  header.site nav, .tools, .deeper-wrap, .prevnext, footer.site, body::before, .zoom-hint { display: none; }
   body { background: #fff; color: #000; }
 }
 
