@@ -37,7 +37,7 @@
     // Hard cap on paid generations per UTC day from cron + on-visit self-heal (admin --force bakes are exempt).
     "DAILY_GENERATION_CAP": "12",
     // Newsletter. Secrets (RESEND_API_KEY, TOKEN_HMAC_SECRET, TURNSTILE_SECRET_KEY, RESEND_WEBHOOK_SECRET) via wrangler secret put.
-    "NEWSLETTER_PUBLIC": "0",
+    "NEWSLETTER_PUBLIC": "1",
     // Turnstile widget "daf-yomi newsletter" (hostname daf-yomi.dev, Managed). The site key is public; the secret is TURNSTILE_SECRET_KEY.
     "TURNSTILE_SITE_KEY": "0x4AAAAAAE-ZZXBTLLpvsaGg",
     "NEWSLETTER_FROM": "Today's Daf <daf@news.daf-yomi.dev>",
