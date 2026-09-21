@@ -82,6 +82,18 @@ export function unglossed(text: string): string[] {
   return out;
 }
 
+/** "exempt", "liable", "obligated" etc. with no object: the reader is left asking "from what?" */
+export function danglingLegalVerbs(text: string): string[] {
+  const out: string[] = [];
+  const rules: [RegExp, string][] = [
+    [/\bexempt(?:ed|s)?\b(?!\s+(?:from|it|them|him|her|the\b[^.]{0,40}\bfrom))/gi, "exempt from what?"],
+    [/\bliable\b(?!\s+(?:to|for))/gi, "liable to or for what?"],
+    [/\bobligated\b(?!\s+(?:to|in))/gi, "obligated to do what?"],
+  ];
+  for (const [re, ask] of rules) for (const m of text.matchAll(re)) out.push(`${m[0]}: ${ask}`);
+  return out;
+}
+
 export interface GroundingResult { ok: boolean; problems: string[] }
 
 export function checkNote(note: NoteDraft, sourcePlainText: string): GroundingResult {
@@ -92,6 +104,7 @@ export function checkNote(note: NoteDraft, sourcePlainText: string): GroundingRe
   if (wordCount(note.summary) > 92) problems.push(`summary is ${wordCount(note.summary)} words; keep it to about 80, never past 90.`);
   for (const slip of articleSlips(prose)) problems.push(`article does not agree with the next word: "${slip}".`);
   for (const term of unglossed(note.summary)) problems.push(`gloss "${term}" in a few words the first time it appears; the reader has never opened a Talmud.`);
+  for (const d of danglingLegalVerbs(prose)) problems.push(`legal verb left hanging, "${d}" Name the object.`);
   if (wordCount(note.summary) < 15) problems.push("summary is too short to say anything.");
   if (!/\?\s*$/.test(note.question.trim())) problems.push("question must end with a question mark.");
   if ((note.question.match(/\?/g) ?? []).length > 1) problems.push("ask exactly one question.");

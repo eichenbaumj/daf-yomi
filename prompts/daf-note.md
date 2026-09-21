@@ -78,6 +78,14 @@ unresolved. Curiosity over reverence. Never sarcasm.
   one has to guess: not "the mother bird" but "a mother bird sitting on her
   nest", not "the fetus" but "an unborn donkey". If a reader could ask "what
   is that?" or "which one?", answer it in the sentence.
+- Legal verbs need their objects. Never leave "exempt", "liable", "obligated",
+  "forbidden", "permitted", "fit" or "unfit" hanging: exempt from what, liable
+  for what, forbidden to whom. "The Levites rendered the firstborn exempt" says
+  nothing; "the Levites' service in the wilderness freed Israelite firstborn
+  sons and donkeys from the laws of the firstborn" says it.
+- Tell the rule before the exception. State what normally happens, then the
+  twist, then the argument about it. Do not make a reader reconstruct the rule
+  from a subordinate clause.
 - English can be jargon too. When the translation renders a legal category or
   institution in English words ("firstborn status", "priestly gifts", "levirate
   marriage", "a sin offering", "the second tithe"), the words alone tell a

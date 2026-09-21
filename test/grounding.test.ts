@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { articleSlips, checkNote, normalize, unglossed } from "../src/note/grounding";
+import { articleSlips, checkNote, danglingLegalVerbs, normalize, unglossed } from "../src/note/grounding";
 
 const source = `MISHNA: With regard to one who purchases the fetus of a donkey that belongs to a gentile, and one who sells the fetus of his donkey to a gentile, the donkeys are exempt from the obligations of firstborn status. GEMARA: The Gemara asks: Why do I need all these examples in the mishna?`;
 
@@ -57,6 +57,13 @@ describe("grounding", () => {
     expect(unglossed("the harder mitzvot, the commandments that cost more, earn no less")).toEqual([]);
     expect(checkNote({ ...good, summary: "The mishna sets up an a fortiori argument. " + good.summary }, source).problems).toContainEqual(expect.stringMatching(/a fortiori/));
     expect(checkNote({ ...good, summary: good.summary + " It costs an issar." }, source).problems).toContainEqual(expect.stringMatching(/gloss "issar"/));
+  });
+  it("catches legal verbs with no object", () => {
+    expect(danglingLegalVerbs("priests and Levites rendered Israelite firstborn sons and donkeys exempt in the wilderness")).toEqual(["exempt: exempt from what?"]);
+    expect(danglingLegalVerbs("freed them from the laws of the firstborn; the owner is exempt from redeeming it")).toEqual([]);
+    expect(danglingLegalVerbs("the offspring is exempt from firstborn status; he is liable to bring an offering")).toEqual([]);
+    expect(danglingLegalVerbs("he is liable. She is obligated.")).toEqual(["liable: liable to or for what?", "obligated: obligated to do what?"]);
+    expect(checkNote({ ...good, summary: good.summary + " The donkeys are exempt." }, source).problems).toContainEqual(expect.stringMatching(/legal verb left hanging/));
   });
   it("rejects a teaser-and-colon opener", () => {
     expect(checkNote({ ...good, summary: "Bekhorot opens with donkeys: " + good.summary }, source).problems).toContainEqual(expect.stringMatching(/teaser-and-colon/));
