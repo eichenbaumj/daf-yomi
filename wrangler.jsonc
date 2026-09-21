@@ -40,7 +40,7 @@
     "NEWSLETTER_PUBLIC": "1",
     // Turnstile widget "daf-yomi newsletter" (hostname daf-yomi.dev, Managed). The site key is public; the secret is TURNSTILE_SECRET_KEY.
     "TURNSTILE_SITE_KEY": "0x4AAAAAAE-ZZXBTLLpvsaGg",
-    "NEWSLETTER_FROM": "Today's Daf <daf@news.daf-yomi.dev>",
+    "NEWSLETTER_FROM": "Daf Yomi Dot Dev <daf@news.daf-yomi.dev>",
     "NEWSLETTER_REPLY_TO": "daf@daf-yomi.dev",
     "CATCHUP_HOURS": "3",
     "EMAIL_HEBREW": "1"

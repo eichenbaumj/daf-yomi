@@ -227,7 +227,7 @@ a[x-apple-data-detectors]{color:inherit!important;text-decoration:none!important
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
 <tr><td style="padding:0 0 12px;border-bottom:1px solid ${RULE};">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
-<td dir="ltr" class="ink" style="font-family:${SERIF};font-size:16px;line-height:22px;font-weight:600;color:${INK};"><span style="color:${GOLD};font-size:12px;" aria-hidden="true">&#10022;</span>&nbsp; ${esc(m.siteName)}</td>
+<td dir="ltr" class="ink" style="font-family:${SERIF};font-size:16px;line-height:22px;font-weight:600;color:${INK};">${WORDMARK_HTML}</td>
 <td dir="ltr" align="right" style="font-family:${SERIF};font-size:14px;line-height:22px;"><a href="${PLACEHOLDERS.prefs}" style="color:${INK2};text-decoration:underline;">Settings</a></td>
 </tr></table></td></tr>
 ${td(`class="mute" style="padding:22px 0 6px;${muteStyle(15, 22)}"`, `${esc(longDate(m.date))} ${dot} ${esc(hebrewDate(m.date))}`)}
@@ -276,7 +276,7 @@ ${td(`class="mute" style="padding:14px 0 0;${muteStyle(13, 20)}"`, `Free, no acc
     ? `AI NOTE. ${aiLabel("email")}\n\n${note.summary}\n${note.quotes.length ? `\nFrom the page: ${note.quotes.map((q) => `“${q}”`).join(" · ")}\n` : ""}\n✦ ${note.question}`
     : `AI NOTE. ${aiLabel("email")}\n\n${noNoteText(label)}`;
   const text = wrap([
-    m.siteName.toUpperCase(),
+    WORDMARK_TEXT,
     dateText,
     "",
     `${label.toUpperCase()}${m.hebrew ? ` · ${t.heTitle}` : ""}`,
@@ -334,6 +334,10 @@ export function heldBlock(origin: string, held: { date: Date; ref: DafRef }[]): 
 }
 
 // ---- confirmation email (double opt-in) ----
+/** The wordmark, as on the site header: "Daf Yomi" carrying the weight, "Dot Dev" small beside it. */
+const WORDMARK_HTML = `<span style="color:${GOLD};font-size:12px;" aria-hidden="true">&#10022;</span>&nbsp; Daf Yomi <span style="font-weight:400;font-size:12px;color:${INK2};letter-spacing:.04em;">Dot Dev</span>`;
+const WORDMARK_TEXT = "DAF YOMI DOT DEV";
+
 export interface ConfirmModel { origin: string; siteName: string; confirmUrl: string; hourLabel: string; tz: string; editionLabel: string }
 export function renderConfirmEmail(c: ConfirmModel): RenderedIssue {
   const subject = `Confirm your ${c.siteName} email`;
@@ -347,7 +351,7 @@ export function renderConfirmEmail(c: ConfirmModel): RenderedIssue {
 <!--[if mso]><table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" align="center"><tr><td><![endif]-->
 <div style="max-width:600px;margin:0 auto;text-align:left;">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-${td(`class="ink" style="padding:0 0 12px;border-bottom:1px solid ${RULE};font-family:${SERIF};font-size:16px;line-height:22px;font-weight:600;color:${INK};"`, `<span style="color:${GOLD};font-size:12px;" aria-hidden="true">&#10022;</span>&nbsp; ${esc(c.siteName)}`)}
+${td(`class="ink" style="padding:0 0 12px;border-bottom:1px solid ${RULE};font-family:${SERIF};font-size:16px;line-height:22px;font-weight:600;color:${INK};"`, WORDMARK_HTML)}
 ${td(`style="padding:22px 0 8px;"`, `<h1 style="margin:0;font-family:${SERIF};font-size:26px;line-height:32px;font-weight:700;color:${INK};">One click to confirm</h1>`)}
 ${td(`style="padding:0 0 22px;font-family:${SERIF};font-size:18px;line-height:28px;color:${INK};"`, esc(body))}
 <tr><td align="left" style="padding:0 0 22px;"><table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr><td bgcolor="${ACCENT}" style="background-color:${ACCENT};border:1px solid ${ACCENT_DARK};border-radius:3px;"><a href="${esc(c.confirmUrl)}" style="display:block;padding:14px 28px;font-family:${SERIF};font-size:17px;line-height:20px;font-weight:600;color:${PAPER};text-decoration:none;">Yes, send me the daf</a></td></tr></table></td></tr>
@@ -357,6 +361,6 @@ ${td(`style="padding:18px 0 0;${muteStyle(13, 20)}"`, `If the button does not wo
 <!--[if mso]></td></tr></table><![endif]-->
 </td></tr></table></div></body></html>
 `;
-  const text = wrap([c.siteName.toUpperCase(), "", "ONE CLICK TO CONFIRM", "", body, "", `Yes, send me the daf: ${c.confirmUrl}`, "", tail].join("\n"));
+  const text = wrap([WORDMARK_TEXT, "", "ONE CLICK TO CONFIRM", "", body, "", `Yes, send me the daf: ${c.confirmUrl}`, "", tail].join("\n"));
   return { subject, preheader: body, html, text };
 }

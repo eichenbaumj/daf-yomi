@@ -143,6 +143,7 @@ describe("the daily issue", () => {
   it("renders the confirmation email", () => {
     const c = renderConfirmEmail({ origin: "https://example.test", siteName: "Today's Daf", confirmUrl: "https://example.test/newsletter/confirm?t=x.y", hourLabel: "6 am", tz: "America/New_York", editionLabel: "the day's daf" });
     expect(c.subject).toBe("Confirm your Today's Daf email");
+    expect(c.html).toContain("Daf Yomi <span"); expect(c.html).toContain(">Dot Dev</span>"); expect(c.text).toContain("DAF YOMI DOT DEV"); // the wordmark, as on the site
     expect(c.html).toContain("https://example.test/newsletter/confirm?t=x.y");
     expect(c.text).toContain("Yes, send me the daf: https://example.test/newsletter/confirm?t=x.y");
     expect(c.html).not.toMatch(/<img/i);
