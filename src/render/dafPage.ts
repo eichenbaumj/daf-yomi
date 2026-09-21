@@ -120,7 +120,7 @@ export function renderDafPage(m: DafPageModel): string {
   const body = `
 <article class="daf">
   <header class="daf-head">
-    <p class="date">${dateLine}${m.isToday ? "" : ` <span class="sep" aria-hidden="true">·</span> <a href="/date/${ymd(m.date)}" class="muted">learned on this date</a>`}</p>
+    <p class="date">${dateLine}</p>
     <h1>${esc(headline)} <span lang="he" dir="rtl" class="he-title">${esc(t.heTitle)}</span></h1>
     ${renderPositionMini(ref, learnedThrough)}
     ${positionStrip(p)}
