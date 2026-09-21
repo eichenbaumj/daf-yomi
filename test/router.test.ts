@@ -41,6 +41,7 @@ describe("router", () => {
     expect(parseRoute("/newsletter/")).toEqual({ kind: "redirect", to: "/newsletter" });
     expect(parseRoute("/admin/newsletter/status")).toEqual({ kind: "admin-newsletter", action: "status" });
     expect(parseRoute("/admin/newsletter/send")).toEqual({ kind: "admin-newsletter", action: "send" });
+    expect(parseRoute("/admin/newsletter/subscribe")).toEqual({ kind: "admin-newsletter", action: "subscribe" });
     expect(parseRoute("/admin/newsletter/nope").kind).toBe("not-found");
   });
   it("routes tractate pages and the API", () => {

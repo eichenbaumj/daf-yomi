@@ -20,7 +20,7 @@ Joe's `~/.claude/plans/feature-idea-for-daf-ancient-salamander.md`); code under 
 | Archive | `GET /newsletter/issue/YYYY-MM-DD` | Exactly what was sent (from `editions`), `noindex`. Doubles as the design preview. |
 | Provider events | `POST /newsletter/hooks/resend` | Svix-signed. Hard bounce → `bounced`; complaint → `complained`; both suppressed for good. Duplicate `svix-id`s are ignored. |
 | Alerts | `src/newsletter/alerts.ts` via the `ALERT` send_email binding | Free to a verified address. Without the binding, alerts are console errors only. |
-| Admin | `GET /admin/newsletter/status`, `POST /admin/newsletter/{send,tick,rebuild-edition}` | Bearer `ADMIN_TOKEN`. `send?date=&dry=1` returns the HTML; `send?date=&to=` mails one issue; `tick?time=<ms>` runs a tick now. |
+| Admin | `GET /admin/newsletter/status`, `POST /admin/newsletter/{send,tick,rebuild-edition,subscribe}` | Bearer `ADMIN_TOKEN`. `send?date=&dry=1` returns the HTML; `send?date=&to=` mails one issue; `tick?time=<ms>` runs a tick now; `subscribe?email=&tz=&hour=&edition=&hold=` adds a reader by hand with the right hash and token. |
 
 Bindings and vars: see `wrangler.jsonc`. Secrets: `RESEND_API_KEY`, `TOKEN_HMAC_SECRET`, `TURNSTILE_SECRET_KEY`,
 `RESEND_WEBHOOK_SECRET` (plus the existing `ADMIN_TOKEN`, `ANTHROPIC_API_KEY`). `NEWSLETTER_PUBLIC=1` shows

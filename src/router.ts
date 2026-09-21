@@ -25,7 +25,7 @@ export type Route =
   | { kind: "redirect"; to: string }
   | { kind: "not-found" };
 
-export type AdminNewsletterAction = "status" | "send" | "tick" | "rebuild-edition";
+export type AdminNewsletterAction = "status" | "send" | "tick" | "rebuild-edition" | "subscribe";
 export type NewsletterRoute = Extract<Route, { kind: `newsletter${string}` | "admin-newsletter" }>;
 
 export function parseRoute(pathname: string): Route {
@@ -63,7 +63,7 @@ export function parseRoute(pathname: string): Route {
   if (m) return { kind: "newsletter-prefs", token: m[1]! };
   m = /^\/newsletter\/issue\/(\d{4}-\d{2}-\d{2})$/.exec(path);
   if (m) return { kind: "newsletter-issue", ymd: m[1]! };
-  m = /^\/admin\/newsletter\/(status|send|tick|rebuild-edition)$/.exec(path);
+  m = /^\/admin\/newsletter\/(status|send|tick|rebuild-edition|subscribe)$/.exec(path);
   if (m) return { kind: "admin-newsletter", action: m[1] as AdminNewsletterAction };
   m = /^\/([a-z-]+)$/.exec(path);
   if (m) {

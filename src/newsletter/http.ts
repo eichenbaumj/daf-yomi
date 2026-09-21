@@ -257,6 +257,23 @@ async function admin(request: Request, env: Env, origin: string, db: NewsletterD
       const run = await runSendTick(env, Number.isFinite(time) ? time : Date.now());
       return json(run);
     }
+    case "subscribe": {
+      // Add a reader by hand (before the public form opens, or for someone who wrote in). Same path as a confirmed
+      // sign-up, so the address hash and the unsubscribe token are right.
+      if (request.method !== "POST") return new Response("POST only", { status: 405 });
+      if (!env.TOKEN_HMAC_SECRET) return json({ error: "TOKEN_HMAC_SECRET unset" }, 503);
+      const email = normalizeEmail(url.searchParams.get("email") ?? "");
+      const tz = url.searchParams.get("tz") ?? env.DEFAULT_TIMEZONE;
+      const hour = Number(url.searchParams.get("hour") ?? 6);
+      const edition: Edition = url.searchParams.get("edition") === "tomorrow" ? "tomorrow" : "today";
+      const hold: 0 | 1 = url.searchParams.get("hold") === "1" ? 1 : 0;
+      if (!looksLikeEmail(email)) return json({ error: "need ?email=" }, 400);
+      if (!isValidTimezone(tz)) return json({ error: `bad tz ${tz}` }, 400);
+      if (!Number.isInteger(hour) || hour < 0 || hour > 23) return json({ error: "hour must be 0-23" }, 400);
+      const hash = await emailHash(env.TOKEN_HMAC_SECRET, email);
+      const sub = await db.upsertConfirmed({ email, email_hash: hash, tz, hour, edition, hold_shabbat: hold, consent_version: "admin", unsub_token: randomHex(24) }, new Date().toISOString());
+      return json({ id: sub.id, email: sub.email, tz: sub.tz, hour: sub.hour, edition: sub.edition, hold_shabbat: sub.hold_shabbat, status: sub.status, prefs: `${origin}/newsletter/prefs/${sub.unsub_token}` });
+    }
     case "rebuild-edition": {
       if (request.method !== "POST") return new Response("POST only", { status: 405 });
       const date = url.searchParams.get("date") ?? "";
