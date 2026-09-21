@@ -27,7 +27,7 @@ describe("the string tables", () => {
     expect(ENABLED_LANGS).toContain("he");
     const enKeys = Object.keys(en).sort();
     expect(Object.keys(he).sort()).toEqual(enKeys);
-    for (const k of enKeys) expect(typeof (he as Record<string, unknown>)[k], k).toBe(typeof (en as Record<string, unknown>)[k]);
+    for (const k of enKeys) expect(typeof (he as unknown as Record<string, unknown>)[k], k).toBe(typeof (en as unknown as Record<string, unknown>)[k]);
   });
   it("carry no em dashes", () => {
     for (const s of [...everyString(en), ...everyString(he)]) expect(s, s).not.toMatch(/—/);
