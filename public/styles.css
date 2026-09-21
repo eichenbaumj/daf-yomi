@@ -45,7 +45,7 @@ header.site, footer.site, main { width: 100%; max-width: var(--measure); margin:
 header.site { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; padding-top: 1.2rem; padding-bottom: .9rem; border-bottom: 1px solid var(--rule); flex-wrap: wrap; }
 .brand { font-weight: 600; text-decoration: none; color: var(--ink); letter-spacing: .01em; font-size: 1.1rem; }
 .brand-mark { color: var(--gold); margin-right: .45rem; font-size: .8em; }
-header.site nav { display: flex; gap: 1.1rem; font-size: .95rem; }
+header.site nav { display: flex; flex-wrap: wrap; gap: .3rem 1.1rem; font-size: .95rem; }
 header.site nav a { color: var(--ink-2); text-decoration: none; }
 header.site nav a:hover { color: var(--accent); }
 footer.site { border-top: 1px solid var(--rule); margin-top: 3rem; padding-top: .4rem; padding-bottom: 2.5rem; color: var(--ink-2); font-size: .92rem; }

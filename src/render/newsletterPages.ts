@@ -24,7 +24,7 @@ export function renderNewsletterPage(env: Env, origin: string, o: { siteKey: str
   const body = `
 <article class="prose subscribe">
   <header class="daf-head"><h1>The daf by email</h1></header>
-  <p>One message a day: the day's daf, the AI note and its question, and a link to the page. About forty seconds to read. No accounts, nothing tracked, nothing sold. Every issue ends with an unsubscribe link that works in one click.</p>
+  <p>One email a day. The day's daf, the AI note and its question, and a link to the full page. A ~40 second read. No accounts, nothing ever tracked, nothing ever sold. You will not start getting more digital advertisements for hard-copy Talmuds or other emerging Jewish technologies.</p>
   <form method="post" action="/newsletter" class="subscribe-form" novalidate>
     ${s.error ? `<p class="form-error" role="alert">${esc(s.error)}</p>` : ""}
     <label>Your email
@@ -49,7 +49,7 @@ export function renderNewsletterPage(env: Env, origin: string, o: { siteKey: str
 </article>`;
   return page({
     env, origin, title: "The daf by email", canonicalPath: "/newsletter",
-    description: "One message a day: the day's daf, the AI note and its question, and a link to the page. Free, no accounts, one-click unsubscribe.",
+    description: "One email a day. The day's daf, the AI note and its question, and a link to the full page. Free, no accounts, one-click unsubscribe.",
     body, extraHead: `<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>${TZ_SCRIPT}`,
   });
 }
