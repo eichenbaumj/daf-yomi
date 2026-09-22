@@ -80,6 +80,7 @@ export function unglossed(text: string): string[] {
         /^\s*[,(]/.test(after) ||                                                                       // "dinars, silver coins" / "issar (a small coin)"
         /^[^.;?!]{0,32}?[,(]\s*(a|an|the|which|that|meaning|i\.e\.|or|about|roughly)\b/i.test(after) || // "…dinar's worth as he works, a coin…"
         /^\s*(of|worth|in|per|called|known as|that is|meaning|being)\s/i.test(after) ||            // "dinars of silver", "a parasang being…"
+        /^\s*coins?\b/i.test(after) ||                                                              // "five sela coins": the noun after the term is the gloss
         /\((?:[^)]*)$/.test(before) ||                                                              // inside an open parenthesis
         /\b(called|known as|termed)\s+(a|an|the)?\s*$/i.test(before) ||
         /\b(silver|copper|gold|bronze|small|large|liquid|dry)\s+(coins?\s+(called|of)\s+)?$/i.test(before) ||

@@ -49,6 +49,7 @@ describe("grounding", () => {
     expect(unglossed("costs an issar (a small copper coin)")).toEqual([]);
     expect(unglossed("brings a sin offering called a chatat")).toEqual([]);
     expect(unglossed("the priests eat their teruma, the priestly portion")).toEqual([]);
+    expect(unglossed("a firstborn son is redeemed for five sela coins")).toEqual([]); // the noun after the term glosses it
     expect(unglossed("The Mishna lists thirty-six; the Gemara asks")).toEqual([]); // page vocabulary is glossed in the legend
     expect(unglossed("the harder mitzvot earn no less")).toEqual(["mitzvot"]);
     expect(unglossed("in all of them the offspring has no firstborn status.")).toEqual(["firstborn status"]);

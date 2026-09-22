@@ -60,12 +60,13 @@ describe("ensureMap", () => {
     expect(map?.usage).toEqual({ inputTokens: 200, outputTokens: 20, attempts: 2, estUsd: expect.any(Number) });
     expect(h.kv.writes).toBe(2); // the gen: counter and the map
   });
-  it("gives up after two drafts that fail the gate and stores nothing", async () => {
-    const h = harness([gapped, gapped, good]);
+  it("gives up after three drafts that fail the gate and stores nothing", async () => {
+    const h = harness([gapped, gapped, gapped, good]);
     const out = await ensureMap(h.env, ref, {}, h.deps);
     expect(out.status).toBe("failed");
     if (out.status !== "failed") return;
-    expect(out.reason).toBe("map failed the gate twice");
+    expect(out.reason).toBe("map failed the gate 3 times");
+    expect(h.seen.feedback.length).toBe(3);
     expect(out.problems).toContainEqual(expect.stringMatching(/gap/));
     expect(await h.stored()).toBeNull();
     expect(h.kv.writes).toBe(1);

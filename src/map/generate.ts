@@ -1,7 +1,8 @@
 /**
  * Draws the map of a page with Claude, checks it against the page it was given (src/map/gate.ts), and stores it.
- * Two drafts at most, the second with the gate's feedback; then give up (a page without a map shows no map, never
- * an ungrounded one). Never called from a page visit: the cron draws the near days, scripts/maps-backfill.ts the
+ * Three drafts at most, each after the first with the gate's feedback; then give up (a page without a map shows no
+ * map, never an ungrounded one). Three rather than the note's two: a map is a dozen glosses, and on the first live
+ * page the second draft fixed thirteen problems and left two. Never called from a page visit: the cron draws the near days, scripts/maps-backfill.ts the
  * rest. No lock for the same reason (the pattern of src/note/translate.ts).
  */
 import Anthropic from "@anthropic-ai/sdk";
@@ -47,6 +48,7 @@ export async function buildMapInput(ref: DafRef, kv?: KVNamespace): Promise<{ in
  * stored with each map says what a page really costs.
  */
 export const MAP_MAX_TOKENS = 12000;
+export const MAP_MAX_DRAFTS = 3;
 
 /** The request body for one draft, shared by the live path and the Batch API scripts. */
 export function mapRequest(model: string, input: MapPromptInput) {
@@ -92,7 +94,7 @@ export async function ensureMap(env: Env, ref: DafRef, opts: MapOpts = {}, deps:
   let feedback: string | undefined;
   let inputTokens = 0, outputTokens = 0;
   let firstAttemptProblems: string[] | undefined;
-  for (let attempt = 1; attempt <= 2; attempt++) {
+  for (let attempt = 1; attempt <= MAP_MAX_DRAFTS; attempt++) {
     const { draft: d, refusal, usage } = await draft({ ...input, feedback });
     inputTokens += usage.inputTokens; outputTokens += usage.outputTokens;
     if (!d) return { status: "failed", reason: refusal ? `refused: ${refusal}` : "unparseable response" };
@@ -109,7 +111,7 @@ export async function ensureMap(env: Env, ref: DafRef, opts: MapOpts = {}, deps:
     firstAttemptProblems ??= check.problems;
     console.log(`[map] ${t.slug}/${daf} attempt ${attempt} rejected: ${check.problems.join(" | ")}`);
     feedback = check.problems.join(" ");
-    if (attempt === 2) return { status: "failed", reason: "map failed the gate twice", problems: check.problems, lastDraft: d };
+    if (attempt === MAP_MAX_DRAFTS) return { status: "failed", reason: `map failed the gate ${MAP_MAX_DRAFTS} times`, problems: check.problems, lastDraft: d };
   }
   return { status: "failed", reason: "unreachable" };
 }
