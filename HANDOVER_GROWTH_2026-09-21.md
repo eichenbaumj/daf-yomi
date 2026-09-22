@@ -20,12 +20,14 @@ Written 2026-09-21 at the end of a long session with Joe. Read this whole file, 
 
 ## Build 1: make the link itself do the selling
 
-**Shipped 2026-09-22** (commit `1ff8535` and the docs commit after it; operator notes in `HOSTING.md`, "Share cards").
-What differed from the brief below: PNGs are drawn by Cloudflare Browser Rendering from the Worker (on the free plan;
-10 browser-minutes a day), on a fourth cron 20 minutes after each note bake, not in the bake itself and not with
-Pillow; the image URL's token changes on every redraw, not only on a new note; a design-stale card keeps serving
-until redrawn (only a changed question retires a card); the share text has no em dash (three lines: the quoted
-question, "Bekhorot 9 · AI note · Today's Daf", the permalink). The daily email is unchanged.
+**Shipped 2026-09-22** (commits `1ff8535` to `2d44670`, then the same-day revision; operator notes in `HOSTING.md`,
+"Share cards"). What differed from the brief below: PNGs are drawn by Cloudflare Browser Rendering from the Worker
+(on the free plan; 10 browser-minutes a day), on a fourth cron 20 minutes after each note bake, not in the bake
+itself and not with Pillow; the image URL's token changes on every redraw, not only on a new note; a design-stale
+card keeps serving until redrawn (only a changed note retires a card). **Joe's review the same day changed the
+product:** the card shows the note (the summary), not the question ("the questions require you to read the note
+first; the notes are beautiful and best first"), and "Share this note" copies only the permalink, never words,
+so a text thread shows the card. The daily email is unchanged.
 
 **Why.** Daf yomi spreads through group chats and forwarded emails, not search. Today every shared link
 shows the same static `public/og.png`. A forwarded link should carry that day's question.
@@ -69,7 +71,13 @@ shows the same static `public/og.png`. A forwarded link should carry that day's 
 - Verify the cards where they will actually be seen: paste a permalink into iMessage/WhatsApp/Slack
   or use opengraph.xyz and Facebook's sharing debugger. "Done" = the question visible in a real preview.
 
-## Build 2: Search
+## Build 2: Search (CUT by Joe, 2026-09-22: do not build)
+
+Joe, on reviewing Build 1: skip all search improvements; the habit is the product. We are not yet a full studying
+app; it is all about brevity: a 40-second solution to study, a complementary good to the amazing 1-to-2-hour
+products (Sefaria and the rest). The Tractates section already provides the completeness we need while staying
+correctly in the background. No `/search`, no index, no `SEARCH.md`. The notes below are kept only as a record of
+what was considered; ask Joe before reopening any of it.
 
 **Joe's words.** A "Search" button right after "Tractates" in the top nav. Click it and you land on
 "the best, most searchable repo of AI-enabled daf yomi-ing / the whole Babylonian Talmud in the entire

@@ -83,8 +83,8 @@ describe("daf page", () => {
     expect(withCard).toContain('<meta property="og:image" content="https://example.test/og/bekhorot/2/deadbeef.png">');
     expect(withCard).toContain('<meta name="twitter:image" content="https://example.test/og/bekhorot/2/deadbeef.png">');
     expect(withCard).toContain('<meta property="og:image:type" content="image/png">');
-    expect(withCard).toContain('<meta property="og:image:alt" content="Why five cases?">');
-    expect(withCard).toContain('<meta name="twitter:image:alt" content="Why five cases?">');
+    expect(withCard).toContain('<meta property="og:image:alt" content="S.">'); // the card shows the note, so the alt is the note
+    expect(withCard).toContain('<meta name="twitter:image:alt" content="S.">');
     expect(withCard).toContain('<meta name="twitter:card" content="summary_large_image">');
     expect(withCard).not.toContain("https://example.test/og.png\">"); // not as og:image
     const ld = JSON.parse(/<script type="application\/ld\+json">(.*?)<\/script>/s.exec(withCard)![1]!);
@@ -97,10 +97,11 @@ describe("daf page", () => {
     const noNote = renderDafPage({ ...base, note: null, card: { token: "deadbeef" } }); // a stray token without a note never shows
     expect(noNote).toContain('<meta property="og:image" content="https://example.test/og.png">');
   });
-  it("offers to share the question: the permalink, never the homepage, and the AI label in the line", () => {
+  it("offers to share the note: the permalink and nothing else, never the homepage", () => {
     const note = { summary: "S.", question: "Why five cases?", quotes: [], model: "m", promptVersion: "v", generatedAt: "t", sources: [] };
     const html = renderDafPage({ ...base, note }); // isToday: canonical is "/", the share link must still be the permalink
-    expect(html).toContain('<p class="note-share" hidden><button type="button" class="toggle share" data-share-url="https://example.test/bekhorot/2" data-share-line="Bekhorot 2 · AI note · Today&#39;s Daf" data-share-done="Copied">Share this question</button></p>');
+    expect(html).toContain('<p class="note-share" hidden><button type="button" class="toggle share" data-share-url="https://example.test/bekhorot/2" data-share-done="Copied">Share this note</button></p>');
+    expect(html).not.toContain("data-share-line"); // no words travel with the link: the card says it all
     expect(html.indexOf('class="note-question"')).toBeLessThan(html.indexOf('class="note-share"'));
     expect(html.indexOf('class="note-share"')).toBeLessThan(html.indexOf("</aside>"));
     expect(html).not.toContain('data-toggle="share"'); // app.js must not treat it as a reading option
@@ -235,7 +236,7 @@ describe("Hebrew pages (Pre-Release)", () => {
     expect(html).toContain('href="/he/tractates"');
     expect(html).toContain('<link rel="alternate" type="application/rss+xml" title="Today&#39;s Daf" href="/he/feed.xml">');
     expect(html).toContain('<meta property="og:image" content="https://example.test/og-he.png">'); // no Hebrew card yet: the static one
-    expect(html).toContain('data-share-url="https://example.test/he/bekhorot/2" data-share-line="בכורות ב׳ · הערת AI"');
+    expect(html).toContain('data-share-url="https://example.test/he/bekhorot/2" data-share-done="הועתק">שיתוף ההערה</button>');
     expect(html).not.toContain('href="/newsletter"'); // no newsletter in Hebrew yet
     expect(html).not.toMatch(/—/);
     const ld = JSON.parse(/<script type="application\/ld\+json">(.*?)<\/script>/s.exec(html)![1]!);

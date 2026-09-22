@@ -1,6 +1,8 @@
 /**
  * The per-daf share card: the image behind a shared link (1200x630, the size every crawler wants).
- * It carries one thing worth forwarding, the AI note's question, in the page's own palette and type.
+ * It carries the AI note itself (the summary; Joe: "the notes are beautiful and best first"; the question waits on
+ * the page) in the page's own palette and type. The share button copies only the link, so a text thread shows
+ * this card and nothing else.
  *
  * This file is pure: HTML in, HTML out. The fonts arrive as an argument (src/og/fonts.ts holds the
  * bytes; the preview script reads the same files from disk) and the PNG is made elsewhere
@@ -17,7 +19,7 @@ import type { Lang } from "../i18n/strings";
 import { fnv1a } from "../util";
 import { esc } from "../render/layout";
 
-export const CARD_VERSION = 1;
+export const CARD_VERSION = 2;
 export const CARD_W = 1200;
 export const CARD_H = 630;
 
@@ -57,6 +59,9 @@ export interface CardModel {
   dateWords: string;
   /** "10 Tishrei 5787" */
   hebrewDateWords: string;
+  /** The note's summary: what the card shows. */
+  summary: string;
+  /** Kept for the alt text and the Hebrew seam; not drawn. */
   question: string;
   dayInCycle: number;
   cycleLength: number;
@@ -91,9 +96,9 @@ export function cardToken(x: { generatedAt: string; renderedAt: string; cycle: n
   return fnv1a(`${cv}|${x.cycle}|${x.generatedAt}|${x.renderedAt}`);
 }
 
-/** Largest and smallest type for the question; the fit loop steps down by two until the text sits inside the hero box. */
-export const Q_MAX_PX = 62;
-export const Q_MIN_PX = 30;
+/** Largest and smallest type for the note; the fit loop steps down by one until the text sits inside the hero box. */
+export const Q_MAX_PX = 34;
+export const Q_MIN_PX = 22;
 
 /** Runs inside the card page. Kept as a string so the renderer can `evaluate` it and tests can read it. */
 export const CARD_SCRIPT = `
@@ -101,14 +106,14 @@ window.__dafFit = function () {
   var q = document.getElementById("q"), box = document.getElementById("hero");
   var s = ${Q_MAX_PX};
   q.style.fontSize = s + "px";
-  while (s > ${Q_MIN_PX} && q.scrollHeight > box.clientHeight) { s -= 2; q.style.fontSize = s + "px"; }
+  while (s > ${Q_MIN_PX} && q.scrollHeight > box.clientHeight) { s -= 1; q.style.fontSize = s + "px"; }
   return s;
 };
 window.__dafSet = function (m) {
   document.getElementById("label").textContent = m.label;
   document.getElementById("he").textContent = m.heTitle;
   document.getElementById("date").textContent = m.dateWords + " \\u00b7 " + m.hebrewDateWords;
-  document.getElementById("qt").textContent = m.question;
+  document.getElementById("qt").textContent = m.summary;
   document.getElementById("tick").style.left = (90 + ((m.dayInCycle - 0.5) / m.cycleLength) * ${CARD_W - 180}).toFixed(1) + "px";
   return window.__dafFit();
 };
@@ -143,8 +148,8 @@ body{width:${CARD_W}px;height:${CARD_H}px;overflow:hidden;background:var(--paper
 .title .he{font-family:var(--hebrew);font-weight:400;color:var(--ink-2);font-size:40px}
 .date{position:absolute;left:90px;right:90px;top:212px;font-size:24px;color:var(--ink-2)}
 #hero{position:absolute;left:90px;right:90px;top:262px;height:280px}
-#q{margin:0;font-style:italic;font-size:${Q_MAX_PX}px;line-height:1.2;color:var(--ink);text-wrap:pretty}
-#q .star{display:inline-block;vertical-align:.1em;margin-inline-end:.28em}
+#q{margin:0;font-size:${Q_MAX_PX}px;line-height:1.3;color:var(--ink);text-wrap:pretty}
+#q .star{display:inline-block;vertical-align:.05em;margin-inline-end:.3em}
 .foot{position:absolute;left:90px;right:90px;top:560px;border-top:2px solid var(--rule);padding-top:15px;display:flex;justify-content:space-between;align-items:baseline}
 .site{color:var(--accent);font-weight:600;font-size:30px;letter-spacing:.01em}
 .ai{color:var(--ink-2);font-size:22px}
@@ -159,7 +164,7 @@ body{width:${CARD_W}px;height:${CARD_H}px;overflow:hidden;background:var(--paper
 </div>
 <div class="title"><span id="label">${esc(m.label)}</span><span class="he" id="he" lang="he" dir="rtl">${esc(m.heTitle)}</span></div>
 <div class="date" id="date">${esc(m.dateWords)} · ${esc(m.hebrewDateWords)}</div>
-<div id="hero"><p id="q">${STAR_SVG(".5em")}<span id="qt">${esc(m.question)}</span></p></div>
+<div id="hero"><p id="q">${STAR_SVG(".55em")}<span id="qt">${esc(m.summary)}</span></p></div>
 <div class="foot"><span class="site">${esc(m.site)}</span><span class="ai">${esc(m.aiLine)}</span></div>
 <script>${CARD_SCRIPT}
 window.__dafFit();

@@ -14,11 +14,11 @@ Live at **https://daf-yomi.dev**. Free, no accounts, no tracking. One Cloudflare
 - `/tractates`, `/about`, `/feed.xml` (RSS, last 14 days), `/api/today.json`, `/api/<slug>/<n>.json`
 - `/newsletter` the daf by email: one message a day at the reader's own hour (see [NEWSLETTER.md](NEWSLETTER.md))
 - `/yesterday`, `/tomorrow`, `/date/YYYY-MM-DD` redirect to the right page
-- `/og/<slug>/<n>/<token>.png` the share card behind a forwarded link: the AI note's question on parchment, drawn
-  per daf by Cloudflare Browser Rendering on a cron, never on a visit (see [HOSTING.md](HOSTING.md), "Share cards")
+- `/og/<slug>/<n>/<token>.png` the share card behind a forwarded link: the AI note on parchment, drawn per daf by
+  Cloudflare Browser Rendering on a cron, never on a visit (see [HOSTING.md](HOSTING.md), "Share cards")
 - Toggles: Hebrew/Aramaic alongside the English; "Talmud only" hides the interpolated explanation; "Hide the daf"
-  keeps just the note. "Share this question" under the note copies the question and the permalink (a share sheet
-  on phones); nothing is recorded
+  keeps just the note. "Share this note" under the note copies the permalink, and only that, so a text thread
+  shows the card (a share sheet on phones); nothing is recorded
 
 ## How it works
 

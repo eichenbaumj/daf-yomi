@@ -123,8 +123,10 @@ origin, so nothing else needed changing.
 ## Share cards (added 2026-09-22)
 
 Every English daf page, and the homepage, points `og:image` / `twitter:image` at a per-daf 1200x630 card carrying
-the AI note's question (`/og/<slug>/<daf>/<token>.png`, code in `src/og/`). Hebrew pages keep the static
-`public/og-he.png`; the template already takes a language, so a Hebrew card is a small later build.
+the AI note itself, the summary (`/og/<slug>/<daf>/<token>.png`, code in `src/og/`). Joe's call after the first
+day: the notes are beautiful and best first; the question waits on the page; and a shared bubble is only the link, so
+a text thread shows the card and no pasted words. Hebrew pages keep the static `public/og-he.png`; the template
+already takes a language, so a Hebrew card is a small later build.
 
 - **Drawn by Cloudflare Browser Rendering** (the `browser` binding in `wrangler.jsonc`, `@cloudflare/puppeteer`).
   Free plan, verified in the docs 2026-09-21: 10 browser-minutes a day, 3 concurrent browsers, one new instance
@@ -161,9 +163,11 @@ the AI note's question (`/og/<slug>/<daf>/<token>.png`, code in `src/og/`). Hebr
 - **Two different 429s from `launch`.** The instance rate (wait 21 s; the script retries once) and the daily budget
   ("Browser time limit exceeded for today": stop). Both surface as HTTP 429 from `/admin/og/bake` with `kind`.
   A cron launch that lands within 20 s of a backfill chunk is the likely collision; the cron just logs it.
-- **Design.** `src/og/card.ts`: the six-Orders bar with a tick at the daf, the wordmark, an AI NOTE chip, tractate and
-  daf with the Hebrew title, the civil and Hebrew dates, the question in Source Serif 4 italic stepped down from
-  62 px until it fits (never cut), a footer with the domain and "Written by Claude, an AI. Not a scholar."
+- **Design.** `src/og/card.ts` (`CARD_VERSION` 2): the six-Orders bar with a tick at the daf, the wordmark, an AI NOTE
+  chip, tractate and daf with the Hebrew title, the civil and Hebrew dates, the note's summary in Source Serif 4
+  stepped down from 34 px to 22 px until it fits (never cut; an 80-word note lands near 26 px), a footer with the
+  domain and "Written by Claude, an AI. Not a scholar." Version 1 (2026-09-22, a few hours) showed the question in
+  italic at up to 62 px; its cards keep serving until redrawn.
   Fonts are woff2 subsets fetched once by `npm run og:fonts` into `src/og/fonts/` (latin, latin-ext, hebrew;
   138 KB) and embedded as data URIs, so a render never touches the network. Preview a card locally with
   `npm run og:preview -- bekhorot/2` (writes `scratch/og-bekhorot-2.html`; open it, or screenshot it with
@@ -172,9 +176,10 @@ the AI note's question (`/og/<slug>/<daf>/<token>.png`, code in `src/og/`). Hebr
   `/og/…` URL; fetch it and look; `/api/today.json` carries `note.card`; `/admin/og/status?date=YYYY-MM-DD` shows
   the stored metadata; then paste a permalink into opengraph.xyz, iMessage, WhatsApp or Slack: "done" is the
   question visible in a real preview. Facebook's sharing debugger re-scrapes a URL on demand.
-- **"Share this question"** (`public/app.js`, the pill under the note): the share sheet on a phone (`navigator.share`
-  with the quoted question, the daf line and the permalink), the clipboard elsewhere, with select-and-copy as the
-  fallback when a browser refuses the clipboard API. Nothing is recorded; the privacy page stays true.
+- **"Share this note"** (`public/app.js`, the pill under the note): the permalink and nothing else, through the share
+  sheet on a phone (`navigator.share({ url })`) and the clipboard elsewhere, with select-and-copy as the fallback when
+  a browser refuses the clipboard API. No words travel with the link on purpose: the thread shows the card. Nothing
+  is recorded; the privacy page stays true.
 
 ## Measured CPU (wrangler tail, 2026-09-20, after the formatter/cache fixes)
 

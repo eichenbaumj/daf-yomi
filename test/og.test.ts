@@ -13,7 +13,7 @@ const env = { SITE_NAME: "Today's Daf", SITE_TAGLINE: "tag", DEFAULT_TIMEZONE: "
 const d = (s: string) => { const [y, m, dd] = s.split("-").map(Number); return new Date(y!, m! - 1, dd!); };
 const ref = dafForDate(d("2026-09-20")); // Bekhorot 2, day 2,451 of cycle 14
 const date = dateForDaf(ref.tractate, ref.daf, ref.cycle);
-const note = (over: Partial<DafNote> = {}): DafNote => ({ summary: "S.", question: "Why does the Mishna count five cases when one rule would do?", quotes: [], model: "m", promptVersion: "v", generatedAt: "2026-09-19T06:00:00.000Z", sources: [], ...over });
+const note = (over: Partial<DafNote> = {}): DafNote => ({ summary: "The Mishna opens with five ways a gentile can hold a stake in a donkey, and in all five the young animal is exempt.", question: "Why does the Mishna count five cases when one rule would do?", quotes: [], model: "m", promptVersion: "v", generatedAt: "2026-09-19T06:00:00.000Z", sources: [], ...over });
 const fonts: FontFace[] = [{ family: "Source Serif 4", style: "italic", weight: "400", unicodeRange: "U+0000-00FF", base64: "AAAA" }];
 
 /** Enough of KVNamespace for the store and the bake: values plus metadata, `stream` and `arrayBuffer` reads. */
@@ -42,18 +42,19 @@ class FakeKV {
 const envWith = (kv: FakeKV, over: Partial<Env> = {}) => ({ ...env, DAF_KV: kv as unknown as KVNamespace, ...over }) as Env;
 const fakeRenderer = (log: string[] = [], fail?: (label: string) => Error | null): CardRenderer & { closed: number } => ({
   closed: 0,
-  async render(m) { const e = fail?.(m.label); if (e) throw e; log.push(m.label); return new Uint8Array([0x89, 0x50, 0x4e, 0x47, m.question.length]); },
+  async render(m) { const e = fail?.(m.label); if (e) throw e; log.push(m.label); return new Uint8Array([0x89, 0x50, 0x4e, 0x47, m.summary.length % 256]); },
   async close() { this.closed++; },
 });
 
 describe("card template", () => {
   const model = cardModelFor(env, ref, date, note());
-  it("carries the daf, the date, the question, the wordmark and the AI label, in the page's palette", () => {
+  it("carries the daf, the date, the note, the wordmark and the AI label, in the page's palette", () => {
     const html = renderCardHtml(model, fonts);
     expect(html).toContain('<span id="label">Bekhorot 2</span>');
     expect(html).toContain('id="he" lang="he" dir="rtl">בכורות</span>');
     expect(html).toContain("Sunday, 20 September 2026 · 9 Tishrei 5787");
-    expect(html).toContain('<span id="qt">Why does the Mishna count five cases when one rule would do?</span>');
+    expect(html).toContain('<span id="qt">The Mishna opens with five ways a gentile can hold a stake in a donkey, and in all five the young animal is exempt.</span>');
+    expect(html).not.toContain("Why does the Mishna count"); // the question waits on the page
     expect(html).toContain("TODAY&#39;S DAF");
     expect(html).toContain('<div class="chip">AI NOTE</div>');
     expect(html).toContain("Written by Claude, an AI. Not a scholar.");
@@ -69,8 +70,8 @@ describe("card template", () => {
     expect((html.match(/<svg class="star"/g) ?? []).length).toBe(2);
     expect(html).toContain('<html lang="en" dir="ltr">');
   });
-  it("escapes the question and the label", () => {
-    const html = renderCardHtml({ ...model, question: '<script>x</script> "quoted"' }, fonts);
+  it("escapes the note and the label", () => {
+    const html = renderCardHtml({ ...model, summary: '<script>x</script> "quoted"' }, fonts);
     expect(html).not.toContain("<script>x</script>");
     expect(html).toContain("&lt;script&gt;x&lt;/script&gt; &quot;quoted&quot;");
   });
@@ -83,14 +84,14 @@ describe("card template", () => {
     expect(tickLeft(2711, 2711)).toBeCloseTo(1109.8, 0);
     expect(html).toContain('style="flex:731 731 0;background:#a4702f"');
   });
-  it("fits the question by stepping the type down, never by cutting it", () => {
+  it("fits the note by stepping the type down, never by cutting it", () => {
     expect(CARD_SCRIPT).toContain(`var s = ${Q_MAX_PX};`);
     expect(CARD_SCRIPT).toContain(`while (s > ${Q_MIN_PX} && q.scrollHeight > box.clientHeight)`);
     expect(CARD_SCRIPT).not.toMatch(/slice|substring|ellipsis|…/);
     expect(Q_MAX_PX).toBeGreaterThan(Q_MIN_PX);
   });
   it("makes a Hebrew card right to left with the Hebrew label (the seam for later)", () => {
-    const he = renderCardHtml(cardModelFor(env, ref, date, note({ question: "למה חמישה?" }), "he"), fonts);
+    const he = renderCardHtml(cardModelFor(env, ref, date, note({ summary: "המשנה מונה חמישה מקרים." }), "he"), fonts);
     expect(he).toContain('<html lang="he" dir="rtl">');
     expect(he).toContain('<span id="label">בכורות ב׳</span>');
     expect(he).toContain("הדף היומי");

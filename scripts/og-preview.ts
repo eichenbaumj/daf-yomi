@@ -1,7 +1,7 @@
 /**
  * Write a share card's HTML to scratch/ for eyeballing in a browser (or screenshotting with Playwright):
- *   npm run og:preview -- bekhorot/2                       # question and date from the live API
- *   npm run og:preview -- bekhorot/2 --question "Why ...?"  # your own question
+ *   npm run og:preview -- bekhorot/2                       # the note and date from the live API
+ *   npm run og:preview -- bekhorot/2 --summary "The page …"  # your own note text
  *   npm run og:preview -- --site http://localhost:8787 bekhorot/2
  * Fonts are read from src/og/fonts (same bytes the Worker embeds). Nothing is written to KV.
  */
@@ -28,7 +28,7 @@ export function localFonts() {
 
 async function main() {
   const target = positional[0];
-  if (!target) { console.error("usage: npm run og:preview -- <slug>/<daf> | YYYY-MM-DD [--question '...'] [--site URL]"); process.exit(2); }
+  if (!target) { console.error("usage: npm run og:preview -- <slug>/<daf> | YYYY-MM-DD [--summary '...'] [--site URL]"); process.exit(2); }
   const today = todayIn("UTC");
   let ref;
   const d = parseYmd(target);
@@ -40,21 +40,22 @@ async function main() {
     ref = dafForDate(dateForDaf(t, Number(n), dafForDate(today).cycle));
   }
   const date = dateForDaf(ref.tractate, ref.daf, ref.cycle);
-  let question = opt("question");
+  let summary = opt("summary");
+  let question = "";
   let generatedAt = "preview";
-  if (!question) {
+  if (!summary) {
     const res = await fetch(`${site}/api/${ref.tractate.slug}/${ref.daf}.json`);
-    const j = (await res.json()) as { note: { question: string; generatedAt: string } | null };
-    if (!j.note) { console.error(`no note for ${ref.tractate.slug}/${ref.daf} on ${site}; pass --question`); process.exit(2); }
-    question = j.note.question; generatedAt = j.note.generatedAt;
+    const j = (await res.json()) as { note: { summary: string; question: string; generatedAt: string } | null };
+    if (!j.note) { console.error(`no note for ${ref.tractate.slug}/${ref.daf} on ${site}; pass --summary`); process.exit(2); }
+    summary = j.note.summary; question = j.note.question; generatedAt = j.note.generatedAt;
   }
   const env = { SITE_NAME: "Today's Daf", CANONICAL_HOST: "daf-yomi.dev" } as unknown as Env;
-  const note = { summary: "", question, quotes: [], model: "preview", promptVersion: "preview", generatedAt, sources: [] };
+  const note = { summary, question, quotes: [], model: "preview", promptVersion: "preview", generatedAt, sources: [] };
   const html = renderCardHtml(cardModelFor(env, ref, date, note), localFonts());
   mkdirSync("scratch", { recursive: true });
   const out = join("scratch", `og-${ref.tractate.slug}-${ref.daf}.html`);
   writeFileSync(out, html);
-  console.log(`${out}\t${html.length} bytes\t${ref.tractate.name} ${ref.daf}\t"${question}"`);
+  console.log(`${out}\t${html.length} bytes\t${ref.tractate.name} ${ref.daf}\t${summary.split(/\s+/).length} words`);
 }
 
 main().catch((e) => { console.error(e); process.exit(1); });

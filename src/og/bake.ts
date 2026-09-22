@@ -39,6 +39,7 @@ export function cardModelFor(env: Env, ref: DafRef, date: Date, note: DafNote, l
     heTitle: ref.tractate.heTitle,
     dateWords: longDateL(lang, date),
     hebrewDateWords: hebrewDateL(lang, date),
+    summary: note.summary,
     question: note.question,
     dayInCycle: ref.dayInCycle,
     cycleLength: CYCLE_LENGTH,

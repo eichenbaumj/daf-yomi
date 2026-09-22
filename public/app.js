@@ -70,8 +70,9 @@
   show(0);
 })();
 
-// "Share this question". The button is hidden until this runs: without JS there is nothing it could do. On a phone the
-// share sheet takes the text and the link; elsewhere the three lines go to the clipboard. Nothing is recorded anywhere.
+// "Share this note". The button is hidden until this runs: without JS there is nothing it could do. It shares the
+// permalink and nothing else (Joe: never paste the words as text; the thread should show the card), through the share
+// sheet on a phone and the clipboard elsewhere. Nothing is recorded anywhere.
 (function () {
   var boxes = document.querySelectorAll(".note-share");
   if (!boxes.length) return;
@@ -79,13 +80,10 @@
   try { coarse = !!(window.matchMedia && window.matchMedia("(pointer: coarse)").matches); } catch (e) {}
   Array.prototype.forEach.call(boxes, function (box) {
     var btn = box.querySelector("button.share");
-    var q = document.querySelector(".note-question");
-    if (!btn || !q) return;
+    if (!btn) return;
     var url = btn.getAttribute("data-share-url") || location.href;
-    var line = btn.getAttribute("data-share-line") || "";
     var done = btn.getAttribute("data-share-done") || "";
     var label = btn.textContent;
-    var text = "\u201c" + q.textContent.trim() + "\u201d\n" + line;
     function flash() { btn.textContent = done; setTimeout(function () { btn.textContent = label; }, 2000); }
     // The clipboard API first; when it is missing or refuses (some browsers deny it even on a click), the old
     // select-and-copy path, which works on the click's own activation.
@@ -107,10 +105,10 @@
     box.hidden = false;
     btn.addEventListener("click", function () {
       if (coarse && navigator.share) {
-        navigator.share({ text: text, url: url }).catch(function () {});
+        navigator.share({ url: url }).catch(function () {});
         return;
       }
-      copy(text + "\n" + url).then(flash, function () {});
+      copy(url).then(flash, function () {});
     });
   });
 })();

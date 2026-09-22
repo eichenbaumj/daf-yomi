@@ -57,10 +57,10 @@ function noteBox(m: DafPageModel, lang: Lang): string {
   const label = `<p class="note-label" id="note-h"><span class="ai">${esc(S.aiBadge)}</span> ${esc(S.aiLabel)}</p>`;
   const shown = lang === "en" ? note : currentTranslation(note, m.translation ?? null);
   if (shown) {
-    // "Share this question": hidden until app.js runs (it needs the share sheet or the clipboard). The text it shares is
-    // the question as shown, then this line, then the permalink (never "/": the link must still be right tomorrow).
+    // "Share this note": hidden until app.js runs (it needs the share sheet or the clipboard). It shares the permalink
+    // and nothing else (never "/": the link must still be right tomorrow), so a text thread shows the card, not words.
     const shareUrl = `${m.origin}${p(lang, dafPath(m.ref.tractate, m.ref.daf))}`;
-    const share = `<p class="note-share" hidden><button type="button" class="toggle share" data-share-url="${esc(shareUrl)}" data-share-line="${esc(S.shareLine(dafLabelL(lang, m.ref.tractate, m.ref.daf), m.env.SITE_NAME))}" data-share-done="${esc(S.shareDone)}">${esc(S.shareQuestion)}</button></p>`;
+    const share = `<p class="note-share" hidden><button type="button" class="toggle share" data-share-url="${esc(shareUrl)}" data-share-done="${esc(S.shareDone)}">${esc(S.shareNote)}</button></p>`;
     return `<aside class="note" aria-labelledby="note-h">
   ${label}
   <p class="note-summary">${esc(shown.summary)}</p>
@@ -284,7 +284,7 @@ export function renderDafPage(m: DafPageModel): string {
     extraHead: subscribeBox ? INLINE_SUBSCRIBE_HEAD : undefined,
     ogType: "article",
     ogImage,
-    ogImageAlt: cardUrl && shownNote ? shownNote.question : undefined,
+    ogImageAlt: cardUrl && shownNote ? shownNote.summary : undefined,
     jsonLd,
   });
 }

@@ -71,9 +71,8 @@ export const he: Strings = {
   breadcrumbTractates: "מסכתות",
   chapterOf: (n, total) => `פרק ${n} מתוך ${total}`,
   chaptersOf: (a, b, total) => `פרקים ${a}–${b} מתוך ${total}`,
-  shareQuestion: "שיתוף השאלה",
+  shareNote: "שיתוף ההערה",
   shareDone: "הועתק",
-  shareLine: (label) => `${label} · הערת AI`,
 
   cardWordmark: "הדף היומי",
   cardAiChip: "הערת AI",
