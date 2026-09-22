@@ -22,7 +22,8 @@ let targets = parseTargets(opt, flag);
 if (targets.size === 0) targets = parseTargets(() => undefined, (k) => k === "all");
 
 async function main() {
-  const file: NotesExport = existsSync(path) && !flag("force") ? (JSON.parse(readFileSync(path, "utf8")) as NotesExport) : { exportedAt: "", site, notes: {} };
+  const file: NotesExport = existsSync(path) ? (JSON.parse(readFileSync(path, "utf8")) as NotesExport) : { exportedAt: "", site, notes: {} };
+  if (flag("force")) for (const key of targets.keys()) delete file.notes[key]; // refetch the targets, keep the rest
   const todo = [...targets.entries()].filter(([key]) => !(key in file.notes));
   console.log(`${targets.size} target(s), ${todo.length} to fetch from ${site}`);
   let done = 0;

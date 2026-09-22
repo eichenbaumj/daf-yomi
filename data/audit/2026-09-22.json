@@ -1,0 +1,1592 @@
+{
+ "generatedAt": "2026-09-22T04:50:36.126Z",
+ "site": "https://daf-yomi.dev",
+ "model": "claude-opus-5",
+ "promptVersion": "2026-09-22.9-c7ce27d4",
+ "judgeVersion": "2026-09-22.1-5d7144e4",
+ "counts": {},
+ "estUsd": 0,
+ "dapim": {
+  "berakhot/2": {
+   "key": "berakhot/2",
+   "date": "2020-01-05",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:14:06.422Z",
+   "summary": "The first mishna in the Talmud asks from when one recites Shema in the evening and answers with a human timetable: from when priests enter to eat their teruma, the produce set aside for them. The Gemara asks the obvious question, why not simply say when the stars come out, and answers that the odd phrasing slips in a second ruling about a priest who has immersed but not yet brought his atonement offering. Rival clocks follow: a poor man's bread, Shabbat dinner, priests immersing.",
+   "question": "If the poor man's supper turns out to be later than the hour a priest may eat teruma, how would anyone standing outside both households know which moment had arrived?",
+   "screens": [],
+   "score": 0,
+   "gate": [],
+   "hadTranslation": true,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/3": {
+   "key": "berakhot/3",
+   "date": "2020-01-06",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:15:25.468Z",
+   "summary": "Rabbi Yosei steps into the ruins of an abandoned building in Jerusalem to pray, and the prophet Elijah stands at the doorway until he finishes, then tells him he should have prayed on the road instead. The Gemara then takes the three reasons given for staying out of ruins, suspicion of immoral conduct, collapse, and demons, and tries to knock each one down as redundant. Each survives only in a narrow case: a sturdy new ruin, two upstanding men, a ruin out in a field.",
+   "question": "Why does Elijah stand guard at the entrance of a ruin he is about to say Rabbi Yosei never should have walked into?",
+   "screens": [],
+   "score": 0,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/4": {
+   "key": "berakhot/4",
+   "date": "2020-01-07",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:50:11.981Z",
+   "summary": "The Rabbis set the deadline for reciting the evening Shema at midnight, though they hold the law itself permits it until dawn; the earlier hour is a fence against the man who comes back from the field tired, eats a little, drinks a little, sleeps a little, and wakes to find the night gone. A baraita then ends with the warning that one who transgresses the words of the Sages is liable to receive the death penalty. The Gemara calls this startling and offers two explanations.",
+   "question": "If midnight was invented only to keep a tired farmer from sleeping past his obligation, why does crossing that invented line carry a sharper warning than missing the actual hour of dawn?",
+   "screens": [
+    "contradiction"
+   ],
+   "score": 1,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/5": {
+   "key": "berakhot/5",
+   "date": "2020-01-08",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:49:38.634Z",
+   "summary": "Rava says a person struck by suffering should first examine his deeds, then blame neglected Torah study, and only then call it an affliction of love, pain sent by a God who delights in him. The Sages argue over whether such pain is only the kind that still lets a man study or pray. Then three sick rabbis are each asked whether their suffering is dear to them, and each answers no.",
+   "question": "Rabbi Yoḥanan consoles a weeping student by calling buried children afflictions of love and producing the bone of his tenth son, so why, when he himself lies sick and is asked the same question, does he want neither the suffering nor its reward?",
+   "screens": [],
+   "score": 0,
+   "gate": [
+    "the question brings in \"Yoḥanan\", which the summary never mentions; the question must stand on the summary alone, so introduce it there or leave it out.",
+    "\"Rava\" is not named on this page; name a sage only for a view the text attributes to them, in the page's own spelling."
+   ],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/6": {
+   "key": "berakhot/6",
+   "date": "2020-01-09",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:15:50.644Z",
+   "summary": "Rav Naḥman bar Yitzḥak asks Rav Ḥiyya bar Avin what is written inside God's phylacteries, the small boxes of scripture that a person straps on head and arm. The answer: verses praising Israel, mirroring the verses praising God that sit in Israel's own boxes. Rav Aḥa then objects that the list of praises runs longer than the four compartments a head-box holds, and the verses are paired off until the count comes out right.",
+   "question": "If Israel's phylacteries hold praise of God and God's hold praise of Israel, can either side's uniqueness stand without the other saying it?",
+   "screens": [],
+   "score": 0,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/7": {
+   "key": "berakhot/7",
+   "date": "2020-01-10",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:15:31.711Z",
+   "summary": "Rabbi Yoḥanan says God prays, and the prayer is that His mercy overcome His anger. That anger lasts one fifty-eight-thousand-eight-hundred-and-eighty-eighth of an hour, and only Balaam could time a curse to land inside it. Rabbi Yehoshua ben Levi tries the same trick on a heretic neighbor, watching a rooster's crest for the red streaks to vanish, and falls asleep at the moment; waking, he concludes that cursing even the wicked is improper.",
+   "question": "If Rabbi Yehoshua ben Levi read his own nap as proof that a wicked neighbor should not be cursed, what separates that from the later permission to provoke the wicked?",
+   "screens": [],
+   "score": 0,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/8": {
+   "key": "berakhot/8",
+   "date": "2020-01-11",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:25:48.336Z",
+   "summary": "Rabbi Yoḥanan is confounded to hear there are elders in Babylonia, since long life was promised on the land; told they come early to the synagogue and stay late, he says that is what did it. From there a verse about praying in the time of finding splits the sages: finding a wife, finding Torah, finding an easy death, finding a grave. Mar Zutra says it means finding a lavatory, and Eretz Yisrael rates his reading above all the rest.",
+   "question": "Why would finding a lavatory be judged the best reading of \"the time of finding,\" ahead of finding a wife, Torah, or a quiet death?",
+   "screens": [],
+   "score": 0,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/9": {
+   "key": "berakhot/9",
+   "date": "2020-01-12",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:16:02.281Z",
+   "summary": "God tells Moses to say please when asking Israel to borrow silver and gold vessels from their Egyptian neighbors, and the school of Rabbi Yannai hears begging in that one word. The reason offered is not Israel's gain but Abraham's complaint: God kept the promise of slavery and would otherwise skip the promise of wealth. Israel answers like a prisoner told he will be freed tomorrow with money, who asks to be let out today for nothing.",
+   "question": "If the silver and gold were gathered so that Abraham could not accuse God of half-keeping a promise, whose debt was being settled that night?",
+   "screens": [],
+   "score": 0,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/10": {
+   "key": "berakhot/10",
+   "date": "2020-01-13",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:25:58.477Z",
+   "summary": "Rabbi Meir prays that the hooligans tormenting his neighborhood should die, and his wife Berurya stops him: the verse asks that sins cease, not sinners, and after he prays for their repentance they repent. The page then turns to King Hezekiah, told by Isaiah he will die for never marrying, since he foresaw that his children would be wicked. Hezekiah tells the prophet to stop prophesying, prays anyway, and lives.",
+   "question": "If a decree already decreed could still be prayed away, why did Hezekiah refuse to have the wicked son he foresaw rather than pray about him?",
+   "screens": [
+    "contradiction"
+   ],
+   "score": 1,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/11": {
+   "key": "berakhot/11",
+   "date": "2020-01-14",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:16:34.463Z",
+   "summary": "Beit Shammai read the words \"when you lie down\" as a posture, requiring a person to recline while reciting Shema, the declaration of God's oneness, while Beit Hillel hear only a time of day. Rabbi Yishmael sat upright at a meal so that students would not copy Rabbi Elazar ben Azarya's reclining and fix the law that way. Then the opinions escalate: following Beit Shammai is acceptable, or worthless, or, given Rabbi Tarfon's highwaymen, deserving of death.",
+   "question": "Rabbi Tarfon reclined on the road and was endangered by robbers, so what makes that danger his punishment for crossing Beit Hillel rather than just the road being dangerous?",
+   "screens": [],
+   "score": 0,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/12": {
+   "key": "berakhot/12",
+   "date": "2020-01-15",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:26:04.017Z",
+   "summary": "A man picks up a cup of beer, thinks it is wine, begins the blessing for wine, then realizes his error and ends with the blessing for beer. The Gemara asks whether a blessing is judged by how it opens or how it closes, and tests a baraita that says everything follows the conclusion. That rule gets narrowed to a different case, dates eaten by someone who thought they were bread, and the beer question is left standing.",
+   "question": "Does a mistaken opening stop mattering once the right words close the blessing, or does what the speaker thought he was holding stay inside it?",
+   "screens": [],
+   "score": 0,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/13": {
+   "key": "berakhot/13",
+   "date": "2020-01-16",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:25:57.816Z",
+   "summary": "The argument over how much of Shema, the daily declaration that the Lord is one, must be said with the heart in it narrows fast. Rabbi Akiva wants intent for the entire portion; others hold only the first paragraph, and Rabbi Meir only the first verse. By the end Rav Naḥman tells his slave Daru to wake him for that opening verse and no further, and Rabbi Yehuda HaNasi recites his Shema by passing his hands over his face mid-lesson.",
+   "question": "If the opening verse alone can carry the obligation, what is a person doing in the paragraphs that follow it?",
+   "screens": [],
+   "score": 0,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/14": {
+   "key": "berakhot/14",
+   "date": "2020-01-17",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:16:37.269Z",
+   "summary": "Rav says that greeting another person in the morning before praying is like building an altar for idol worship, reading bameh, \"how little,\" as bama, \"altar.\" Rav Sheshet objects from the earlier teaching that lets a person pause mid-Shema, the twice-daily recitation, to greet someone out of respect, and Rabbi Abba narrows the rule to one who sets out early to another's door. Asked whether he really said \"altar\" about handling one's own business before prayer, Rabbi Yona backs away: he only said it was prohibited.",
+   "question": "If Rav's altar survives the objections, why does Rabbi Yona drop his the moment someone asks him to repeat it?",
+   "screens": [
+    "contradiction"
+   ],
+   "score": 1,
+   "gate": [
+    "the question brings in \"Rav's\", which the summary never mentions; the question must stand on the summary alone, so introduce it there or leave it out."
+   ],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/15": {
+   "key": "berakhot/15",
+   "date": "2020-01-18",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:38:23.482Z",
+   "summary": "A mishna asks whether someone who recites Shema too quietly to hear himself, or who is deaf, has still fulfilled the obligation. Rabbi Yosei reads the opening word, Shema, hear, as an instruction that your ears take in what your mouth says; the first teacher hears in it only permission to recite in any language. The Gemara then shuffles three conflicting baraitot between Rabbi Yehuda, his teacher, and Rabbi Meir, reversing itself twice before settling.",
+   "question": "If the words follow the intention of the heart, as Rabbi Meir argues, what work is left for the ears to do?",
+   "screens": [
+    "interpretive"
+   ],
+   "score": 2,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/16": {
+   "key": "berakhot/16",
+   "date": "2020-01-19",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:16:06.694Z",
+   "summary": "Rabban Gamliel bathed the night his wife died, and accepted condolences when his slave Tavi died, and both times his students protested that he had taught them otherwise. A baraita gives the standard line instead: for a dead slave one says what one says for a dead ox or donkey, may the Omnipresent replenish your loss. Rabbi Yosei would eulogize a virtuous servant, and is told that this leaves no praise left over for virtuous Jews.",
+   "question": "If Rabban Gamliel's slaves were called father and mother because they were significant, what is left of the rule that slaves are not called father and mother?",
+   "screens": [],
+   "score": 0,
+   "gate": [
+    "the question brings in \"Gamliel's\", which the summary never mentions; the question must stand on the summary alone, so introduce it there or leave it out."
+   ],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/17": {
+   "key": "berakhot/17",
+   "date": "2020-01-20",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:50:00.253Z",
+   "summary": "A groom on his wedding night may recite Shema, the twice-daily declaration of God's oneness, but Rabban Shimon ben Gamliel calls that showing off. That clashes with the dispute over working on the Ninth of Av, a fast day, where the same sage says everyone should act like a Torah scholar and stay idle. Rav Sheisha resolves it by who stands out: a groom reciting along with everyone is unnoticed, while an idle man among workers is not.",
+   "question": "If the same act counts as presumptuous only when nobody else is doing it, does the fault lie in the man or in the crowd watching him?",
+   "screens": [],
+   "score": 0,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/18": {
+   "key": "berakhot/18",
+   "date": "2020-01-21",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:25:57.274Z",
+   "summary": "A mourner with an unburied relative laid out before him is exempt from Shema, from the Amida prayer, and from phylacteries, and the Gemara extends that exemption to anyone watching over a corpse, even a stranger's. The reason surfaces when Rabbi Yonatan's sky-blue ritual fringe drags across graves: performing mitzvot in front of those who no longer can looks like mockery. That pushes the page into a long argument over whether the dead know anything at all.",
+   "question": "If the Gemara explains away every proof that the dead know, from the two spirits in the cemetery to Shmuel's father telling him where the orphans' money was hidden, why does Rabbi Yonatan end up conceding that they converse?",
+   "screens": [
+    "contradiction"
+   ],
+   "score": 1,
+   "gate": [
+    "the question brings in \"Shmuel's\", which the summary never mentions; the question must stand on the summary alone, so introduce it there or leave it out."
+   ],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/19": {
+   "key": "berakhot/19",
+   "date": "2020-01-22",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:25:53.368Z",
+   "summary": "Rav rules that a man who finds wool and linen woven together in his garment must strip it off on the spot, even in the public marketplace. Against that, the Gemara lines up cases where dignity wins anyway: priests vaulting over coffins to greet a king, an elder allowed to walk past a stray ox. The resolution narrows things sharply, holding that human dignity sets aside only rabbinic decrees, since all of them hang on a single Torah verse.",
+   "question": "If human dignity can only push aside rabbinic decrees, what is left of the baraita's claim that it overrides a prohibition in the Torah?",
+   "screens": [],
+   "score": 0,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/20": {
+   "key": "berakhot/20",
+   "date": "2020-01-23",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:50:41.480Z",
+   "summary": "Rav Pappa asks Abaye why miracles happened for earlier generations and not for his own. Rav Yehuda knew only one order of the Mishna and found the laws of pickled olives hard, yet when he removed one shoe on a fast day the rain fell. Abaye answers that the earlier Sages gave themselves over to sanctifying God's name, and the example offered is Rav Adda bar Ahava, who tore a forbidden wool-and-linen garment off a woman in the market.",
+   "question": "Is Rav Adda's torn garment and four-hundred-zuz bill meant as proof of the devotion Abaye describes, or as evidence of what happens when zeal runs ahead of knowing the facts?",
+   "screens": [
+    "unglossed-question"
+   ],
+   "score": 1,
+   "gate": [
+    "the question brings in \"Adda's\", which the summary never mentions; the question must stand on the summary alone, so introduce it there or leave it out.",
+    "the question uses \"zuz\", which the summary never introduced; gloss it in the summary first or leave it out of the question."
+   ],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/21": {
+   "key": "berakhot/21",
+   "date": "2020-01-24",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:25:55.994Z",
+   "summary": "Rav Yehuda rules that a man unsure whether he recited Shema, the twice-daily declaration of God's oneness, does not repeat it, but if he is unsure about emet veyatziv, the blessing after it that recalls the exodus, he says it again. Rabbi Elazar flips the pairing. Then Shmuel has a man who realizes mid-Amida that he already prayed break off instantly, while Rabbi Yoḥanan would happily let him pray all day.",
+   "question": "If Rabbi Yoḥanan wishes a person would pray from morning to night, why does Shmuel cut a repeated prayer off in the middle of a blessing?",
+   "screens": [
+    "contradiction"
+   ],
+   "score": 1,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/22": {
+   "key": "berakhot/22",
+   "date": "2020-01-25",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:15:51.410Z",
+   "summary": "A man who has had a seminal emission wants to study Torah, and the page argues over how much water it takes to let him. Some say forty se'a, a full ritual bath; some say nine kav, a smaller amount poured over him; Rabbi Yehuda ben Beteira says matters of Torah never become impure at all, and told a stammering student to open his mouth. Ben Azzai's teachers whispered the leniency; he said it out loud in the market.",
+   "question": "If words of Torah cannot become impure, why did Rabbi Yehuda, who permitted others to study without immersing, walk down into the river first?",
+   "screens": [
+    "contradiction"
+   ],
+   "score": 1,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/23": {
+   "key": "berakhot/23",
+   "date": "2020-01-26",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:16:20.453Z",
+   "summary": "One who needs to relieve himself may not pray, unless he can hold it as long as it takes to walk a parasang, a few miles. The page then tracks where to leave phylacteries, boxes of verses worn on head and arm, while in the bathroom: wall holes, where mice gnawed them, then street-side holes, where passersby stole them. A student whose phylacteries a prostitute displayed as her fee climbed to a roof and fell dead; then the rule became to hold them.",
+   "question": "If holding the phylacteries in a covered hand was possible all along, what made two failed arrangements and a student's death necessary before anyone instituted it?",
+   "screens": [],
+   "score": 0,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/24": {
+   "key": "berakhot/24",
+   "date": "2020-01-27",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:26:05.376Z",
+   "summary": "Rabbi Ḥanina says he watched Rabbi Yehuda HaNasi belch, yawn, sneeze and spit during the standing prayer, though a baraita, an early teaching, calls such a person uncouth and says spitting is like spitting in the king's face. The Gemara rescues him by separating involuntary from deliberate, and sneezing from the nose from wind from below. Then Rav Ḥisda flatly refuses Rabbi Yoḥanan's permission to recite Shema, the declaration recited morning and evening, while walking through alleyways filthy with excrement.",
+   "question": "What does Rav Ḥisda think is at stake in a filthy alleyway that he would refuse the ruling even from Rabbi Yoḥanan's own mouth?",
+   "screens": [],
+   "score": 0,
+   "gate": [
+    "no idioms in the question; say it plainly (rely on, prove, permit)."
+   ],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/25": {
+   "key": "berakhot/25",
+   "date": "2020-01-28",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:49:51.898Z",
+   "summary": "Rav Huna holds that a man with feces on his skin may still recite Shema, since only the mouth that praises must be clean; Rav Hisda cites \"All of my bones shall say: Lord\" and forbids it. The argument then narrows to measurement: urine is barred while it still moistens, feces even when dry as earthenware, and Ravina is sent to inspect a lump for cracks. Rava permits a bather whose heel merely sees his nakedness.",
+   "question": "If dried urine that leaves only a mark is permitted, why does feces as hard as earthenware still block the words?",
+   "screens": [
+    "contradiction"
+   ],
+   "score": 1,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/26": {
+   "key": "berakhot/26",
+   "date": "2020-01-29",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:16:52.101Z",
+   "summary": "A mishna fixes outer limits for each prayer, the morning one until noon, the afternoon until evening, with Rabbi Yehuda shortening both. Then the Gemara asks what happens when you miss one: you may say the Amida twice at the next prayer, though a verse about what is crooked and cannot be made straight seems to say a lost prayer stays lost. The fix is a distinction between forgetting and choosing not to pray, and Rav Ashi finds it in a single word.",
+   "question": "If the person who forgot and the person who deliberately skipped can both say the same words tonight, why is only one of them past repair?",
+   "screens": [
+    "interpretive",
+    "contradiction"
+   ],
+   "score": 3,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/27": {
+   "key": "berakhot/27",
+   "date": "2020-01-30",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:49:54.768Z",
+   "summary": "A student asks Rabbi Yehoshua whether the evening prayer is optional, hears that it is, then puts the same question to Rabban Gamliel, the Nasi, who answers that it is obligatory. Confronted in front of the assembled scholars, Rabbi Yehoshua declines to deny his own ruling, since the student is standing there alive, and he is left on his feet while Rabban Gamliel lectures on. The murmuring becomes a decision to depose him, and the replacement is chosen for wisdom, wealth, and ancestry.",
+   "question": "Rabbi Yehoshua himself told the room that nobody disagreed, so why does the anger of the assembly land entirely on Rabban Gamliel?",
+   "screens": [],
+   "score": 0,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/28": {
+   "key": "berakhot/28",
+   "date": "2020-01-31",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:16:04.926Z",
+   "summary": "Rabban Gamliel kept a guard at the study hall door, barring any student whose inside did not match his outside; on the day the Sages deposed him, the guard was dismissed and hundreds of benches were added. Disheartened, he feared he had prevented Israel from Torah study, and a dream showed him white jugs filled with ashes: the new students were worthless. The Gemara then says flatly that this was not so, and that the dream came only to ease his mind.",
+   "question": "If the crowd of new students was not worthless, what does it mean that Rabban Gamliel was left believing it was?",
+   "screens": [],
+   "score": 0,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/29": {
+   "key": "berakhot/29",
+   "date": "2020-02-01",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:37:54.966Z",
+   "summary": "Shmuel HaKatan, who composed the blessing against heretics, stalls for two or three hours trying to remember it while leading the congregation in prayer, and no one removes him. The rule is that an error there, and only there, means removal, since the leader may be a heretic dodging a curse on himself. Abaye defends him by claiming a person righteous from the start never turns wicked, which the page batters with Yoḥanan the High Priest, who served eighty years and then became a Sadducee.",
+   "question": "Why does the argument end up clearing Shmuel HaKatan on the technicality that he had already begun the blessing, rather than on the claim that a man righteous from the start stays that way?",
+   "screens": [],
+   "score": 0,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/30": {
+   "key": "berakhot/30",
+   "date": "2020-02-02",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:25:49.969Z",
+   "summary": "A mishna rules that a person begins the Amida, the standing prayer, only from an approach of gravity: even if a king greets him, or a snake is wrapped on his heel, he does not break off. The Gemara hunts for a source and throws out its best candidates, Hannah weeping in bitterness and David afflicting himself over Bathsheba, as too extreme to copy, settling on \"rejoice with trembling.\" Then Abaye, caught grinning by Rabba, says his phylacteries keep fear in place.",
+   "question": "If Hannah's weeping and David's self-affliction are each ruled too particular to imitate, what does the right measure of trembling actually look like on an ordinary morning?",
+   "screens": [],
+   "score": 0,
+   "gate": [
+    "the question brings in \"Hannah's\", which the summary never mentions; the question must stand on the summary alone, so introduce it there or leave it out.",
+    "the question brings in \"David's\", which the summary never mentions; the question must stand on the summary alone, so introduce it there or leave it out.",
+    "drop \"actually\" from the question: if the page answers the question, ask what remains difficult after its answer instead of doubting it."
+   ],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/31": {
+   "key": "berakhot/31",
+   "date": "2020-02-03",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:49:53.977Z",
+   "summary": "Rav Ashi broke a cup of costly white glass at his son's wedding because the Sages had grown too merry. Much of the page then mines two verses about Hannah praying at the sanctuary for the rules of prayer: focus the heart, move the lips, make no sound. The same Rabbi Elazar who reads her as the model worshipper also has her threatening God, planning to seclude herself with a man so the ordeal of the suspected wife would force Him to grant a child.",
+   "question": "If Hannah's silent, barely moving lips set the standard for prayer, what is she doing in the same discussion blackmailing God with a loophole in His own law?",
+   "screens": [],
+   "score": 0,
+   "gate": [
+    "the question brings in \"Hannah's\", which the summary never mentions; the question must stand on the summary alone, so introduce it there or leave it out."
+   ],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/32": {
+   "key": "berakhot/32",
+   "date": "2020-02-04",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:15:31.987Z",
+   "summary": "Moses defends Israel after the Golden Calf by blaming the gold itself; the school of Rabbi Yannai hears in the odd place name Di Zahav a claim that God lavished silver on Israel until they said enough. Rabbi Yoḥanan pushes further with a father who bathes and feeds his son, hangs a purse of money on his neck, and sets him at the door of a brothel. Rabbi Yonatan then finds God conceding the argument in Hosea.",
+   "question": "If God conceded that the silver He handed out caused the calf, what exactly was left for Him to forgive?",
+   "screens": [],
+   "score": 0,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/33": {
+   "key": "berakhot/33",
+   "date": "2020-02-05",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:25:41.493Z",
+   "summary": "A prayer leader asks God to show the same mercy shown to a mother bird sent away from her nest before her chicks are taken, and the mishna says they silence him. Two sages give reasons: one says it stirs jealousy among other creatures, the other that it turns God's decrees into acts of mercy. Rabbi Ḥanina then stops a leader piling up ten adjectives, comparing it to praising a man with thousands of gold coins for silver ones.",
+   "question": "Rabba praised the bird's-nest prayer he actually held should be silenced, only to sharpen Abaye; was the lesson worth the false compliment?",
+   "screens": [],
+   "score": 0,
+   "gate": [
+    "the question brings in \"Rabba\", which the summary never mentions; the question must stand on the summary alone, so introduce it there or leave it out.",
+    "the question brings in \"Abaye\", which the summary never mentions; the question must stand on the summary alone, so introduce it there or leave it out.",
+    "drop \"actually\" from the question: if the page answers the question, ask what remains difficult after its answer instead of doubting it."
+   ],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/34": {
+   "key": "berakhot/34",
+   "date": "2020-02-06",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:16:13.318Z",
+   "summary": "A man asked to lead the communal Amida, the central standing prayer, should refuse the first time, waver the second, and step forward the third; jumping at it makes him like cooked food without salt. The mishna then treats an error in prayer as a bad omen, and Rabbi Ḥanina ben Dosa reports that fluent speech tells him whether a sick person will live. Rabbi Yoḥanan ben Zakkai, whose son Ḥanina healed, says Ḥanina is not greater, just a servant with free access to the King.",
+   "question": "If Ḥanina ben Dosa is not greater than Rabbi Yoḥanan ben Zakkai, what exactly makes one man's prayer land and the other's go unheard?",
+   "screens": [],
+   "score": 0,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/35": {
+   "key": "berakhot/35",
+   "date": "2020-02-07",
+   "promptVersion": "2026-09-20.6-e4b701ea",
+   "generatedAt": "2026-09-21T01:13:46.051Z",
+   "summary": "The mishna assigns wine and bread blessings of their own, apart from the ones for other tree fruit and things that grow from the ground. The Gemara then hunts for a verse requiring a blessing before eating, and every derivation collapses: grapes carry stringencies grain lacks, grain carries ones grapes lack, and meat, eggs and fish grow on no tree at all. The obligation ends up resting on reason alone, not a verse.",
+   "question": "If the earth belongs to God before the blessing and is handed to people after it, what has the blessing actually changed?",
+   "screens": [
+    "reason-seeking"
+   ],
+   "score": 3,
+   "gate": [
+    "drop \"actually\" from the question: if the page answers the question, ask what remains difficult after its answer instead of doubting it."
+   ],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/36": {
+   "key": "berakhot/36",
+   "date": "2020-02-08",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:49:42.909Z",
+   "summary": "A caper-bush puts out berries and also buds, and the Gemara asks which of them counts as the fruit. That matters for orla, the ban on eating a tree's produce during its first three years, and for which blessing a person says. Rava tries three definitions of what makes a part count as protection for the fruit, landing on a test: strip the part off and see whether the fruit dies, and a pomegranate lost its flower and withered while a caper did not.",
+   "question": "Rava discards two definitions of protection before reaching the one that fits, so is the withered pomegranate what decided the matter, or was the answer already fixed and the rule found to match it?",
+   "screens": [],
+   "score": 0,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/37": {
+   "key": "berakhot/37",
+   "date": "2020-02-09",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:26:00.017Z",
+   "summary": "Rav and Shmuel held that only the five species of grain get the blessing \"Who creates the various kinds of nourishment,\" which would leave rice bread and millet bread out. The Gemara finds a source where sages who deny that rice is grain still bless it that way, and calls Rav and Shmuel conclusively refuted. Then, cornered by a contradiction between two statements of those same Rabbis, it keeps the opinion and emends the wording of the source instead.",
+   "question": "If a text can be rewritten whenever it clashes with the view attributed to its authors, what would it take to refute a view at all?",
+   "screens": [
+    "soft-rhetorical"
+   ],
+   "score": 2,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/38": {
+   "key": "berakhot/38",
+   "date": "2020-02-10",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:25:50.536Z",
+   "summary": "The Sages argue over a single letter at the front of the blessing said over bread: motzi or hamotzi, \"who brought forth\" or \"who brings forth\" bread from the earth. Rabbi Nehemya hears hamotzi as present tense, citing God's promise in Egypt; the Rabbis hear it as past, citing water brought from a rock. Then a visitor praised as an expert in blessings says motzi, dodging the dispute entirely, and Rabbi Zeira is annoyed.",
+   "question": "Was the visitor's choice of the wording everyone accepts a careful courtesy, or, as Rabbi Zeira seems to feel, a wasted chance to say something?",
+   "screens": [],
+   "score": 0,
+   "gate": [
+    "the question brings in \"Was\", which the summary never mentions; the question must stand on the summary alone, so introduce it there or leave it out."
+   ],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/39": {
+   "key": "berakhot/39",
+   "date": "2020-02-11",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:37:42.694Z",
+   "summary": "Two students sit before bar Kappara as cooked cabbage, Damascene plums and pullets, young chickens, are set out; one hurries to bless the pullet, the other mocks him, and bar Kappara declares himself angry first at one, then at the other. The page reports that both died within the year. Later the argument moves to bread: bless a whole barley loaf or a better broken piece of wheat, until Mar son of Ravina sets the piece inside the whole and breaks both together.",
+   "question": "Bar Kappara reverses himself twice about which student angered him, so why did both of them pay with a year?",
+   "screens": [],
+   "score": 0,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/40": {
+   "key": "berakhot/40",
+   "date": "2020-02-12",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:15:47.870Z",
+   "summary": "Rav rules that a man who breaks bread and then calls for salt has interrupted himself and must bless again, while Rav Sheshet says even \"mix the food for the oxen\" belongs to the meal, since a verse puts grass for the animals before a person's own eating. The mishna then asks how loose a blessing can be and still count. Binyamin the shepherd said in Aramaic, \"Blessed is the Master of this bread,\" and Rav credited him.",
+   "question": "If the Gemara has to rewrite Binyamin's sentence, adding God's name and then shrinking it to one of the three required blessings, what did his own words actually accomplish?",
+   "screens": [
+    "reason-seeking"
+   ],
+   "score": 3,
+   "gate": [
+    "the question brings in \"Binyamin's\", which the summary never mentions; the question must stand on the summary alone, so introduce it there or leave it out.",
+    "the question brings in \"God's\", which the summary never mentions; the question must stand on the summary alone, so introduce it there or leave it out.",
+    "drop \"actually\" from the question: if the page answers the question, ask what remains difficult after its answer instead of doubting it."
+   ],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/41": {
+   "key": "berakhot/41",
+   "date": "2020-02-13",
+   "promptVersion": "2026-09-20.6-e4b701ea",
+   "generatedAt": "2026-09-21T00:15:20.943Z",
+   "summary": "A radish and an olive sit before a diner, and the page argues over which one gets the blessing said before eating. Rabbi Yehuda ranks by the seven species, the crops for which the Torah praises Eretz Yisrael; the Rabbis say bless whichever food you prefer. Then Rav Hamnuna, served dates and pomegranates, counts the verse's second \"a land\" as a fresh start, so the date, listed fifth, jumps ahead of the pomegranate.",
+   "question": "Does the second \"a land\" in the verse really restart the ranking, or did Rav Hisda applaud a clever move that simply put the date where Rav Hamnuna had already reached?",
+   "screens": [
+    "soft-rhetorical"
+   ],
+   "score": 2,
+   "gate": [
+    "the question brings in \"Hisda\", which the summary never mentions; the question must stand on the summary alone, so introduce it there or leave it out."
+   ],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/42": {
+   "key": "berakhot/42",
+   "date": "2020-02-14",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:16:33.250Z",
+   "summary": "Rav Huna ate thirteen sweetened loaves served as dessert and recited no Grace after Meals, since he judged them not real bread; Rav Naḥman answered that eating that much is not dessert, it is hunger. From there the page hunts for the exact moment a meal ends, whether at the removal of the table, the washing of hands, or the fragrant oil some rub on their hands. The mishna then asks what makes several diners into one meal, and reclining versus merely sitting is left unsettled.",
+   "question": "When Rava ate the food sent after the table had already been carried away, was he still inside the Exilarch's meal, or just unwilling to let it end?",
+   "screens": [],
+   "score": 0,
+   "gate": [
+    "the question brings in \"Rava\", which the summary never mentions; the question must stand on the summary alone, so introduce it there or leave it out.",
+    "the question brings in \"Exilarch's\", which the summary never mentions; the question must stand on the summary alone, so introduce it there or leave it out."
+   ],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/43": {
+   "key": "berakhot/43",
+   "date": "2020-02-15",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:25:57.772Z",
+   "summary": "Rav Pappa, dining at the house of Rav Huna, son of Rav Ika, was brought scented oil and a branch of myrtle, and blessed the myrtle first, against Rabban Gamliel's ruling that oil comes first because you can both smell it and rub it on your skin. Challenged, he said Rava had ruled otherwise. The Gemara says flatly that Rava said no such thing; Rav Pappa was getting himself out of an awkward moment.",
+   "question": "The same page praises Tamar for facing the fire rather than shaming Judah in public, so what is it doing with Rav Pappa, who borrowed Rava's name to spare himself a small embarrassment at dinner?",
+   "screens": [],
+   "score": 0,
+   "gate": [
+    "the question brings in \"Tamar\", which the summary never mentions; the question must stand on the summary alone, so introduce it there or leave it out.",
+    "the question brings in \"Judah\", which the summary never mentions; the question must stand on the summary alone, so introduce it there or leave it out.",
+    "the question brings in \"Rava's\", which the summary never mentions; the question must stand on the summary alone, so introduce it there or leave it out."
+   ],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/44": {
+   "key": "berakhot/44",
+   "date": "2020-02-16",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:49:40.656Z",
+   "summary": "A mishna rules that when salted food is the main dish and bread comes along with it, the blessing goes on the salted food and covers the bread. The Gemara can only picture this with the fruits of Genosar, so sweet that eaters needed salt fish to cut them. Later, arguing over the wording of the blessing after fruit, Rav Naḥman bar Yitzḥak objects that Babylonians cannot bless the fruits of a land they do not eat from, and swaps the two names.",
+   "question": "If a tradition only makes sense once you reverse which sage said what, what exactly was being handed down?",
+   "screens": [],
+   "score": 0,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/45": {
+   "key": "berakhot/45",
+   "date": "2020-02-17",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:25:49.465Z",
+   "summary": "Three people who ate together must recite Grace after Meals as a group, with the invitation to do so called zimmun. Rav and Rabbi Yoḥanan disagree over whether two may form one voluntarily, and the Gemara hunts through cases, a waiter allowed to eat uninvited, a diner called back from the marketplace, trying to pin down who held what. Then three sages of equal age and learning, unsure who should lead, each blessed alone and were told the zimmun could not be recovered.",
+   "question": "When no one at the table outranks anyone else, what were those three sages supposed to do?",
+   "screens": [],
+   "score": 0,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/46": {
+   "key": "berakhot/46",
+   "date": "2020-02-18",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:25:52.794Z",
+   "summary": "Rabbi Abbahu resolved to make a feast for the Sages if Rabbi Zeira recovered from illness, and when Zeira was cured, Abbahu twice pressed the honors on him and was twice refused with a citation. The stated reason for the custom is that the host breaks bread so he will cut generously, while the guest leads Grace after Meals so he can bless the host. The argument then turns to whether the fourth blessing, Who is good and does good, is required by Torah law.",
+   "question": "Rabbi Zeira declined each honor by quoting someone else's ruling rather than simply demurring; is that deference, or a way of having the last word at his own recovery feast?",
+   "screens": [
+    "soft-rhetorical"
+   ],
+   "score": 2,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/47": {
+   "key": "berakhot/47",
+   "date": "2020-02-19",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:37:56.125Z",
+   "summary": "Three diners who ate together say a zimmun, the invitation to grace after meals, and the page tests who counts toward the three: a waiter who ate an olive-bulk of food, a Samaritan, a baby lying in a cradle. Rav Huna would count the ark holding the Torah scrolls toward a quorum of ten, and Rav Nahman answers that an ark is not a man. Rami bar Hama left out a scholar who had studied but never served Sages, and Rava says that omission killed him.",
+   "question": "If a baraita really does call a man who studied but never served Torah scholars an am ha'aretz, why should Rami bar Ḥama die for keeping such a man out of the zimmun?",
+   "screens": [
+    "soft-rhetorical",
+    "contradiction"
+   ],
+   "score": 3,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/48": {
+   "key": "berakhot/48",
+   "date": "2020-02-20",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:37:49.571Z",
+   "summary": "A child joins the quorum of ten for zimmun, the shared invitation to Grace after Meals, once he knows to Whom one recites a blessing. King Yannai, who had executed the Sages, has no one left to bless his meal, so his wife brings her brother Shimon ben Shataḥ, who drinks a cup of wine to count himself among the diners. Rabbi Yoḥanan says he acted on his own: blessing for others requires an olive-bulk of grain.",
+   "question": "If a cup of wine did not make Shimon ben Shataḥ one of the diners, whose blessing did Yannai and the queen actually hear?",
+   "screens": [],
+   "score": 0,
+   "gate": [
+    "drop \"actually\" from the question: if the page answers the question, ask what remains difficult after its answer instead of doubting it."
+   ],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/49": {
+   "key": "berakhot/49",
+   "date": "2020-02-21",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:27:44.528Z",
+   "summary": "Rabba bar Rav Huna closed the blessing for Jerusalem in Grace after Meals with two endings at once, the building of Jerusalem and the redemption of Israel, and Rav Ḥisda mocked him, since Rabbi Yehuda HaNasi held a blessing may not end with two themes. Levi keeps producing counterexamples, and each is explained away as really one theme. Later Rav Ḥisda admits he omitted covenant, Torah and sovereignty, following Rav, who said those themes do not apply to women and slaves.",
+   "question": "Rabbi Zeira answers Rav's reason by counting the sages who disagree with him, so does the objection that covenant and Torah do not belong to everyone at the table ever actually get answered?",
+   "screens": [],
+   "score": 0,
+   "gate": [
+    "the question brings in \"Zeira\", which the summary never mentions; the question must stand on the summary alone, so introduce it there or leave it out.",
+    "the question brings in \"Rav's\", which the summary never mentions; the question must stand on the summary alone, so introduce it there or leave it out.",
+    "drop \"actually\" from the question: if the page answers the question, ask what remains difficult after its answer instead of doubting it."
+   ],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/50": {
+   "key": "berakhot/50",
+   "date": "2020-02-22",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:17:20.731Z",
+   "summary": "In the zimmun, the invitation three diners recite before Grace after Meals, Rabbi Yehuda HaNasi rules that saying \"by Whose goodness we live\" marks a Torah scholar while \"from Whose goodness\" marks an ignoramus, since \"from\" claims only a share. Abaye objects that King David prayed exactly that way, asking that his house be blessed from God's blessing. The reply is that requesting is different, since demanding the full bounty is improper, except in matters of Torah.",
+   "question": "If King David could ask for only a portion of God's blessing, why does that same small word at a dinner table brand a person as denying God's kindness?",
+   "screens": [
+    "contradiction"
+   ],
+   "score": 1,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/51": {
+   "key": "berakhot/51",
+   "date": "2020-02-23",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:16:47.820Z",
+   "summary": "A list of ten rules for the cup of wine held during Grace after Meals runs from rinsing it inside and out to fixing one's eyes on it while blessing. Ulla, a guest at Rav Naḥman's table, refuses to pass that cup to Yalta, Rav Naḥman's wife, citing a verse that a woman's children are blessed through her husband. Yalta walks into the wine cellar and breaks four hundred barrels.",
+   "question": "Rav Naḥman heard Ulla's verse and still asked him to send Yalta another cup, so what did he think the proof was worth?",
+   "screens": [],
+   "score": 0,
+   "gate": [
+    "the question brings in \"Ulla's\", which the summary never mentions; the question must stand on the summary alone, so introduce it there or leave it out."
+   ],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/52": {
+   "key": "berakhot/52",
+   "date": "2020-02-24",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:15:59.870Z",
+   "summary": "Beit Shammai and Beit Hillel argue over whether hands are washed before or after water is mixed into the wine cup, and where the damp towel goes, table or cushion. Each order is defended by a chain of ritual impurity, and the crux turns out to be whether a cup impure only on its outside may be used. Rav Huna rules for Beit Hillel all chapter but once; Rabbi Oshaya taught the mishna with the two schools' opinions swapped.",
+   "question": "If Rabbi Oshaya taught the same mishna with the two names reversed, what is actually being decided when the halakha is said to follow Beit Hillel?",
+   "screens": [
+    "mechanics",
+    "unglossed-question"
+   ],
+   "score": 4,
+   "gate": [
+    "drop \"actually\" from the question: if the page answers the question, ask what remains difficult after its answer instead of doubting it.",
+    "the question uses \"halakha\", which the summary never introduced; gloss it in the summary first or leave it out of the question."
+   ],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/53": {
+   "key": "berakhot/53",
+   "date": "2020-02-25",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:16:11.030Z",
+   "summary": "At the end of Shabbat one blesses a flame, and the page sorts out which flames qualify. A Jew who lights his candle from a gentile's Shabbat-kindled fire may bless it; a gentile lighting from another gentile may not. To explain the difference, the Gemara floats the idea that a flame constantly recreates itself, then breaks it on a carrying case: the flame lifted in one domain is the same flame set down in the other.",
+   "question": "If the blessing falls only on the permitted addition to a forbidden flame, what is the person actually looking at when he says it?",
+   "screens": [],
+   "score": 0,
+   "gate": [
+    "drop \"actually\" from the question: if the page answers the question, ask what remains difficult after its answer instead of doubting it."
+   ],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/54": {
+   "key": "berakhot/54",
+   "date": "2020-02-26",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:16:28.900Z",
+   "summary": "The mishna that opens chapter nine collects blessings tied to events rather than fixed hours, for a place where a miracle once happened, for thunder and lightning, for a new house, for bad news. It also rules that a man walking home who hears screaming in the city and prays it is not from his house prays in vain, since the scream already has its source. Later the Gemara hits Lot's wife on a list of miracle sites and has to split the blessing in two.",
+   "question": "If one blesses over the bad exactly as over the good, why could the Sages not leave Lot's wife standing on a list of thanks and praise?",
+   "screens": [
+    "contradiction"
+   ],
+   "score": 1,
+   "gate": [
+    "no idioms in the question; say it plainly (rely on, prove, permit)."
+   ],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/55": {
+   "key": "berakhot/55",
+   "date": "2020-02-27",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:25:55.856Z",
+   "summary": "Rav Ḥisda says a dream left uninterpreted is like a letter never read, sealed and inert, and that a bad dream is better than a good one because it prompts remorse. Then the page tells of a man who brought one dream to twenty-four interpreters in Jerusalem; each gave a different reading, and every one came true. For someone shaken by a dream, the advice is not interpretation but three people who declare it good and recite nine verses over it.",
+   "question": "If twenty-four contradictory interpretations all came true, what was in the dream before anyone opened his mouth?",
+   "screens": [],
+   "score": 0,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/56": {
+   "key": "berakhot/56",
+   "date": "2020-02-28",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:25:51.518Z",
+   "summary": "Abaye and Rava bring bar Haddaya, a dream interpreter who works for a fee, one identical dream after another; Abaye pays and hears of profit and a yeshiva headship, Rava does not pay and hears of ruined wine, arrest, and a dead wife. Every interpretation comes true. Then a book falls from bar Haddaya as he boards a ship, and Rava reads in it that dreams follow the mouth of whoever explains them.",
+   "question": "Was bar Haddaya's offense inventing Rava's misfortunes, or having the power to decide them and selling that decision for a coin?",
+   "screens": [],
+   "score": 0,
+   "gate": [
+    "the question brings in \"Was\", which the summary never mentions; the question must stand on the summary alone, so introduce it there or leave it out.",
+    "the question brings in \"Haddaya's\", which the summary never mentions; the question must stand on the summary alone, so introduce it there or leave it out.",
+    "the question brings in \"Rava's\", which the summary never mentions; the question must stand on the summary alone, so introduce it there or leave it out."
+   ],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/57": {
+   "key": "berakhot/57",
+   "date": "2020-02-29",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:26:01.071Z",
+   "summary": "Wheat seen in a dream means peace, barley means iniquity taken away, and a goose means wisdom. A reciter of mishnayot teaches Rav Sheshet that killing a snake in a dream signals losing one's livelihood; Rav Sheshet reverses the ruling on the spot, and the Gemara notes he had just dreamed of killing a snake himself. Rabbi Yoḥanan likewise instructs a teacher to amend the rule so that wine is always a good sign for a Torah scholar.",
+   "question": "If an interpreter can flip the meaning of a snake the moment the dream is his own, what is the catalogue of omens actually good for?",
+   "screens": [],
+   "score": 0,
+   "gate": [
+    "drop \"actually\" from the question: if the page answers the question, ask what remains difficult after its answer instead of doubting it."
+   ],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/58": {
+   "key": "berakhot/58",
+   "date": "2020-03-01",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:38:05.515Z",
+   "summary": "Ben Zoma, standing on a stair on the Temple Mount, sees a crowd of six hundred thousand and blesses God who knows all secrets, then adds a blessing that all these were created to serve him. He lists Adam's eleven steps from plowing to baking, against his own waking up to find bread already made. Later Rav Ḥanina tells two colleagues he counted them as a multitude worth three blessings; they stare at him and he dies.",
+   "question": "If Ben Zoma can look at a crowd and bless God for making them all to serve him, why does Rav Ḥanina's flattery of two men as six hundred thousand get him killed?",
+   "screens": [
+    "contradiction"
+   ],
+   "score": 1,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/59": {
+   "key": "berakhot/59",
+   "date": "2020-03-02",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:49:47.959Z",
+   "summary": "Rav Ketina was walking past the door of a necromancer, a man who claims to consult the dead, when an earthquake rumbled. The necromancer called out the cause: God sheds two tears into the great sea over His suffering children, and the sound shakes the earth. Rav Ketina calls him a liar, objecting that two tears would mean two quakes, and the Gemara quietly concedes that quakes do come in pairs, denying it so people would not follow the necromancer.",
+   "question": "If the necromancer had the earthquake right, what is lost by calling a true thing a lie because of who said it?",
+   "screens": [
+    "interpretive"
+   ],
+   "score": 2,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/60": {
+   "key": "berakhot/60",
+   "date": "2020-03-03",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:16:07.812Z",
+   "summary": "A man entering a Roman bathhouse, heated by a fire burning beneath the pool, prays to be saved from collapse and adds that if ruin comes, let his death atone for his sins. Abaye deletes that line, since naming disaster invites it, and he rewrites the bathroom prayer too, so the accompanying angels are asked to wait rather than to leave. The page closes with Rabbi Akiva in a field, candle blown out, rooster and donkey eaten.",
+   "question": "Akiva says it is all for the best because the town that refused him lodging was taken captive that night, but could the sentence be said by anyone inside that town?",
+   "screens": [],
+   "score": 0,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/61": {
+   "key": "berakhot/61",
+   "date": "2020-03-04",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:16:42.699Z",
+   "summary": "Rav and Shmuel argue over one word in Genesis, the tzela that God took from Adam to make Eve. One says it means a face, making Eve one whole side of a two-faced creature; the other says a tail, an appendage like a rib. The Gemara tests both readings verse by verse, and when the face side is asked which half walked in front, the answer arrives from a rule about not walking behind a woman on a path.",
+   "question": "If Adam and Eve were once one body with two faces, why is the question of who walked in front settled by a rule of conduct rather than by anything in the creation account?",
+   "screens": [
+    "contradiction"
+   ],
+   "score": 1,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/62": {
+   "key": "berakhot/62",
+   "date": "2020-03-05",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:16:21.639Z",
+   "summary": "Rabbi Akiva followed his teacher Rabbi Yehoshua into the bathroom and studied how he behaved; accused of impertinence, he answered that it is Torah and he must learn. The line repeats when Ben Azzai trails Akiva, and again when Rav Kahana lies under Rav's bed while Rav jokes with his wife and has relations with her. Later a eulogizer calls a dead man modest, and Rav Naḥman asks whether he ever went to the bathroom with him.",
+   "question": "If modesty is only real where nobody is watching, what exactly did Akiva and Rav Kahana manage to learn by watching?",
+   "screens": [],
+   "score": 0,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/63": {
+   "key": "berakhot/63",
+   "date": "2020-03-06",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:25:43.776Z",
+   "summary": "Ḥanina, the nephew of Rabbi Yehoshua, went to Babylonia and began intercalating years and fixing months, work the Sages restricted to Eretz Yisrael. Two scholars sent after him contradicted every ruling he gave, pure for impure, permitted for prohibited, until the threat of a staged mass defection on a mountaintop, altar and lute included, brought the community to tears. The Gemara then notices the problem: one Sage may not permit what a colleague prohibited, and answers only that the emergency required it.",
+   "question": "If the pressure of the moment licenses two scholars to reverse a colleague's rulings on purity they may not even disagree about, what keeps the next faction from declaring its own emergency?",
+   "screens": [],
+   "score": 0,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "berakhot/64": {
+   "key": "berakhot/64",
+   "date": "2020-03-07",
+   "promptVersion": "2026-09-20.2-ce7adfc1",
+   "generatedAt": "2026-09-20T17:19:51.393Z",
+   "summary": "The last page of Berakhot asks which scholar should head the yeshiva: Rav Yosef, called Sinai for his erudition, or Rabba, who uproots mountains with his sharpness. Eretz Yisrael answers that Sinai wins, since everyone needs the owner of the wheat, yet Rav Yosef steps aside and Rabba presides twenty-two years. The reason offered is not modesty but a forecast: Chaldean astrologers had told Rav Yosef he would serve only two years.",
+   "question": "If Rav Yosef declined the post because astrologers told him how long he would hold it, was he yielding to the moment or calculating it?",
+   "screens": [
+    "mechanics"
+   ],
+   "score": 3,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "shabbat/2": {
+   "key": "shabbat/2",
+   "date": "2020-03-08",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:34:43.022Z",
+   "summary": "Shabbat opens with a poor person standing in the street and a homeowner inside his house, passing an object between them through the doorway. The mishna sorts the transfer into eight cases: whoever lifts and sets down alone is liable, while when the two split the work, both go free. The Gemara then fights over the arithmetic, because a parallel mishna in tractate Shevuot counts the same Shabbat labor as only four.",
+   "question": "If each hand that lifts or receives counts as its own action, why does the mishna stop at eight rather than Rav Mattana's twelve or Abaye's sixteen?",
+   "screens": [
+    "contradiction"
+   ],
+   "score": 1,
+   "gate": [
+    "legal verb left hanging, \"liable: liable to or for what?\" Name the object.",
+    "the question brings in \"Mattana's\", which the summary never mentions; the question must stand on the summary alone, so introduce it there or leave it out.",
+    "the question brings in \"Abaye's\", which the summary never mentions; the question must stand on the summary alone, so introduce it there or leave it out."
+   ],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "shabbat/3": {
+   "key": "shabbat/3",
+   "date": "2020-03-09",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:15:38.140Z",
+   "summary": "Rav asks Rabbi Yehuda HaNasi about a man loaded with food on his back inside a private area who then walks out into the street on Shabbat, and is told he is liable, since a body is fixed in place while a hand is not. The same distinction runs into a man standing indoors with a fistful of fruit stuck out into the street, where one early teaching forbids pulling it back and another permits it. The Gemara notices the penalty falls on the riskier case.",
+   "question": "If forbidding the man to pull his hand back makes it likelier he drops the fruit and breaks the Torah prohibition outright, why does the page keep the penalty there rather than on the harmless case?",
+   "screens": [
+    "contradiction"
+   ],
+   "score": 1,
+   "gate": [
+    "legal verb left hanging, \"liable: liable to or for what?\" Name the object."
+   ],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "shabbat/4": {
+   "key": "shabbat/4",
+   "date": "2020-03-10",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:15:38.737Z",
+   "summary": "Someone sticks bread in an oven on Shabbat, and Rav Beivai bar Abaye asks whether he may pull it out before it bakes. Every version of the case falls apart: if he never realized, he would not ask; if he realized partway, that awareness already exempts him from the sin-offering brought for unwitting transgression. Rav Sheila moves the question to bystanders, and Rav Sheshet shuts that down: does one tell another person to sin?",
+   "question": "If a bystander may not break even a small rabbinic rule to stop a man from unknowingly committing a capital offense, what is the bystander supposed to do while the bread bakes?",
+   "screens": [],
+   "score": 0,
+   "gate": [
+    "gloss \"sin-offering\" in a few words the first time it appears; the reader has never opened a Talmud."
+   ],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "shabbat/5": {
+   "key": "shabbat/5",
+   "date": "2020-03-11",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:25:46.215Z",
+   "summary": "Carrying on Shabbat requires lifting an object from a place and setting it down on one, and the Gemara wants that place to measure four handbreadths by four. A poor person's outstretched hand is nowhere near that size, so the Sages try baskets, a householder bending low, a man standing in a hole, a very short person whose hands hang near the ground. Rava waves the whole parade away: a hand simply counts as four by four.",
+   "question": "Is Rava's ruling that a hand counts as four by four handbreadths any less of an invention than the man standing in a hole, or only tidier?",
+   "screens": [],
+   "score": 0,
+   "gate": [
+    "the question brings in \"Rava's\", which the summary never mentions; the question must stand on the summary alone, so introduce it there or leave it out."
+   ],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "shabbat/6": {
+   "key": "shabbat/6",
+   "date": "2020-03-12",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:34:46.524Z",
+   "summary": "The Gemara hunts for a case where a person is liable for carrying on Shabbat even though the object passed through a colonnade, a covered walkway where setting it down would carry no penalty at all. Three analogies are floated and two collapse under scrutiny. Then a baraita sorts all space into four domains, private, public, the in-between karmelit, and the exempt place, and Ben Azzai holds that a walker crossing the colonnade has effectively put the object down.",
+   "question": "If a person walking through a colonnade counts as having set the object down there, why does a hand stretched through that same space count as never stopping?",
+   "screens": [
+    "interpretive",
+    "contradiction"
+   ],
+   "score": 3,
+   "gate": [
+    "legal verb left hanging, \"exempt: exempt from what?\" Name the object."
+   ],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "shabbat/7": {
+   "key": "shabbat/7",
+   "date": "2020-03-13",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:25:32.030Z",
+   "summary": "Much of the page sorts street-level patches into domains by asking whether people actually walk on them. An upright brick three handbreadths high is its own domain, since the crowd steps around it; thorns and shrubs are argued over; and Ḥiyya bar Rav says a spot fouled with feces is not part of the public domain, until Rav Ashi answers that hurried workers tread in it anyway. Convenience, not ownership, keeps deciding the case.",
+   "question": "If a corner counts as a karmelit because its use is inconvenient, and filth counts as public street because rushed people step in it regardless, whose habits set the boundary?",
+   "screens": [],
+   "score": 0,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "shabbat/8": {
+   "key": "shabbat/8",
+   "date": "2020-03-14",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:15:48.480Z",
+   "summary": "A pillar nine handbreadths high stands in a public street, and passersby rest their shoulder loads on it; Ulla says that use makes it part of the public domain, so an object thrown onto it from a private courtyard brings liability. Abaye asks about a pit of the same depth, and Rava says no: stooping into a hole is awkward, and use under duress is not use. A muddy swamp, though, still counts as street, because people really do walk through it.",
+   "question": "If wading through mud in the rainy season is enough to make a swamp public street, why is reaching down into a pit too inconvenient to count?",
+   "screens": [
+    "contradiction"
+   ],
+   "score": 1,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "shabbat/9": {
+   "key": "shabbat/9",
+   "date": "2020-03-15",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:25:43.993Z",
+   "summary": "The mishna forbids sitting down before the barber, entering the bathhouse or the tannery, starting a meal, or opening a trial once the hour of the afternoon prayer draws near. The Gemara asks how a haircut could swallow an afternoon, and answers twice: either these are enormous versions, like ben Elasa's elaborate haircut, or the worry is that the scissors break and the time runs out. Then it pins down the exact moment each activity counts as already begun.",
+   "question": "If the afternoon prayer is obligatory for everyone, why should a loosened belt be enough to keep a man at his table?",
+   "screens": [
+    "contradiction"
+   ],
+   "score": 1,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "shabbat/10": {
+   "key": "shabbat/10",
+   "date": "2020-03-16",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:16:28.560Z",
+   "summary": "Rav holds that one who gives a gift must tell the recipient, learned from God instructing Moses to inform Israel about Shabbat, a good gift in the treasure house. Rabban Shimon ben Gamliel applies this to handing a child bread: the giver smears oil or eye shadow on him so the mother will notice and ask who fed him. Against the rule stands Moses, whose face shone without his knowing, and the two are split by whether the gift would surface on its own.",
+   "question": "If the mother only learns of the bread because oil was smeared on her child's face, whose benefit is the announcement really for?",
+   "screens": [
+    "soft-rhetorical"
+   ],
+   "score": 2,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "shabbat/11": {
+   "key": "shabbat/11",
+   "date": "2020-03-17",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:27:02.245Z",
+   "summary": "A tailor may not step outside with his needle as Friday evening comes on, in case he forgets it and carries it after Shabbat begins. Abaye reads that as the Sages guarding one rabbinic decree with a second, and extends the logic to a karmelit, an in-between space that is neither public nor private domain. Rava refuses, asking whether a decree gets built on top of a decree, and every proof brought against him is reread as something else.",
+   "question": "If each proof for Abaye can be reassigned to Rabbi Yehuda's view or to the laws of tithes, what evidence could ever settle whether the Sages fence a fence?",
+   "screens": [],
+   "score": 0,
+   "gate": [
+    "the question brings in \"Yehuda's\", which the summary never mentions; the question must stand on the summary alone, so introduce it there or leave it out."
+   ],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "shabbat/12": {
+   "key": "shabbat/12",
+   "date": "2020-03-18",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:16:33.984Z",
+   "summary": "Reading a book by lamplight on Shabbat is barred because a reader might tilt the wick for more light. Rava says an important person is exempt, since he would never dirty his hands on an oily lamp, and then the Gemara produces Rabbi Yishmael ben Elisha, who read, adjusted the wick, and wrote in his notebook that he owed a fat sin-offering, an atonement animal, when the Temple is rebuilt. Rabbi Abba rescues the exemption by calling Yishmael an exception.",
+   "question": "If Rava's exemption for important people survives only by ruling that Rabbi Yishmael ben Elisha did not count as one, who is left inside it?",
+   "screens": [],
+   "score": 0,
+   "gate": [
+    "legal verb left hanging, \"exempt: exempt from what?\" Name the object.",
+    "the question brings in \"Rava's\", which the summary never mentions; the question must stand on the summary alone, so introduce it there or leave it out."
+   ],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "shabbat/13": {
+   "key": "shabbat/13",
+   "date": "2020-03-19",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:31:45.524Z",
+   "summary": "A husband and his menstruating wife want to sleep in one bed, both fully dressed, and the Gemara asks whether the Sages forbade even that. It tests the case against a mishna where Beit Hillel bar fowl and cheese from sharing a table, then distinguishes: two people have two separate minds, and clothing is a visible reminder. A baraita overrides the distinction, and Elijah tells a grieving widow her scholar husband died young for exactly this.",
+   "question": "If Rabbi Pedat holds that the Torah forbids only relations themselves, on what grounds is the student's early death called a fitting punishment for lying beside his wife?",
+   "screens": [],
+   "score": 0,
+   "gate": [
+    "the question brings in \"Pedat\", which the summary never mentions; the question must stand on the summary alone, so introduce it there or leave it out."
+   ],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "shabbat/14": {
+   "key": "shabbat/14",
+   "date": "2020-03-20",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:16:40.130Z",
+   "summary": "Much of the page asks why the Sages declared certain things impure, and the answers are practical. Ignorant priests stored teruma, the portion of produce given to priests, beside Torah scrolls, saying both were sacred; mice came for the food and gnawed the scrolls, so the Sages ruled the scroll itself imparts impurity and the priests moved the food away. Later the page notes that hands touching a scroll were decreed impure before hands in general.",
+   "question": "Why would the very same decree about impure hands be refused when Hillel and Shammai issued it, and accepted when their students did?",
+   "screens": [],
+   "score": 0,
+   "gate": [
+    "the question brings in \"Hillel\", which the summary never mentions; the question must stand on the summary alone, so introduce it there or leave it out.",
+    "the question brings in \"Shammai\", which the summary never mentions; the question must stand on the summary alone, so introduce it there or leave it out."
+   ],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "shabbat/15": {
+   "key": "shabbat/15",
+   "date": "2020-03-21",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:17:12.608Z",
+   "summary": "Rav Huna counts only three places where Hillel and Shammai personally disagreed: how much dough requires halla, the portion given to a priest; how much drawn water ruins a ritual bath; and how far back a woman's impurity reaches once she finds blood. In all three the Rabbis rule like neither of them. The ritual bath measure stayed open until two weavers from the Dung Gate testified in the name of Shemaya and Avtalyon, and their number won.",
+   "question": "If the weavers' testimony was strong enough to beat both Hillel and Shammai, why does the page stop to tell you their trade was despised and their neighborhood contemptible?",
+   "screens": [
+    "contradiction"
+   ],
+   "score": 1,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "shabbat/16": {
+   "key": "shabbat/16",
+   "date": "2020-03-22",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:26:03.875Z",
+   "summary": "Shimon ben Shataḥ's sister, Queen Shel Tziyyon, made a wedding feast for her son, and when all her metal vessels became ritually impure she broke them and had a smith weld them back together. The Sages said the maneuver failed, since recast metal takes up its old impurity again. Abaye explains the worry as an owner who loves his pot and will not smash it wide enough; Rava says bystanders will conclude a quick dip in water did the job.",
+   "question": "Should a repaired pot stay impure because of what a neighbor might wrongly conclude from watching it come clean?",
+   "screens": [],
+   "score": 0,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "shabbat/17": {
+   "key": "shabbat/17",
+   "date": "2020-03-23",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:16:29.541Z",
+   "summary": "Shammai and Hillel argue over whether juice seeping from harvested grapes makes them susceptible to ritual impurity, and Shammai threatens to decree the same for olives. The dispute ends with a sword planted in the study hall, no one permitted to leave until the vote, and Hillel sitting bowed before Shammai like a student. The Gemara calls that day as hard as the day of the Golden Calf, then notes the people refused the decree from the masters and accepted it from their students.",
+   "question": "Why would the same decree be rejected when Shammai and Hillel issued it, and accepted when their students issued it?",
+   "screens": [],
+   "score": 0,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "shabbat/18": {
+   "key": "shabbat/18",
+   "date": "2020-03-24",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:16:27.004Z",
+   "summary": "A water mill left grinding wheat into Shabbat is forbidden, and the Gemara asks why. Rabba says the noise of the grinding advertises contempt for the day; Rav Yosef says the tool itself is obligated to rest. That second reason forces a line between tools that act and tools that do not: an oven drying bundles of flax just sits there, and a fish net stands still while the fish swims into it.",
+   "question": "If a cooking pot escapes the demand that utensils rest simply by being declared ownerless before dark, what is left of the demand?",
+   "screens": [
+    "soft-rhetorical"
+   ],
+   "score": 2,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "shabbat/19": {
+   "key": "shabbat/19",
+   "date": "2020-03-25",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:31:49.343Z",
+   "summary": "An early teaching bars renting out utensils to a gentile on Friday and handing a letter to a gentile courier close to Shabbat, since the work done on Shabbat would look like it was done for the Jew. The fix is money: a fee fixed in advance makes the trip the courier's own business rather than an errand. Then comes Rabbi Yosei the priest, who broke no rule and still made sure a letter of his was never found in a gentile's hand.",
+   "question": "If a price agreed in advance really makes the delivery the courier's own affair, what was Rabbi Yosei avoiding by never sending a letter that way at all?",
+   "screens": [
+    "soft-rhetorical"
+   ],
+   "score": 2,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "shabbat/20": {
+   "key": "shabbat/20",
+   "date": "2020-03-26",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:31:54.872Z",
+   "summary": "The measure for food left cooking into Shabbat is set by ben Drosai, a robber on the run who ate his meat only partly roasted. From there the argument turns to when a bonfire counts as lit: most of each branch, says Rav, or just enough that nobody calls for thinner sticks, says Shmuel. Then a mishna lists wicks and oils barred from the Shabbat lamp, and the Gemara discovers that half the names had been forgotten.",
+   "question": "Can a rule against lighting with kalakh be kept by people who have to ask sailors what kalakh is?",
+   "screens": [],
+   "score": 0,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "shabbat/21": {
+   "key": "shabbat/21",
+   "date": "2020-03-27",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:46:35.194Z",
+   "summary": "Rabba explains why certain wicks and oils are barred from the Shabbat lamp: the flame sputters on them, or the oil is not drawn up the wick. The same materials are then argued over for Hanukkah, where everything hinges on two unsettled questions, whether a lamp that goes out must be relit and whether its light may be used for anything. Rav Huna, Rav Ḥisda and Rav each answer differently, and the sputtering wick is forbidden or permitted accordingly.",
+   "question": "If a storekeeper puts his lamp outside because the Sages told him to, should the owner of the passing camel, and not he, pay for the flax that burns?",
+   "screens": [],
+   "score": 0,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "shabbat/22": {
+   "key": "shabbat/22",
+   "date": "2020-03-28",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:25:46.053Z",
+   "summary": "Rav says one may not light one Hanukkah lamp from another; Shmuel permits it. Two reasons for Rav circulate: that borrowing the flame demeans the mitzva, or that it weakens it, using up a little of the oil and wick set aside for the mitzva. Rav Sheshet presses with the Temple candelabrum, whose westernmost lamp was lit with the same measure of oil as the rest and kindled them all, and the objection is left standing.",
+   "question": "If the westernmost lamp lit every other lamp each day and still burned longest, why does the worry about weakening a lamp survive as an unanswered difficulty?",
+   "screens": [
+    "contradiction"
+   ],
+   "score": 1,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "shabbat/23": {
+   "key": "shabbat/23",
+   "date": "2020-03-29",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:26:09.216Z",
+   "summary": "The blessing over the Hanukkah light says God \"has commanded us to light,\" and the Gemara stops to ask where, since no verse mentions Hanukkah at all. Rav Avya points to the command not to turn aside from what the Sages declare, making obedience to them itself a divine order. Rav Amram objects from demai, produce bought from someone who may not have tithed: the Sages let a man separate its tithe while naked, where no blessing is possible.",
+   "question": "If obeying the Sages counts as a divine command, why does the doubt about whether a farmer tithed strip the blessing away, while the doubt about which day the Festival falls on does not?",
+   "screens": [
+    "contradiction"
+   ],
+   "score": 1,
+   "gate": [
+    "the question brings in \"Festival\", which the summary never mentions; the question must stand on the summary alone, so introduce it there or leave it out."
+   ],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "shabbat/24": {
+   "key": "shabbat/24",
+   "date": "2020-03-30",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:31:13.248Z",
+   "summary": "The Sages ask whether Hanukkah, being only a rabbinic obligation, should be mentioned in Grace after Meals at all, and whether the New Moon should be. The argument narrows to added prayers: if the extra Shabbat prayer exists only because it is Shabbat, does Hanukkah belong inside it? The ruling comes from Yom Kippur falling on Shabbat, where the day itself owes four prayers, while the evening repetition, instituted so latecomers would not walk dark roads alone, does not count.",
+   "question": "If a prayer's origin decides whether the day gets named in it, why does the repetition added for safety on the road home count as less a part of the day than the rest?",
+   "screens": [
+    "contradiction"
+   ],
+   "score": 1,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "shabbat/25": {
+   "key": "shabbat/25",
+   "date": "2020-03-31",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:16:31.568Z",
+   "summary": "Rabbi Yishmael bars tar as lamp fuel on Shabbat, and Rava explains the decree: the smell is bad, so a person might walk away from the light. Abaye pushes back, asking what obliges anyone to sit by a lamp at all. Rava answers that kindling the Shabbat lamp is an obligation and the meal must be eaten by its light, which pulls the page on to hot water, linen cloaks, and four sages defining wealth.",
+   "question": "If the Shabbat lamp exists so that a person eats by its light, is the obligation the kindling or the staying put?",
+   "screens": [],
+   "score": 0,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "shabbat/26": {
+   "key": "shabbat/26",
+   "date": "2020-04-01",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:38:17.113Z",
+   "summary": "Balsam oil is flammable enough that the Gemara pauses on a mother-in-law who hated her daughter-in-law, told her to perfume herself with it, then sent her to light the lamp. The list of substances unfit for the Shabbat lamp then narrows, sage by sage, until Rabbi Tarfon permits olive oil alone. Rabbi Yoḥanan ben Nuri stands up and asks what Babylonia, Media, Alexandria, and Cappadocia are meant to burn, and the rule is recast as a closed list of forbidden oils.",
+   "question": "If Cappadocia has nothing but naphtha, does Rabbi Yoḥanan ben Nuri's answer actually leave them a lamp, or only a shorter list of things they cannot light?",
+   "screens": [],
+   "score": 0,
+   "gate": [
+    "the question brings in \"Nuri's\", which the summary never mentions; the question must stand on the summary alone, so introduce it there or leave it out.",
+    "drop \"actually\" from the question: if the page answers the question, ask what remains difficult after its answer instead of doubting it."
+   ],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "shabbat/27": {
+   "key": "shabbat/27",
+   "date": "2020-04-02",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:16:41.507Z",
+   "summary": "Abaye and Rava argue over which fabrics can contract ritual impurity: wool and linen only, or also camel hair, rabbits' wool, and silk. A ruling given in Rav Pappa's name is tested, fails, and is taken back from him. The sharper turn is ritual fringes, the threads on a garment's four corners: \"that you may look upon it\" should exempt a blind man's garment, but it stays in, and a night garment is excluded instead.",
+   "question": "If the fringes are there so the wearer will look at them and remember, why is it enough that a blind man's garment can be seen by everyone else?",
+   "screens": [
+    "contradiction"
+   ],
+   "score": 1,
+   "gate": [
+    "legal verb left hanging, \"exempt: exempt from what?\" Name the object."
+   ],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "shabbat/28": {
+   "key": "shabbat/28",
+   "date": "2020-04-03",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:37:54.302Z",
+   "summary": "Rabbi Elazar asks whether a hide from a non-kosher animal, spread over a corpse, counts as a tent and so picks up ritual impurity. The chase runs through the Tabernacle's coverings and the tahash, a creature nobody can identify, before Rava from Barnish settles it with goats' hair: goats' hair cannot become impure from leprosy yet counts as a tent, so non-kosher hide should too. The tahash stays a puzzle, one horn, wild or domesticated unknown.",
+   "question": "Once the ruling no longer depends on whether the tahash was kosher, why does the page keep pressing to identify the animal?",
+   "screens": [],
+   "score": 0,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "shabbat/29": {
+   "key": "shabbat/29",
+   "date": "2020-04-04",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:46:22.480Z",
+   "summary": "Rabbi Yehuda recalls a Shabbat in the upper story of Nit'za's house in Lod, where they pierced an eggshell, filled it with oil, and set it over a lamp to feed the flame longer. Rabbi Tarfon and other Elders were sitting right there and said nothing; the Rabbis answer that those men were vigilant, so their silence proves nothing about ordinary people. Rabbi Yitzhak ben Elazar, watching a bench dragged across a marble floor, refuses to stay quiet, saying silence itself did the damage.",
+   "question": "If the Elders' silence left Rabbi Yehuda with the wrong rule, is the mistake his for reading permission into it, or theirs for watching and saying nothing?",
+   "screens": [],
+   "score": 0,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "shabbat/30": {
+   "key": "shabbat/30",
+   "date": "2020-04-05",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:16:13.024Z",
+   "summary": "A question comes to Rabbi Tanhum of Nevi: may one extinguish a lamp on Shabbat so a sick person can sleep? Rather than answer, he sets Solomon against his father David and against himself on whether the dead are better off than the living, running through Moses' prayer, the Temple gates that refused to open, and David dying when a broken stair startled him into a moment's silence mid-study. Only at the close does the ruling arrive, as wordplay on the word ner, lamp.",
+   "question": "If one kingdom cannot overlap another by even a hairbreadth, how was David able to hold the Angel of Death off for hours simply by not pausing his study?",
+   "screens": [
+    "soft-rhetorical"
+   ],
+   "score": 2,
+   "gate": [
+    "the question brings in \"Angel\", which the summary never mentions; the question must stand on the summary alone, so introduce it there or leave it out.",
+    "the question brings in \"Death\", which the summary never mentions; the question must stand on the summary alone, so introduce it there or leave it out."
+   ],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "shabbat/31": {
+   "key": "shabbat/31",
+   "date": "2020-04-06",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:14:21.955Z",
+   "summary": "Two men bet four hundred zuz, a serious sum of silver, that one of them could provoke Hillel into losing his temper; the man tries three times with questions about oval heads and wide feet, and fails. Then three gentiles arrive with impossible conditions: teach me only the Written Torah, teach me the whole Torah while I stand on one foot, make me High Priest. Shammai drives each away with his builder's measuring stick; Hillel accepts every condition and then works around it.",
+   "question": "Hillel converted the third man on condition that he be installed as High Priest, something Hillel never arranges; is a promise kept when the one who made it simply teaches you to stop wanting it?",
+   "screens": [
+    "soft-rhetorical"
+   ],
+   "score": 2,
+   "gate": [],
+   "hadTranslation": true,
+   "rebake": false,
+   "why": []
+  },
+  "shabbat/32": {
+   "key": "shabbat/32",
+   "date": "2020-04-07",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:46:23.423Z",
+   "summary": "Rava, Abaye and Rav Hisda trade blunt folk sayings about why a woman's sins are reckoned at childbirth: if the ox falls, sharpen the knife. The talk turns to men, said to be examined when crossing a bridge, and Rav refused any ferry carrying a gentile while Shmuel boarded only if one was aboard. Then the roof parapet: the man who falls was marked as fallen since Creation, yet the negligent homeowner is still indicted.",
+   "question": "If the faller was destined to drop from that roof since the six days of Creation, what exactly is the homeowner being blamed for?",
+   "screens": [],
+   "score": 0,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "shabbat/33": {
+   "key": "shabbat/33",
+   "date": "2020-04-08",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:15:54.967Z",
+   "summary": "Rabbi Yehuda praises Rome for building marketplaces, bridges, and bathhouses; Rabbi Yosei stays silent; Rabbi Shimon bar Yoḥai answers that each was built for Roman purposes. The remark reaches the government: Yehuda is promoted, Yosei exiled, Shimon sentenced, so he hides twelve years in a cave with his son, sitting in sand, studying. When they emerge and burn farmers with a glance, a voice sends them back; later Shimon repays his rescue by repairing a town, as Jacob built marketplaces and bathhouses.",
+   "question": "If marketplaces and bathhouses were worth a death sentence when Rome built them, what makes them acts of kindness when Jacob or Rabbi Shimon builds them?",
+   "screens": [],
+   "score": 0,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "shabbat/34": {
+   "key": "shabbat/34",
+   "date": "2020-04-09",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:46:05.850Z",
+   "summary": "Three things have to be said at home just before dark on Friday: have you tithed the produce, have you placed the eiruv that lets neighbors carry in a shared courtyard, and light the lamp. Rabba bar Rav Huna adds that they must be said calmly, or the household may mislead him. Twilight itself stays undefined, carrying the strictures of both day and night, yet Rava lets two men each keep an eiruv that only one could have owned.",
+   "question": "If twilight gets the stringencies of both day and night, how do both men walk away with a valid eiruv when the same moment cannot have been day for one and night for the other?",
+   "screens": [],
+   "score": 0,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "shabbat/35": {
+   "key": "shabbat/35",
+   "date": "2020-04-10",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:37:51.760Z",
+   "summary": "Twilight is the seam between Friday and Shabbat, and the page hunts for ways to catch it: the time it takes to walk half a mil, a dip in the sea while Mount Carmel still holds sunlight, one star, two stars, three. Rava tells his servant, who does not know the Sages' measures, to watch the roosters settling on their beams. Rabbi Yosei ben Zevida adds that working through both twilights, Friday's and Saturday night's, brings a sin-offering either way.",
+   "question": "If neither of the two acts can be shown to have fallen on Shabbat, what exactly is the sin-offering for?",
+   "screens": [
+    "unglossed-question"
+   ],
+   "score": 1,
+   "gate": [
+    "gloss \"sin-offering\" in a few words the first time it appears; the reader has never opened a Talmud.",
+    "the question uses \"sin offering\", which the summary never introduced; gloss it in the summary first or leave it out of the question."
+   ],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "shabbat/36": {
+   "key": "shabbat/36",
+   "date": "2020-04-11",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:25:59.343Z",
+   "summary": "A shofar, a ram's horn, may be carried on Shabbat because its narrow end can pour water into a child's mouth, while a trumpet has no such permitted use. Sorting three conflicting early teachings leads Rav Hisda to a claim: after the Temple fell, the words shofar and trumpet swapped places, as did willow and tzaftzafa, and large table and small. Abaye adds the two stomachs of a cow; Rav Ashi adds Babylon, which came to mean Bursif.",
+   "question": "If names can trade places while the objects stay where they are, does a law about a willow branch bind the word or the branch?",
+   "screens": [],
+   "score": 0,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "shabbat/37": {
+   "key": "shabbat/37",
+   "date": "2020-04-12",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:39:48.890Z",
+   "summary": "The Sages keep hunting for proof about whether the mishna permits leaving a pot on a stove over Shabbat or returning one to it after removing it, and every proof gets rejected. The test then shifts from the stove to the food: if long cooking improves a dish, leaving it is forbidden, since someone might poke the coals; if it ruins the dish, it is fine. Rav Nahman's turnip stew switches categories depending on meat and on guests.",
+   "question": "If a turnip stew counts as improving or spoiling depending on whether guests are expected, whose appetite decides what may sit on the fire?",
+   "screens": [],
+   "score": 0,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  },
+  "shabbat/38": {
+   "key": "shabbat/38",
+   "date": "2020-04-13",
+   "promptVersion": "2026-09-20.5-20294613",
+   "generatedAt": "2026-09-20T18:16:17.970Z",
+   "summary": "A pot left on the stove before Shabbat keeps cooking into Shabbat, and the question is whether the food may be eaten. Rav reports that the rule once turned on intent, until so many people left pots on purpose and claimed they forgot that the Sages penalized the forgetful too. The page then argues about returning a pot to the stove, and whether holding it, setting it down, or hanging it on a stick matters.",
+   "question": "If the penalty exists only because liars claimed to have forgotten, what is it doing to the person who really did forget?",
+   "screens": [
+    "soft-rhetorical"
+   ],
+   "score": 2,
+   "gate": [],
+   "hadTranslation": false,
+   "rebake": false,
+   "why": []
+  }
+ }
+}
