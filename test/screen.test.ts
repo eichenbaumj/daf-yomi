@@ -40,6 +40,11 @@ describe("screens", () => {
     expect(screenNote({ summary: "The priest takes his portion.", question: "Why is teruma taken first?" }).flags).toContain("unglossed-question");
     expect(screenNote({ summary: "The priest takes his teruma, the priestly portion.", question: "Why is teruma taken first?" }).flags).not.toContain("unglossed-question");
   });
+  it("hears the contrastive echo (Joe, Bekhorot 4)", () => {
+    expect(screenNote({ summary: "Rav Safra presses the logic. The answer is a verse, not the exchange.", question: "Why?" }).flags).toContain("contrast-echo");
+    expect(screenNote({ summary: "It is not just the sheep but the sons.", question: "Why?" }).flags).toContain("contrast-echo");
+    expect(screenNote({ summary: "The answer comes from a verse. Levites owe the five coins, not priests, and the page says why.", question: "Why?" }).flags).not.toContain("contrast-echo"); // a named distinction mid-sentence is not the tic
+  });
   it("labels for reports", () => {
     expect(screenLabel(screenNote({ summary: "s", question: "Why?" }))).toBe("clean");
     expect(screenLabel(screenNote(bekhorot3))).toMatch(/^reason-seeking(\+[a-z-]+)* \(\d+\)$/);

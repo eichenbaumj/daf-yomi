@@ -11,11 +11,13 @@ export type ScreenFlag =
   | "interpretive"       // the summary characterises rather than reports ("seems to", "in effect")
   | "contradiction"      // "if X, why Y": the prompt's own approved shape, low weight
   | "mechanics"          // only quantities, measures or which-rule-applies, nothing underneath
-  | "unglossed-question";// a glossary term in the question with no gloss anywhere
+  | "unglossed-question" // a glossary term in the question with no gloss anywhere
+  | "contrast-echo";     // "The answer is a verse, not the exchange"; "not just X but Y" (Joe, 2026-09-22)
 
 export interface Screened { flags: ScreenFlag[]; score: number }
 
-const WEIGHTS: Record<ScreenFlag, number> = { "reason-seeking": 3, "soft-rhetorical": 2, interpretive: 2, mechanics: 3, "unglossed-question": 1, contradiction: 1 };
+const WEIGHTS: Record<ScreenFlag, number> = { "reason-seeking": 3, "soft-rhetorical": 2, interpretive: 2, mechanics: 3, "unglossed-question": 1, contradiction: 1, "contrast-echo": 2 };
+const CONTRAST_ECHO = /\b(not just|not only|not merely|not simply)\b|, not (?:a|an|the|his|her|its|their|what|whether|who|how)\b[^,.;?]{0,40}[.?]/i;
 
 const REASON_SEEKING = /\b(what (?:did|does|would|has) [^?]{0,60}?\b(?:change|changed|accomplish|accomplished|add|added|achieve|achieved|matter|mattered|gain|gained)\b|why bother|what (?:was|is) the point|what difference|to what end|what (?:was|is) [^?]{0,30}\bfor)\b/i;
 const SOFT_RHETORICAL = /\b(really|actually|simply|merely)\b|\bat all\s*\?|\bor not\s*\?/i;
@@ -34,6 +36,7 @@ export function screenNote(note: { summary: string; question: string }): Screene
   if (CONTRADICTION.test(q)) flags.push("contradiction");
   if (MECHANICS.test(q) && !IDEA_WORDS.test(q)) flags.push("mechanics");
   if (unglossed(q).length && unglossed(`${note.summary} ${q}`).length) flags.push("unglossed-question");
+  if (CONTRAST_ECHO.test(`${note.summary} ${q}`)) flags.push("contrast-echo");
   const score = flags.reduce((n, f) => n + WEIGHTS[f], 0);
   return { flags, score };
 }

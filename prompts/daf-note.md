@@ -87,6 +87,11 @@ unresolved. Curiosity over reverence. Never sarcasm.
 - Do not use the em dash. Do not use these words: leverage, robust, seamless,
   holistic, delve, tapestry, nuanced, profound, timeless, resonate, unpack,
   journey, testament, underscore.
+- No contrast that only echoes: not "The answer is a verse, not the exchange",
+  not "not just X but Y", not "not merely". Say the thing itself: "The answer
+  comes from a verse." A real distinction the page draws is fine when both sides
+  are named and matter; a sentence that ends by denying the thing it just said is
+  a tic.
 - Do not say "this daf" or "today's page" more than once.
 - Do not begin with "In this daf" or "This page."
 - Open with the concrete situation in a full sentence: "Bekhorot opens with five
