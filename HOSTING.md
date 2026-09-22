@@ -186,10 +186,14 @@ the AI note's question (`/og/<slug>/<daf>/<token>.png`, code in `src/og/`). Hebr
 | `/` today (edge hit) | 2–3 ms | |
 | Tractate page (KV list + 100+ cells) | 11–13 ms | cached 30 min |
 | `/feed.xml` | 7 ms | 14 KV reads |
+| `POST /admin/og/bake`, 3 cards in one browser launch (2026-09-22) | 87 ms | wall 3.7 s; about 25 ms CPU a card: the CDP round trips and the PNG decode. A 15-card chunk is a few hundred ms and was accepted |
+| Daf page, edge-bypassed, with the card metadata read | 5 ms | |
+| `/og/<slug>/<daf>/<token>.png`, old token (302) | 3 ms | a hit serves from KV, then the edge |
 
-Before the fixes, an uncached tractate page cost 55 ms and still returned OK. So either the free plan's
-documented 10 ms is enforced softly or this account is on Workers Paid. **I am uncertain which**; check
-Workers & Pages → Plans in the dashboard. Either way, keep an eye on `wrangler tail` after changes to
+Before the fixes, an uncached tractate page cost 55 ms and still returned OK, and on 2026-09-22 card bakes of
+87 ms (three cards) and a few hundred ms (fifteen) returned OK too. So either the free plan's documented 10 ms is
+enforced softly or this account is on Workers Paid. **I am uncertain which**; check Workers & Pages → Plans in
+the dashboard. If a card bake ever dies with error 1102, lower the backfill's `--chunk` and `OG_TRICKLE_PER_RUN`. Either way, keep an eye on `wrangler tail` after changes to
 rendering, and remember the cron run (up to 3 note generations) is the heaviest single invocation.
 
 ## Limits that matter (free plan, verified 2026-09-20 in Cloudflare docs)
