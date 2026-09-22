@@ -70,7 +70,7 @@ export async function runCron(env: Env, scheduledTime: number): Promise<{ log: s
       const label = `${ref.tractate.name} ${ref.daf} (${ymd(date)}) [${lang}]`;
       const existing = await getTranslation(env.DAF_KV, lang, ref.tractate, ref.daf);
       if (translationCurrent(note, existing, lang)) { say(`${label}: translation exists (current)`); continue; }
-      const outcome = await ensureTranslation(env, ref, lang, { force: true, countAgainstCap: true });
+      const outcome = await ensureTranslation(env, ref, lang, { force: true, countAgainstCap: true, judge: "once" });
       translations++;
       if (outcome.status === "generated") say(`${label}: translated in ${outcome.attempts} attempt(s)`);
       else if (outcome.status === "failed") say(`${label}: FAILED ${outcome.reason} ${(outcome.problems ?? []).join(" | ")}`);

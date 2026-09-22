@@ -8,6 +8,7 @@
 import type { Tractate } from "../daf/tractates";
 import type { Lang } from "../i18n/strings";
 import type { DafNote } from "./store";
+import type { TranslationVerdict } from "./tjudge";
 
 export interface TranslatedNote {
   summary: string;
@@ -21,6 +22,12 @@ export interface TranslatedNote {
   promptVersion: string;
   generatedAt: string;
   usage?: { inputTokens: number; outputTokens: number; attempts: number; estUsd: number };
+  /**
+   * The Hebrew judge's reading (src/note/tjudge.ts) of the draft it saw, recorded only when the translation is stored
+   * anyway. When `rewritten` is true the stored text is a later draft written with the judge's feedback, which was not
+   * judged again. `naturalness` is the judge's 1 to 5; `reasons` is empty on keep.
+   */
+  review?: { at: string; judgeVersion: string; naturalness: number; verdict: TranslationVerdict; reasons: string[]; rewritten: boolean; unverified?: boolean };
 }
 
 export const tnoteKey = (lang: Lang, t: Tractate, daf: number) => `tnote:v1:${lang}:${t.slug}:${daf}`;
