@@ -111,6 +111,29 @@ origin, so nothing else needed changing.
   same `checkTranslation` the Worker uses, and stores via `POST /admin/translate/put` (which checks again and refuses a
   translation of a stale note). Worker mode is one `POST /admin/translate` per daf. Cost anchor: about 13 cents list per
   note at Opus 5, half that in a batch; the archive is 2,711 KV writes (free plan: 1,000 a day, or Workers Paid).
+- **The Hebrew judge** (`src/note/tjudge.ts`, `prompts/daf-judge-he.md`; added 2026-09-22 after a native reader scored
+  Bekhorot 4 at 60/100: "bad Hebrew", English syntax showing through). The regex gate checks quotes, lengths and banned
+  words; the judge reads the Hebrew beside the English and answers three things: does it say what the English says (each
+  mismatch as an exact span of both), is the question the same question, and would an Israeli learner write it (each
+  stumble as an exact span, its kind and a better wording), plus a naturalness score of 1 to 5. As with the English judge
+  the verdict is derived in code (`verifyTranslationJudgment`): a span that is not really in the translation is
+  discounted, so a misquoting judge never re-translates anything. Re-translate iff a verified fidelity problem, a
+  different question, or `LANGUAGE_REBAKE_THRESHOLD` (2, a first guess; tune it after the first audit) or more verified
+  language problems. Where it runs: the cron's translation pass and `POST /admin/translate` pass `judge: "once"`, one
+  judge call after a draft passes the gate; a `rebake` verdict buys one more draft with the judge's feedback, stored if
+  it passes the gate and never judged again; at most three drafts and one judge per bake, about a cent a call (the pair
+  of notes, no page text). `judge=off` on the admin URL skips it. The stored translation carries `review` (naturalness,
+  verdict, reasons, and `rewritten` when a later draft is what was stored). `npm run translate` batch mode does the same
+  through the Batch API (a draft batch, the gate, a judge batch, one more draft for the ones sent back) and prints each
+  daf's screens and naturalness; `--no-judge` skips the judge. For review rounds: `npm run translate:try -- bekhorot/3
+  bekhorot/4 --judge` prints the stored Hebrew, a fresh draft, the gate's verdict, the lexical screens
+  (`src/note/screenHe.ts`: calques, a sentence over 28 words, a bare "פסוק", an echoed question; triage only, never a
+  gate) and the judge's reading, and stores nothing. Over the archive: `npm run notes:audit:he -- --all --review` (after
+  `npm run notes:export`) screens every stored translation, judges each beside its English note in one batch
+  (`scripts/audit-he.ts`, its own file: the English audit's shape is page text and the grounding gate through and through),
+  and writes `data/audit/he-<date>.json` with a naturalness histogram, the reasons and the screens; it prints the
+  `translate --force --dapim` command for the ones sent back. Bump `TRANSLATE_JUDGE_PROMPT_VERSION` when the judge's
+  criteria change enough that old verdicts should not be trusted.
 - **`HE_PUBLIC`** (wrangler var). `"0"`: Pre-Release, meaning `<meta name="robots" content="noindex">` on every `/he`
   page, no `/he` URLs in the sitemap, no hreflang, a notice under the header and a tag on the switch. `"1"` after the
   Israeli reviewer round: indexed, in the sitemap with `xhtml:link` alternates, `hreflang` in every page head.

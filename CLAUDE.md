@@ -55,6 +55,10 @@ English, Hebrew (`/he`, Pre-Release until `HE_PUBLIC=1`), Yiddish later on the s
   swapped for the original words and checked verbatim against the Hebrew/Aramaic. A translation belongs to one English
   bake (`of`); a re-bake retires it. Translations never generate on a visit (the crawler incident): cron for the near
   days, `npm run translate` for the rest. Bump `TRANSLATE_PROMPT_VERSION` when the Hebrew style changes enough to re-do.
+- The Hebrew note gets a second reading: the Hebrew judge (`src/note/tjudge.ts`, `prompts/daf-judge-he.md`) reads the
+  translation beside the English on the cron, `/admin/translate` and `npm run translate`, once per bake and never on a
+  rewritten draft; the verdict is derived in code from verified spans. `npm run translate:try -- <targets> --judge` for
+  review rounds, `npm run notes:audit:he` over the archive. Bump `TRANSLATE_JUDGE_PROMPT_VERSION` when its criteria change.
 - A language stays Pre-Release (noindex, unlisted, a notice on every page) until its native reviewer round is done.
 - Time axes (the position bar, the About diagram) stay left-to-right in every language; everything else is RTL via
   logical CSS properties.

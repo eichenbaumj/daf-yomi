@@ -3,6 +3,11 @@
  * swapped for the original words of the daf, and checks the result against the
  * Hebrew/Aramaic text before storing it (src/note/tstore.ts). Same shape as
  * generate.ts: draft, check, one retry with feedback, then give up.
+ *
+ * With `judge: "once"` a draft that passes the gate is read once more by the Hebrew judge (src/note/tjudge.ts): if it
+ * says something the English does not, asks a different question, or reads as English in Hebrew words, one more draft
+ * is written with the judge's feedback and stored if it passes the gate. Bounded at three drafts and one judge call, and
+ * a rewritten draft is never judged again, so the cron's translation pass stays a few cents.
  */
 import Anthropic from "@anthropic-ai/sdk";
 import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
@@ -13,13 +18,19 @@ import type { DafRef } from "../daf/schedule";
 import type { Lang } from "../i18n/strings";
 import { loadDafSections } from "../sefaria/client";
 import { plainText } from "../sefaria/sanitize";
+import { takeGenerationSlot } from "./cap";
+import { fingerprint } from "./fingerprint";
 import { estimateUsd } from "./generate";
 import type { GroundingResult } from "./grounding";
+import { normalizeHe } from "./hebrew";
 import { getNote, type DafNote } from "./store";
+import { judgeTranslation, type NotePair, type TranslationJudgeResult, type TranslationJudgment } from "./tjudge";
 import { getTranslation, putTranslation, type TranslatedNote } from "./tstore";
 
+export { normalizeHe };
+
 /** Bumped by hand when a translation style guide changes enough to re-translate the archive. */
-export const TRANSLATE_PROMPT_VERSION = "2026-09-21.1";
+export const TRANSLATE_PROMPT_VERSION = "2026-09-22.1";
 
 export const TranslationSchema = z.object({
   summary: z.string().describe("The summary in the target language, same meaning, 45 to 70 words, never past 80."),
@@ -36,10 +47,7 @@ export function systemPrompt(lang: TranslatableLang): string {
   return s;
 }
 export function hashTranslatePrompt(lang: TranslatableLang): string {
-  const s = systemPrompt(lang);
-  let h = 2166136261;
-  for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; }
-  return `${TRANSLATE_PROMPT_VERSION}-${h.toString(16)}`;
+  return fingerprint(TRANSLATE_PROMPT_VERSION, systemPrompt(lang));
 }
 
 export interface TranslateInput {
@@ -77,21 +85,14 @@ export async function buildTranslateInput(ref: DafRef, lang: TranslatableLang, n
   return { input: { lang, label: `${ref.tractate.name} ${ref.daf}`, note: { summary: note.summary, question: note.question, quotes: note.quotes }, sections }, heSource };
 }
 
-/** Hebrew text with vowels, cantillation, maqaf and punctuation removed, one space between words. */
-export function normalizeHe(s: string): string {
-  return s
-    .normalize("NFC")
-    .replace(/\p{Mn}/gu, "")
-    .replace(/־/g, " ")
-    .replace(/[^\p{L}\p{N} ]/gu, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-}
 const words = (s: string) => s.trim().split(/\s+/).filter(Boolean).length;
 
-const LATER_AUTHORITIES_HE = /רש[״"'’]י|תוספות|רמב[״"'’]ם|שטיינזלץ|ספריא|שולחן ערוך|משנה ברורה|בית יוסף|טור\b/;
-const SERMON_HE = /מלמד אותנו|מלמדת אותנו|אנו לומדים|אנחנו לומדים|מזכיר לנו|מזכירה לנו|עלינו ל|הבה נ/;
-const OPENERS_HE = /^(בדף (זה|הזה|היומי)|הדף (הזה|שלנו|של היום)|בסוגיה (זו|הזו))/;
+/** No Rashi, Tosafot, Rambam, Steinsaltz or Sefaria inside the note: the Hebrew form of grounding.ts's LATER_AUTHORITIES. */
+export const LATER_AUTHORITIES_HE = /רש[״"'’]י|תוספות|רמב[״"'’]ם|שטיינזלץ|ספריא|שולחן ערוך|משנה ברורה|בית יוסף|טור\b/;
+/** "teaches us", "we learn", "reminds us", "let us": the sermon. */
+export const SERMON_HE = /מלמד אותנו|מלמדת אותנו|אנו לומדים|אנחנו לומדים|מזכיר לנו|מזכירה לנו|עלינו ל|הבה נ/;
+/** "On this daf", "this page": the throat-clearing opener. */
+export const OPENERS_HE = /^(בדף (זה|הזה|היומי)|הדף (הזה|שלנו|של היום)|בסוגיה (זו|הזו))/;
 
 /** Quoted spans of three or more words in the prose must be copies of the original. */
 function quotedSpansHe(s: string): string[] {
@@ -135,7 +136,9 @@ export function checkTranslation(draft: TranslationDraft, heSource: string, engl
   return { ok: problems.length === 0, problems };
 }
 
-export async function draftTranslation(client: Anthropic, model: string, input: TranslateInput): Promise<{ draft: TranslationDraft | null; refusal?: string; usage: { inputTokens: number; outputTokens: number } }> {
+export interface TranslateDraftResult { draft: TranslationDraft | null; refusal?: string; usage: { inputTokens: number; outputTokens: number } }
+
+export async function draftTranslation(client: Anthropic, model: string, input: TranslateInput): Promise<TranslateDraftResult> {
   const response = await client.messages.parse({
     model,
     max_tokens: 4000,
@@ -150,9 +153,17 @@ export async function draftTranslation(client: Anthropic, model: string, input: 
 
 export type TranslateOutcome =
   | { status: "exists"; translation: TranslatedNote }
-  | { status: "generated"; translation: TranslatedNote; attempts: number; firstAttemptProblems?: string[] }
+  | { status: "generated"; translation: TranslatedNote; attempts: number; firstAttemptProblems?: string[]; judged?: TranslationJudgment }
   | { status: "skipped"; reason: string }
-  | { status: "failed"; reason: string; problems?: string[]; lastDraft?: TranslationDraft };
+  | { status: "failed"; reason: string; problems?: string[]; lastDraft?: TranslationDraft; judged?: TranslationJudgment };
+
+/** The paid and network-bound steps, replaceable in tests (the pattern of src/note/generate.ts `GenerateDeps`). */
+export interface TranslateDeps {
+  draft?: (input: TranslateInput) => Promise<TranslateDraftResult>;
+  judge?: (label: string, english: NotePair, hebrew: NotePair) => Promise<TranslationJudgeResult>;
+  buildInput?: typeof buildTranslateInput;
+}
+export interface TranslateOpts { force?: boolean; countAgainstCap?: boolean; judge?: "off" | "once" }
 
 /** Is this translation the one the page should show under the current English note and style? */
 export function translationCurrent(note: DafNote, tr: TranslatedNote | null, lang: TranslatableLang): boolean {
@@ -163,7 +174,7 @@ export function translationCurrent(note: DafNote, tr: TranslatedNote | null, lan
  * Translate (or fetch) the note for a daf in a language. Never called from a page visit: translations are made by
  * the cron for the near days and by scripts/translate.ts for everything else.
  */
-export async function ensureTranslation(env: Env, ref: DafRef, lang: TranslatableLang, opts: { force?: boolean; countAgainstCap?: boolean } = {}): Promise<TranslateOutcome> {
+export async function ensureTranslation(env: Env, ref: DafRef, lang: TranslatableLang, opts: TranslateOpts = {}, deps: TranslateDeps = {}): Promise<TranslateOutcome> {
   const { tractate: t, daf } = ref;
   const note = await getNote(env.DAF_KV, t, daf);
   if (!note) return { status: "skipped", reason: "no English note to translate" };
@@ -171,39 +182,63 @@ export async function ensureTranslation(env: Env, ref: DafRef, lang: Translatabl
     const existing = await getTranslation(env.DAF_KV, lang, t, daf);
     if (existing && translationCurrent(note, existing, lang)) return { status: "exists", translation: existing };
   }
-  if (!env.ANTHROPIC_API_KEY) return { status: "skipped", reason: "ANTHROPIC_API_KEY is not set" };
+  if (!env.ANTHROPIC_API_KEY && !deps.draft) return { status: "skipped", reason: "ANTHROPIC_API_KEY is not set" };
+  // Hard daily cap on paid generations, whatever the trigger (cron, admin without ?force): src/note/cap.ts.
   if (!opts.force || opts.countAgainstCap) {
-    const dayKey = `gen:${new Date().toISOString().slice(0, 10)}`;
-    const used = Number((await env.DAF_KV.get(dayKey)) ?? 0);
-    const cap = Number(env.DAILY_GENERATION_CAP ?? 12);
-    if (used >= cap) return { status: "skipped", reason: `daily generation cap of ${cap} reached (${used} today)` };
-    await env.DAF_KV.put(dayKey, String(used + 1), { expirationTtl: 60 * 60 * 48 });
+    const slot = await takeGenerationSlot(env);
+    if (!slot.ok) return { status: "skipped", reason: slot.reason };
   }
-  const { input, heSource } = await buildTranslateInput(ref, lang, note, env.DAF_KV);
+  const { input, heSource } = await (deps.buildInput ?? buildTranslateInput)(ref, lang, note, env.DAF_KV);
   if (heSource.length < 100) return { status: "failed", reason: "original text too short to check quotes against" };
-  const client = new Anthropic({ apiKey: env.ANTHROPIC_API_KEY, maxRetries: 2 });
   const model = env.NOTE_MODEL || "claude-opus-5";
+  const judgeModel = env.NOTE_JUDGE_MODEL || model;
+  const client = deps.draft && deps.judge ? null : new Anthropic({ apiKey: env.ANTHROPIC_API_KEY, maxRetries: 2 });
+  const draft = deps.draft ?? ((i: TranslateInput) => draftTranslation(client!, model, i));
+  const judge = deps.judge ?? ((label: string, en: NotePair, he: NotePair) => judgeTranslation(client!, judgeModel, label, en, he));
+  const withJudge = opts.judge === "once";
+  const maxDrafts = withJudge ? 3 : 2;
   let feedback: string | undefined;
   let inputTokens = 0, outputTokens = 0;
   let firstAttemptProblems: string[] | undefined;
-  for (let attempt = 1; attempt <= 2; attempt++) {
-    const { draft, refusal, usage } = await draftTranslation(client, model, { ...input, feedback });
+  let judged: TranslationJudgment | undefined;
+  let rewritten = false;
+  for (let attempt = 1; attempt <= maxDrafts; attempt++) {
+    const { draft: d, refusal, usage } = await draft({ ...input, feedback });
     inputTokens += usage.inputTokens; outputTokens += usage.outputTokens;
-    if (!draft) return { status: "failed", reason: refusal ? `refused: ${refusal}` : "unparseable response" };
-    const check = checkTranslation(draft, heSource, note);
-    if (check.ok) {
-      const translation: TranslatedNote = {
-        ...draft, of: note.generatedAt, sourcePromptVersion: note.promptVersion, model, promptVersion: hashTranslatePrompt(lang),
-        generatedAt: new Date().toISOString(),
-        usage: { inputTokens, outputTokens, attempts: attempt, estUsd: estimateUsd(model, inputTokens, outputTokens) },
-      };
-      await putTranslation(env.DAF_KV, lang, t, daf, translation);
-      return { status: "generated", translation, attempts: attempt, firstAttemptProblems };
+    if (!d) return { status: "failed", reason: refusal ? `refused: ${refusal}` : "unparseable response", judged };
+    const check = checkTranslation(d, heSource, note);
+    if (!check.ok) {
+      firstAttemptProblems ??= check.problems;
+      console.log(`[translate:${lang}] ${t.slug}/${daf} attempt ${attempt} rejected: ${check.problems.join(" | ")}`);
+      feedback = check.problems.join(" ");
+      if (attempt === maxDrafts) return { status: "failed", reason: `translation failed the checks ${attempt === 2 ? "twice" : `${attempt} times`}`, problems: check.problems, lastDraft: d, judged };
+      continue;
     }
-    firstAttemptProblems ??= check.problems;
-    console.log(`[translate:${lang}] ${t.slug}/${daf} attempt ${attempt} rejected: ${check.problems.join(" | ")}`);
-    feedback = check.problems.join(" ");
-    if (attempt === 2) return { status: "failed", reason: "translation failed the checks twice", problems: check.problems, lastDraft: draft };
+    if (withJudge && !judged) {
+      // The judge is advisory: a refusal, an unparseable verdict or a network error never stops a draft that passed the gate.
+      const j = await judge(input.label, note, d).catch((e: unknown): TranslationJudgeResult => ({ judgment: null, refusal: e instanceof Error ? e.message : String(e), usage: { inputTokens: 0, outputTokens: 0 } }));
+      inputTokens += j.usage.inputTokens; outputTokens += j.usage.outputTokens;
+      if (j.judgment) {
+        judged = j.judgment;
+        if (judged.verdict === "rebake" && attempt < maxDrafts) {
+          rewritten = true;
+          feedback = judged.feedback;
+          console.log(`[translate:${lang}] ${t.slug}/${daf} attempt ${attempt} sent back by the judge (${judged.reasons.join(", ")}; naturalness ${judged.naturalness}): ${judged.feedback}`);
+          continue;
+        }
+      } else {
+        console.log(`[translate:${lang}] ${t.slug}/${daf} judge gave no verdict: ${j.refusal ?? "unknown"}`);
+      }
+    }
+    const now = new Date().toISOString();
+    const translation: TranslatedNote = {
+      ...d, of: note.generatedAt, sourcePromptVersion: note.promptVersion, model, promptVersion: hashTranslatePrompt(lang),
+      generatedAt: now,
+      usage: { inputTokens, outputTokens, attempts: attempt, estUsd: estimateUsd(model, inputTokens, outputTokens) },
+      ...(judged ? { review: { at: now, judgeVersion: judged.judgeVersion, naturalness: judged.naturalness, verdict: judged.verdict, reasons: judged.reasons, rewritten, ...(judged.unverified ? { unverified: true } : {}) } } : {}),
+    };
+    await putTranslation(env.DAF_KV, lang, t, daf, translation);
+    return { status: "generated", translation, attempts: attempt, firstAttemptProblems, judged };
   }
   return { status: "failed", reason: "unreachable" };
 }

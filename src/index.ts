@@ -9,6 +9,7 @@ import { buildPromptInput, ensureNote } from "./note/generate";
 import { checkNote } from "./note/grounding";
 import { hashPrompt } from "./note/prompt";
 import { hashJudgePrompt } from "./note/judge";
+import { hashTranslateJudgePrompt } from "./note/tjudge";
 import { buildTranslateInput, checkTranslation, ensureTranslation, hashTranslatePrompt, type TranslatableLang } from "./note/translate";
 import { currentTranslation, getTranslation, putTranslation, type TranslatedNote } from "./note/tstore";
 import { ENABLED_LANGS, isLang, p, type Lang } from "./i18n/strings";
@@ -467,11 +468,12 @@ async function adminMap(request: Request, env: Env, today: Date, action: "bake" 
 
 /**
  * The translation endpoints (all Bearer <ADMIN_TOKEN>):
- *   POST /admin/translate?slug=&daf=&lang=he[&force=1]   translate here, one call, and store
+ *   POST /admin/translate?slug=&daf=&lang=he[&force=1][&judge=off]   translate here, one call, and store; the Hebrew
+ *        judge reads the draft once unless judge=off (src/note/translate.ts)
  *   GET  /admin/note?slug=&daf=[&lang=he]                the stored English note (and that language's translation)
- *   POST /admin/translate/put  {lang, slug, daf, summary, question, quotes, of, model, promptVersion, usage?}
+ *   POST /admin/translate/put  {lang, slug, daf, summary, question, quotes, of, model, promptVersion, usage?, review?}
  *        store a translation made offline (scripts/translate.ts via the Batch API); it is checked here again and
- *        refused unless `of` is the stored English note's generatedAt.
+ *        refused unless `of` is the stored English note's generatedAt. `review` is the Hebrew judge's verdict on it.
  */
 async function adminTranslate(request: Request, env: Env, today: Date, action: "run" | "put" | "note"): Promise<Response> {
   if (!authorized(request, env)) return new Response("unauthorized", { status: 401 });
@@ -490,7 +492,7 @@ async function adminTranslate(request: Request, env: Env, today: Date, action: "
     if (!isLang(langParam) || langParam === "en") return new Response("bad lang", { status: 400 });
     const ref = refFromParams(url, today);
     if (ref instanceof Response) return ref;
-    const outcome = await ensureTranslation(env, ref, langParam, { force: url.searchParams.has("force") });
+    const outcome = await ensureTranslation(env, ref, langParam, { force: url.searchParams.has("force"), judge: url.searchParams.get("judge") === "off" ? "off" : "once" });
     return new Response(JSON.stringify({ daf: `${ref.tractate.slug}/${ref.daf}`, lang: langParam, ...outcome }, null, 2), { status: outcome.status === "failed" ? 502 : 200, headers: JSON_H });
   }
   // put
@@ -509,12 +511,14 @@ async function adminTranslate(request: Request, env: Env, today: Date, action: "
   const { heSource } = await buildTranslateInput(ref, lang, note, env.DAF_KV);
   const check = checkTranslation(draft, heSource, note);
   if (!check.ok) return new Response(JSON.stringify({ status: "rejected", problems: check.problems }), { status: 422, headers: JSON_H });
+  const r = body?.review;
   const translation: TranslatedNote = {
     ...draft, of: note.generatedAt, sourcePromptVersion: note.promptVersion,
     model: String(body?.model ?? env.NOTE_MODEL ?? "claude-opus-5"),
     promptVersion: String(body?.promptVersion ?? hashTranslatePrompt(lang)),
     generatedAt: new Date().toISOString(),
     usage: body?.usage && typeof body.usage === "object" ? { inputTokens: Number(body.usage.inputTokens ?? 0), outputTokens: Number(body.usage.outputTokens ?? 0), attempts: Number(body.usage.attempts ?? 1), estUsd: Number(body.usage.estUsd ?? 0) } : undefined,
+    ...(r && typeof r === "object" ? { review: { at: String(r.at ?? new Date().toISOString()), judgeVersion: String(r.judgeVersion ?? hashTranslateJudgePrompt()), naturalness: Number(r.naturalness ?? 0), verdict: r.verdict === "rebake" ? "rebake" as const : "keep" as const, reasons: Array.isArray(r.reasons) ? r.reasons.map(String) : [], rewritten: Boolean(r.rewritten), ...(r.unverified ? { unverified: true } : {}) } } : {}),
   };
   await putTranslation(env.DAF_KV, lang, t, daf, translation);
   return new Response(JSON.stringify({ status: "stored", daf: `${t.slug}/${daf}`, lang }, null, 2), { headers: JSON_H });
