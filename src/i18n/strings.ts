@@ -110,8 +110,6 @@ export interface Strings {
   mapAiLabel: string;
   /** The label of each kind of unit, e.g. "A question". */
   mapKind: Record<MapKind, string>;
-  /** One clause per kind for the legend under the map, English only; a language whose readers know the terms leaves every gloss "". */
-  mapKindGloss: Record<MapKind, string>;
   /** "3 of 6". */
   mapUnitOf: (n: number, total: number) => string;
   /** The running head: "3 of 6 · An objection: But the ox is different". */

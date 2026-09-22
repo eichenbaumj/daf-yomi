@@ -39,13 +39,11 @@ describe("the string tables", () => {
       expect(bare, s).not.toMatch(/[A-Za-z]/);
     }
   });
-  it("label and gloss every kind of the map, glossing in English only", () => {
+  it("labels every kind of the map in both languages", () => {
     for (const table of [en, he]) {
       expect(Object.keys(table.mapKind).sort()).toEqual([...MAP_KINDS].sort());
-      expect(Object.keys(table.mapKindGloss).sort()).toEqual([...MAP_KINDS].sort());
       for (const k of MAP_KINDS) expect(table.mapKind[k].length, k).toBeGreaterThan(0);
     }
-    for (const k of MAP_KINDS) { expect(en.mapKindGloss[k].length, k).toBeGreaterThan(0); expect(he.mapKindGloss[k], k).toBe(""); }
     expect(en.mapUnitOf(3, 6)).toBe("3 of 6");
     expect(he.mapUnitOf(3, 6)).toBe("3 מתוך 6");
     expect(en.mapHead("3 of 6", "An objection", "But the ox")).toBe("3 of 6 · An objection: But the ox");

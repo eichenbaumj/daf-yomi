@@ -61,14 +61,14 @@ describe("map gate", () => {
     expect(problems(withUnit(2, { kind: "lesson" as never }))).toContainEqual(expect.stringMatching(/kind "lesson", which is not one of: mishna, reading/));
   });
   it("holds the caps", () => {
-    expect(problems(withUnit(2, { title: "one two three four five six seven eight nine ten eleven twelve thirteen" }))).toContainEqual(expect.stringMatching(/title is 13 words; at most 12/));
-    expect(problems(withUnit(2, { gloss: "w ".repeat(35).trim() }))).toContainEqual(expect.stringMatching(/gloss is 35 words/));
-    expect(checkMap(withUnit(2, { gloss: "w ".repeat(32).trim() }), page, source).ok).toBe(true); // a little past thirty is tolerated
+    expect(problems(withUnit(2, { title: "one two three four five six seven eight nine ten eleven" }))).toContainEqual(expect.stringMatching(/title is 11 words; at most 10/));
+    expect(problems(withUnit(2, { gloss: "w ".repeat(25).trim() }))).toContainEqual(expect.stringMatching(/gloss is 25 words/));
+    expect(checkMap(withUnit(2, { gloss: "w ".repeat(22).trim() }), page, source).ok).toBe(true); // a little past twenty is tolerated
     expect(problems(withUnit(2, { gloss: "Rav Huna says the ear counts. The page agrees with him." }))).toContainEqual("unit 3's gloss is more than one sentence.");
     expect(problems(withUnit(2, { title: "A case" }))).toContainEqual(expect.stringMatching(/only the kind's name/));
     expect(problems(withUnit(2, { title: "Left open" }))).toContainEqual(expect.stringMatching(/only the kind's name/));
     expect(problems(withUnit(2, { title: good.units[0]!.title }))).toContainEqual(expect.stringMatching(/is used twice/));
-    expect(problems({ ...good, shape: "w ".repeat(46).trim() })).toContainEqual(expect.stringMatching(/shape sentence is 46 words/));
+    expect(problems({ ...good, shape: "w ".repeat(35).trim() })).toContainEqual(expect.stringMatching(/shape sentence is 35 words/));
     expect(problems({ ...good, shape: "This page opens with a mishna about donkeys and then asks why there are five cases." })).toContainEqual(expect.stringMatching(/do not open the shape/));
   });
   it("applies the note's rules to every string", () => {

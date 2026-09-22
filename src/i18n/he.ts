@@ -92,7 +92,6 @@ export const he: Strings = {
     ruling: "מסקנה",
     open: "נשאר פתוח",
   },
-  mapKindGloss: { mishna: "", reading: "", question: "", answer: "", objection: "", proof: "", dispute: "", case: "", story: "", digression: "", ruling: "", open: "" },
   mapUnitOf: (n, total) => `${n} מתוך ${total}`,
   mapHead: (of, kind, title) => `${of} · ${kind}: ${title}`,
   hereBarAria: "איפה אתם בדף",

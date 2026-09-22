@@ -295,22 +295,23 @@ html.map-hidden .pagemap { padding-bottom: .6rem; }
 .pagemap-label { margin-bottom: .5rem; }
 .pagemap-shape { margin: 0 0 .8rem; font-size: 1.02rem; }
 .pagemap-units { list-style: none; margin: 0; padding: 0; counter-reset: unit; }
-.pagemap-unit { counter-increment: unit; display: grid; grid-template-columns: 1.5rem minmax(0, 1fr); gap: 0 .3rem; margin: 0 0 .5rem; padding-inline-start: .6rem; border-inline-start: 2px solid var(--rule); }
-.pagemap-unit::before { content: counter(unit); grid-row: 1 / span 2; font-size: .72rem; color: var(--ink-3); font-variant-numeric: tabular-nums; padding-top: .3rem; }
+.pagemap-unit { counter-increment: unit; display: grid; grid-template-columns: 1.5rem minmax(0, 1fr); gap: 0 .3rem; margin: 0 0 .3rem; padding-inline-start: .6rem; border-inline-start: 2px solid var(--rule); }
+.pagemap-unit::before { content: counter(unit); font-size: .72rem; color: var(--ink-3); font-variant-numeric: tabular-nums; padding-top: .3rem; }
 .pagemap-unit[aria-current] { border-inline-start-color: var(--accent); }
 .pagemap-unit[aria-current] .unit-title { color: var(--accent); }
 .pagemap-link { text-decoration: none; color: var(--ink); }
 .pagemap-link:hover .unit-title { text-decoration: underline; }
 .unit-kind { font-variant-caps: small-caps; letter-spacing: .04em; color: var(--ink-2); font-size: .92rem; margin-inline-end: .3rem; }
 .unit-title { overflow-wrap: anywhere; }
-.unit-gloss { display: block; font-size: .92rem; color: var(--ink-2); line-height: 1.5; }
-.pagemap-kinds { margin: .8rem 0 0; font-size: .88rem; }
+.unit-gloss { display: block; font-size: .88rem; color: var(--ink-2); line-height: 1.5; }
 /* "Hide the daf" hides the map with it: its links point at the text, and that mode is for browsing the notes. */
 html.text-hidden .pagemap { display: none; }
 /* The marker at the first segment of a unit: one quiet line, ruled like a section break, linking back to the map. */
-.unit-mark { display: block; margin: .2rem 0 .45rem; padding-top: .35rem; border-top: 1px solid var(--rule); font-size: .8rem; line-height: 1.45; color: var(--ink-2); text-decoration: none; }
-.unit-mark:hover { color: var(--accent); }
+.unit-mark { display: block; margin: .2rem 0 .55rem; padding-top: .35rem; border-top: 1px solid var(--rule); font-size: .8rem; line-height: 1.45; color: var(--ink-2); }
+.unit-mark-link { color: inherit; text-decoration: none; }
+.unit-mark-link:hover { color: var(--accent); }
 .unit-mark .unit-kind { font-size: .8rem; }
+.unit-mark .unit-gloss { font-size: .84rem; margin-top: .1rem; }
 .seg { scroll-margin-top: 3.2rem; }
 /* The running head: fixed at the top once the map has scrolled away; filled and shown by app.js. A printed book's idiom. */
 .here-bar { position: fixed; top: 0; inset-inline: 0; z-index: 5; margin: 0 auto; max-width: var(--measure); display: flex; align-items: center; gap: .5rem; padding: .35rem 16px; background: color-mix(in srgb, var(--paper) 94%, transparent); backdrop-filter: blur(6px); border-bottom: 1px solid var(--rule); box-shadow: 0 2px 8px -6px var(--shadow); font-size: .88rem; color: var(--ink-2); }

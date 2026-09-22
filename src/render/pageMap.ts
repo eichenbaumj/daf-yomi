@@ -68,19 +68,12 @@ export function unitHead(lang: Lang, u: MapViewUnit, total: number): string {
 export function renderPageMap(view: MapView, lang: Lang): string {
   const S = strings(lang);
   const total = view.units.length;
+  // A table of contents, not a second reading of the page (Joe, 2026-09-22: a reader should be into the text within
+  // half a minute): the kind and the title only. Each unit's gloss is shown by its marker in the text, where the reader
+  // arrives at it (unitMarker below).
   const items = view.units.map((u) => `<li class="pagemap-unit" id="pagemap-u${u.n}" data-unit="${u.n}" data-head="${esc(curl(lang, unitHead(lang, u, total)))}">
       <a class="pagemap-link" href="#${esc(u.from)}"><span class="unit-kind">${esc(S.mapKind[u.kind])}</span> <span class="unit-title">${esc(u.title)}</span></a>
-      <span class="unit-gloss">${esc(u.gloss)}</span>
     </li>`).join("\n");
-  // The kinds on this page, each glossed once, in order of first appearance; a language with no glosses gets no legend.
-  const seen = new Set<MapKind>();
-  const legend: string[] = [];
-  for (const u of view.units) {
-    if (seen.has(u.kind)) continue;
-    seen.add(u.kind);
-    const g = S.mapKindGloss[u.kind];
-    if (g) legend.push(`<b>${esc(S.mapKind[u.kind])}</b>: ${esc(g)}.`);
-  }
   // The map's own toggle (Joe, 2026-09-22): open by default; some readers hide the map and read the daf, others hide
   // the daf and read the notes. Wired by the generic button[data-toggle] loop in public/app.js; html.map-hidden hides
   // the map's body, the markers in the text and the running head, and the head script restores it before paint.
@@ -92,7 +85,7 @@ export function renderPageMap(view: MapView, lang: Lang): string {
   <p class="pagemap-shape">${esc(view.shape)}</p>
   <ol class="pagemap-units">
     ${items}
-  </ol>${legend.length ? `\n  <p class="pagemap-kinds muted">${legend.join(" ")}</p>` : ""}
+  </ol>
   </div>
 </nav>`;
 }
@@ -110,8 +103,12 @@ export function renderHereBar(lang: Lang, prev: Turn | null, next: Turn | null):
 </nav>`;
 }
 
-/** The marker at the first segment of a unit. It sits inside the Sefaria fence, so its title is curled here, then escaped. */
+/**
+ * The marker at the first segment of a unit: the kind and the title, linking back to the map, and under them the
+ * unit's gloss, one short sentence on what is about to happen. It sits inside the Sefaria fence, so its words are
+ * curled here, then escaped.
+ */
 export function unitMarker(lang: Lang, u: MapViewUnit): string {
   const S = strings(lang);
-  return `<a class="unit-mark" href="#pagemap-u${u.n}"><span class="unit-kind">${esc(S.mapKind[u.kind])}</span> <span class="unit-title">${esc(curl(lang, u.title))}</span></a>`;
+  return `<div class="unit-mark"><a class="unit-mark-link" href="#pagemap-u${u.n}"><span class="unit-kind">${esc(S.mapKind[u.kind])}</span> <span class="unit-title">${esc(curl(lang, u.title))}</span></a><span class="unit-gloss">${esc(curl(lang, u.gloss))}</span></div>`;
 }

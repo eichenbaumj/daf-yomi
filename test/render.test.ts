@@ -324,10 +324,10 @@ describe("the map of the page", () => {
     expect(html).toContain('<span class="ai">AI map</span>');
     // Every segment carries its unit; the markers sit on the first segment of each unit.
     expect([...html.matchAll(/<li class="seg" id="([ab]-\d+)" data-unit="(\d+)">/g)].map((m) => `${m[1]}:${m[2]}`)).toEqual(["a-1:1", "a-2:2", "b-1:2", "b-2:3"]);
-    expect(html).toMatch(/id="a-1" data-unit="1">\s*<a class="unit-mark" href="#pagemap-u1">/);
-    expect(html).toMatch(/id="a-2" data-unit="2">\s*<a class="unit-mark" href="#pagemap-u2">/);
+    expect(html).toMatch(/id="a-1" data-unit="1">\s*<div class="unit-mark"><a class="unit-mark-link" href="#pagemap-u1">/);
+    expect(html).toMatch(/id="a-2" data-unit="2">\s*<div class="unit-mark"><a class="unit-mark-link" href="#pagemap-u2">/);
     expect(html).toMatch(/id="b-1" data-unit="2">\s*<a class="segno"/);
-    expect(html).toMatch(/id="b-2" data-unit="3">\s*<a class="unit-mark" href="#pagemap-u3">/);
+    expect(html).toMatch(/id="b-2" data-unit="3">\s*<div class="unit-mark"><a class="unit-mark-link" href="#pagemap-u3">/);
     expect((html.match(/class="unit-mark"/g) ?? []).length).toBe(3);
     // Every link resolves.
     const pagemap = /<nav class="pagemap"[\s\S]*?<\/nav>/.exec(html)![0];
@@ -335,12 +335,11 @@ describe("the map of the page", () => {
     expect(unitLinks).toEqual(["a-1", "a-2", "b-2"]);
     for (const id of unitLinks) expect(html).toContain(`id="${id}"`);
     for (const m of html.matchAll(/href="#pagemap-u(\d+)"/g)) expect(html).toContain(`id="pagemap-u${m[1]}"`);
-    // Each gloss once; the legend glosses each kind once, in order of first appearance.
-    for (const g of ["The case.", "Why list them all.", "It stands."]) expect(html.split(g).length - 1, g).toBe(1);
-    const legend = /<p class="pagemap-kinds muted">(.*?)<\/p>/.exec(html)![1]!;
-    expect((legend.match(/<b>/g) ?? []).length).toBe(3);
-    expect(legend.indexOf("The mishna")).toBeLessThan(legend.indexOf("A question"));
-    expect(legend.indexOf("A question")).toBeLessThan(legend.indexOf("Left open"));
+    // The block is a table of contents: each gloss appears once, in its marker in the text, not in the block.
+    const block = /<nav class="pagemap"[\s\S]*?<\/nav>/.exec(html)![0];
+    for (const g of ["The case.", "Why list them all.", "It stands."]) { expect(html.split(g).length - 1, g).toBe(1); expect(block).not.toContain(g); }
+    expect(html).toContain('<span class="unit-gloss">Why list them all.</span></div>');
+    expect(html).not.toContain("pagemap-kinds");
     // Curly quotes reach the marker inside the fence and the running head's attribute; Sefaria's markup is untouched.
     expect(html).toContain('<span class="unit-title">Rav’s question</span>');
     expect(html).toContain('data-head="2 of 3 · A question: Rav’s question"');
@@ -382,7 +381,6 @@ describe("the map of the page", () => {
     expect(html).toContain(tmap.shape);
     for (const k of ["משנה", "שאלה", "נשאר פתוח"]) expect(html).toContain(`<span class="unit-kind">${k}</span>`);
     expect(html).toContain("הלוקח חמור");
-    expect(html).not.toContain("pagemap-kinds"); // the Hebrew reader knows the terms: no legend
     expect(html).not.toContain(map.shape);
     expect(html).not.toContain("A question");
     expect(html).not.toContain("The shape of the page");

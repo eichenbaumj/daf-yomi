@@ -32,10 +32,12 @@ you do not say it.
   unit. A unit that begins at MISHNA: is the mishna. GEMARA: is a label, not
   a kind: the unit that begins there is whatever the Gemara does first, most
   often a reading or a question.
-- Usually four to twelve units. A short question and its answer may be one
-  unit when together they are a line or two. A dispute is one unit unless the
-  page dwells on each side in turn. A new unit begins where the argument
-  turns, not where the subject stays and the words go on.
+- Usually five to nine units, never more than twelve. The map is a table of
+  contents a reader takes in at a glance before the text, not a second
+  reading of the page: a question and its answers are one unit, a dispute
+  with its proofs is one unit, a run of objections on one point is one unit.
+  A new unit begins where the argument turns to something else, not where
+  the subject stays and the words go on.
 
 ## Kinds
 
@@ -68,7 +70,7 @@ its kind is what the page does most in those lines.
 
 ## Titles
 
-At most ten words, plain English, naming the concrete thing: "Why five
+At most eight words, plain English, naming the concrete thing: "Why five
 cases and not one", "Rav Huna: the ear is enough", "Aaron was never counted".
 Never the kind's name alone ("Question"), never a category ("Legal analysis").
 No transliterated terms a newcomer would not know. No colon-and-teaser
@@ -76,9 +78,11 @@ No transliterated terms a newcomer would not know. No colon-and-teaser
 
 ## Glosses
 
-One sentence, at most 30 words, saying what happens in these lines in the
-page's own concrete terms: who asks what, which verse is brought, what the
-story turns on. What happens, not what it teaches. Gloss any term a newcomer
+One short sentence, at most 20 words, saying what happens in these lines in
+the page's own concrete terms: who asks what, which verse is brought, what
+the story turns on. It is shown where the unit begins in the text, as a
+reader arrives there, so it says what is about to happen, not what it
+teaches. Gloss any term a newcomer
 would not know, in a few words, the first time it appears anywhere in the
 map, and not again. Legal verbs need their objects: exempt from what, liable
 for what. Name a sage only if the page names them. Any words you put in
@@ -86,7 +90,7 @@ quotation marks are copied exactly from the page.
 
 ## Shape
 
-One sentence, at most 40 words, on how the whole page moves, said concretely:
+One sentence, at most 30 words, on how the whole page moves, said concretely:
 "A mishna about shared donkeys, three rounds of asking why the list needs
 five cases, and a dispute the page leaves standing." Not "This page" or "In
 this daf". A page that is one long argument says so. A page that is a Mishnah
@@ -121,10 +125,10 @@ what is there.
   exemptions says "from what" in every gloss.
 - Quotation marks are for the page's words only, copied exactly. A verse
   reference or your own phrase never goes in quotation marks.
-- Count before you answer. A title of more than ten words, a gloss of more
-  than thirty, or a shape of more than forty is rejected and costs a
-  second draft. Short is the house style: most glosses run fifteen to
-  twenty-five words.
+- Count before you answer. A title of more than eight words, a gloss of more
+  than twenty, or a shape of more than thirty is rejected and costs a
+  second draft. Short is the house style: most glosses run ten to fifteen
+  words, and a reader should be into the text within half a minute.
 - Read it back before you answer: every segment id you use is one the page
   has, the units chain from the first id to the last without a gap, articles
   agree with the word that follows, and every sentence has a verb.
