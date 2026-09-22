@@ -33,7 +33,7 @@ describe("card template", () => {
     expect(html).toContain("Sunday, 20 September 2026 · 9 Tishrei 5787");
     expect(html).toContain('<span id="qt">The Mishna opens with five ways a gentile can hold a stake in a donkey, and in all five the young animal is exempt.</span>');
     expect(html).not.toContain("Why does the Mishna count"); // the question waits on the page
-    expect(html).toContain("TODAY&#39;S DAF");
+    expect(html).toContain("TODAY’S DAF");
     expect(html).toContain('<div class="chip">AI NOTE</div>');
     expect(html).toContain("Written by Claude, an AI. Not a scholar.");
     expect(html).toContain('<span class="site">daf-yomi.dev</span>');
@@ -51,7 +51,7 @@ describe("card template", () => {
   it("escapes the note and the label", () => {
     const html = renderCardHtml({ ...model, summary: '<script>x</script> "quoted"' }, fonts);
     expect(html).not.toContain("<script>x</script>");
-    expect(html).toContain("&lt;script&gt;x&lt;/script&gt; &quot;quoted&quot;");
+    expect(html).toContain("&lt;script&gt;x&lt;/script&gt; “quoted”");
   });
   it("draws the six Orders sized by days, with the tick at this daf", () => {
     expect(ORDERS.map((o) => o.days)).toEqual([63, 731, 605, 682, 558, 72]);

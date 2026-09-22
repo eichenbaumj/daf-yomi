@@ -1,4 +1,5 @@
 import type { Env } from "../types";
+import { SEFARIA_CLOSE, SEFARIA_OPEN } from "./typography";
 import { TRACTATES, dafPath, introRef, type Tractate } from "../daf/tractates";
 import { dateForDaf, ymd, type DafRef } from "../daf/schedule";
 import type { SefariaText } from "../sefaria/client";
@@ -46,7 +47,7 @@ export function renderTractatePage(m: TractatePageModel): string {
   const introVersion = lang === "he" ? m.intro?.heVersion : m.intro?.enVersion;
   const intro = m.intro && introHtml.length
     ? `<details class="intro"><summary>${esc(S.introSummary(name))}</summary>
-<div class="intro-body">${introHtml.map((s) => `<p>${s}</p>`).join("\n")}</div>
+<div class="intro-body">${SEFARIA_OPEN}${introHtml.map((s) => `<p>${s}</p>`).join("\n")}${SEFARIA_CLOSE}</div>
 <p class="credit">${esc(introVersion?.versionTitle ?? "")}${introVersion?.license ? ` (${esc(introVersion.license)})` : ""} · <a href="https://www.sefaria.org/${esc(m.intro.urlRef)}${lang === "he" ? "?lang=he" : ""}" rel="noopener">${esc(S.onSefaria)}</a></p></details>`
     : "";
   const prevT = TRACTATES[t.order - 1];

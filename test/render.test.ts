@@ -74,7 +74,7 @@ describe("daf page", () => {
     expect(html).toContain('href="https://www.sefaria.org/Bekhorot.2a?lang=bi"');
     expect(html).toContain("9 Tishrei 5787");
     expect(html).toContain('<link rel="canonical" href="https://example.test/">'); // today's page is the homepage
-    expect(html).toContain('<title>Today&#39;s Daf Yomi: Bekhorot 2 in English · Today&#39;s Daf</title>');
+    expect(html).toContain('<title>Today’s Daf Yomi: Bekhorot 2 in English · Today’s Daf</title>');
     expect(html).toContain('application/ld+json');
     const ld = JSON.parse(/<script type="application\/ld\+json">(.*?)<\/script>/s.exec(html)![1]!);
     expect(ld.map((x: { "@type": string }) => x["@type"])).toEqual(["Article", "BreadcrumbList", "WebSite"]);
@@ -97,7 +97,7 @@ describe("daf page", () => {
     const noCard = renderDafPage({ ...base, note, card: null });
     expect(noCard).toContain('<meta property="og:image" content="https://example.test/og.png">');
     expect(noCard).toContain('<meta name="twitter:image" content="https://example.test/og.png">');
-    expect(noCard).toContain('<meta property="og:image:alt" content="Today&#39;s Daf: the day&#39;s page of Talmud, in English">');
+    expect(noCard).toContain('<meta property="og:image:alt" content="Today’s Daf: the day’s page of Talmud, in English">');
     const noNote = renderDafPage({ ...base, note: null, card: { token: "deadbeef" } }); // a stray token without a note never shows
     expect(noNote).toContain('<meta property="og:image" content="https://example.test/og.png">');
   });
@@ -116,7 +116,7 @@ describe("daf page", () => {
   it("gives a permalink its own canonical", () => {
     const html = renderDafPage({ ...base, isToday: false, note: null });
     expect(html).toContain('<link rel="canonical" href="https://example.test/bekhorot/2">');
-    expect(html).toContain("<title>Bekhorot 2: Daf Yomi in English · Today&#39;s Daf</title>");
+    expect(html).toContain("<title>Bekhorot 2: Daf Yomi in English · Today’s Daf</title>");
   });
   it("says when the note is pending instead of hiding the box", () => {
     const html = renderDafPage({ ...base, note: null });
@@ -235,14 +235,14 @@ describe("Hebrew pages (Pre-Release)", () => {
     expect(html).toContain('data-toggle="he" data-off="הצגת המקור" data-on="הסתרת המקור"');
     expect(html).toContain('data-toggle="talmudOnly" data-off="גמרא בלבד"');
     expect(html).toContain("הדף של היום: בכורות ב׳");
-    expect(html).toContain("<title>הדף היומי של היום: בכורות ב׳ · Today&#39;s Daf</title>");
+    expect(html).toContain("<title>הדף היומי של היום: בכורות ב׳ · Today’s Daf</title>");
     expect(html).toContain("ט׳ תשרי תשפ״ז");
     expect(html).toContain("יום ראשון, 20 בספטמבר 2026");
     expect(html).toContain("המשנה מונה חמישה מקרים."); // the translation, not the English note
     expect(html).not.toContain(">S.<");
     expect(html).toContain('href="/he/bekhorot/3"');
     expect(html).toContain('href="/he/tractates"');
-    expect(html).toContain('<link rel="alternate" type="application/rss+xml" title="Today&#39;s Daf" href="/he/feed.xml">');
+    expect(html).toContain('<link rel="alternate" type="application/rss+xml" title="Today’s Daf" href="/he/feed.xml">');
     expect(html).toContain('<meta property="og:image" content="https://example.test/og-he.png">'); // no Hebrew card yet: the static one
     expect(html).toContain('<div class="note-actions"><button type="button" class="share" data-share-url="https://example.test/he/bekhorot/2" data-share-done="הועתק" hidden>שיתוף ההערה</button></div>'); // the share pillar alone
     expect(html).not.toContain('href="/newsletter"'); // no newsletter in Hebrew yet

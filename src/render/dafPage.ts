@@ -1,4 +1,5 @@
 import type { Env } from "../types";
+import { SEFARIA_CLOSE, SEFARIA_OPEN } from "./typography";
 import { dafPath, type Tractate } from "../daf/tractates";
 import { adjacentDaf, ymd, type DafRef } from "../daf/schedule";
 import { chaptersForDaf, positionFor, type Position } from "../daf/position";
@@ -129,11 +130,11 @@ function amudSection(lang: Lang, label: string, t: SefariaText, biur: BiurText |
 </li>`);
     }
   }
-  return `<section class="amud" id="${anchor}" aria-labelledby="${anchor}-h">
+  return `${SEFARIA_OPEN}<section class="amud" id="${anchor}" aria-labelledby="${anchor}-h">
   <h2 id="${anchor}-h" class="amud-title"><span>${esc(label)}${heRef}</span></h2>
   <ol class="segments">${items.join("\n")}</ol>
   <p class="credit">${versionCredit(lang, t, biur)}</p>
-</section>`;
+</section>${SEFARIA_CLOSE}`;
 }
 
 export const MJL_SERIES_URL = "https://www.myjewishlearning.com/article/daf-yomi/";

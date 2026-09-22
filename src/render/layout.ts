@@ -1,4 +1,5 @@
 import type { Env } from "../types";
+import { smartenHtml, smartenText } from "./typography";
 import { ENABLED_LANGS, dirOf, p, type Lang } from "../i18n/strings";
 import { strings } from "../i18n/format";
 
@@ -37,8 +38,9 @@ export function isPublicLang(env: Env, lang: Lang): boolean {
 
 export function page(o: PageOptions): string {
   const lang = o.lang ?? "en";
+  o = { ...o, title: smartenText(o.title), description: smartenText(o.description), body: lang === "en" ? smartenHtml(o.body) : o.body };
   const S = strings(lang);
-  const siteName = o.env.SITE_NAME;
+  const siteName = smartenText(o.env.SITE_NAME);
   const fullTitle = o.title === siteName ? siteName : `${o.title} · ${siteName}`;
   const canonical = `${o.origin}${p(lang, o.canonicalPath)}`;
   const prerelease = !isPublicLang(o.env, lang);
@@ -74,7 +76,7 @@ ${alternates ? alternates + "\n" : ""}<meta property="og:site_name" content="${e
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="${esc(ogImageAlt)}">
+<meta property="og:image:alt" content="${esc(smartenText(ogImageAlt))}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="${esc(ogImage)}">
 <meta name="twitter:image:alt" content="${esc(ogImageAlt)}">

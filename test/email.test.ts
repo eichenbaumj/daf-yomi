@@ -95,7 +95,7 @@ describe("the daily issue", () => {
   });
 
   it("names the day's place and glosses the Order", () => {
-    expect(r.html).toContain("Bekhorot, one of the Talmud&#39;s 40 tractates (books), daf 2 of 61.");
+    expect(r.html).toContain("Bekhorot, one of the Talmud’s 40 tractates (books), daf 2 of 61.");
     expect(r.html).toContain("Seder Kodashim (holy things: the Temple and its offerings)");
     expect(r.html).toContain("Day 2,451 of 2,711");
     expect(r.html).toContain("Sunday, 20 September 2026");
@@ -142,7 +142,7 @@ describe("the daily issue", () => {
 
   it("renders the confirmation email", () => {
     const c = renderConfirmEmail({ origin: "https://example.test", siteName: "Today's Daf", confirmUrl: "https://example.test/newsletter/confirm?t=x.y", hourLabel: "6 am", tz: "America/New_York", editionLabel: "the day's daf" });
-    expect(c.subject).toBe("Confirm your Today's Daf email");
+    expect(c.subject).toBe("Confirm your Today’s Daf email");
     expect(c.html).toContain("Daf Yomi <span"); expect(c.html).toContain(">Dot Dev</span>"); expect(c.text).toContain("DAF YOMI DOT DEV"); // the wordmark, as on the site
     expect(c.html).toContain("https://example.test/newsletter/confirm?t=x.y");
     expect(c.text).toContain("Yes, send me the daf: https://example.test/newsletter/confirm?t=x.y");

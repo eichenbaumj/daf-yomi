@@ -11,6 +11,7 @@
  * images; one Hebrew run (the tractate title) behind a flag; gold is never
  * text. Per-reader values are placeholders substituted by personalize().
  */
+import { smartenHtml, smartenText } from "./typography";
 import { esc } from "./layout";
 import { AI_LABEL, LEGEND } from "./dafPage";
 import { SEDARIM } from "./dafYomiDiagram";
@@ -309,7 +310,7 @@ ${td(`class="mute" style="padding:14px 0 0;${muteStyle(13, 20)}"`, `Free, no acc
     `Free, no accounts, no tracking pixel. ${m.siteName}, daf-yomi.dev. A good day of learning to you.`,
   ].filter((line) => line !== null).join("\n").replace(/\n{3,}/g, "\n\n"));
 
-  return { subject, preheader, html, text };
+  return { subject: smartenText(subject), preheader: smartenText(preheader), html: smartenHtml(html), text: smartenText(text) };
 }
 
 /** Substitute the per-reader placeholders. Tokens are hex; the address and dates go through esc() for HTML. */
@@ -362,5 +363,5 @@ ${td(`style="padding:18px 0 0;${muteStyle(13, 20)}"`, `If the button does not wo
 </td></tr></table></div></body></html>
 `;
   const text = wrap([WORDMARK_TEXT, "", "ONE CLICK TO CONFIRM", "", body, "", `Yes, send me the daf: ${c.confirmUrl}`, "", tail].join("\n"));
-  return { subject, preheader: body, html, text };
+  return { subject: smartenText(subject), preheader: smartenText(body), html: smartenHtml(html), text: smartenText(text) };
 }

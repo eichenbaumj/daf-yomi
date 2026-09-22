@@ -13,6 +13,9 @@ cron; permalinks for every daf.
   or quote something not in the daf. `src/note/grounding.ts` enforces this; tests cover it.
 - **Attribution on every page**: William Davidson Talmud, Koren Noé, Steinsaltz, Sefaria, CC BY-NC 4.0.
   Non-commercial forever.
+- **Curly apostrophes and quotes in the site's own prose** (Joe, 2026-09-22): `src/render/typography.ts` makes them at
+  render time (page wrapper, email, feed, card). Notes stay straight in KV and the API. Sefaria's text is fenced
+  (`SEFARIA_OPEN`/`SEFARIA_CLOSE`) and never touched; Hebrew chrome is left alone.
 - **No em dashes, no AI tells** in any rendered prose (`test/render.test.ts` checks the chrome; the
   grounding check covers notes).
 - Joe's voice on `/about`: first person, plain, dry. Not corporate.

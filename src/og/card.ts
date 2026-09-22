@@ -13,6 +13,7 @@
  * Bump CARD_VERSION when the design changes: cards carrying an older version are re-rendered by the
  * trickle (src/og/bake.ts) but keep serving meanwhile, since their question is still the current one.
  */
+import { smartenText } from "../render/typography";
 import { TRACTATES } from "../daf/tractates";
 import { SEDARIM } from "../render/dafYomiDiagram";
 import type { Lang } from "../i18n/strings";
@@ -159,12 +160,12 @@ body{width:${CARD_W}px;height:${CARD_H}px;overflow:hidden;background:var(--paper
 <div class="orders" aria-hidden="true">${bar}</div>
 <div id="tick" style="left:${tickLeft(m.dayInCycle, m.cycleLength)}px"></div>
 <div class="row">
-  <div class="mark">${STAR_SVG("22px")}<span>${esc(m.wordmark)}</span></div>
+  <div class="mark">${STAR_SVG("22px")}<span>${esc(smartenText(m.wordmark))}</span></div>
   <div class="chip">${esc(m.aiChip)}</div>
 </div>
 <div class="title"><span id="label">${esc(m.label)}</span><span class="he" id="he" lang="he" dir="rtl">${esc(m.heTitle)}</span></div>
 <div class="date" id="date">${esc(m.dateWords)} · ${esc(m.hebrewDateWords)}</div>
-<div id="hero"><p id="q">${STAR_SVG(".55em")}<span id="qt">${esc(m.summary)}</span></p></div>
+<div id="hero"><p id="q">${STAR_SVG(".55em")}<span id="qt">${esc(smartenText(m.summary))}</span></p></div>
 <div class="foot"><span class="site">${esc(m.site)}</span><span class="ai">${esc(m.aiLine)}</span></div>
 <script>${CARD_SCRIPT}
 window.__dafFit();
