@@ -81,13 +81,19 @@ export function renderPageMap(view: MapView, lang: Lang): string {
     const g = S.mapKindGloss[u.kind];
     if (g) legend.push(`<b>${esc(S.mapKind[u.kind])}</b>: ${esc(g)}.`);
   }
+  // The map's own toggle (Joe, 2026-09-22): open by default; some readers hide the map and read the daf, others hide
+  // the daf and read the notes. Wired by the generic button[data-toggle] loop in public/app.js; html.map-hidden hides
+  // the map's body, the markers in the text and the running head, and the head script restores it before paint.
+  const toggle = `<button type="button" class="pagemap-toggle" data-toggle="map" data-off="${esc(S.toggleMap[0])}" data-on="${esc(S.toggleMap[1])}" aria-pressed="false" aria-controls="pagemap-body">${esc(S.toggleMap[0])}</button>`;
   return `<nav class="pagemap" id="pagemap" aria-labelledby="pagemap-h">
-  <h2 id="pagemap-h" class="pagemap-h">${esc(S.mapHeading)}</h2>
+  <div class="pagemap-head"><h2 id="pagemap-h" class="pagemap-h">${esc(S.mapHeading)}</h2>${toggle}</div>
+  <div class="pagemap-body" id="pagemap-body">
   <p class="note-label pagemap-label"><span class="ai">${esc(S.mapAiBadge)}</span> ${esc(S.mapAiLabel)}</p>
   <p class="pagemap-shape">${esc(view.shape)}</p>
   <ol class="pagemap-units">
     ${items}
   </ol>${legend.length ? `\n  <p class="pagemap-kinds muted">${legend.join(" ")}</p>` : ""}
+  </div>
 </nav>`;
 }
 

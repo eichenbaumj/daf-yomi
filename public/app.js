@@ -3,8 +3,8 @@
   // Three reading options, each remembered in this browser and applied as a class on <html>. "text" hides the daf itself
   // so a reader can browse the notes day to day; it stays hidden across pages until they bring the text back.
   // Button labels come from the page (data-off / data-on), so every language renders its own.
-  var KEYS = { he: "daf:he", talmudOnly: "daf:talmudOnly", text: "daf:textHidden" };
-  var CLASSES = { he: "show-he", talmudOnly: "talmud-only", text: "text-hidden" };
+  var KEYS = { he: "daf:he", talmudOnly: "daf:talmudOnly", text: "daf:textHidden", map: "daf:mapHidden" };
+  var CLASSES = { he: "show-he", talmudOnly: "talmud-only", text: "text-hidden", map: "map-hidden" };
   function read(k) { try { return localStorage.getItem(k) === "1"; } catch (e) { return false; } }
   function write(k, v) { try { localStorage.setItem(k, v ? "1" : "0"); } catch (e) {} }
   function sync(btn, on) {

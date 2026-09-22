@@ -284,7 +284,14 @@ html[dir="rtl"] .zoom-line, html[dir="rtl"] .dy-label, html[dir="rtl"] .dy-legen
 /* A ruled block between the note and the text, not a second card. One ink for the kinds (the reader is meant to
    learn the words, not a colour code); oxblood is spent on the current unit only, gold stays on the ornament. */
 .pagemap { margin: 0 0 1.4rem; padding: 0 0 1rem; border-bottom: 1px solid var(--rule); }
-.pagemap-h { font-size: 1.05rem; margin: 0 0 .45rem; }
+.pagemap-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin: 0 0 .45rem; }
+.pagemap-h { font-size: 1.05rem; margin: 0; }
+/* The map's toggle: quiet text in the register of "Share this note", not a pill. */
+.pagemap-toggle { font: inherit; font-size: .82rem; letter-spacing: .02em; color: var(--ink-3); background: none; border: 0; padding: 0; cursor: pointer; white-space: nowrap; }
+.pagemap-toggle:hover, .pagemap-toggle:focus-visible { color: var(--accent); outline: none; }
+/* Hidden by its own toggle: the heading and the button stay so it can come back; the body, the markers and the running head go. */
+html.map-hidden .pagemap-body, html.map-hidden .unit-mark, html.map-hidden .here-bar { display: none !important; }
+html.map-hidden .pagemap { padding-bottom: .6rem; }
 .pagemap-label { margin-bottom: .5rem; }
 .pagemap-shape { margin: 0 0 .8rem; font-size: 1.02rem; }
 .pagemap-units { list-style: none; margin: 0; padding: 0; counter-reset: unit; }

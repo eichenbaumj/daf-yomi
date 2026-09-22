@@ -357,7 +357,11 @@ describe("the map of the page", () => {
     expect(html).not.toMatch(/—/);
     // The existing exact counts are untouched by the map.
     expect((html.match(/class="dc/g) ?? []).length).toBe(60);
-    expect((html.match(/data-toggle=/g) ?? []).length).toBe(3);
+    // The map's own toggle, in its heading row, wired like the reading options; hiding it takes the markers and the bar too.
+    expect((html.match(/data-toggle=/g) ?? []).length).toBe(4);
+    expect(html).toContain('<div class="pagemap-head"><h2 id="pagemap-h" class="pagemap-h">The shape of the page</h2><button type="button" class="pagemap-toggle" data-toggle="map" data-off="Hide the map" data-on="Show the map" aria-pressed="false" aria-controls="pagemap-body">Hide the map</button></div>');
+    expect(html).toContain('<div class="pagemap-body" id="pagemap-body">');
+    expect(html).toContain('"daf:mapHidden")==="1"?" map-hidden"'); // restored before paint
   });
   it("draws nothing without a map, and nothing for a map that does not fit the text", () => {
     for (const html of [renderDafPage({ ...base }), renderDafPage({ ...base, map: { ...map, units: [map.units[0]!, { ...map.units[1]!, to: "a-2" }, { ...map.units[2]!, from: "b-1", to: "b-1" }] } })]) {
@@ -393,10 +397,11 @@ describe("the map of the page", () => {
   it("is wired in the stylesheet and the script", () => {
     const css = readFileSync("public/styles.css", "utf8");
     expect(css).toMatch(/html\.text-hidden \.pagemap \{ display: none; \}/);
+    expect(css).toMatch(/html\.map-hidden \.pagemap-body, html\.map-hidden \.unit-mark, html\.map-hidden \.here-bar \{ display: none !important; \}/);
     expect(css).toMatch(/@media print \{[^}]*\.here-bar[^}]*display: none/);
     expect(css).toMatch(/prefers-reduced-motion[\s\S]{0,160}html \{ scroll-behavior: auto; \}/);
     expect(css).toMatch(/\.zoom-stage \{[^}]*height: 20px/); // the position bar, one step larger (Joe, 2026-09-22)
     const js = readFileSync("public/app.js", "utf8");
-    for (const hook of ['getElementById("pagemap")', ".here-bar", "data-head", "IntersectionObserver", "aria-current"]) expect(js).toContain(hook);
+    for (const hook of ['getElementById("pagemap")', ".here-bar", "data-head", "IntersectionObserver", "aria-current", 'map: "daf:mapHidden"', 'map: "map-hidden"']) expect(js).toContain(hook);
   });
 });

@@ -103,6 +103,8 @@ export interface Strings {
 
   // ---- the map of the page (src/render/pageMap.ts; drawn by src/map) ----
   mapHeading: string;
+  /** The map's own toggle, in its heading row: open by default, remembered in the browser like the reading options. */
+  toggleMap: [off: string, on: string];
   mapAiBadge: string;
   /** The AI sentence above the map's words, every time. */
   mapAiLabel: string;
