@@ -41,12 +41,19 @@ export async function runMessageBatch<S extends z.ZodTypeAny>(client: Anthropic,
     saved = { ids, requestIds: requests.map((r) => r.custom_id) };
     writeFileSync(path, JSON.stringify(saved, null, 2));
   }
+  // A laptop's network blinks over the hours a batch takes; a failed poll is retried, never fatal.
+  const retrieve = async (id: string) => {
+    for (let attempt = 1; ; attempt++) {
+      try { return await client.messages.batches.retrieve(id); }
+      catch (e) { if (attempt >= 30) throw e; process.stdout.write(`  poll failed (${e instanceof Error ? e.message : e}); retrying in ${POLL_MS / 1000}s\n`); await sleep(POLL_MS); }
+    }
+  };
   for (const id of saved.ids) {
-    let status = await client.messages.batches.retrieve(id);
+    let status = await retrieve(id);
     while (status.processing_status !== "ended") {
       process.stdout.write(`  ${new Date().toISOString().slice(11, 19)} ${id}: processing ${status.request_counts.processing}, done ${status.request_counts.succeeded}, errored ${status.request_counts.errored}\n`);
       await sleep(POLL_MS);
-      status = await client.messages.batches.retrieve(id);
+      status = await retrieve(id);
     }
     for await (const result of await client.messages.batches.results(id)) {
       const cid = result.custom_id;
