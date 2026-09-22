@@ -49,15 +49,17 @@ async function main() {
     const ref = targets.get(key)!;
     const stored = notes[key];
     if (!stored?.note) { console.log(`${key}: no note in the export; skipped`); continue; }
+    // The gate and the screens are recomputed every run (they are cheap and the rules move); a judge verdict on
+    // the same stored note is kept, so a rerun after a gate change costs nothing.
     const existing = file.dapim[key];
-    if (existing?.judge && existing.generatedAt === stored.note.generatedAt) continue;
+    const keep = existing?.judge && existing.generatedAt === stored.note.generatedAt ? { judge: existing.judge } : {};
     const { sourceText } = await pageText(ref);
     const s = screenNote(stored.note);
     file.dapim[key] = {
       key, date: ymd(dateForDaf(ref.tractate, ref.daf, ref.cycle)), promptVersion: stored.note.promptVersion, generatedAt: stored.note.generatedAt,
       summary: stored.note.summary, question: stored.note.question,
       screens: s.flags, score: s.score, gate: checkNote(stored.note, sourceText).problems,
-      hadTranslation: Boolean(stored.translation), rebake: false, why: [],
+      hadTranslation: Boolean(stored.translation), rebake: false, why: [], ...keep,
     };
     if (++n % 50 === 0) { process.stderr.write(`${n}/${keys.length} screened\n`); save(file); }
   }

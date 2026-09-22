@@ -95,7 +95,7 @@ export function danglingLegalVerbs(text: string): string[] {
 }
 
 /** Capitalised words a reader knows without introduction; anything else capitalised in the question must already be in the summary. */
-const HOUSEHOLD_NAMES = new Set(["gemara", "talmud", "torah", "mishna", "mishnah", "bible", "rabbi", "rav", "rabban", "sages", "god", "heaven", "temple", "sanctuary", "shabbat", "sabbath", "israel", "jerusalem", "egypt", "jew", "jews", "jewish", "levite", "levites", "priest", "priests", "moses", "aaron", "david", "abraham", "isaac", "jacob", "exodus", "genesis", "leviticus", "numbers", "deuteronomy",
+const HOUSEHOLD_NAMES = new Set(["gemara", "talmud", "torah", "mishna", "mishnah", "bible", "rabbi", "rabbis", "rav", "rabban", "sages", "lord", "god", "heaven", "temple", "sanctuary", "shabbat", "sabbath", "israel", "jerusalem", "egypt", "jew", "jews", "jewish", "levite", "levites", "priest", "priests", "moses", "aaron", "david", "abraham", "isaac", "jacob", "exodus", "genesis", "leviticus", "numbers", "deuteronomy",
   // A question's first word is capitalised whatever it is.
   "if", "when", "why", "what", "who", "whom", "whose", "which", "where", "whether", "how", "does", "do", "did", "is", "are", "was", "were", "has", "have", "had", "can", "could", "should", "would", "will", "might", "must", "may", "the", "a", "an", "in", "on", "once", "since", "after", "before", "given", "suppose", "and", "but", "so", "then", "yet", "now", "for", "to", "of", "at", "by", "with", "i"]);
 
