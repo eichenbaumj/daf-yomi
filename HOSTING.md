@@ -225,17 +225,19 @@ enforced softly or this account is on Workers Paid. **I am uncertain which**; ch
 the dashboard. If a card bake ever dies with error 1102, lower the backfill's `--chunk` and `OG_TRICKLE_PER_RUN`. Either way, keep an eye on `wrangler tail` after changes to
 rendering, and remember the cron run (up to 3 note generations) is the heaviest single invocation.
 
-## Limits that matter (free plan, verified 2026-09-20 in Cloudflare docs)
+## Limits that matter (Workers Paid since 2026-09-22; free-plan figures kept for the record)
 
-- 100,000 requests/day, 10 ms CPU per request and per cron invocation, 50 subrequests per request.
-- 5 cron triggers per account; this Worker uses 4 (two bakes, one hourly newsletter tick, the card bake at 06:20/18:20).
-- **KV: 1,000 writes/day on free, hard-enforced** (hit it 2026-09-20 during re-bakes: "KV put() limit exceeded
-  for the day"; resets at midnight UTC). That is why Sefaria text and generation locks live in the edge Cache
-  API, not KV: a crawl of all 2,711 permalinks would otherwise burn 5,000 writes. KV now takes roughly one
-  write per note (≈3/day from the cron) plus the 28 one-time ref lookups for the irregular tractates.
-  A big forced re-bake of the archive still costs one KV write per daf, so keep those under ~900 a day or
-  move to Workers Paid.
-- If any of this binds, Workers Paid is $5/month and lifts CPU to 30 s.
+Joe moved the account to Workers Paid ($5/month plus usage) on 2026-09-22, verified on the dashboard's Workers plans
+page: KV writes, deletes and lists are billed at $5 per million with no daily ceiling (free: 1,000 a day, hard),
+reads $0.50 per million, 10 million requests a month included, CPU per request 30 s at least (the plans table says
+up to 5 minutes per invocation), subrequests 10,000, cron triggers 250. What that changes here: the archive passes
+(a re-bake, the Hebrew, the maps, the cards) run in one go instead of 850 a day, and the scripts' `--budget` flags
+are no longer binding (left in place; harmless). What it does not change: KV writes are still one per artifact and
+Sefaria text and locks still live in the edge Cache API; the `DAILY_GENERATION_CAP` (18) still caps paid
+generations a day whatever the trigger; the Console spend limit is still the last line.
+
+Free-plan figures, for the record (verified 2026-09-20): 100,000 requests/day, 10 ms CPU per request and per cron
+invocation, 50 subrequests, 5 cron triggers, KV 1,000 writes/day (hit on 2026-09-20 during re-bakes).
 
 ## Incident, 2026-09-20: a crawl generated 2,456 notes in an hour (~$190)
 
@@ -255,6 +257,49 @@ after) whenever their note predates the current `PROMPT_VERSION` (≈3 notes, ~2
 reach the live page within a day. The archive (2,711 notes, ~$200 a pass) is re-baked deliberately and
 rarely, once or twice a year at most, and must be spread over 3 days on the free plan (1,000 KV
 writes/day) or run on Workers Paid.
+
+## The map of the page (added 2026-09-22)
+
+The structural orientation a Hebrew-speaking reader (Yeshaya) asked for: between the note and the text, the page cut
+into its moves, each pointing at the segments it covers, and one sentence on how the whole page runs; as the reader
+scrolls, a running head says "7 of 13 · A reading: …" with the page turns at its ends. Joe's decisions the same day:
+the heading "The shape of the page", the label sentence, the twelve kinds, glosses visible, the block has its own toggle
+(open by default, remembered like the reading options; hiding it hides the markers and the running head).
+
+- **Where it lives.** `src/map/` (vocabulary, cues, prompt, gate, generator, store), `prompts/daf-map.md`
+  (`MAP_PROMPT_VERSION`), `src/render/pageMap.ts` (the block after the ornament, the markers as the first child of a
+  unit's first segment inside the Sefaria fence, the running head), `public/app.js` (two IntersectionObservers, no
+  scroll listener). KV `map:v1:<slug>:<daf>`, one write per map. The page says `x-daf-map: yes|no`; a page with a
+  note but no map is cached ten minutes. `/api/<slug>/<daf>.json` and `/api/today.json` carry `map` with `drawnBy`.
+- **The page as the model sees it.** Every segment numbered the way the page numbers it (`max(en, he)` per amud,
+  placeholders kept; the note's prompt builder drops empty segments, so the map has its own), and the William Davidson
+  marks: `§` at the start of a segment (6,339 across the cycle, never mid-segment), `MISHNA:`/`GEMARA:` (nine glued
+  mid-segment to a chapter introduction, so they are looked for anywhere in the segment), Guggenheimer's `MISHNAH:`/
+  `HALAKHAH:` on the Shekalim days. Each must begin a unit (the gate enforces it). About 290 dapim, mostly older Koren
+  volumes (Shabbat 60, Pesachim 58, Eruvin 46, Berakhot 38), carry no mark; there the model divides alone.
+- **The gate** (`src/map/gate.ts`): units chain over every segment without a gap, marks begin units, a MISHNA unit is
+  the mishna, kinds from `MAP_KINDS`, caps with a little tolerance past what the prompt asks (title 12 words, gloss
+  34, shape 45: the model lands at 31 or 32 on "at most thirty"), then the note's lexical rules per unit so the
+  feedback names the line, and every quotation verified against the page. A term glossed once anywhere in the map is
+  glossed. Three drafts at most (`MAP_MAX_DRAFTS`), each after the first with the feedback; a page that fails three
+  times shows no map, never a wrong one. `mapView` at render time refuses a map whose ids no longer fit the text.
+- **Where it runs.** The cron's third pass, after the notes and before the translations: the three near days, three
+  per run, re-drawn when the style changed. `POST /admin/map/bake?slug=&daf=[&force=1]`, `GET /admin/map?slug=&daf=`,
+  `POST /admin/map/put` (the note put's contract: stale style refused, `replaces` must match, the gate re-run against
+  the edge-cached text, 429 on the KV limit). Never on a visit.
+- **Measured cost** (2026-09-22, Opus 5 list): Bekhorot 4 took two drafts, 20,321 input and 10,618 output tokens,
+  $0.37; tomorrow's and the day after's pages are in `.cache`-free admin logs. Thinking is most of the output: a
+  single draft runs 4,000 to 6,000 output tokens, so `MAP_MAX_TOKENS` is 12,000 (a 33-segment page was cut off at
+  6,000). At batch price a first-draft map is about $0.10 to $0.17 and a page that needs three drafts about $0.45;
+  the 2,711-daf archive is roughly $400 to $550 at the default effort. Cheaper knobs, untested: `output_config.effort`
+  "medium" for the archive (`mapRequest` in `src/map/generate.ts`), or a cheaper `MAP_MODEL` for the archive with
+  Opus kept for the cron.
+- **Style rounds.** `npm run bake:map -- bekhorot/4 berakhot/2 shabbat/20 shekalim/11 berakhot/10 --json` (stdout
+  only) on the shapes that stress the design, read with Joe, edit `prompts/daf-map.md`, repeat. The first two rounds
+  (2026-09-22) set the caps and the legal-verb rule; the words were frozen the same evening.
+- **Track D, the same day:** the zooming position bar went from 16 to 20px with larger labels, a readable hint and a
+  hover ring, because a reader missed it. Measured on the live page at 1280×720: the note's top sits at 367px (was
+  363); the whole card through the question ends at 788px, which was already below a 720px fold before the change.
 
 ## Note quality audits and precision re-bakes (2026-09-22)
 
