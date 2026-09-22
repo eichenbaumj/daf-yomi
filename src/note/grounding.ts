@@ -4,9 +4,12 @@
 import type { NoteDraft } from "./prompt";
 
 export const BANNED_WORDS = ["leverage", "robust", "seamless", "holistic", "delve", "tapestry", "nuanced", "profound", "timeless", "resonate", "unpack", "journey", "testament", "underscore"];
-const BANNED_PHRASES = ["a fortiori", "a priori", "prima facie", "ipso facto", "mutatis mutandis", "teaches us", "reminds us", "wants us", "we learn", "we see", "we are", "let us", "in this daf", "this page,", "this page ",
+export const BANNED_PHRASES = ["a fortiori", "a priori", "prima facie", "ipso facto", "mutatis mutandis", "teaches us", "reminds us", "wants us", "we learn", "we see", "we are", "let us", "in this daf", "this page,", "this page ",
   // Debate-room idiom (Joe, 2026-09-22: "what work is the exchange reasoning still doing?").
   "what work", "doing the work", "does the work", "do the work", "load-bearing", "load bearing", "heavy lifting", "carrying the weight", "carries the weight", "pulling its weight", "pull its weight"];
+
+/** The prompt says no Rashi, no Tosafot, no later authority, no Steinsaltz or Sefaria inside the note; this makes it so. */
+export const LATER_AUTHORITIES = /\b(rashi|tosafot|tosfot|maimonides|rambam|steinsaltz|sefaria|shulchan arukh|shulchan aruch)\b/i;
 
 export function normalize(s: string): string {
   return s
@@ -19,12 +22,12 @@ export function normalize(s: string): string {
     .trim();
 }
 
-function wordCount(s: string): number {
+export function wordCount(s: string): number {
   return s.trim().split(/\s+/).filter(Boolean).length;
 }
 
 /** Quoted spans of three or more words inside prose must also come from the source. */
-function quotedSpans(s: string): string[] {
+export function quotedSpans(s: string): string[] {
   const out: string[] = [];
   for (const m of s.matchAll(/[“"]([^”"]{6,200})[”"]/g)) {
     const span = m[1]!.trim();
@@ -187,7 +190,7 @@ export function checkNote(note: NoteDraft, sourcePlainText: string): GroundingRe
   for (const p of BANNED_PHRASES) if (lower.includes(p)) problems.push(`banned phrase: "${p.trim()}".`);
   if (/^(in this daf|this page|today's page|on this daf)/i.test(note.summary.trim())) problems.push("do not open with 'In this daf' or 'This page'.");
   if (/^(\S+\s+){1,6}\S*:/.test(note.summary.trim())) problems.push("no teaser-and-colon opener ('X opens with donkeys:'); make the first sentence stand on its own.");
-  if (/\b(rashi|tosafot|tosfot|maimonides|rambam|steinsaltz|sefaria|shulchan arukh|shulchan aruch)\b/i.test(prose)) problems.push("do not cite later authorities, Steinsaltz, or Sefaria.");
+  if (LATER_AUTHORITIES.test(prose)) problems.push("do not cite later authorities, Steinsaltz, or Sefaria.");
   if (note.quotes.length > 2) problems.push("at most two quotes.");
   for (const q of note.quotes) {
     if (wordCount(q) > 12) problems.push(`quote longer than 12 words: "${q}".`);

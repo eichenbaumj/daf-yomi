@@ -11,6 +11,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
 import { z } from "zod";
 import judgeGuide from "../../prompts/daf-judge.md";
+import { fingerprint } from "./fingerprint";
 import { normalize } from "./grounding";
 import type { PromptInput } from "./prompt";
 
@@ -60,9 +61,7 @@ export interface Judgment {
 }
 
 export function hashJudgePrompt(): string {
-  let h = 2166136261;
-  for (let i = 0; i < JUDGE_SYSTEM.length; i++) { h ^= JUDGE_SYSTEM.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; }
-  return `${JUDGE_PROMPT_VERSION}-${h.toString(16)}`;
+  return fingerprint(JUDGE_PROMPT_VERSION, JUDGE_SYSTEM);
 }
 
 export function judgeUserMessage(input: PromptInput, note: { summary: string; question: string }): string {

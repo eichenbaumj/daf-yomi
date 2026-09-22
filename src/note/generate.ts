@@ -15,6 +15,7 @@ import type { Tractate } from "../daf/tractates";
 import { positionFor } from "../daf/position";
 import type { DafRef } from "../daf/schedule";
 import { loadDafSections } from "../sefaria/client";
+import { takeGenerationSlot } from "./cap";
 import { checkNote } from "./grounding";
 import { judgeNote, type Judgment } from "./judge";
 import { NoteSchema, SYSTEM_PROMPT, hashPrompt, userMessage, type NoteDraft, type PromptInput } from "./prompt";
@@ -88,14 +89,10 @@ export async function ensureNote(env: Env, ref: DafRef, opts: GenerateOpts = {},
     if (existing) return { status: "exists", note: existing };
   }
   if (!env.ANTHROPIC_API_KEY && !deps.draft) return { status: "skipped", reason: "ANTHROPIC_API_KEY is not set" };
-  // Hard daily cap on paid generations, whatever the trigger (cron, self-heal, admin without ?force).
-  // The counter is one KV write per generation; the cap is far below anything a normal day needs.
+  // Hard daily cap on paid generations, whatever the trigger (cron, self-heal, admin without ?force): src/note/cap.ts.
   if (!opts.force || opts.countAgainstCap) {
-    const dayKey = `gen:${new Date().toISOString().slice(0, 10)}`;
-    const used = Number((await env.DAF_KV.get(dayKey)) ?? 0);
-    const cap = Number(env.DAILY_GENERATION_CAP ?? 12);
-    if (used >= cap) return { status: "skipped", reason: `daily generation cap of ${cap} reached (${used} today)` };
-    await env.DAF_KV.put(dayKey, String(used + 1), { expirationTtl: 60 * 60 * 48 });
+    const slot = await takeGenerationSlot(env);
+    if (!slot.ok) return { status: "skipped", reason: slot.reason };
   }
   if (!opts.skipLock && !(await acquireLock(env.DAF_KV, t, daf))) return { status: "skipped", reason: "another generation is in progress" };
   try {

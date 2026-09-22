@@ -1,5 +1,6 @@
 import styleGuide from "../../prompts/daf-note.md";
 import { z } from "zod";
+import { fingerprint } from "./fingerprint";
 
 /** Bumped by hand when the house style changes in a way that should re-bake the archive. */
 export const PROMPT_VERSION = "2026-09-22.11";
@@ -33,8 +34,5 @@ export function userMessage(input: PromptInput): string {
 }
 
 export function hashPrompt(): string {
-  // Cheap stable fingerprint of the style guide so a wording change is visible in stored notes.
-  let h = 2166136261;
-  for (let i = 0; i < SYSTEM_PROMPT.length; i++) { h ^= SYSTEM_PROMPT.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; }
-  return `${PROMPT_VERSION}-${h.toString(16)}`;
+  return fingerprint(PROMPT_VERSION, SYSTEM_PROMPT);
 }
