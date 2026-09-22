@@ -44,7 +44,11 @@ cron (06:20 and 18:20 UTC) → draw the share cards for the near days plus a tri
 - **The note**: `prompts/daf-note.md` is the house style, `src/note/generate.ts` calls Claude
   (`claude-opus-5`, structured output), and `src/note/grounding.ts` enforces in code what the prompt asks:
   quotes must appear verbatim in the text, no later authorities, no sermon, no em dashes, one question.
-  Two failures and the day goes without a note rather than with a wrong one.
+  Two failures and the day goes without a note rather than with a wrong one. A second reading by the judge
+  (`src/note/judge.ts`) checks what the gate cannot: whether the page itself answers the question, whether the
+  question reaches an idea or is only mechanics, whether the summary says only what the page says. Its verdict is
+  trusted only when the page words it cites are really there. `npm run notes:audit` runs it over the archive; the
+  verdicts live in `data/audit/` (see [HOSTING.md](HOSTING.md), "Note quality audits").
 
 ## Develop
 

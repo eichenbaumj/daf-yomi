@@ -8,6 +8,7 @@ import { dafForDate, dateForDaf, ymd } from "../src/daf/schedule";
 import { tractateBySlug } from "../src/daf/tractates";
 import { noteKey, type DafNote } from "../src/note/store";
 import type { Env } from "../src/types";
+import { FakeKV } from "./helpers/fakeKv";
 
 const env = { SITE_NAME: "Today's Daf", SITE_TAGLINE: "tag", DEFAULT_TIMEZONE: "UTC", NOTE_MODEL: "claude-opus-5", CANONICAL_HOST: "daf-yomi.dev" } as unknown as Env;
 const d = (s: string) => { const [y, m, dd] = s.split("-").map(Number); return new Date(y!, m! - 1, dd!); };
@@ -16,29 +17,6 @@ const date = dateForDaf(ref.tractate, ref.daf, ref.cycle);
 const note = (over: Partial<DafNote> = {}): DafNote => ({ summary: "The Mishna opens with five ways a gentile can hold a stake in a donkey, and in all five the young animal is exempt.", question: "Why does the Mishna count five cases when one rule would do?", quotes: [], model: "m", promptVersion: "v", generatedAt: "2026-09-19T06:00:00.000Z", sources: [], ...over });
 const fonts: FontFace[] = [{ family: "Source Serif 4", style: "italic", weight: "400", unicodeRange: "U+0000-00FF", base64: "AAAA" }];
 
-/** Enough of KVNamespace for the store and the bake: values plus metadata, `stream` and `arrayBuffer` reads. */
-class FakeKV {
-  store = new Map<string, { value: Uint8Array | string; metadata?: unknown }>();
-  writes = 0;
-  async get(key: string, type?: string) {
-    const v = this.store.get(key);
-    if (!v) return null;
-    const text = typeof v.value === "string" ? v.value : new TextDecoder().decode(v.value);
-    return type === "json" ? JSON.parse(text) : text;
-  }
-  async getWithMetadata(key: string, type?: string) {
-    const v = this.store.get(key);
-    if (!v) return { value: null, metadata: null };
-    const bytes = typeof v.value === "string" ? new TextEncoder().encode(v.value) : v.value;
-    if (type === "arrayBuffer") return { value: bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength), metadata: v.metadata ?? null };
-    let cancelled = false;
-    return { value: { cancel: async () => { cancelled = true; }, get cancelled() { return cancelled; } }, metadata: v.metadata ?? null };
-  }
-  async put(key: string, value: string | Uint8Array | ArrayBuffer, opts?: { metadata?: unknown }) {
-    this.writes++;
-    this.store.set(key, { value: value instanceof ArrayBuffer ? new Uint8Array(value) : value, metadata: opts?.metadata });
-  }
-}
 const envWith = (kv: FakeKV, over: Partial<Env> = {}) => ({ ...env, DAF_KV: kv as unknown as KVNamespace, ...over }) as Env;
 const fakeRenderer = (log: string[] = [], fail?: (label: string) => Error | null): CardRenderer & { closed: number } => ({
   closed: 0,

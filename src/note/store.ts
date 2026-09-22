@@ -1,5 +1,6 @@
 import type { Tractate } from "../daf/tractates";
 import { edgeDelete, edgeGet, edgePut } from "../edgecache";
+import type { QuestionStatus, Reach, Verdict } from "./judge";
 
 export interface DafNote {
   summary: string;
@@ -14,6 +15,11 @@ export interface DafNote {
   usage?: { inputTokens: number; outputTokens: number; attempts: number; estUsd: number };
   /** Words in the English source the note was written from; lets the email say "about N words" without fetching anything. */
   wordCount?: number;
+  /**
+   * The judge's reading (src/note/judge.ts) of the draft it saw, recorded only when the note is written anyway. When
+   * `rewritten` is true the stored text is a later draft written with the judge's feedback, which was not judged again.
+   */
+  review?: { at: string; judgeVersion: string; questionStatus: QuestionStatus; reach: Reach; verdict: Verdict; rewritten: boolean; unverified?: boolean };
 }
 
 export const noteKey = (t: Tractate, daf: number) => `note:v1:${t.slug}:${daf}`;

@@ -233,6 +233,47 @@ reach the live page within a day. The archive (2,711 notes, ~$200 a pass) is re-
 rarely, once or twice a year at most, and must be spread over 3 days on the free plan (1,000 KV
 writes/day) or run on Workers Paid.
 
+## Note quality audits and precision re-bakes (2026-09-22)
+
+The grounding gate checks words; the **judge** (`src/note/judge.ts`, `prompts/daf-judge.md`) reads. Given the page and
+a note it answers: is the question answered on the page itself (with the page's words quoted), does the question reach
+an idea or is it only mechanics, does the summary state anything the page contradicts. The verdict is derived in code
+(`verifyJudgment`): a quotation that is not really on the page is discounted, so a hallucinated "the page answers this"
+never re-bakes a note. Re-bake iff answered-on-page (verified), or only mechanics, or a verified factual contradiction.
+"Partly answered", "case", and interpretive overreach are recorded and kept.
+
+Where it runs:
+- **Live**: the cron and `POST /admin/bake` pass `judge: "once"`: one judge call after a draft passes the gate; a
+  `rebake` verdict buys one more draft with the judge's feedback, stored if it passes the gate (no second judge). At most
+  three drafts and one judge per bake, about ten cents a day on the cron. The stored note carries `review` (the verdict on
+  the draft the judge saw, and `rewritten` when a later draft is what was stored). `judge=off` on the admin URL skips it.
+- **Offline, over the archive**: `npm run notes:export` (GET `/admin/note` for every daf, six in flight, into
+  `.cache/notes.json`; wrangler's bulk get caps at 100 keys per request so it is not used), then `npm run notes:audit --
+  --all --review`: the current gate over every stored note, the lexical screens (`src/note/screen.ts`, triage only), the
+  page text fetched once into `.cache/text/` (paced 1.5 s, Retry-After honoured; ~70 minutes the first time), and one
+  Message Batch of judge calls (half price; batch ids in `.cache/batches/`, so a rerun polls instead of paying again).
+  Output `data/audit/<date>.json`, committed: every daf's verdict, verified quotes, screens, feedback. `--review` prints a
+  spread (answered-on-page, mechanics, summary-wrong, partly, keep) to read before anything is touched.
+- **The re-bake**: `npm run notes:rebake -- --audit data/audit/<date>.json`. Offline through the Batch API: a draft that
+  sees its old note and the judge's feedback, the gate, a judge batch, one more draft if sent back; at most three drafts and
+  two judge readings per daf. Stored through `POST /admin/note/put`, which re-runs the gate against the edge-cached page,
+  refuses a note not written under the current `PROMPT_VERSION`, refuses unless `replaces` equals the stored
+  `generatedAt` (so the cron's near-day bake is never overwritten; today ± 3 is skipped anyway), sets `generatedAt`,
+  `sources` and `wordCount` itself, and answers 429 `kind: "kv-budget"` when KV's daily write limit bites. Notes that never
+  satisfy the judge are left as they were and listed. Outcomes in `<date>.outcomes.json`; the run resumes from it.
+  It prints the `translate --dapim` (re-baked dapim that had a Hebrew note) and `og:backfill --dapim` (that had a card)
+  commands to run next.
+
+Budgets. KV writes: 1,000 a day on the free plan, the cron needs ~35 (notes, translations, `gen:`, near cards, the
+trickle); the re-bake stops at `--budget` (default 850) counted in `.cache/kv-writes.json`, and every put, translation
+and card is one write, so pair a day's English puts with their Hebrew and leave the cards for the next morning (Browser
+Rendering: 10 minutes a day, roughly 450 cards). Money, Opus 5 at batch price: the judge over 2,711 notes ≈ $120 to
+$195 (estimate; measured figure goes here after the first run); a re-bake ≈ $0.10 to $0.17 per daf. Both scripts print
+what they spent. Check the Anthropic Console spend limit before a full pass.
+
+Known wrinkle: a permalink cached at the edge (up to an hour) can briefly show the old question above a card that
+already carries the new one, because old card tokens 302 to the current card. Accept it; `?nocache=1` shows the truth.
+
 ## Failure modes
 
 - **Note missing on today's page**: the cron either had no API key, hit the generation budget, or the

@@ -2,6 +2,11 @@
  * Writes the day's note with Claude, checks it against the text it was given,
  * and stores it. One retry with feedback; then give up for the day (the page
  * says the note is pending rather than showing anything ungrounded).
+ *
+ * With `judge: "once"` a draft that passes the gate is read once more by the judge (src/note/judge.ts): if the page
+ * answers the question, or the question is only mechanics, or the summary misstates the page, one more draft is
+ * written with the judge's feedback and stored if it passes the gate. Bounded at three drafts and one judge call, so
+ * the cron's near-day bakes stay a few cents and a few minutes.
  */
 import Anthropic from "@anthropic-ai/sdk";
 import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
@@ -11,14 +16,25 @@ import { positionFor } from "../daf/position";
 import type { DafRef } from "../daf/schedule";
 import { loadDafSections } from "../sefaria/client";
 import { checkNote } from "./grounding";
+import { judgeNote, type Judgment } from "./judge";
 import { NoteSchema, SYSTEM_PROMPT, hashPrompt, userMessage, type NoteDraft, type PromptInput } from "./prompt";
 import { acquireLock, getNote, putNote, releaseLock, type DafNote } from "./store";
 
 export type GenerateOutcome =
   | { status: "exists"; note: DafNote }
-  | { status: "generated"; note: DafNote; attempts: number; firstAttemptProblems?: string[] }
+  | { status: "generated"; note: DafNote; attempts: number; firstAttemptProblems?: string[]; judged?: Judgment }
   | { status: "skipped"; reason: string }
-  | { status: "failed"; reason: string; problems?: string[]; lastDraft?: NoteDraft };
+  | { status: "failed"; reason: string; problems?: string[]; lastDraft?: NoteDraft; judged?: Judgment };
+
+export interface DraftResult { draft: NoteDraft | null; refusal?: string; usage: { inputTokens: number; outputTokens: number } }
+export interface JudgeResult { judgment: Judgment | null; refusal?: string; usage: { inputTokens: number; outputTokens: number } }
+/** The paid and network-bound steps, replaceable in tests (the pattern of src/og/bake.ts `CardBakeDeps`). */
+export interface GenerateDeps {
+  draft?: (input: PromptInput) => Promise<DraftResult>;
+  judge?: (input: PromptInput, note: NoteDraft, sourceText: string) => Promise<JudgeResult>;
+  buildInput?: typeof buildPromptInput;
+}
+export interface GenerateOpts { force?: boolean; skipLock?: boolean; countAgainstCap?: boolean; judge?: "off" | "once" }
 
 export function positionLine(ref: DafRef): string {
   const p = positionFor(ref);
@@ -47,7 +63,7 @@ export function estimateUsd(model: string, inputTokens: number, outputTokens: nu
   return Math.round(((inputTokens * p.input + outputTokens * p.output) / 1e6) * 10000) / 10000;
 }
 
-export async function draftNote(client: Anthropic, model: string, input: PromptInput): Promise<{ draft: NoteDraft | null; refusal?: string; usage: { inputTokens: number; outputTokens: number } }> {
+export async function draftNote(client: Anthropic, model: string, input: PromptInput): Promise<DraftResult> {
   const response = await client.messages.parse({
     model,
     max_tokens: 4000,
@@ -65,13 +81,13 @@ export async function draftNote(client: Anthropic, model: string, input: PromptI
 /**
  * Generate (or fetch) the note for a daf. `force` re-bakes even if one exists.
  */
-export async function ensureNote(env: Env, ref: DafRef, opts: { force?: boolean; skipLock?: boolean; countAgainstCap?: boolean } = {}): Promise<GenerateOutcome> {
+export async function ensureNote(env: Env, ref: DafRef, opts: GenerateOpts = {}, deps: GenerateDeps = {}): Promise<GenerateOutcome> {
   const { tractate: t, daf } = ref;
   if (!opts.force) {
     const existing = await getNote(env.DAF_KV, t, daf);
     if (existing) return { status: "exists", note: existing };
   }
-  if (!env.ANTHROPIC_API_KEY) return { status: "skipped", reason: "ANTHROPIC_API_KEY is not set" };
+  if (!env.ANTHROPIC_API_KEY && !deps.draft) return { status: "skipped", reason: "ANTHROPIC_API_KEY is not set" };
   // Hard daily cap on paid generations, whatever the trigger (cron, self-heal, admin without ?force).
   // The counter is one KV write per generation; the cap is far below anything a normal day needs.
   if (!opts.force || opts.countAgainstCap) {
@@ -83,31 +99,55 @@ export async function ensureNote(env: Env, ref: DafRef, opts: { force?: boolean;
   }
   if (!opts.skipLock && !(await acquireLock(env.DAF_KV, t, daf))) return { status: "skipped", reason: "another generation is in progress" };
   try {
-    const { input, sources, sourceText } = await buildPromptInput(ref, env.DAF_KV);
+    const { input, sources, sourceText } = await (deps.buildInput ?? buildPromptInput)(ref, env.DAF_KV);
     if (sourceText.replace(/\s+/g, " ").length < 200) return { status: "failed", reason: "source text too short to write from" };
-    const client = new Anthropic({ apiKey: env.ANTHROPIC_API_KEY, maxRetries: 2 });
     const model = env.NOTE_MODEL || "claude-opus-5";
+    const judgeModel = env.NOTE_JUDGE_MODEL || model;
+    const client = deps.draft && deps.judge ? null : new Anthropic({ apiKey: env.ANTHROPIC_API_KEY, maxRetries: 2 });
+    const draft = deps.draft ?? ((i: PromptInput) => draftNote(client!, model, i));
+    const judge = deps.judge ?? ((i: PromptInput, n: NoteDraft, src: string) => judgeNote(client!, judgeModel, i, n, src));
+    const withJudge = opts.judge === "once";
+    const maxDrafts = withJudge ? 3 : 2;
     let feedback: string | undefined;
     let inputTokens = 0, outputTokens = 0;
     let firstAttemptProblems: string[] | undefined;
-    for (let attempt = 1; attempt <= 2; attempt++) {
-      const { draft, refusal, usage } = await draftNote(client, model, { ...input, feedback });
+    let judged: Judgment | undefined;
+    let rewritten = false;
+    for (let attempt = 1; attempt <= maxDrafts; attempt++) {
+      const { draft: d, refusal, usage } = await draft({ ...input, feedback });
       inputTokens += usage.inputTokens; outputTokens += usage.outputTokens;
-      if (!draft) return { status: "failed", reason: refusal ? `refused: ${refusal}` : "unparseable response" };
-      const check = checkNote(draft, sourceText);
-      if (check.ok) {
-        const note: DafNote = {
-          ...draft, model, promptVersion: hashPrompt(), generatedAt: new Date().toISOString(), sources,
-          usage: { inputTokens, outputTokens, attempts: attempt, estUsd: estimateUsd(model, inputTokens, outputTokens) },
-          wordCount: sourceText.split(/\s+/).filter(Boolean).length,
-        };
-        await putNote(env.DAF_KV, t, daf, note);
-        return { status: "generated", note, attempts: attempt, firstAttemptProblems };
+      if (!d) return { status: "failed", reason: refusal ? `refused: ${refusal}` : "unparseable response", judged };
+      const check = checkNote(d, sourceText);
+      if (!check.ok) {
+        firstAttemptProblems ??= check.problems;
+        console.log(`[note] ${t.slug}/${daf} attempt ${attempt} rejected: ${check.problems.join(" | ")}`);
+        feedback = check.problems.join(" ");
+        if (attempt === maxDrafts) return { status: "failed", reason: "note failed grounding twice", problems: check.problems, lastDraft: d, judged };
+        continue;
       }
-      firstAttemptProblems ??= check.problems;
-      console.log(`[note] ${t.slug}/${daf} attempt ${attempt} rejected: ${check.problems.join(" | ")}`);
-      feedback = check.problems.join(" ");
-      if (attempt === 2) return { status: "failed", reason: "note failed grounding twice", problems: check.problems, lastDraft: draft };
+      if (withJudge && !judged) {
+        const j = await judge(input, d, sourceText);
+        inputTokens += j.usage.inputTokens; outputTokens += j.usage.outputTokens;
+        if (j.judgment) {
+          judged = j.judgment;
+          if (judged.verdict === "rebake" && attempt < maxDrafts) {
+            rewritten = true;
+            feedback = judged.feedback;
+            console.log(`[note] ${t.slug}/${daf} attempt ${attempt} sent back by the judge (${judged.reasons.join(", ")}): ${judged.feedback}`);
+            continue;
+          }
+        } else {
+          console.log(`[note] ${t.slug}/${daf} judge gave no verdict: ${j.refusal ?? "unknown"}`);
+        }
+      }
+      const note: DafNote = {
+        ...d, model, promptVersion: hashPrompt(), generatedAt: new Date().toISOString(), sources,
+        usage: { inputTokens, outputTokens, attempts: attempt, estUsd: estimateUsd(model, inputTokens, outputTokens) },
+        wordCount: sourceText.split(/\s+/).filter(Boolean).length,
+        ...(judged ? { review: { at: new Date().toISOString(), judgeVersion: judged.judgeVersion, questionStatus: judged.questionStatus, reach: judged.reach, verdict: judged.verdict, rewritten, ...(judged.unverified ? { unverified: true } : {}) } } : {}),
+      };
+      await putNote(env.DAF_KV, t, daf, note);
+      return { status: "generated", note, attempts: attempt, firstAttemptProblems, judged };
     }
     return { status: "failed", reason: "unreachable" };
   } finally {

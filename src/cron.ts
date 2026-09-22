@@ -49,9 +49,9 @@ export async function runCron(env: Env, scheduledTime: number): Promise<{ log: s
     const stale = Boolean(existing && i <= AHEAD_DAYS && existing.promptVersion !== current);
     if (existing && !stale) { say(`${label}: note exists (current style)`); continue; }
     if (stale) say(`${label}: note is from style ${existing!.promptVersion}; re-baking under ${current}`);
-    const outcome: GenerateOutcome = await ensureNote(env, ref, { force: stale, countAgainstCap: true });
+    const outcome: GenerateOutcome = await ensureNote(env, ref, { force: stale, countAgainstCap: true, judge: "once" });
     generations++;
-    if (outcome.status === "generated") say(`${label}: generated in ${outcome.attempts} attempt(s)`);
+    if (outcome.status === "generated") say(`${label}: generated in ${outcome.attempts} attempt(s)${outcome.judged ? `; judge: ${outcome.judged.verdict} (${outcome.judged.questionStatus}, ${outcome.judged.reach})` : ""}`);
     else if (outcome.status === "failed") say(`${label}: FAILED ${outcome.reason} ${(outcome.problems ?? []).join(" | ")}`);
     else say(`${label}: ${outcome.status} ${"reason" in outcome ? outcome.reason : ""}`);
   }

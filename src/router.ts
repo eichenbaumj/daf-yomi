@@ -11,6 +11,7 @@ export type Route =
   | { kind: "feed"; lang?: Lang }
   | { kind: "lang"; lang: Lang }
   | { kind: "admin-translate"; action: "run" | "put" | "note" }
+  | { kind: "admin-note-put" }
   | { kind: "api-today" }
   | { kind: "api-daf"; tractate: Tractate; daf: number }
   | { kind: "date"; ymd: string; lang?: Lang }
@@ -58,6 +59,7 @@ export function parseRoute(pathname: string): Route {
   if (path === "/admin/translate") return { kind: "admin-translate", action: "run" };
   if (path === "/admin/translate/put") return { kind: "admin-translate", action: "put" };
   if (path === "/admin/note") return { kind: "admin-translate", action: "note" };
+  if (path === "/admin/note/put") return { kind: "admin-note-put" };
   if (path === "/admin/og/bake") return { kind: "admin-og", action: "bake" };
   if (path === "/admin/og/status") return { kind: "admin-og", action: "status" };
   return parsePage(path);

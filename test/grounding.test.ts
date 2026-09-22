@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { articleSlips, checkNote, danglingLegalVerbs, normalize, unglossed } from "../src/note/grounding";
+import { articleSlips, checkNote, danglingLegalVerbs, normalize, sagesNotOnPage, unglossed, unintroducedTerms } from "../src/note/grounding";
 
 const source = `MISHNA: With regard to one who purchases the fetus of a donkey that belongs to a gentile, and one who sells the fetus of his donkey to a gentile, the donkeys are exempt from the obligations of firstborn status. GEMARA: The Gemara asks: Why do I need all these examples in the mishna?`;
 
@@ -91,5 +91,36 @@ describe("grounding", () => {
     expect(checkNote({ ...good, question: "Is it? Or not?" }, source).problems).toContain("ask exactly one question.");
     expect(checkNote({ ...good, question: "No question here." }, source).problems).toContain("question must end with a question mark.");
     expect(checkNote({ ...good, summary: "In this daf, " + good.summary }, source).problems.some((p) => p.includes("In this daf"))).toBe(true);
+  });
+});
+
+describe("the question is real, introduced, and about the people on the page", () => {
+  const page = `${source} Rav Mari bar Raḥel sold the ears of his animals. Rabbi Yehuda HaNasi says the ear is enough. Rabbi Yoḥanan and Rabbi Akiva disagree. Abaye said: the Mishna speaks of an ordinary case. The Sages taught: teruma, the priests' portion, is separated first.`;
+  it("rejects rhetorical openers and 'actually', not the prompt's own if-why shape", () => {
+    expect(checkNote({ ...good, question: "Isn't it strange that the mishna lists five cases at all?" }, page).problems).toContainEqual(expect.stringMatching(/rhetorical/));
+    expect(checkNote({ ...good, question: "Surely one principle would have done for all five cases?" }, page).problems).toContainEqual(expect.stringMatching(/rhetorical/));
+    expect(checkNote({ ...good, question: "If a single principle covers all five cases, what did the list actually change?" }, page).problems).toContainEqual(expect.stringMatching(/"actually"/));
+    // The sea example from the house style, and Joe's donkey question, pass.
+    const sea = { ...good, summary: good.summary + " The majority overrules a voice from Heaven; the sea rises against the man who enforced the ruling.", question: "If the majority was right to overrule the voice from Heaven, why does the sea rise against the man who enforced the ruling?" };
+    expect(checkNote(sea, page).ok).toBe(true);
+    expect(checkNote({ ...good, question: "Is a thing judged by what it can do now, or by what it will be able to do?" }, page).ok).toBe(true);
+    expect(checkNote({ ...good, question: "Is it enough that the gentile owns the ear, when the priest could tell him to take his ear and go?" }, page).ok).toBe(true);
+  });
+  it("wants glossary terms in the question introduced by the summary", () => {
+    expect(unintroducedTerms("Why is teruma taken first?", "The priests eat their teruma, the priestly portion, before anything else.")).toEqual([]);
+    expect(unintroducedTerms("Why is teruma taken first?", "The priests eat first.")).toEqual(["teruma"]);
+    expect(unintroducedTerms("Do the harder mitzvot earn no less?", "A mitzva, a commandment, that costs an issar earns long life.")).toEqual([]); // stems: mitzvot after mitzva
+    expect(unintroducedTerms("Is two hundred dinars a fair price?", "He set the price at a dinar, a silver coin.")).toEqual([]);
+    expect(unintroducedTerms("Is two hundred zuz a fair price?", "He set the price at a dinar, a silver coin.")).toEqual(["zuz"]);
+    expect(unintroducedTerms("Why does firstborn status follow the mother?", "The rule of firstborn status, that a firstborn male animal belongs to the priest, follows the mother.")).toEqual([]);
+    expect(checkNote({ ...good, question: "If one principle covers all five cases, why does teruma come first?" }, page).problems).toContainEqual(expect.stringMatching(/"teruma", which the summary never introduced/));
+  });
+  it("wants every named sage on the page, in the page's own spelling or close to it", () => {
+    expect(sagesNotOnPage("Rav Mari sold the ears; Rabbi Yehuda says the ear is enough; Rabbi Akiva's students; Rabbi Yohanan disagrees; Abaye objects.", page)).toEqual([]);
+    expect(sagesNotOnPage("Rav Yosef sold the ears and Rava objected.", page)).toEqual(["Rav Yosef", "Rava"]);
+    expect(sagesNotOnPage("Rabbi Meir and Rabbi Yehuda HaNasi", page)).toEqual(["Rabbi Meir"]);
+    expect(sagesNotOnPage("The rabbi of the town, a rav, and Mar said nothing.", page)).toEqual([]); // titles alone are not names
+    expect(checkNote({ ...good, summary: good.summary + " Rav Yosef objects." }, page).problems).toContainEqual(expect.stringMatching(/"Rav Yosef" is not named on this page/));
+    expect(checkNote({ ...good, summary: good.summary + " Rav Mari bar Raḥel objects." }, page).ok).toBe(true);
   });
 });

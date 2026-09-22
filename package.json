@@ -22,7 +22,10 @@
     "newsletter:test": "tsx --import ./scripts/md-loader.mjs scripts/newsletter-send-test.ts",
     "og:fonts": "tsx --import ./scripts/md-loader.mjs scripts/og-fonts.ts",
     "og:preview": "tsx --import ./scripts/md-loader.mjs scripts/og-preview.ts",
-    "og:backfill": "tsx --import ./scripts/md-loader.mjs scripts/og-backfill.ts"
+    "og:backfill": "tsx --import ./scripts/md-loader.mjs scripts/og-backfill.ts",
+    "notes:export": "tsx --import ./scripts/md-loader.mjs scripts/export-notes.ts",
+    "notes:audit": "tsx --import ./scripts/md-loader.mjs scripts/audit-notes.ts",
+    "notes:rebake": "tsx --import ./scripts/md-loader.mjs scripts/rebake.ts"
   },
   "keywords": [
     "daf yomi",

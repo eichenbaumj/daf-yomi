@@ -8,6 +8,8 @@ export interface Env {
   CANONICAL_HOST?: string;
   DEFAULT_TIMEZONE: string;
   NOTE_MODEL: string;
+  /** Model for the judge's second reading of a note (src/note/judge.ts); defaults to NOTE_MODEL. */
+  NOTE_JUDGE_MODEL?: string;
   /** Set at deploy time (git short sha) and folded into edge-cache keys. */
   BUILD?: string;
   /** Max paid note generations per UTC day outside of forced admin bakes. */

@@ -23,15 +23,23 @@ cron; permalinks for every daf.
   Torah scholar," human and lived in, exciting for a day of Torah. White/clinical surfaces were rejected. Assume
   the reader has never heard of Rabbi Steinsaltz, Sefaria, or a Seder: gloss every such name on first appearance.
 
+- **The house style is Joe's and is frozen** (2026-09-22): "needles the text", "curiosity over reverence", the Hillel
+  exemplar stay. Two things were added that day and nothing else: the strongest-answer protocol (find the page's own
+  answer before calling a question open) and the reach of the question (the idea under the case, not the mechanics).
+  Changes to the judge's rebake criteria (`verifyJudgment` in `src/note/judge.ts`) go through Joe.
+
 ## Layout
 
 `src/daf` schedule + tractate table · `src/sefaria` fetch + sanitize · `src/note` prompt, grounding,
-generate, KV store · `src/render` HTML (and `email.ts`, the daily issue) · `src/newsletter` readers, the
+generate, KV store, `screen.ts` (lexical triage, never a gate), `judge.ts` (the second reading; `prompts/daf-judge.md`,
+`JUDGE_PROMPT_VERSION`) · `src/render` HTML (and `email.ts`, the daily issue) · `src/newsletter` readers, the
 hourly send tick, opt-in, provider (see NEWSLETTER.md) · `src/og` the per-daf share card (template, KV store, Browser
 Rendering, the card bake; see HOSTING.md "Share cards") · `src/index.ts` routes · `src/cron.ts` nightly bake ·
 `prompts/daf-note.md` the house style (bump `PROMPT_VERSION` in `src/note/prompt.ts` when it changes
-enough to re-bake) · `scripts/` bake table, verify cycle, try notes, backfill, check links ·
-`data/tractates.json` generated, commit it.
+enough to re-bake) · `scripts/` bake table, verify cycle, try notes, backfill, check links, and the audit trio
+(`notes:export`, `notes:audit`, `notes:rebake`; shared bits in `scripts/lib/`) · `data/tractates.json` generated,
+commit it · `data/audit/<date>.json` the judge's verdict on every note, committed, with `<date>.outcomes.json` after a
+re-bake.
 
 ## Languages
 
@@ -65,4 +73,12 @@ English, Hebrew (`/he`, Pre-Release until `HE_PUBLIC=1`), Yiddish later on the s
   RFC 8058 one-click unsubscribe headers and a footer link; no images, no tracking, no postal address (Joe's
   call: non-commercial); `NEWSLETTER_PUBLIC` gates the nav tab and the form until launch.
 - Style iteration is a review round with Joe: `npm run bake:note -- <targets>` on 5 varied dapim, edit
-  `prompts/daf-note.md`, repeat. Re-bake the archive with `npm run backfill -- --force`.
+  `prompts/daf-note.md`, repeat. The archive is re-baked precisely, not wholesale: `npm run notes:export`, then
+  `npm run notes:audit -- --all --review` (the judge, one Message Batch), read the spread with Joe, then
+  `npm run notes:rebake -- --audit data/audit/<date>.json` over as many days as the KV budget needs, then the
+  `translate` and `og:backfill` commands it prints. HOSTING.md "Note quality audits" has the procedure and costs.
+- The cron and `/admin/bake` run the judge once per draft (`judge: "once"` in `ensureNote`); a note the judge sends
+  back gets one more draft with its feedback, never a second judge. Offline notes arrive through `POST /admin/note/put`,
+  which re-runs the gate, refuses a stale style, and refuses unless `replaces` is the stored note's `generatedAt`.
+- Hebrew follows English: never backfill the Hebrew archive while an English re-bake is pending, or it inherits the
+  flaws and is retired the moment the English note changes.

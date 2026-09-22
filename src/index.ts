@@ -4,8 +4,11 @@ import { TRACTATES, dafPath, dafLabel, isValidDaf, tractateBySlug, type Tractate
 import { addDays, dafForDate, dateForDaf, hebrewDate, parseYmd, todayIn, ymd, type DafRef } from "./daf/schedule";
 import { positionFor } from "./daf/position";
 import { SefariaError, fetchText, loadDafSections, type DafSection } from "./sefaria/client";
-import { getNote, notedDafim, type DafNote } from "./note/store";
-import { ensureNote } from "./note/generate";
+import { getNote, notedDafim, putNote, type DafNote } from "./note/store";
+import { buildPromptInput, ensureNote } from "./note/generate";
+import { checkNote } from "./note/grounding";
+import { hashPrompt } from "./note/prompt";
+import { hashJudgePrompt } from "./note/judge";
 import { buildTranslateInput, checkTranslation, ensureTranslation, hashTranslatePrompt, type TranslatableLang } from "./note/translate";
 import { currentTranslation, getTranslation, putTranslation, type TranslatedNote } from "./note/tstore";
 import { ENABLED_LANGS, isLang, p, type Lang } from "./i18n/strings";
@@ -239,6 +242,7 @@ async function handle(request: Request, env: Env, ctx: ExecutionContext): Promis
     case "og-card": return ogCardResponse(request, env, origin, url.pathname, route.tractate, route.daf, route.token, bypass);
     case "admin-og": return adminOg(request, env, today, route.action);
     case "admin-bake": return adminBake(request, env, today);
+    case "admin-note-put": return adminNotePut(request, env, today);
     case "admin-translate": return adminTranslate(request, env, today, route.action);
     case "newsletter":
     case "newsletter-confirm":
@@ -336,16 +340,61 @@ function refFromParams(url: URL, today: Date): DafRef | Response {
 }
 
 /**
- * POST /admin/bake?slug=bekhorot&daf=2[&force=1]  or  ?date=YYYY-MM-DD
+ * POST /admin/bake?slug=bekhorot&daf=2[&force=1][&judge=off]  or  ?date=YYYY-MM-DD
  * Header: authorization: Bearer <ADMIN_TOKEN>. Used by scripts/backfill.ts and for re-bakes after a style change.
+ * The judge reads the draft once unless `judge=off` (src/note/generate.ts).
  */
 async function adminBake(request: Request, env: Env, today: Date): Promise<Response> {
   if (request.method !== "POST") return new Response("POST only", { status: 405 });
   if (!authorized(request, env)) return new Response("unauthorized", { status: 401 });
-  const ref = refFromParams(new URL(request.url), today);
+  const url = new URL(request.url);
+  const ref = refFromParams(url, today);
   if (ref instanceof Response) return ref;
-  const outcome = await ensureNote(env, ref, { force: new URL(request.url).searchParams.has("force"), skipLock: true });
+  const outcome = await ensureNote(env, ref, { force: url.searchParams.has("force"), skipLock: true, judge: url.searchParams.get("judge") === "off" ? "off" : "once" });
   return new Response(JSON.stringify({ daf: `${ref.tractate.slug}/${ref.daf}`, ...outcome }, null, 2), { status: outcome.status === "failed" ? 502 : 200, headers: JSON_H });
+}
+
+/**
+ * POST /admin/note/put  {slug, daf, summary, question, quotes, model, promptVersion, usage?, review?, replaces}
+ * Store a note written offline (scripts/rebake.ts, through the Batch API). It is checked here again against the
+ * page, refused when its style is not the current one, and refused unless `replaces` is the stored note's
+ * generatedAt (or null when there is none), so a note the cron re-baked in the meantime is never overwritten.
+ * The generatedAt, sources and wordCount are set here. Exempt from the daily generation cap: nothing is generated.
+ * A KV write-limit error answers 429 with kind "kv-budget", which the script stops on.
+ */
+async function adminNotePut(request: Request, env: Env, today: Date): Promise<Response> {
+  if (request.method !== "POST") return new Response("POST only", { status: 405 });
+  if (!authorized(request, env)) return new Response("unauthorized", { status: 401 });
+  let body: any;
+  try { body = await request.json(); } catch { return new Response("bad json", { status: 400 }); }
+  const t = tractateBySlug(String(body?.slug ?? ""));
+  const daf = Number(body?.daf);
+  if (!t || !isValidDaf(t, daf)) return new Response("bad slug/daf", { status: 400 });
+  const draft = { summary: String(body?.summary ?? ""), question: String(body?.question ?? ""), quotes: Array.isArray(body?.quotes) ? body.quotes.map(String) : [] };
+  const refuse = (reason: string) => new Response(JSON.stringify({ status: "refused", reason }), { status: 409, headers: JSON_H });
+  if (String(body?.promptVersion ?? "") !== hashPrompt()) return refuse(`stale style: note is ${body?.promptVersion}, site is ${hashPrompt()}`);
+  const stored = await getNote(env.DAF_KV, t, daf);
+  const replaces = body?.replaces == null ? null : String(body.replaces);
+  if ((stored?.generatedAt ?? null) !== replaces) return refuse(`stale: replaces ${replaces}, stored note is ${stored?.generatedAt ?? "none"}`);
+  const ref = dafForDate(dateForDaf(t, daf, dafForDate(today).cycle));
+  const { sources, sourceText } = await buildPromptInput(ref, env.DAF_KV);
+  const check = checkNote(draft, sourceText);
+  if (!check.ok) return new Response(JSON.stringify({ status: "rejected", problems: check.problems }), { status: 422, headers: JSON_H });
+  const r = body?.review;
+  const note: DafNote = {
+    ...draft, model: String(body?.model ?? env.NOTE_MODEL ?? "claude-opus-5"), promptVersion: hashPrompt(), generatedAt: new Date().toISOString(), sources,
+    usage: body?.usage && typeof body.usage === "object" ? { inputTokens: Number(body.usage.inputTokens ?? 0), outputTokens: Number(body.usage.outputTokens ?? 0), attempts: Number(body.usage.attempts ?? 1), estUsd: Number(body.usage.estUsd ?? 0) } : undefined,
+    wordCount: sourceText.split(/\s+/).filter(Boolean).length,
+    ...(r && typeof r === "object" ? { review: { at: String(r.at ?? new Date().toISOString()), judgeVersion: String(r.judgeVersion ?? hashJudgePrompt()), questionStatus: r.questionStatus, reach: r.reach, verdict: r.verdict, rewritten: Boolean(r.rewritten), ...(r.unverified ? { unverified: true } : {}) } } : {}),
+  };
+  try {
+    await putNote(env.DAF_KV, t, daf, note);
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    if (/limit/i.test(msg)) return new Response(JSON.stringify({ status: "failed", kind: "kv-budget", reason: msg }), { status: 429, headers: JSON_H });
+    throw e;
+  }
+  return new Response(JSON.stringify({ status: "stored", daf: `${t.slug}/${daf}`, generatedAt: note.generatedAt }, null, 2), { headers: JSON_H });
 }
 
 /**

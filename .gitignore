@@ -7,3 +7,5 @@ node_modules/
 scratch/
 scripts/.fonts-cache/
 .fonts-cache/
+.cache/
+.translate/

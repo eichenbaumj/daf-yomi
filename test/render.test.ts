@@ -182,6 +182,8 @@ describe("daf page", () => {
   });
   it("escapes note text", () => {
     const html = renderDafPage({ ...base, note: { summary: "<script>x</script>", question: "Q?", quotes: [], model: "m", promptVersion: "v", generatedAt: "t", sources: [] } });
+    const reviewed = renderDafPage({ ...base, note: { summary: "S.", question: "Q?", quotes: [], model: "m", promptVersion: "v", generatedAt: "t", sources: [], review: { at: "t", judgeVersion: "JUDGE-X", questionStatus: "open", reach: "idea", verdict: "keep", rewritten: false } } });
+    expect(reviewed).not.toContain("JUDGE-X"); // the judge's record stays in KV
     expect(html).not.toContain("<script>x</script>");
     expect(html).toContain("&lt;script&gt;x&lt;/script&gt;");
   });

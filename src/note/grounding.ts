@@ -113,6 +113,49 @@ export function strangersInQuestion(question: string, summary: string): string[]
   return out;
 }
 
+/** Diacritics folded as well as normalize(): "Yoḥanan" and "Yohanan" are the same sage. */
+export function fold(s: string): string {
+  return normalize(s.normalize("NFD").replace(/\p{Mn}/gu, ""));
+}
+
+/**
+ * Sages the note names that the page never does. The prompt says "name a sage only if that name appears in
+ * today's text"; this makes it so. A title plus one capitalised word is the head of the name ("Rav Mari" of
+ * "Rav Mari bar Raḥel"), which is enough: a note never invents a first name for a sage the page has.
+ */
+const TITLED_SAGE = /\b(Rabbi|Rav|Rabban|Rabbeinu|Mar)\s+([A-Z][\p{L}]+)/gu;
+const UNTITLED_SAGES = ["Abaye", "Rava", "Rabba", "Shmuel", "Hillel", "Shammai", "Ulla", "Reish Lakish"];
+export function sagesNotOnPage(text: string, sourcePlainText: string): string[] {
+  const src = fold(sourcePlainText);
+  const out: string[] = [];
+  const miss = (name: string) => { if (!src.includes(fold(name)) && !out.includes(name)) out.push(name); };
+  for (const m of text.matchAll(TITLED_SAGE)) miss(`${m[1]} ${m[2]}`);
+  for (const name of UNTITLED_SAGES) if (new RegExp(`\\b${name}\\b`).test(text)) miss(name);
+  return out;
+}
+
+/**
+ * Glossary terms the question uses that the summary never introduced. The question cannot carry a gloss (one
+ * sentence, no setup), so the summary must have said the word first; "dinars" in the question is fine after
+ * "a dinar, a silver coin" in the summary.
+ */
+export function unintroducedTerms(question: string, summary: string): string[] {
+  const sum = normalize(summary);
+  const out: string[] = [];
+  for (const term of [...GLOSS_TERMS, ...GLOSS_PHRASES]) {
+    const pattern = term.split(/[\s-]+/).map((w) => w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("[\\s-]+");
+    if (!new RegExp(`\\b${pattern}s?(?:'s)?\\b`, "i").test(question)) continue;
+    // "mitzvot" in the question after "mitzva" in the summary: compare on a stem when the word is long enough.
+    const norm = normalize(term);
+    const stem = norm.length >= 6 ? norm.replace(/(ot|ah|a|s)$/, "") : norm;
+    if (!sum.includes(stem) && !out.includes(term)) out.push(term);
+  }
+  return out;
+}
+
+/** "Isn't it odd that…?" is an assertion wearing a question mark; the prompt says "not rhetorical". */
+const RHETORICAL_OPENER = /^(isn't|aren't|doesn't|don't|wasn't|weren't|didn't|shouldn't|couldn't|wouldn't|hasn't|haven't|surely|is it not|does it not)\b/i;
+
 export interface GroundingResult { ok: boolean; problems: string[] }
 
 export function checkNote(note: NoteDraft, sourcePlainText: string): GroundingResult {
@@ -129,6 +172,10 @@ export function checkNote(note: NoteDraft, sourcePlainText: string): GroundingRe
   if ((note.question.match(/\?/g) ?? []).length > 1) problems.push("ask exactly one question.");
   for (const n of strangersInQuestion(note.question, note.summary)) problems.push(`the question brings in "${n}", which the summary never mentions; the question must stand on the summary alone, so introduce it there or leave it out.`);
   if (/\b(standing on|hold water|on the spot|square with|at stake|beg the question|in play)\b/i.test(note.question)) problems.push("no idioms in the question; say it plainly (rely on, prove, permit).");
+  if (RHETORICAL_OPENER.test(note.question.trim())) problems.push("the question is rhetorical; ask something the page leaves open, in a form that could be answered either way.");
+  if (/\bactually\b/i.test(note.question)) problems.push('drop "actually" from the question: if the page answers the question, ask what remains difficult after its answer instead of doubting it.');
+  for (const term of unintroducedTerms(note.question, note.summary)) problems.push(`the question uses "${term}", which the summary never introduced; gloss it in the summary first or leave it out of the question.`);
+  for (const name of sagesNotOnPage(prose, sourcePlainText)) problems.push(`"${name}" is not named on this page; name a sage only for a view the text attributes to them, in the page's own spelling.`);
   if (/[—]/.test(prose)) problems.push("no em dashes.");
   const lower = prose.toLowerCase();
   for (const w of BANNED_WORDS) if (new RegExp(`\\b${w}\\w*`, "i").test(prose)) problems.push(`banned word: ${w}.`);
