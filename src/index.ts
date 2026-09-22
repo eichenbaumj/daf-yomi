@@ -26,6 +26,11 @@ import { browserRenderer } from "./og/browser";
 import { cardFonts } from "./og/fonts";
 import { cardCurrent, cardPath, getCard, getCardMeta, type CardMeta } from "./og/store";
 import { handleNewsletter } from "./newsletter/http";
+import { buildMapInput, ensureMap } from "./map/generate";
+import { checkMap } from "./map/gate";
+import { isMapKind } from "./map/kinds";
+import { hashMapPrompt } from "./map/prompt";
+import { getMap, putMap, type DafMap, type MapUnit } from "./map/store";
 import { SEND_CRON, runSendTick } from "./newsletter/send";
 
 const HTML = { "content-type": "text/html; charset=utf-8" };
@@ -67,12 +72,14 @@ async function loadDafTexts(ref: DafRef, kv: KVNamespace, lang: Lang): Promise<D
 }
 
 async function dafPageResponse(env: Env, ctx: ExecutionContext, origin: string, lang: Lang, ref: DafRef, date: Date, isToday: boolean, todayRef: DafRef, todayDate: Date): Promise<Response> {
-  const [texts, note, translation, cardMeta] = await Promise.all([
+  const [texts, note, translation, cardMeta, map] = await Promise.all([
     loadDafTexts(ref, env.DAF_KV, lang),
     getNote(env.DAF_KV, ref.tractate, ref.daf),
     lang === "en" ? Promise.resolve<TranslatedNote | null>(null) : getTranslation(env.DAF_KV, lang, ref.tractate, ref.daf),
     // The share card's metadata (never its bytes): the head points at the card only while it shows this note's question.
     lang === "en" ? getCardMeta(env.DAF_KV, ref.tractate, ref.daf) : Promise.resolve<CardMeta | null>(null),
+    // The map of the page (src/map). Its Hebrew words arrive with the Hebrew map; until then a Hebrew page shows no map.
+    getMap(env.DAF_KV, ref.tractate, ref.daf),
   ]);
   const card = cardCurrent(note, cardMeta) ? { token: cardMeta.token } : null;
   const notesEnabled = Boolean(env.ANTHROPIC_API_KEY);
@@ -85,13 +92,14 @@ async function dafPageResponse(env: Env, ctx: ExecutionContext, origin: string, 
   if (!note && notesEnabled && nearToday) {
     ctx.waitUntil(ensureNote(env, ref).then((o) => console.log(`[heal] ${ref.tractate.name} ${ref.daf}: ${o.status}${"reason" in o ? ` ${o.reason}` : ""}`)).catch((e) => console.error("[heal]", e)));
   }
-  const body = renderDafPage({ env, origin, lang, ref, date, isToday, texts, note, translation, notesEnabled, todayRef, todayDate, card });
+  const body = renderDafPage({ env, origin, lang, ref, date, isToday, texts, note, translation, notesEnabled, todayRef, todayDate, card, map, mapTranslation: null });
   const shown = lang === "en" ? note : currentTranslation(note, translation);
-  // x-daf-card says whether an English page with a note is still waiting for its card (the ttl rule caches those briefly).
-  return html(body, 200, { "x-daf": `${ref.tractate.slug}/${ref.daf}`, "x-daf-note": shown ? "yes" : "pending", "x-daf-card": lang !== "en" ? "n/a" : card ? "yes" : "no" });
+  // x-daf-card says whether an English page with a note is still waiting for its card, x-daf-map whether the map is
+  // drawn on this page (the ttl rule caches both kinds of waiting page briefly).
+  return html(body, 200, { "x-daf": `${ref.tractate.slug}/${ref.daf}`, "x-daf-note": shown ? "yes" : "pending", "x-daf-card": lang !== "en" ? "n/a" : card ? "yes" : "no", "x-daf-map": body.includes('class="pagemap"') ? "yes" : "no" });
 }
 
-function apiPayload(ref: DafRef, date: Date, note: DafNote | null, origin: string, cardMeta: CardMeta | null = null) {
+function apiPayload(ref: DafRef, date: Date, note: DafNote | null, origin: string, cardMeta: CardMeta | null = null, map: DafMap | null = null) {
   const p = positionFor(ref);
   return {
     date: ymd(date),
@@ -102,6 +110,7 @@ function apiPayload(ref: DafRef, date: Date, note: DafNote | null, origin: strin
     url: `${origin}${dafPath(ref.tractate, ref.daf)}`,
     position: { chapter: p.chapterLabel, dafOfTractate: p.dafOfTractate, dayInCycle: p.dayInCycle, cycleLength: p.cycleLength, cycle: p.cycle, cycleEnds: ymd(p.cycleEnd) },
     note: note ? { summary: note.summary, question: note.question, writtenBy: "Claude (AI), from the English text only", model: note.model, generatedAt: note.generatedAt, card: cardCurrent(note, cardMeta) ? `${origin}${cardPath(ref.tractate, ref.daf, cardMeta.token)}` : null } : null,
+    map: map ? { shape: map.shape, units: map.units.map((u) => ({ from: u.from, to: u.to, kind: u.kind, title: u.title, gloss: u.gloss })), drawnBy: "Claude (AI), from the English text only", model: map.model, generatedAt: map.generatedAt } : null,
     text: ref.tractate.refMode === "talmud"
       ? { source: "Sefaria", license: "CC BY-NC 4.0 (William Davidson Talmud)", sefaria: `https://www.sefaria.org/${ref.tractate.sefariaTitle.replace(/ /g, "_")}.${ref.daf}a` }
       : { source: "Sefaria", license: "see the page; not the Davidson Talmud for this day", sefaria: `https://www.sefaria.org/${ref.tractate.sefariaTitle.replace(/ /g, "_")}` },
@@ -173,7 +182,7 @@ async function handle(request: Request, env: Env, ctx: ExecutionContext): Promis
       const isToday = ymd(date) === ymd(today);
       // Pages without a note (or, in a translated language, without a current translation) are cached briefly; so is an
       // English page whose note has no card yet, so the card cron's work reaches the head within ten minutes.
-      const ttl = (res: Response) => (isToday ? 600 : res.headers.get("x-daf-note") !== "yes" ? 120 : res.headers.get("x-daf-card") === "no" ? 600 : 3600);
+      const ttl = (res: Response) => (isToday ? 600 : res.headers.get("x-daf-note") !== "yes" ? 120 : res.headers.get("x-daf-card") === "no" || res.headers.get("x-daf-map") === "no" ? 600 : 3600);
       return cachedResponse(ck(`${dafPath(ref.tractate, ref.daf)}?t=${isToday ? "today" : "perma"}&d=${ymd(today)}`), ttl, () => dafPageResponse(env, ctx, origin, lang, ref, date, isToday, todayRef, today), bypass);
     }
     case "tractate": {
@@ -229,20 +238,21 @@ async function handle(request: Request, env: Env, ctx: ExecutionContext): Promis
     }
     case "api-today": {
       const ref = dafForDate(today);
-      const [note, cardMeta] = await Promise.all([getNote(env.DAF_KV, ref.tractate, ref.daf), getCardMeta(env.DAF_KV, ref.tractate, ref.daf)]);
-      return new Response(JSON.stringify({ timezone: tz, ...apiPayload(ref, today, note, origin, cardMeta) }, null, 2), { headers: { ...JSON_H, "cache-control": "public, max-age=300", "access-control-allow-origin": "*" } });
+      const [note, cardMeta, map] = await Promise.all([getNote(env.DAF_KV, ref.tractate, ref.daf), getCardMeta(env.DAF_KV, ref.tractate, ref.daf), getMap(env.DAF_KV, ref.tractate, ref.daf)]);
+      return new Response(JSON.stringify({ timezone: tz, ...apiPayload(ref, today, note, origin, cardMeta, map) }, null, 2), { headers: { ...JSON_H, "cache-control": "public, max-age=300", "access-control-allow-origin": "*" } });
     }
     case "api-daf": {
       const cycle = dafForDate(today).cycle;
       const date = dateForDaf(route.tractate, route.daf, cycle);
       const ref = dafForDate(date);
-      const [note, cardMeta] = await Promise.all([getNote(env.DAF_KV, ref.tractate, ref.daf), getCardMeta(env.DAF_KV, ref.tractate, ref.daf)]);
-      return new Response(JSON.stringify(apiPayload(ref, date, note, origin, cardMeta), null, 2), { headers: { ...JSON_H, "cache-control": "public, max-age=3600", "access-control-allow-origin": "*" } });
+      const [note, cardMeta, map] = await Promise.all([getNote(env.DAF_KV, ref.tractate, ref.daf), getCardMeta(env.DAF_KV, ref.tractate, ref.daf), getMap(env.DAF_KV, ref.tractate, ref.daf)]);
+      return new Response(JSON.stringify(apiPayload(ref, date, note, origin, cardMeta, map), null, 2), { headers: { ...JSON_H, "cache-control": "public, max-age=3600", "access-control-allow-origin": "*" } });
     }
     case "og-card": return ogCardResponse(request, env, origin, url.pathname, route.tractate, route.daf, route.token, bypass);
     case "admin-og": return adminOg(request, env, today, route.action);
     case "admin-bake": return adminBake(request, env, today);
     case "admin-note-put": return adminNotePut(request, env, today);
+    case "admin-map": return adminMap(request, env, today, route.action);
     case "admin-translate": return adminTranslate(request, env, today, route.action);
     case "newsletter":
     case "newsletter-confirm":
@@ -395,6 +405,64 @@ async function adminNotePut(request: Request, env: Env, today: Date): Promise<Re
     throw e;
   }
   return new Response(JSON.stringify({ status: "stored", daf: `${t.slug}/${daf}`, generatedAt: note.generatedAt }, null, 2), { headers: JSON_H });
+}
+
+/**
+ * The map endpoints (all Bearer <ADMIN_TOKEN>), the note endpoints' contract:
+ *   POST /admin/map/bake?slug=&daf=[&force=1]  or ?date=      draw here, two drafts at most, and store
+ *   GET  /admin/map?slug=&daf=                                  the stored map and whether it is the current style
+ *   POST /admin/map/put  {slug, daf, units, shape, model, promptVersion, usage?, replaces}
+ *        store a map drawn offline (scripts/maps-backfill.ts via the Batch API): checked here again against the
+ *        page, refused when its style is not the current one, refused unless `replaces` is the stored map's
+ *        generatedAt (or null), generatedAt/sources/segmentCounts set here, 429 kind "kv-budget" on the KV limit.
+ */
+async function adminMap(request: Request, env: Env, today: Date, action: "bake" | "put" | "get"): Promise<Response> {
+  if (!authorized(request, env)) return new Response("unauthorized", { status: 401 });
+  const url = new URL(request.url);
+  if (action === "get") {
+    if (request.method !== "GET") return new Response("GET only", { status: 405 });
+    const ref = refFromParams(url, today);
+    if (ref instanceof Response) return ref;
+    const map = await getMap(env.DAF_KV, ref.tractate, ref.daf);
+    return new Response(JSON.stringify({ daf: `${ref.tractate.slug}/${ref.daf}`, map, current: Boolean(map && map.promptVersion === hashMapPrompt()) }, null, 2), { headers: JSON_H });
+  }
+  if (request.method !== "POST") return new Response("POST only", { status: 405 });
+  if (action === "bake") {
+    const ref = refFromParams(url, today);
+    if (ref instanceof Response) return ref;
+    const outcome = await ensureMap(env, ref, { force: url.searchParams.has("force") });
+    return new Response(JSON.stringify({ daf: `${ref.tractate.slug}/${ref.daf}`, ...outcome }, null, 2), { status: outcome.status === "failed" ? 502 : 200, headers: JSON_H });
+  }
+  let body: any;
+  try { body = await request.json(); } catch { return new Response("bad json", { status: 400 }); }
+  const t = tractateBySlug(String(body?.slug ?? ""));
+  const daf = Number(body?.daf);
+  if (!t || !isValidDaf(t, daf)) return new Response("bad slug/daf", { status: 400 });
+  const refuse = (reason: string) => new Response(JSON.stringify({ status: "refused", reason }), { status: 409, headers: JSON_H });
+  if (String(body?.promptVersion ?? "") !== hashMapPrompt()) return refuse(`stale style: map is ${body?.promptVersion}, site is ${hashMapPrompt()}`);
+  const stored = await getMap(env.DAF_KV, t, daf);
+  const replaces = body?.replaces == null ? null : String(body.replaces);
+  if ((stored?.generatedAt ?? null) !== replaces) return refuse(`stale: replaces ${replaces}, stored map is ${stored?.generatedAt ?? "none"}`);
+  // Re-typed from the body: an unknown kind is a gate problem, never a stored value.
+  const units: MapUnit[] = Array.isArray(body?.units) ? body.units.map((u: any) => ({ from: String(u?.from ?? ""), to: String(u?.to ?? ""), kind: (isMapKind(u?.kind) ? u.kind : String(u?.kind ?? "")) as MapUnit["kind"], title: String(u?.title ?? ""), gloss: String(u?.gloss ?? "") })) : [];
+  const draft = { units, shape: String(body?.shape ?? "") };
+  const ref = dafForDate(dateForDaf(t, daf, dafForDate(today).cycle));
+  const { input, sources, sourceText } = await buildMapInput(ref, env.DAF_KV);
+  const check = checkMap(draft, input, sourceText);
+  if (!check.ok) return new Response(JSON.stringify({ status: "rejected", problems: check.problems }), { status: 422, headers: JSON_H });
+  const map: DafMap = {
+    ...draft, model: String(body?.model ?? env.NOTE_MODEL ?? "claude-opus-5"), promptVersion: hashMapPrompt(), generatedAt: new Date().toISOString(), sources,
+    segmentCounts: input.sections.map((s) => s.segments.length),
+    usage: body?.usage && typeof body.usage === "object" ? { inputTokens: Number(body.usage.inputTokens ?? 0), outputTokens: Number(body.usage.outputTokens ?? 0), attempts: Number(body.usage.attempts ?? 1), estUsd: Number(body.usage.estUsd ?? 0) } : undefined,
+  };
+  try {
+    await putMap(env.DAF_KV, t, daf, map);
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    if (/limit/i.test(msg)) return new Response(JSON.stringify({ status: "failed", kind: "kv-budget", reason: msg }), { status: 429, headers: JSON_H });
+    throw e;
+  }
+  return new Response(JSON.stringify({ status: "stored", daf: `${t.slug}/${daf}`, generatedAt: map.generatedAt }, null, 2), { headers: JSON_H });
 }
 
 /**

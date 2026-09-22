@@ -220,7 +220,7 @@ Something (a crawler, almost certainly following `/sitemap.xml`) fetched every p
 19:00 UTC. Each page without a note ran the on-visit self-heal, which called Claude. Recorded usage:
 20.1M input + 3.1M output tokens, $178 at list price, plus ~135 earlier notes without usage recorded.
 Root cause: anonymous page views could trigger paid API calls, and the sitemap advertised 2,711 of them.
-Fixes: self-heal only within `HEAL_WINDOW_DAYS` (3) of today; `DAILY_GENERATION_CAP` (12/UTC day, KV
+Fixes: self-heal only within `HEAL_WINDOW_DAYS` (3) of today; `DAILY_GENERATION_CAP` (18/UTC day since the map of the page joined the cron; 12 before, KV
 counter, admin `--force` exempt); text cache and locks moved off KV. Side effect: 2,590 of 2,711 dapim now
 have notes (style .5), the rest say "not written". Last line of defence is the monthly spend limit in the
 Anthropic Console, which the code cannot set.

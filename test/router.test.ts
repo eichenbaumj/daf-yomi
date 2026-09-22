@@ -88,5 +88,9 @@ describe("language prefixes", () => {
     expect(parseRoute("/admin/note")).toEqual({ kind: "admin-translate", action: "note" });
     expect(parseRoute("/admin/note/put")).toEqual({ kind: "admin-note-put" });
     expect(parseRoute("/he/admin/note/put")).toEqual({ kind: "not-found", lang: "he" });
+    expect(parseRoute("/admin/map/bake")).toEqual({ kind: "admin-map", action: "bake" });
+    expect(parseRoute("/admin/map/put")).toEqual({ kind: "admin-map", action: "put" });
+    expect(parseRoute("/admin/map")).toEqual({ kind: "admin-map", action: "get" });
+    expect(parseRoute("/he/admin/map")).toEqual({ kind: "not-found", lang: "he" });
   });
 });

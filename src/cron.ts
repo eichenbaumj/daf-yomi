@@ -16,10 +16,15 @@ import { hashPrompt } from "./note/prompt";
 import { ENABLED_LANGS } from "./i18n/strings";
 import { ensureTranslation, translationCurrent, type TranslatableLang } from "./note/translate";
 import { getTranslation } from "./note/tstore";
+import { ensureMap } from "./map/generate";
+import { hashMapPrompt } from "./map/prompt";
+import { getMap } from "./map/store";
 
 const MAX_GENERATIONS_PER_RUN = 3;
 /** Translations of the near days' notes, per run; they never fire from a page visit. */
 const MAX_TRANSLATIONS_PER_RUN = 3;
+/** Maps of the near days' pages, per run; like translations they never fire from a page visit. */
+const MAX_MAPS_PER_RUN = 3;
 const BACKFILL_DAYS = 7;
 const AHEAD_DAYS = 2;
 
@@ -29,6 +34,11 @@ export function bakeTargets(nowUtc: Date): Date[] {
   for (let i = 2; i <= AHEAD_DAYS; i++) targets.push(addDays(nowUtc, i));
   for (let i = 1; i <= BACKFILL_DAYS; i++) targets.push(addDays(nowUtc, -i));
   return targets;
+}
+
+/** The near days only: tomorrow, today, the day after. The passes that never backfill (maps, translations) walk these. */
+export function nearTargets(nowUtc: Date): Date[] {
+  return bakeTargets(nowUtc).slice(0, AHEAD_DAYS + 1);
 }
 
 export async function runCron(env: Env, scheduledTime: number): Promise<{ log: string[] }> {
@@ -52,6 +62,25 @@ export async function runCron(env: Env, scheduledTime: number): Promise<{ log: s
     const outcome: GenerateOutcome = await ensureNote(env, ref, { force: stale, countAgainstCap: true, judge: "once" });
     generations++;
     if (outcome.status === "generated") say(`${label}: generated in ${outcome.attempts} attempt(s)${outcome.judged ? `; judge: ${outcome.judged.verdict} (${outcome.judged.questionStatus}, ${outcome.judged.reach})` : ""}`);
+    else if (outcome.status === "failed") say(`${label}: FAILED ${outcome.reason} ${(outcome.problems ?? []).join(" | ")}`);
+    else say(`${label}: ${outcome.status} ${"reason" in outcome ? outcome.reason : ""}`);
+  }
+
+  // The map of the page for the near days, before the translations: English readers see it, Hebrew is Pre-Release.
+  // A map from an older style is re-drawn, as a note is; the archive is drawn deliberately (scripts/maps-backfill.ts).
+  let maps = 0;
+  const mapStyle = hashMapPrompt();
+  for (const date of nearTargets(nowUtc)) {
+    if (maps >= MAX_MAPS_PER_RUN) break;
+    const ref = dafForDate(date);
+    const label = `${ref.tractate.name} ${ref.daf} (${ymd(date)}) [map]`;
+    const existing = await getMap(env.DAF_KV, ref.tractate, ref.daf);
+    const stale = Boolean(existing && existing.promptVersion !== mapStyle);
+    if (existing && !stale) { say(`${label}: exists (current style)`); continue; }
+    if (stale) say(`${label}: map is from style ${existing!.promptVersion}; re-drawing under ${mapStyle}`);
+    const outcome = await ensureMap(env, ref, { force: stale, countAgainstCap: true });
+    maps++;
+    if (outcome.status === "generated") say(`${label}: drawn in ${outcome.attempts} attempt(s), ${outcome.map.units.length} units`);
     else if (outcome.status === "failed") say(`${label}: FAILED ${outcome.reason} ${(outcome.problems ?? []).join(" | ")}`);
     else say(`${label}: ${outcome.status} ${"reason" in outcome ? outcome.reason : ""}`);
   }

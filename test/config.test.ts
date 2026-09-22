@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { bakeTargets } from "../src/cron";
+import { bakeTargets, nearTargets } from "../src/cron";
 import { CARD_CRON } from "../src/og/bake";
 import { SEND_CRON } from "../src/newsletter/send";
 import { isIsraelTz, isRestDay } from "../src/newsletter/hebcal";
@@ -29,12 +29,14 @@ describe("wrangler.jsonc", () => {
     expect(cfg.vars.NEWSLETTER_FROM).toMatch(/<daf@news\.daf-yomi\.dev>/);
     expect(cfg.vars.NEWSLETTER_PUBLIC).toBeDefined();
     expect(cfg.vars.CATCHUP_HOURS).toBe("3");
+    expect(Number(cfg.vars.DAILY_GENERATION_CAP)).toBeGreaterThanOrEqual(18); // two runs of 3 notes + 3 translations + 3 maps
   });
 });
 
 describe("bake schedule", () => {
   it("bakes tomorrow, today, the day after, then the last week", () => {
     const targets = bakeTargets(d("2026-09-21")).map(ymd);
+    expect(nearTargets(d("2026-09-21")).map(ymd)).toEqual(["2026-09-22", "2026-09-21", "2026-09-23"]); // tomorrow, today, the day after: the maps and translations walk these
     expect(targets.slice(0, 3)).toEqual(["2026-09-22", "2026-09-21", "2026-09-23"]);
     expect(targets.slice(3)).toEqual(["2026-09-20", "2026-09-19", "2026-09-18", "2026-09-17", "2026-09-16", "2026-09-15", "2026-09-14"]);
   });
