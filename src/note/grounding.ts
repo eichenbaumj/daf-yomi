@@ -4,7 +4,9 @@
 import type { NoteDraft } from "./prompt";
 
 export const BANNED_WORDS = ["leverage", "robust", "seamless", "holistic", "delve", "tapestry", "nuanced", "profound", "timeless", "resonate", "unpack", "journey", "testament", "underscore"];
-const BANNED_PHRASES = ["a fortiori", "a priori", "prima facie", "ipso facto", "mutatis mutandis", "teaches us", "reminds us", "wants us", "we learn", "we see", "we are", "let us", "in this daf", "this page,", "this page "];
+const BANNED_PHRASES = ["a fortiori", "a priori", "prima facie", "ipso facto", "mutatis mutandis", "teaches us", "reminds us", "wants us", "we learn", "we see", "we are", "let us", "in this daf", "this page,", "this page ",
+  // Debate-room idiom (Joe, 2026-09-22: "what work is the exchange reasoning still doing?").
+  "what work", "doing the work", "does the work", "do the work", "load-bearing", "load bearing", "heavy lifting", "carrying the weight", "carries the weight", "pulling its weight", "pull its weight"];
 
 export function normalize(s: string): string {
   return s

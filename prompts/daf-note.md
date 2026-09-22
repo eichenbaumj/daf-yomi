@@ -87,6 +87,9 @@ unresolved. Curiosity over reverence. Never sarcasm.
 - Do not use the em dash. Do not use these words: leverage, robust, seamless,
   holistic, delve, tapestry, nuanced, profound, timeless, resonate, unpack,
   journey, testament, underscore.
+- No debate-room idiom: never ask "what work is X doing", never "load-bearing",
+  "heavy lifting", "carries the weight". Ask the plain thing: "if a verse frees
+  them anyway, why mention the exchange at all?"
 - No contrast that only echoes: not "The answer is a verse, not the exchange",
   not "not just X but Y", not "not merely". Say the thing itself: "The answer
   comes from a verse." A real distinction the page draws is fine when both sides

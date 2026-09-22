@@ -77,6 +77,11 @@ describe("grounding", () => {
     expect(danglingLegalVerbs("he is liable. She is obligated.")).toEqual(["liable: liable to or for what?", "obligated: obligated to do what?"]);
     expect(checkNote({ ...good, summary: good.summary + " The donkeys are exempt." }, source).problems).toContainEqual(expect.stringMatching(/legal verb left hanging/));
   });
+  it("rejects debate-room idiom", () => {
+    expect(checkNote({ ...good, question: "If a verse frees them anyway, what work is the exchange still doing?" }, source).problems).toContainEqual(expect.stringMatching(/what work/));
+    expect(checkNote({ ...good, summary: good.summary + " The list is load-bearing." }, source).problems).toContainEqual(expect.stringMatching(/load-bearing/));
+    expect(checkNote({ ...good, question: "If a verse frees them anyway, why mention the exchange at all?" }, source).ok).toBe(true);
+  });
   it("rejects a teaser-and-colon opener", () => {
     expect(checkNote({ ...good, summary: "Bekhorot opens with donkeys: " + good.summary }, source).problems).toContainEqual(expect.stringMatching(/teaser-and-colon/));
     expect(checkNote(good, source).ok).toBe(true); // a colon later in a full sentence is fine
