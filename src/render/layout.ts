@@ -38,7 +38,7 @@ export function isPublicLang(env: Env, lang: Lang): boolean {
 
 export function page(o: PageOptions): string {
   const lang = o.lang ?? "en";
-  o = { ...o, title: smartenText(o.title), description: smartenText(o.description), body: lang === "en" ? smartenHtml(o.body) : o.body };
+  o = { ...o, title: smartenText(o.title), description: smartenText(o.description) };
   const S = strings(lang);
   const siteName = smartenText(o.env.SITE_NAME);
   const fullTitle = o.title === siteName ? siteName : `${o.title} · ${siteName}`;
@@ -59,7 +59,7 @@ export function page(o: PageOptions): string {
       : `<a lang="${l}" href="/lang/${l}?to=${encodeURIComponent(o.canonicalPath)}">${esc(S.langName[l])}${tag}</a>`;
   }).join('<span class="sep" aria-hidden="true">·</span>')}</nav>`;
   const notice = prerelease && !o.noLangSwitch ? `<p class="prerelease-notice">${S.preReleaseNotice(esc(o.canonicalPath))}</p>\n` : "";
-  return `<!doctype html>
+  const html = `<!doctype html>
 <html lang="${lang}" dir="${dirOf(lang)}">
 <head>
 <meta charset="utf-8">
@@ -114,4 +114,6 @@ ${o.body}
 <script src="/app.js" defer></script>
 </body>
 </html>`;
+  // English pages get typographic quotes throughout, footer and all; the Talmud text is fenced and untouched.
+  return lang === "en" ? smartenHtml(html) : html;
 }
