@@ -129,7 +129,7 @@ export function verifyTranslationJudgment(raw: TranslationJudgeRaw, translation:
 export function translationJudgeRequest(model: string, label: string, english: NotePair, hebrew: NotePair) {
   return {
     model,
-    max_tokens: 2000,
+    max_tokens: 8000,
     system: TJUDGE_SYSTEM,
     messages: [{ role: "user" as const, content: translationJudgeUserMessage(label, english, hebrew) }],
     output_config: { format: zodOutputFormat(TranslationJudgeSchema) },
@@ -142,8 +142,14 @@ export function translationJudgeRequest(model: string, label: string, english: N
  * whether that stops anything (the Worker treats it as no verdict).
  */
 export async function judgeTranslation(client: Anthropic, model: string, label: string, english: NotePair, hebrew: NotePair): Promise<TranslationJudgeResult> {
-  const response = await client.messages.parse(translationJudgeRequest(model, label, english, hebrew));
+  // messages.create rather than messages.parse: a verdict cut off at max_tokens (Opus 5 thinks first, and the
+  // thinking counts) or refused must come back as "no verdict" with its usage, not as a thrown parse error.
+  const response = await client.messages.create(translationJudgeRequest(model, label, english, hebrew));
   const usage = { inputTokens: response.usage.input_tokens, outputTokens: response.usage.output_tokens };
-  if (response.stop_reason === "refusal" || !response.parsed_output) return { judgment: null, refusal: response.stop_details?.explanation ?? "no structured output", usage };
-  return { judgment: verifyTranslationJudgment(response.parsed_output, hebrew, english), usage };
+  if (response.stop_reason === "refusal") return { judgment: null, refusal: response.stop_details?.explanation ?? "model declined", usage };
+  if (response.stop_reason === "max_tokens") return { judgment: null, refusal: "verdict cut off at max_tokens", usage };
+  const text = response.content.map((b) => (b.type === "text" ? b.text : "")).join("");
+  const parsed = TranslationJudgeSchema.safeParse((() => { try { return JSON.parse(text); } catch { return null; } })());
+  if (!parsed.success) return { judgment: null, refusal: "no structured output", usage };
+  return { judgment: verifyTranslationJudgment(parsed.data, hebrew, english), usage };
 }
