@@ -7,7 +7,7 @@ import { GLOSS_TERMS, normalize, unglossed } from "./grounding";
 
 export type ScreenFlag =
   | "reason-seeking"     // asks for a purpose the Gemara usually supplies ("what did selling the ears change?")
-  | "soft-rhetorical"    // "really", "at all?", "or not?": doubt dressed as a question
+  | "soft-rhetorical"    // "really", "actually", "at all?", "or not?": doubt dressed as a question (often just emphasis)
   | "interpretive"       // the summary characterises rather than reports ("seems to", "in effect")
   | "contradiction"      // "if X, why Y": the prompt's own approved shape, low weight
   | "mechanics"          // only quantities, measures or which-rule-applies, nothing underneath
@@ -18,7 +18,7 @@ export interface Screened { flags: ScreenFlag[]; score: number }
 const WEIGHTS: Record<ScreenFlag, number> = { "reason-seeking": 3, "soft-rhetorical": 2, interpretive: 2, mechanics: 3, "unglossed-question": 1, contradiction: 1 };
 
 const REASON_SEEKING = /\b(what (?:did|does|would|has) [^?]{0,60}?\b(?:change|changed|accomplish|accomplished|add|added|achieve|achieved|matter|mattered|gain|gained)\b|why bother|what (?:was|is) the point|what difference|to what end|what (?:was|is) [^?]{0,30}\bfor)\b/i;
-const SOFT_RHETORICAL = /\b(really|at all\?|or not\?|simply|merely)\b|\bat all\s*\?|\bor not\s*\?/i;
+const SOFT_RHETORICAL = /\b(really|actually|simply|merely)\b|\bat all\s*\?|\bor not\s*\?/i;
 const INTERPRETIVE = /\b(seems? to|appears? to|effectively|in effect|essentially|arguably|quietly|conveniently|tacitly|in other words|amounts to)\b/i;
 const CONTRADICTION = /^if\b[^?]*\bwhy\b/i;
 /** Words that mean the question has an idea in it; a mechanics question has none of these. */

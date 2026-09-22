@@ -3,6 +3,7 @@
  * through POST /admin/note/put once it has passed the gate and the judge.
  *
  *   npm run notes:rebake -- --audit data/audit/2026-09-22.json [--budget 850] [--limit N] [--dapim …] [--dry]
+ *                          [--why answered-on-page,mechanics,summary-wrong,gate]   only these reasons (default: all)
  *
  * Rounds: a draft batch (the writer sees its old note and the judge's feedback), the gate, a judge batch, and one
  * more draft with the judge's new feedback if it was sent back again; at most three drafts and two judge readings per
@@ -37,6 +38,7 @@ const limit = Number(opt("limit") ?? Infinity);
 const near = nearKeys(Number(opt("near") ?? 3));
 const dry = flag("dry");
 const only = new Set((opt("dapim") ?? "").split(",").map((s) => s.trim()).filter(Boolean));
+const why = new Set((opt("why") ?? "").split(",").map((s) => s.trim()).filter(Boolean));
 const MAX_DRAFTS = 3, MAX_JUDGES = 2;
 
 interface Outcome { status: "stored" | "given-up" | "refused" | "rejected" | "budget"; at: string; reason?: string; question?: string; generatedAt?: string; drafts: number; judges: number; estUsd: number; hadTranslation?: boolean; hadCard?: boolean }
@@ -48,7 +50,7 @@ async function main() {
   const outcomes: Record<string, Outcome> = existsSync(outcomesPath) ? JSON.parse(readFileSync(outcomesPath, "utf8")) : {};
   const save = () => writeFileSync(outcomesPath, JSON.stringify(outcomes, null, 1));
   const todo = Object.values(audit.dapim)
-    .filter((e) => e.rebake && !near.has(e.key) && (only.size === 0 || only.has(e.key)) && !["stored", "given-up"].includes(outcomes[e.key]?.status ?? ""))
+    .filter((e) => e.rebake && !near.has(e.key) && (only.size === 0 || only.has(e.key)) && (why.size === 0 || e.why.some((w) => why.has(w))) && !["stored", "given-up"].includes(outcomes[e.key]?.status ?? ""))
     .slice(0, limit);
   console.log(`${todo.length} to re-bake (of ${Object.values(audit.dapim).filter((e) => e.rebake).length} sent back; near days and finished ones skipped)`);
   if (todo.length === 0) return finish(outcomes);

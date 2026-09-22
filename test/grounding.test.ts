@@ -96,10 +96,10 @@ describe("grounding", () => {
 
 describe("the question is real, introduced, and about the people on the page", () => {
   const page = `${source} Rav Mari bar Raḥel sold the ears of his animals. Rabbi Yehuda HaNasi says the ear is enough. Rabbi Yoḥanan and Rabbi Akiva disagree. Abaye said: the Mishna speaks of an ordinary case. The Sages taught: teruma, the priests' portion, is separated first.`;
-  it("rejects rhetorical openers and 'actually', not the prompt's own if-why shape", () => {
+  it("rejects rhetorical openers, not emphasis or the prompt's own if-why shape", () => {
     expect(checkNote({ ...good, question: "Isn't it strange that the mishna lists five cases at all?" }, page).problems).toContainEqual(expect.stringMatching(/rhetorical/));
     expect(checkNote({ ...good, question: "Surely one principle would have done for all five cases?" }, page).problems).toContainEqual(expect.stringMatching(/rhetorical/));
-    expect(checkNote({ ...good, question: "If a single principle covers all five cases, what did the list actually change?" }, page).problems).toContainEqual(expect.stringMatching(/"actually"/));
+    expect(checkNote({ ...good, question: "If a single principle covers all five cases, what did the list actually add?" }, page).ok).toBe(true); // "actually" is emphasis; the judge decides whether the page answers it
     // The sea example from the house style, and Joe's donkey question, pass.
     const sea = { ...good, summary: good.summary + " The majority overrules a voice from Heaven; the sea rises against the man who enforced the ruling.", question: "If the majority was right to overrule the voice from Heaven, why does the sea rise against the man who enforced the ruling?" };
     expect(checkNote(sea, page).ok).toBe(true);
@@ -119,6 +119,11 @@ describe("the question is real, introduced, and about the people on the page", (
     expect(sagesNotOnPage("Rav Mari sold the ears; Rabbi Yehuda says the ear is enough; Rabbi Akiva's students; Rabbi Yohanan disagrees; Abaye objects.", page)).toEqual([]);
     expect(sagesNotOnPage("Rav Yosef sold the ears and Rava objected.", page)).toEqual(["Rav Yosef", "Rava"]);
     expect(sagesNotOnPage("Rabbi Meir and Rabbi Yehuda HaNasi", page)).toEqual(["Rabbi Meir"]);
+    // Titles and transliterations vary between the note and the page; only an absent sage fails.
+    expect(sagesNotOnPage("Rav Yehuda and Rabbi Yochanan and Rabbi Joḥanan and Rav Akiva", page)).toEqual([]);
+    expect(sagesNotOnPage("Reish Lakish objects.", page + " Rabbi Shimon ben Lakish said so.")).toEqual([]);
+    expect(sagesNotOnPage("Rav Yitzhak said.", page + " Rabbi Yitzḥak said.")).toEqual([]);
+    expect(sagesNotOnPage("Rav Zeira said.", page + " Rabbi Zeira said.")).toEqual([]);
     expect(sagesNotOnPage("The rabbi of the town, a rav, and Mar said nothing.", page)).toEqual([]); // titles alone are not names
     expect(checkNote({ ...good, summary: good.summary + " Rav Yosef objects." }, page).problems).toContainEqual(expect.stringMatching(/"Rav Yosef" is not named on this page/));
     expect(checkNote({ ...good, summary: good.summary + " Rav Mari bar Raḥel objects." }, page).ok).toBe(true);

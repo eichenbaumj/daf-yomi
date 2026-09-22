@@ -120,17 +120,19 @@ export function fold(s: string): string {
 
 /**
  * Sages the note names that the page never does. The prompt says "name a sage only if that name appears in
- * today's text"; this makes it so. A title plus one capitalised word is the head of the name ("Rav Mari" of
- * "Rav Mari bar Raḥel"), which is enough: a note never invents a first name for a sage the page has.
+ * today's text"; this makes it so. Only the name is compared, never the title, and spelling variants the
+ * translations use are folded ("Rav Zeira" for the page's "Rabbi Zeira", "Yochanan" for "Yoḥanan", Guggenheimer's
+ * "Joḥanan"), so the rule catches a sage who is absent, not one who is spelled differently.
  */
-const TITLED_SAGE = /\b(Rabbi|Rav|Rabban|Rabbeinu|Mar)\s+([A-Z][\p{L}]+)/gu;
-const UNTITLED_SAGES = ["Abaye", "Rava", "Rabba", "Shmuel", "Hillel", "Shammai", "Ulla", "Reish Lakish"];
+const TITLED_SAGE = /\b(?:Rabbi|Rav|Rabban|Rabbeinu|Mar)\s+([A-Z][\p{L}]+)/gu;
+const UNTITLED_SAGES: [name: string, key: string][] = [["Abaye", "abaye"], ["Rava", "rava"], ["Rabba", "rabba"], ["Shmuel", "shmuel"], ["Hillel", "hillel"], ["Shammai", "shammai"], ["Ulla", "ulla"], ["Reish Lakish", "lakish"]];
+const sageKey = (name: string) => fold(name).replace(/^j/, "y").replace(/ch/g, "h").replace(/tz/g, "z").replace(/kk/g, "k").replace(/bb/g, "b");
 export function sagesNotOnPage(text: string, sourcePlainText: string): string[] {
-  const src = fold(sourcePlainText);
+  const src = sageKey(sourcePlainText);
   const out: string[] = [];
-  const miss = (name: string) => { if (!src.includes(fold(name)) && !out.includes(name)) out.push(name); };
-  for (const m of text.matchAll(TITLED_SAGE)) miss(`${m[1]} ${m[2]}`);
-  for (const name of UNTITLED_SAGES) if (new RegExp(`\\b${name}\\b`).test(text)) miss(name);
+  const miss = (shown: string, key: string) => { if (!src.includes(key) && !out.includes(shown)) out.push(shown); };
+  for (const m of text.matchAll(TITLED_SAGE)) miss(m[0], sageKey(m[1]!));
+  for (const [name, key] of UNTITLED_SAGES) if (new RegExp(`\\b${name}\\b`).test(text)) miss(name, key);
   return out;
 }
 
@@ -173,7 +175,6 @@ export function checkNote(note: NoteDraft, sourcePlainText: string): GroundingRe
   for (const n of strangersInQuestion(note.question, note.summary)) problems.push(`the question brings in "${n}", which the summary never mentions; the question must stand on the summary alone, so introduce it there or leave it out.`);
   if (/\b(standing on|hold water|on the spot|square with|at stake|beg the question|in play)\b/i.test(note.question)) problems.push("no idioms in the question; say it plainly (rely on, prove, permit).");
   if (RHETORICAL_OPENER.test(note.question.trim())) problems.push("the question is rhetorical; ask something the page leaves open, in a form that could be answered either way.");
-  if (/\bactually\b/i.test(note.question)) problems.push('drop "actually" from the question: if the page answers the question, ask what remains difficult after its answer instead of doubting it.');
   for (const term of unintroducedTerms(note.question, note.summary)) problems.push(`the question uses "${term}", which the summary never introduced; gloss it in the summary first or leave it out of the question.`);
   for (const name of sagesNotOnPage(prose, sourcePlainText)) problems.push(`"${name}" is not named on this page; name a sage only for a view the text attributes to them, in the page's own spelling.`);
   if (/[—]/.test(prose)) problems.push("no em dashes.");

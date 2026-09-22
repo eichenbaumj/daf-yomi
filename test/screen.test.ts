@@ -14,6 +14,7 @@ const shabbat31 = {
 describe("screens", () => {
   it("flags the reviewed notes", () => {
     expect(screenNote(bekhorot3).flags).toContain("reason-seeking");
+    expect(screenNote(bekhorot3).flags).toContain("soft-rhetorical"); // "actually"
     expect(screenNote(shabbat31).flags).toContain("soft-rhetorical");
     expect(screenNote(bekhorot3).score).toBeGreaterThan(0);
   });
