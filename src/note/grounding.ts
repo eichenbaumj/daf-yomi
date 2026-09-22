@@ -132,7 +132,7 @@ export function sagesNotOnPage(text: string, sourcePlainText: string): string[] 
   const out: string[] = [];
   const miss = (shown: string, key: string) => { if (!src.includes(key) && !out.includes(shown)) out.push(shown); };
   for (const m of text.matchAll(TITLED_SAGE)) miss(m[0], sageKey(m[1]!));
-  for (const [name, key] of UNTITLED_SAGES) if (new RegExp(`\\b${name}\\b`).test(text)) miss(name, key);
+  for (const [name, key] of UNTITLED_SAGES) if (new RegExp(`\\b${name}\\b`).test(text)) miss(name, sageKey(key));
   return out;
 }
 

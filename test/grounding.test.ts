@@ -124,6 +124,8 @@ describe("the question is real, introduced, and about the people on the page", (
     expect(sagesNotOnPage("Reish Lakish objects.", page + " Rabbi Shimon ben Lakish said so.")).toEqual([]);
     expect(sagesNotOnPage("Rav Yitzhak said.", page + " Rabbi Yitzḥak said.")).toEqual([]);
     expect(sagesNotOnPage("Rav Zeira said.", page + " Rabbi Zeira said.")).toEqual([]);
+    expect(sagesNotOnPage("Rabba and Abaye disagree.", page + " Rabba said.")).toEqual([]); // the doubled letter folds on both sides
+    expect(sagesNotOnPage("Rabba and Abaye disagree.", page)).toEqual(["Rabba"]);
     expect(sagesNotOnPage("The rabbi of the town, a rav, and Mar said nothing.", page)).toEqual([]); // titles alone are not names
     expect(checkNote({ ...good, summary: good.summary + " Rav Yosef objects." }, page).problems).toContainEqual(expect.stringMatching(/"Rav Yosef" is not named on this page/));
     expect(checkNote({ ...good, summary: good.summary + " Rav Mari bar Raḥel objects." }, page).ok).toBe(true);
