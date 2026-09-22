@@ -81,6 +81,7 @@ describe("map gate", () => {
     expect(problems(withUnit(2, { gloss: "Rav Huna says the ear counts, like teruma for a priest." }))).toContainEqual(expect.stringMatching(/^unit 3: gloss "teruma"/));
     expect(problems(withUnit(2, { gloss: "Rav Huna says a uprooted ear still counts as a share." }))).toContainEqual(expect.stringMatching(/^unit 3: article does not agree/));
     expect(problems(withUnit(2, { gloss: "Rav Huna says the ear counts, so the donkey is exempt." }))).toContainEqual(expect.stringMatching(/^unit 3: legal verb left hanging/));
+    expect(checkMap(withUnit(2, { gloss: "Rav Huna says the ear exempts the Israelites' donkeys from the priest's claim." }), page, source).ok).toBe(true); // a direct object satisfies the map's rule
   });
   it("counts a term glossed once anywhere in the map", () => {
     const glossedOnce = withUnit(1, { gloss: "The Gemara asks why the mishna needs every case, like teruma, the priest's share of the crop, needs a rule." });

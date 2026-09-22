@@ -94,7 +94,7 @@ export function checkMap(draft: MapDraft, page: MapPage, sourceText: string): Gr
     if (LATER_AUTHORITIES.test(text)) problems.push(`${at}: do not cite later authorities, Steinsaltz, or Sefaria.`);
     for (const name of sagesNotOnPage(text, sourceText)) problems.push(`${at}: "${name}" is not named on this page; name a sage only for a view the text attributes to them, in the page's own spelling.`);
     for (const slip of articleSlips(text)) problems.push(`${at}: article does not agree with the next word: "${slip}".`);
-    for (const d of danglingLegalVerbs(text)) problems.push(`${at}: legal verb left hanging, "${d}" Say it in full: exempt from the firstborn law, liable to bring an offering.`);
+    for (const d of danglingLegalVerbs(text, { objectCounts: true })) problems.push(`${at}: legal verb left hanging, "${d}" Say it in full: exempt from the firstborn law, liable to bring an offering.`);
     for (const span of quotedSpans(text)) if (!src.includes(normalize(span))) problems.push(`${at}: quoted phrase not found in the text: "${span}".`);
   });
   // A term glossed once anywhere in the map is glossed; the report names the first unit that uses it bare.

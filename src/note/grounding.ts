@@ -92,11 +92,17 @@ export function unglossed(text: string): string[] {
   return out;
 }
 
-/** "exempt", "liable", "obligated" etc. with no object: the reader is left asking "from what?" */
-export function danglingLegalVerbs(text: string): string[] {
+/**
+ * "exempt", "liable", "obligated" etc. with no object: the reader is left asking "from what?" The note's rule wants
+ * "exempt from …" every time. With `objectCounts` (the map's glosses, which quote the page's own "the Levites' sheep
+ * exempted the Israelites' donkeys"), a direct object satisfies the verb; the bare adjective ("rendered exempt,",
+ * "were exempted.") is still caught.
+ */
+export function danglingLegalVerbs(text: string, opts: { objectCounts?: boolean } = {}): string[] {
   const out: string[] = [];
+  const objects = opts.objectCounts ? "|(?:the|a|an|their|his|her|its|our|your|all|every|any|both|such|these|those|this|that|one|each|whoever|anyone|everyone|[A-Z][a-z']+)\\b" : "";
   const rules: [RegExp, string][] = [
-    [/\bexempt(?:ed|s)?\b(?!\s+(?:from|it|them|him|her|the\b[^.]{0,40}\bfrom))/gi, "exempt from what?"],
+    [new RegExp(`\\bexempt(?:ed|s)?\\b(?!\\s+(?:from|it|them|him|her|us|the\\b[^.]{0,40}\\bfrom${objects}))`, "gi"), "exempt from what?"],
     [/\bliable\b(?!\s+(?:to|for))/gi, "liable to or for what?"],
     [/\bobligated\b(?!\s+(?:to|in))/gi, "obligated to do what?"],
   ];

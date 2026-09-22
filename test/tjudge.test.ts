@@ -90,7 +90,7 @@ describe("the Hebrew judge", () => {
     expect(m.length).toBeLessThan(english.summary.length + english.question.length + hebrew.summary.length + hebrew.question.length + 400);
     const req = translationJudgeRequest("claude-opus-5", "Bekhorot 4", english, hebrew);
     expect(req.system).toBe(TJUDGE_SYSTEM);
-    expect(req.max_tokens).toBe(2000);
+    expect(req.max_tokens).toBe(8000); // Opus 5 thinks first and the thinking counts; 2,000 cut the first live verdict off
     expect(req.messages[0]!.content).toBe(m);
     expect(TJUDGE_SYSTEM).toContain("Fidelity");
     expect(TJUDGE_SYSTEM).not.toMatch(/—/);

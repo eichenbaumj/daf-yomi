@@ -35,6 +35,13 @@ describe("grounding", () => {
     expect(r.ok).toBe(false);
     expect(r.problems.some((p) => p.includes("quoted phrase not found"))).toBe(true);
   });
+  it("lets a direct object satisfy 'exempt' only when asked to (the map's glosses)", () => {
+    const verb = "the Levites' sheep exempted the Israelites' donkeys, and Abaye's inference would exempt their own.";
+    expect(danglingLegalVerbs(verb).length).toBe(2);
+    expect(danglingLegalVerbs(verb, { objectCounts: true })).toEqual([]);
+    expect(danglingLegalVerbs("the mishna rendered the donkeys exempt, but a verse says otherwise.", { objectCounts: true })).toEqual(["exempt: exempt from what?"]);
+    expect(danglingLegalVerbs("so the Levites were exempted.", { objectCounts: true })).toEqual(["exempted: exempt from what?"]);
+  });
   it("pairs every quotation mark in order, so two short quotes never read as one long one", () => {
     const r = checkNote({ ...good, summary: good.summary + ' Dots over "Aaron" show he was left out; the word "the Levites" joins them all.' }, source);
     expect(r.problems.filter((p) => p.includes("quoted phrase"))).toEqual([]);
