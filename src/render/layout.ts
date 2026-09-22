@@ -23,6 +23,9 @@ export interface PageOptions {
   jsonLd?: unknown[];
   /** No language switch, no alternates (newsletter and error pages). */
   noLangSwitch?: boolean;
+  /** Absolute URL of a page-specific social image (the per-daf share card); the static card when absent. */
+  ogImage?: string;
+  ogImageAlt?: string;
 }
 
 const FONTS = "https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=Frank+Ruhl+Libre:wght@400;700&display=swap";
@@ -40,7 +43,8 @@ export function page(o: PageOptions): string {
   const canonical = `${o.origin}${p(lang, o.canonicalPath)}`;
   const prerelease = !isPublicLang(o.env, lang);
   const newsletterPublic = o.env.NEWSLETTER_PUBLIC === "1" && lang === "en";
-  const ogImage = lang === "he" ? "/og-he.png" : "/og.png";
+  const ogImage = o.ogImage ?? `${o.origin}${lang === "he" ? "/og-he.png" : "/og.png"}`;
+  const ogImageAlt = o.ogImageAlt ?? S.ogImageAlt(siteName);
   // Alternates only once every listed language is public, so search engines never see an unreviewed translation.
   const alternates = !o.noLangSwitch && ENABLED_LANGS.every((l) => isPublicLang(o.env, l))
     ? ENABLED_LANGS.map((l) => `<link rel="alternate" hreflang="${l}" href="${esc(o.origin)}${esc(p(l, o.canonicalPath))}">`).join("\n") + `\n<link rel="alternate" hreflang="x-default" href="${esc(o.origin)}${esc(o.canonicalPath)}">`
@@ -66,11 +70,14 @@ ${alternates ? alternates + "\n" : ""}<meta property="og:site_name" content="${e
 <meta property="og:title" content="${esc(fullTitle)}">
 <meta property="og:description" content="${esc(o.description)}">
 <meta property="og:url" content="${esc(canonical)}">
-<meta property="og:image" content="${esc(o.origin)}${ogImage}">
+<meta property="og:image" content="${esc(ogImage)}">
+<meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="${esc(S.ogImageAlt(siteName))}">
+<meta property="og:image:alt" content="${esc(ogImageAlt)}">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="${esc(ogImage)}">
+<meta name="twitter:image:alt" content="${esc(ogImageAlt)}">
 <meta name="theme-color" content="#f3ead7">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="alternate" type="application/rss+xml" title="${esc(siteName)}" href="${p(lang, "/feed.xml")}">

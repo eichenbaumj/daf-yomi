@@ -12,6 +12,7 @@ import { en } from "../i18n/en";
 import { esc, page } from "./layout";
 import { renderPositionMini } from "./positionMini";
 import { INLINE_SUBSCRIBE_HEAD, INLINE_SUBSCRIBE_TAIL, renderInlineSubscribe } from "./newsletterPages";
+import { cardPath } from "../og/store";
 
 export interface DafPageModel {
   env: Env;
@@ -30,6 +31,8 @@ export interface DafPageModel {
   todayRef?: DafRef;
   /** Today's civil date, for the note-pending copy. */
   todayDate?: Date;
+  /** The stored share card for this daf, when it shows the note on this page (src/og/store.ts `cardCurrent`). English only. */
+  card?: { token: string } | null;
 }
 
 /** The English label and legend, kept as exports: the email and the tests read them here. */
@@ -54,10 +57,15 @@ function noteBox(m: DafPageModel, lang: Lang): string {
   const label = `<p class="note-label" id="note-h"><span class="ai">${esc(S.aiBadge)}</span> ${esc(S.aiLabel)}</p>`;
   const shown = lang === "en" ? note : currentTranslation(note, m.translation ?? null);
   if (shown) {
+    // "Share this question": hidden until app.js runs (it needs the share sheet or the clipboard). The text it shares is
+    // the question as shown, then this line, then the permalink (never "/": the link must still be right tomorrow).
+    const shareUrl = `${m.origin}${p(lang, dafPath(m.ref.tractate, m.ref.daf))}`;
+    const share = `<p class="note-share" hidden><button type="button" class="toggle share" data-share-url="${esc(shareUrl)}" data-share-line="${esc(S.shareLine(dafLabelL(lang, m.ref.tractate, m.ref.daf), m.env.SITE_NAME))}" data-share-done="${esc(S.shareDone)}">${esc(S.shareQuestion)}</button></p>`;
     return `<aside class="note" aria-labelledby="note-h">
   ${label}
   <p class="note-summary">${esc(shown.summary)}</p>
   <p class="note-question">${esc(shown.question)}</p>
+  ${share}
 </aside>`;
   }
   const daysAway = Math.abs(Math.round((m.date.getTime() - (m.todayDate ?? m.date).getTime()) / 86400000));
@@ -231,7 +239,9 @@ export function renderDafPage(m: DafPageModel): string {
 
   const canonicalPath = m.isToday ? "/" : dafPath(t, ref.daf);
   const url = `${m.origin}${p(lang, canonicalPath)}`;
-  const ogImage = lang === "he" ? "/og-he.png" : "/og.png";
+  // The per-daf share card, when one exists for the note shown here; otherwise the static card (src/og/store.ts).
+  const cardUrl = lang === "en" && m.card && shownNote ? `${m.origin}${cardPath(t, ref.daf, m.card.token)}` : null;
+  const ogImage = cardUrl ?? `${m.origin}${lang === "he" ? "/og-he.png" : "/og.png"}`;
   const jsonLd: unknown[] = [
     {
       "@context": "https://schema.org",
@@ -244,7 +254,7 @@ export function renderDafPage(m: DafPageModel): string {
       isAccessibleForFree: true,
       url,
       mainEntityOfPage: url,
-      image: `${m.origin}${ogImage}`,
+      image: ogImage,
       author: { "@type": "Person", name: "Joe Eichenbaum", url: `${m.origin}${p(lang, "/about")}` },
       publisher: { "@type": "Organization", name: env.SITE_NAME, url: `${m.origin}/`, logo: { "@type": "ImageObject", url: `${m.origin}/og.png` } },
       about: { "@type": "CreativeWork", name: `${t.sefariaTitle} ${ref.daf}`, alternateName: t.heTitle, isPartOf: { "@type": "CreativeWork", name: "Babylonian Talmud" } },
@@ -273,6 +283,8 @@ export function renderDafPage(m: DafPageModel): string {
     bodyClass: "daf-page",
     extraHead: subscribeBox ? INLINE_SUBSCRIBE_HEAD : undefined,
     ogType: "article",
+    ogImage,
+    ogImageAlt: cardUrl && shownNote ? shownNote.question : undefined,
     jsonLd,
   });
 }

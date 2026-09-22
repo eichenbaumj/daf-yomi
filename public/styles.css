@@ -82,6 +82,10 @@ h2 { font-weight: 600; font-size: 1.25rem; margin: 2rem 0 .6rem; }
 .note-question { margin: 0; font-style: italic; color: var(--ink); }
 .note-question::before { content: "✦ "; color: var(--gold); font-style: normal; font-size: .75em; }
 .note-pending .note-summary { font-size: .95rem; }
+/* "Share this question": a pill under the question. Hidden until app.js runs (it needs the clipboard or the share sheet). */
+[hidden] { display: none !important; }
+.note-share { margin: .8rem 0 0; }
+.note-share .share { font-size: .82rem; padding: .26rem .8rem; }
 /* The sign-up under the note: folded to one line by default; the summary is the whole pitch. */
 .note:has(+ .note-subscribe) { margin-bottom: 0; border-radius: 3px 3px 0 0; }
 .note-subscribe { margin: 0 0 .4rem; border: 1px solid var(--rule); border-top: 0; border-radius: 0 0 3px 3px; background: color-mix(in srgb, var(--note-bg) 55%, var(--paper)); }
@@ -185,7 +189,7 @@ html[dir="rtl"] .zoom-line, html[dir="rtl"] .dy-label, html[dir="rtl"] .dy-legen
 .prose ul { padding-inline-start: 1.2rem; }
 
 @media print {
-  header.site nav, .tools, .deeper-wrap, .prevnext, footer.site, body::before, .zoom-hint { display: none; }
+  header.site nav, .tools, .deeper-wrap, .prevnext, footer.site, body::before, .zoom-hint, .note-share { display: none; }
   body { background: #fff; color: #000; }
 }
 

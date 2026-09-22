@@ -21,6 +21,7 @@ import { issueHeaders, resendProvider } from "./resend";
 import { isIsraelTz, isRestDay } from "./hebcal";
 import { siteOrigin } from "./origin";
 import { alert } from "./alerts";
+import { withTimeout } from "../util";
 
 export const SEND_CRON = "0 * * * *";
 const MAX_BATCHES_PER_TICK = 20;
@@ -47,13 +48,6 @@ export function buildEdition(env: Env, editionDate: string, variant: Variant, no
   const ref = dafForDate(date);
   const r = renderIssue({ origin: siteOrigin(env), siteName: env.SITE_NAME, ref, date, note: variant === "full" ? note : null, hebrew: env.EMAIL_HEBREW !== "0" });
   return { edition_date: editionDate, variant, slug: ref.tractate.slug, daf: ref.daf, note_present: variant === "full" ? 1 : 0, subject: r.subject, preheader: r.preheader, html: r.html, text: r.text, rendered_at: now.toISOString() };
-}
-
-function withTimeout<T>(p: Promise<T>, ms: number, label: string): Promise<T> {
-  return new Promise<T>((resolve, reject) => {
-    const t = setTimeout(() => reject(new Error(`${label}: timed out after ${ms} ms`)), ms);
-    p.then((v) => { clearTimeout(t); resolve(v); }, (e) => { clearTimeout(t); reject(e); });
-  });
 }
 
 function personalFor(env: Env, origin: string, sub: SubscriberRow, sendDate: Date): { unsubUrl: string; prefsUrl: string; email: string; confirmedDate: string; heldHtml: string; heldText: string } {

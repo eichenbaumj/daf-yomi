@@ -18,6 +18,8 @@ export type Route =
   | { kind: "robots" }
   | { kind: "sitemap" }
   | { kind: "admin-bake" }
+  | { kind: "og-card"; tractate: Tractate; daf: number; token: string }
+  | { kind: "admin-og"; action: "bake" | "status" }
   | { kind: "newsletter" }
   | { kind: "newsletter-confirm" }
   | { kind: "newsletter-privacy" }
@@ -56,6 +58,8 @@ export function parseRoute(pathname: string): Route {
   if (path === "/admin/translate") return { kind: "admin-translate", action: "run" };
   if (path === "/admin/translate/put") return { kind: "admin-translate", action: "put" };
   if (path === "/admin/note") return { kind: "admin-translate", action: "note" };
+  if (path === "/admin/og/bake") return { kind: "admin-og", action: "bake" };
+  if (path === "/admin/og/status") return { kind: "admin-og", action: "status" };
   return parsePage(path);
 }
 
@@ -79,6 +83,14 @@ function parsePage(path: string): Route {
   }
   m = /^\/date\/(\d{4}-\d{2}-\d{2})$/.exec(path);
   if (m) return { kind: "date", ymd: m[1]! };
+  // The share card behind a shared link: /og/<slug>/<daf>/<token>.png (src/og). English only; the token is the
+  // card's version, so a redrawn card is a new URL for every crawler cache.
+  m = /^\/og\/([a-z-]+)\/(\d{1,3})\/([0-9a-f]{8})\.png$/.exec(path);
+  if (m) {
+    const t = tractateBySlug(m[1]!);
+    const daf = Number(m[2]);
+    return t && daf >= t.firstDaf && daf <= t.lastDaf ? { kind: "og-card", tractate: t, daf, token: m[3]! } : { kind: "not-found" };
+  }
   // Newsletter routes sit before the tractate patterns, which would otherwise swallow "/newsletter".
   // Reader tokens are 48 lowercase hex characters because paths are lower-cased above; the confirmation
   // token travels in the query string for the same reason.

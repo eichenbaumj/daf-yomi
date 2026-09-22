@@ -66,6 +66,13 @@ export const en: Strings = {
   breadcrumbTractates: "Tractates",
   chapterOf: (n, total) => `Chapter ${n} of ${total}`,
   chaptersOf: (a, b, total) => `Chapters ${a}–${b} of ${total}`,
+  shareQuestion: "Share this question",
+  shareDone: "Copied",
+  shareLine: (label, siteName) => `${label} · AI note · ${siteName}`,
+
+  cardWordmark: "TODAY'S DAF",
+  cardAiChip: "AI NOTE",
+  cardAiLine: "Written by Claude, an AI. Not a scholar.",
 
   capTalmud: "The Talmud",
   capOrders: "The six Orders",

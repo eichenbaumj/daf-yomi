@@ -69,3 +69,43 @@
   });
   show(0);
 })();
+
+// "Share this question". The button is hidden until this runs: without JS there is nothing it could do. On a phone the
+// share sheet takes the text and the link; elsewhere the three lines go to the clipboard. Nothing is recorded anywhere.
+(function () {
+  var boxes = document.querySelectorAll(".note-share");
+  if (!boxes.length) return;
+  var coarse = false;
+  try { coarse = !!(window.matchMedia && window.matchMedia("(pointer: coarse)").matches); } catch (e) {}
+  Array.prototype.forEach.call(boxes, function (box) {
+    var btn = box.querySelector("button.share");
+    var q = document.querySelector(".note-question");
+    if (!btn || !q) return;
+    var url = btn.getAttribute("data-share-url") || location.href;
+    var line = btn.getAttribute("data-share-line") || "";
+    var done = btn.getAttribute("data-share-done") || "";
+    var label = btn.textContent;
+    var text = "\u201c" + q.textContent.trim() + "\u201d\n" + line;
+    function flash() { btn.textContent = done; setTimeout(function () { btn.textContent = label; }, 2000); }
+    function copy(s) {
+      if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(s);
+      return new Promise(function (resolve, reject) {
+        var ta = document.createElement("textarea");
+        ta.value = s; ta.setAttribute("readonly", ""); ta.style.position = "fixed"; ta.style.opacity = "0";
+        document.body.appendChild(ta); ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) {}
+        document.body.removeChild(ta);
+        ok ? resolve() : reject();
+      });
+    }
+    box.hidden = false;
+    btn.addEventListener("click", function () {
+      if (coarse && navigator.share) {
+        navigator.share({ text: text, url: url }).catch(function () {});
+        return;
+      }
+      copy(text + "\n" + url).then(flash, function () {});
+    });
+  });
+})();

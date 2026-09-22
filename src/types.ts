@@ -17,6 +17,11 @@ export interface Env {
   /** "1" once the Hebrew reviewer round is done: /he pages get indexed, listed in the sitemap and offered as hreflang
    *  alternates. Anything else keeps them Pre-Release (noindex, a notice on every page). */
   HE_PUBLIC?: string;
+  /** Browser Rendering binding (wrangler.jsonc `browser`), used only by the card bake (src/og). Optional: without it the
+   *  site serves the static social card. Typed as Fetcher so this file never imports puppeteer. */
+  BROWSER?: Fetcher;
+  /** Archive share cards rendered per card-bake run beyond the near days (default 10). Raise once CPU per card is measured. */
+  OG_TRICKLE_PER_RUN?: string;
 
   // ---- Newsletter (src/newsletter) ----
   /** D1: subscribers, deliveries, rendered editions, send runs, provider events, suppressions. */

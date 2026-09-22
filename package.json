@@ -19,7 +19,10 @@
     "d1:migrate:local": "wrangler d1 migrations apply daf-yomi-newsletter --local",
     "d1:migrate": "wrangler d1 migrations apply daf-yomi-newsletter --remote",
     "email:preview": "tsx --import ./scripts/md-loader.mjs scripts/email-preview.ts",
-    "newsletter:test": "tsx --import ./scripts/md-loader.mjs scripts/newsletter-send-test.ts"
+    "newsletter:test": "tsx --import ./scripts/md-loader.mjs scripts/newsletter-send-test.ts",
+    "og:fonts": "tsx --import ./scripts/md-loader.mjs scripts/og-fonts.ts",
+    "og:preview": "tsx --import ./scripts/md-loader.mjs scripts/og-preview.ts",
+    "og:backfill": "tsx --import ./scripts/md-loader.mjs scripts/og-backfill.ts"
   },
   "keywords": [
     "daf yomi",
@@ -31,6 +34,7 @@
   "type": "module",
   "dependencies": {
     "@anthropic-ai/sdk": "^0.127.0",
+    "@cloudflare/puppeteer": "^1.4.0",
     "@hebcal/core": "^6.9.2",
     "@hebcal/learning": "^6.11.3",
     "zod": "^4.6.5"

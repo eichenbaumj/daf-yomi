@@ -18,6 +18,10 @@ import { isPublicLang } from "./render/layout";
 import { renderError, renderNotFound } from "./render/simple";
 import { cachedResponse } from "./cache";
 import { runCron } from "./cron";
+import { CARD_CRON, bakeCards, runCardBake, targetFor, type CardTarget } from "./og/bake";
+import { browserRenderer } from "./og/browser";
+import { cardFonts } from "./og/fonts";
+import { cardCurrent, cardPath, getCard, getCardMeta, type CardMeta } from "./og/store";
 import { handleNewsletter } from "./newsletter/http";
 import { SEND_CRON, runSendTick } from "./newsletter/send";
 
@@ -60,11 +64,14 @@ async function loadDafTexts(ref: DafRef, kv: KVNamespace, lang: Lang): Promise<D
 }
 
 async function dafPageResponse(env: Env, ctx: ExecutionContext, origin: string, lang: Lang, ref: DafRef, date: Date, isToday: boolean, todayRef: DafRef, todayDate: Date): Promise<Response> {
-  const [texts, note, translation] = await Promise.all([
+  const [texts, note, translation, cardMeta] = await Promise.all([
     loadDafTexts(ref, env.DAF_KV, lang),
     getNote(env.DAF_KV, ref.tractate, ref.daf),
     lang === "en" ? Promise.resolve<TranslatedNote | null>(null) : getTranslation(env.DAF_KV, lang, ref.tractate, ref.daf),
+    // The share card's metadata (never its bytes): the head points at the card only while it shows this note's question.
+    lang === "en" ? getCardMeta(env.DAF_KV, ref.tractate, ref.daf) : Promise.resolve<CardMeta | null>(null),
   ]);
+  const card = cardCurrent(note, cardMeta) ? { token: cardMeta.token } : null;
   const notesEnabled = Boolean(env.ANTHROPIC_API_KEY);
   // Self-heal only for pages a person would plausibly be reading now (yesterday, today, tomorrow, a few days
   // either side). A crawler walking the sitemap's 2,711 permalinks must never trigger paid generation:
@@ -75,12 +82,13 @@ async function dafPageResponse(env: Env, ctx: ExecutionContext, origin: string, 
   if (!note && notesEnabled && nearToday) {
     ctx.waitUntil(ensureNote(env, ref).then((o) => console.log(`[heal] ${ref.tractate.name} ${ref.daf}: ${o.status}${"reason" in o ? ` ${o.reason}` : ""}`)).catch((e) => console.error("[heal]", e)));
   }
-  const body = renderDafPage({ env, origin, lang, ref, date, isToday, texts, note, translation, notesEnabled, todayRef, todayDate });
+  const body = renderDafPage({ env, origin, lang, ref, date, isToday, texts, note, translation, notesEnabled, todayRef, todayDate, card });
   const shown = lang === "en" ? note : currentTranslation(note, translation);
-  return html(body, 200, { "x-daf": `${ref.tractate.slug}/${ref.daf}`, "x-daf-note": shown ? "yes" : "pending" });
+  // x-daf-card says whether an English page with a note is still waiting for its card (the ttl rule caches those briefly).
+  return html(body, 200, { "x-daf": `${ref.tractate.slug}/${ref.daf}`, "x-daf-note": shown ? "yes" : "pending", "x-daf-card": lang !== "en" ? "n/a" : card ? "yes" : "no" });
 }
 
-function apiPayload(ref: DafRef, date: Date, note: DafNote | null, origin: string) {
+function apiPayload(ref: DafRef, date: Date, note: DafNote | null, origin: string, cardMeta: CardMeta | null = null) {
   const p = positionFor(ref);
   return {
     date: ymd(date),
@@ -90,7 +98,7 @@ function apiPayload(ref: DafRef, date: Date, note: DafNote | null, origin: strin
     label: dafLabel(ref.tractate, ref.daf),
     url: `${origin}${dafPath(ref.tractate, ref.daf)}`,
     position: { chapter: p.chapterLabel, dafOfTractate: p.dafOfTractate, dayInCycle: p.dayInCycle, cycleLength: p.cycleLength, cycle: p.cycle, cycleEnds: ymd(p.cycleEnd) },
-    note: note ? { summary: note.summary, question: note.question, writtenBy: "Claude (AI), from the English text only", model: note.model, generatedAt: note.generatedAt } : null,
+    note: note ? { summary: note.summary, question: note.question, writtenBy: "Claude (AI), from the English text only", model: note.model, generatedAt: note.generatedAt, card: cardCurrent(note, cardMeta) ? `${origin}${cardPath(ref.tractate, ref.daf, cardMeta.token)}` : null } : null,
     text: ref.tractate.refMode === "talmud"
       ? { source: "Sefaria", license: "CC BY-NC 4.0 (William Davidson Talmud)", sefaria: `https://www.sefaria.org/${ref.tractate.sefariaTitle.replace(/ /g, "_")}.${ref.daf}a` }
       : { source: "Sefaria", license: "see the page; not the Davidson Talmud for this day", sefaria: `https://www.sefaria.org/${ref.tractate.sefariaTitle.replace(/ /g, "_")}` },
@@ -160,8 +168,9 @@ async function handle(request: Request, env: Env, ctx: ExecutionContext): Promis
       const date = dateForDaf(route.tractate, route.daf, cycle);
       const ref: DafRef = { tractate: route.tractate, daf: route.daf, cycle, dayInCycle: Math.round((date.getTime() - dateForDaf(TRACTATES[0]!, TRACTATES[0]!.firstDaf, cycle).getTime()) / 86400000) + 1 };
       const isToday = ymd(date) === ymd(today);
-      // Pages without a note (or, in a translated language, without a current translation) are cached briefly.
-      const ttl = (res: Response) => (isToday ? 600 : res.headers.get("x-daf-note") === "yes" ? 3600 : 120);
+      // Pages without a note (or, in a translated language, without a current translation) are cached briefly; so is an
+      // English page whose note has no card yet, so the card cron's work reaches the head within ten minutes.
+      const ttl = (res: Response) => (isToday ? 600 : res.headers.get("x-daf-note") !== "yes" ? 120 : res.headers.get("x-daf-card") === "no" ? 600 : 3600);
       return cachedResponse(ck(`${dafPath(ref.tractate, ref.daf)}?t=${isToday ? "today" : "perma"}&d=${ymd(today)}`), ttl, () => dafPageResponse(env, ctx, origin, lang, ref, date, isToday, todayRef, today), bypass);
     }
     case "tractate": {
@@ -217,16 +226,18 @@ async function handle(request: Request, env: Env, ctx: ExecutionContext): Promis
     }
     case "api-today": {
       const ref = dafForDate(today);
-      const note = await getNote(env.DAF_KV, ref.tractate, ref.daf);
-      return new Response(JSON.stringify({ timezone: tz, ...apiPayload(ref, today, note, origin) }, null, 2), { headers: { ...JSON_H, "cache-control": "public, max-age=300", "access-control-allow-origin": "*" } });
+      const [note, cardMeta] = await Promise.all([getNote(env.DAF_KV, ref.tractate, ref.daf), getCardMeta(env.DAF_KV, ref.tractate, ref.daf)]);
+      return new Response(JSON.stringify({ timezone: tz, ...apiPayload(ref, today, note, origin, cardMeta) }, null, 2), { headers: { ...JSON_H, "cache-control": "public, max-age=300", "access-control-allow-origin": "*" } });
     }
     case "api-daf": {
       const cycle = dafForDate(today).cycle;
       const date = dateForDaf(route.tractate, route.daf, cycle);
       const ref = dafForDate(date);
-      const note = await getNote(env.DAF_KV, ref.tractate, ref.daf);
-      return new Response(JSON.stringify(apiPayload(ref, date, note, origin), null, 2), { headers: { ...JSON_H, "cache-control": "public, max-age=3600", "access-control-allow-origin": "*" } });
+      const [note, cardMeta] = await Promise.all([getNote(env.DAF_KV, ref.tractate, ref.daf), getCardMeta(env.DAF_KV, ref.tractate, ref.daf)]);
+      return new Response(JSON.stringify(apiPayload(ref, date, note, origin, cardMeta), null, 2), { headers: { ...JSON_H, "cache-control": "public, max-age=3600", "access-control-allow-origin": "*" } });
     }
+    case "og-card": return ogCardResponse(request, env, origin, url.pathname, route.tractate, route.daf, route.token, bypass);
+    case "admin-og": return adminOg(request, env, today, route.action);
     case "admin-bake": return adminBake(request, env, today);
     case "admin-translate": return adminTranslate(request, env, today, route.action);
     case "newsletter":
@@ -238,6 +249,69 @@ async function handle(request: Request, env: Env, ctx: ExecutionContext): Promis
     case "newsletter-hook-resend":
     case "admin-newsletter":
       return handleNewsletter(request, env, ctx, route, { origin, tz, today, bypass, ck });
+  }
+}
+
+/**
+ * The share card image. Served from KV only (never drawn here: a crawl must not spend browser time). The token in
+ * the URL is the stored card's version: a match is immutable for a year at the edge and in every crawler cache; an
+ * old token sends the crawler to the current URL; a card that is not there yet falls back to the static card.
+ */
+async function ogCardResponse(request: Request, env: Env, origin: string, pathname: string, t: Tractate, daf: number, token: string, bypass: boolean): Promise<Response> {
+  if (request.method !== "GET" && request.method !== "HEAD") return new Response("GET only", { status: 405 });
+  const card = await getCard(env.DAF_KV, t, daf);
+  if (!card) return redirect(`${origin}/og.png`, 302, { "cache-control": "no-store", "x-daf-card": "missing" });
+  if (card.meta.token !== token) return redirect(`${origin}${cardPath(t, daf, card.meta.token)}`, 302, { "cache-control": "no-store", "x-daf-card": "moved" });
+  // Keyed on the path alone (a query string must not fill the edge cache); the response says how long it may live.
+  return cachedResponse(`${origin}${pathname}`, 31536000, async () => new Response(card.png, {
+    headers: { "content-type": "image/png", "content-length": String(card.png.byteLength), "cache-control": "public, max-age=31536000, immutable", "x-daf-card": token },
+  }), bypass);
+}
+
+/** Targets from ?dapim=bekhorot/2,bekhorot/3 (at most `max`), or the single ?slug=&daf= / ?date= form. */
+function cardTargetsFromParams(url: URL, today: Date, max: number): CardTarget[] | Response {
+  const list = url.searchParams.get("dapim");
+  if (list) {
+    const out: CardTarget[] = [];
+    for (const item of list.split(",").map((x) => x.trim()).filter(Boolean)) {
+      const m = /^([a-z-]+)\/(\d{1,3})$/.exec(item);
+      const t = m ? tractateBySlug(m[1]!) : null;
+      if (!m || !t || Number(m[2]) < t.firstDaf || Number(m[2]) > t.lastDaf) return new Response(`bad daf: ${item}`, { status: 400 });
+      const cycle = dafForDate(today).cycle;
+      const date = dateForDaf(t, Number(m[2]), cycle);
+      out.push({ ref: dafForDate(date), date });
+      if (out.length > max) return new Response(`at most ${max} dapim per call`, { status: 400 });
+    }
+    return out;
+  }
+  const ref = refFromParams(url, today);
+  return ref instanceof Response ? ref : [targetFor(ref)];
+}
+
+/** Browser Rendering's two 429s become 429 here too, with a `kind` the backfill script acts on. */
+async function adminOg(request: Request, env: Env, today: Date, action: "bake" | "status"): Promise<Response> {
+  if (!authorized(request, env)) return new Response("unauthorized", { status: 401 });
+  const url = new URL(request.url);
+  if (action === "status") {
+    if (request.method !== "GET") return new Response("GET only", { status: 405 });
+    const ref = refFromParams(url, today);
+    if (ref instanceof Response) return ref;
+    const [note, meta] = await Promise.all([getNote(env.DAF_KV, ref.tractate, ref.daf), getCardMeta(env.DAF_KV, ref.tractate, ref.daf)]);
+    return new Response(JSON.stringify({ daf: `${ref.tractate.slug}/${ref.daf}`, note: note ? { generatedAt: note.generatedAt, promptVersion: note.promptVersion, question: note.question } : null, card: meta, current: cardCurrent(note, meta), url: cardCurrent(note, meta) ? `${url.origin}${cardPath(ref.tractate, ref.daf, meta.token)}` : null }, null, 2), { headers: JSON_H });
+  }
+  if (request.method !== "POST") return new Response("POST only", { status: 405 });
+  if (!env.BROWSER) return new Response(JSON.stringify({ error: "no browser binding" }), { status: 503, headers: JSON_H });
+  const targets = cardTargetsFromParams(url, today, 15);
+  if (targets instanceof Response) return targets;
+  const renderer = browserRenderer(env.BROWSER, cardFonts());
+  const t0 = Date.now();
+  try {
+    const outcomes = await bakeCards(env, targets, renderer, { force: url.searchParams.has("force") });
+    const stopped = outcomes.find((o) => o.status === "failed" && (o.kind === "budget" || o.kind === "rate"));
+    const status = stopped ? 429 : outcomes.some((o) => o.status === "failed") ? 502 : 200;
+    return new Response(JSON.stringify({ ms: Date.now() - t0, kind: stopped && stopped.status === "failed" ? stopped.kind : undefined, outcomes }, null, 2), { status, headers: JSON_H });
+  } finally {
+    await renderer.close();
   }
 }
 
@@ -357,9 +431,12 @@ export default {
     // Three triggers share this Worker. The hourly one sends the newsletter; anything else runs the bake,
     // so a mistyped cron string degrades to "bake twice", never to "never send".
     const cron = (controller.cron ?? "").trim().replace(/\s+/g, " ");
+    console.log(`[scheduled] ${cron || "(no cron string)"} at ${new Date(controller.scheduledTime).toISOString()}`);
     const job = cron === SEND_CRON
       ? runSendTick(env, controller.scheduledTime).catch((e) => console.error("[tick]", e))
-      : runCron(env, controller.scheduledTime).catch((e) => console.error("[cron]", e));
+      : cron === CARD_CRON
+        ? runCardBake(env, controller.scheduledTime, { makeRenderer: env.BROWSER ? () => browserRenderer(env.BROWSER!, cardFonts()) : undefined }).catch((e) => console.error("[cards]", e))
+        : runCron(env, controller.scheduledTime).catch((e) => console.error("[cron]", e));
     ctx.waitUntil(job);
   },
 };

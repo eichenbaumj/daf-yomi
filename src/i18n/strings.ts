@@ -94,6 +94,16 @@ export interface Strings {
   breadcrumbTractates: string;
   chapterOf: (n: number, total: number) => string;
   chaptersOf: (a: number, b: number, total: number) => string;
+  /** "Share this question": the button under the AI note; `shareDone` replaces its label for two seconds after a copy. */
+  shareQuestion: string;
+  shareDone: string;
+  /** Second line of the shared text, after the quoted question and before the link: the daf, the AI label, the site. */
+  shareLine: (label: string, siteName: string) => string;
+
+  // ---- social card (src/og/card.ts; the image behind a shared link) ----
+  cardWordmark: string;
+  cardAiChip: string;
+  cardAiLine: string;
 
   // ---- position bar ----
   capTalmud: string;

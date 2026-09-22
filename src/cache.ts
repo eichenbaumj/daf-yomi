@@ -14,7 +14,8 @@ export async function cachedResponse(cacheKey: string, ttl: number | ((res: Resp
   const ttlSeconds = typeof ttl === "function" ? ttl(fresh) : ttl;
   if (fresh.status === 200 && ttlSeconds > 0) {
     const h = new Headers(fresh.headers);
-    h.set("Cache-Control", `public, max-age=0, s-maxage=${ttlSeconds}`);
+    // HTML gets the edge-only form; a response that already says how it may be cached (an immutable image) keeps its word.
+    if (!h.has("cache-control")) h.set("Cache-Control", `public, max-age=0, s-maxage=${ttlSeconds}`);
     h.set("x-daf-cache", "miss");
     const out = new Response(fresh.body, { status: 200, headers: h });
     await cache.put(key, out.clone());

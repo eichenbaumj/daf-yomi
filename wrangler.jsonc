@@ -9,6 +9,10 @@
   "compatibility_date": "2026-09-01",
   "compatibility_flags": ["nodejs_compat"],
   "assets": { "directory": "./public", "binding": "ASSETS" },
+  // Browser Rendering (free plan: 10 browser-minutes a day, 3 concurrent, one new instance per 20 s). Renders the per-daf
+  // share cards (src/og) on the card cron and from /admin/og/bake; never on a visit. Local `wrangler dev` runs a local
+  // headless Chromium; do not set "remote": true here (that spends the daily budget).
+  "browser": { "binding": "BROWSER" },
   // Custom domains: Cloudflare creates the DNS records and certificates itself.
   // Keep the original *.workers.dev URL alive: the Worker 301s it to daf-yomi.dev so old links still land.
   "workers_dev": true,
@@ -23,9 +27,15 @@
   // UTC. 06:00 bakes tomorrow's, today's and the day after tomorrow's notes (the newsletter sends at each
   // reader's local hour, so notes exist a day early everywhere); 18:00 retries anything still missing;
   // the hourly tick sends the newsletter (src/newsletter/send.ts). Free plan: 10 ms CPU per invocation,
-  // so each bake run generates at most three notes (see src/cron.ts). 3 of the account's 5 cron slots.
-  "triggers": { "crons": ["0 6 * * *", "0 18 * * *", "0 * * * *"] },
-  "rules": [{ "type": "Text", "globs": ["**/*.md"], "fallthrough": true }],
+  // so each bake run generates at most three notes (see src/cron.ts). 06:20/18:20 render the share cards for the
+  // near days plus a trickle of the archive (src/og/bake.ts), on its own trigger so a browser hang never touches the
+  // note bake. 4 of the account's 5 cron slots.
+  "triggers": { "crons": ["0 6 * * *", "0 18 * * *", "0 * * * *", "20 6,18 * * *"] },
+  "rules": [
+    { "type": "Text", "globs": ["**/*.md"], "fallthrough": true },
+    // Card fonts (src/og/fonts/*.woff2) import as bytes and are embedded in the card HTML as data URIs.
+    { "type": "Data", "globs": ["**/*.woff2"], "fallthrough": true }
+  ],
   "observability": { "enabled": true },
   "vars": {
     "SITE_NAME": "Today's Daf",
@@ -36,6 +46,8 @@
     "NOTE_MODEL": "claude-opus-5",
     // Hard cap on paid generations per UTC day from cron + on-visit self-heal (admin --force bakes are exempt).
     "DAILY_GENERATION_CAP": "12",
+    // Share cards: archive cards rendered per card-bake run beyond the near days (two runs a day; ~1 s of browser time each).
+    "OG_TRICKLE_PER_RUN": "10",
     // Newsletter. Secrets (RESEND_API_KEY, TOKEN_HMAC_SECRET, TURNSTILE_SECRET_KEY, RESEND_WEBHOOK_SECRET) via wrangler secret put.
     "NEWSLETTER_PUBLIC": "1",
     // Turnstile widget "daf-yomi newsletter" (hostname daf-yomi.dev, Managed). The site key is public; the secret is TURNSTILE_SECRET_KEY.

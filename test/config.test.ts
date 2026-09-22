@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { bakeTargets } from "../src/cron";
+import { CARD_CRON } from "../src/og/bake";
 import { SEND_CRON } from "../src/newsletter/send";
 import { isIsraelTz, isRestDay } from "../src/newsletter/hebcal";
 import { TIMEZONES, isValidTimezone } from "../src/newsletter/timezones";
@@ -10,15 +11,21 @@ const d = (s: string) => { const [y, m, dd] = s.split("-").map(Number); return n
 
 describe("wrangler.jsonc", () => {
   const raw = readFileSync("wrangler.jsonc", "utf8").replace(/(^|\s)\/\/.*$/gm, "");
-  const cfg = JSON.parse(raw) as { triggers: { crons: string[] }; d1_databases: { binding: string; migrations_dir: string }[]; vars: Record<string, string> };
+  const cfg = JSON.parse(raw) as { triggers: { crons: string[] }; d1_databases: { binding: string; migrations_dir: string }[]; vars: Record<string, string>; browser: { binding: string; remote?: boolean }; rules: { type: string; globs: string[] }[] };
   it("has the bake crons and the hourly send tick", () => {
     expect(cfg.triggers.crons).toContain("0 6 * * *");
     expect(cfg.triggers.crons).toContain("0 18 * * *");
     expect(cfg.triggers.crons).toContain(SEND_CRON);
+    expect(cfg.triggers.crons).toContain(CARD_CRON);
     expect(cfg.triggers.crons.length).toBeLessThanOrEqual(5);
   });
   it("binds the newsletter database and vars", () => {
     expect(cfg.d1_databases[0]).toMatchObject({ binding: "NEWSLETTER_DB", migrations_dir: "migrations" });
+  });
+  it("binds Browser Rendering for the share cards, local in dev, with the card fonts as Data modules", () => {
+    expect(cfg.browser).toEqual({ binding: "BROWSER" }); // no "remote": true, which would spend the daily budget from wrangler dev
+    expect(cfg.rules.some((r) => r.type === "Data" && r.globs.includes("**/*.woff2"))).toBe(true);
+    expect(Number(cfg.vars.OG_TRICKLE_PER_RUN)).toBeGreaterThan(0);
     expect(cfg.vars.NEWSLETTER_FROM).toMatch(/<daf@news\.daf-yomi\.dev>/);
     expect(cfg.vars.NEWSLETTER_PUBLIC).toBeDefined();
     expect(cfg.vars.CATCHUP_HOURS).toBe("3");
