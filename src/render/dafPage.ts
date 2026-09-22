@@ -51,21 +51,26 @@ function positionStripL(lang: Lang, p: Position, chapterLabel: string, chapterTi
   return items.length ? `<p class="position">${items.join('<span class="sep" aria-hidden="true">·</span>')}</p>` : "";
 }
 
-function noteBox(m: DafPageModel, lang: Lang): string {
+/**
+ * The note box. Under its text sit the two "pillars" (Joe, 2026-09-22): the sign-up on the left (a folded form,
+ * English pages with the newsletter public) and "Share this note" on the right, both quiet text so the box keeps
+ * its symmetry. The share button is hidden until app.js runs (it needs the share sheet or the clipboard) and
+ * shares the permalink and nothing else (never "/": the link must still be right tomorrow), so a text thread
+ * shows the card, not words.
+ */
+function noteBox(m: DafPageModel, lang: Lang, subscribeBox: string | null): string {
   const S = strings(lang);
   const { note } = m;
   const label = `<p class="note-label" id="note-h"><span class="ai">${esc(S.aiBadge)}</span> ${esc(S.aiLabel)}</p>`;
   const shown = lang === "en" ? note : currentTranslation(note, m.translation ?? null);
+  const actions = (share: string) => (subscribeBox || share ? `\n  <div class="note-actions">${subscribeBox ?? ""}${share}</div>` : "");
   if (shown) {
-    // "Share this note": hidden until app.js runs (it needs the share sheet or the clipboard). It shares the permalink
-    // and nothing else (never "/": the link must still be right tomorrow), so a text thread shows the card, not words.
     const shareUrl = `${m.origin}${p(lang, dafPath(m.ref.tractate, m.ref.daf))}`;
-    const share = `<p class="note-share" hidden><button type="button" class="toggle share" data-share-url="${esc(shareUrl)}" data-share-done="${esc(S.shareDone)}">${esc(S.shareNote)}</button></p>`;
+    const share = `<button type="button" class="share" data-share-url="${esc(shareUrl)}" data-share-done="${esc(S.shareDone)}" hidden>${esc(S.shareNote)}</button>`;
     return `<aside class="note" aria-labelledby="note-h">
   ${label}
   <p class="note-summary">${esc(shown.summary)}</p>
-  <p class="note-question">${esc(shown.question)}</p>
-  ${share}
+  <p class="note-question">${esc(shown.question)}</p>${actions(share)}
 </aside>`;
   }
   const daysAway = Math.abs(Math.round((m.date.getTime() - (m.todayDate ?? m.date).getTime()) / 86400000));
@@ -76,7 +81,7 @@ function noteBox(m: DafPageModel, lang: Lang): string {
       : esc(daysAway <= 3 ? S.notePendingNear : S.notePendingFar);
   return `<aside class="note note-pending" aria-labelledby="note-h">
   ${label}
-  <p class="note-summary muted">${why}</p>
+  <p class="note-summary muted">${why}</p>${actions("")}
 </aside>`;
 }
 
@@ -210,8 +215,7 @@ export function renderDafPage(m: DafPageModel): string {
     <p class="cycle muted">${esc(S.cycleLine(pos.cycle, longDateL(lang, pos.cycleEnd), pos.percentThroughCycle))}</p>
   </header>
 
-  ${noteBox(m, lang)}
-  ${subscribeBox ?? ""}
+  ${noteBox(m, lang, subscribeBox)}
 
   <p class="ornament" aria-hidden="true">✦</p>
 

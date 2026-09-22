@@ -74,7 +74,7 @@
 // permalink and nothing else (Joe: never paste the words as text; the thread should show the card), through the share
 // sheet on a phone and the clipboard elsewhere. Nothing is recorded anywhere.
 (function () {
-  var boxes = document.querySelectorAll(".note-share");
+  var boxes = document.querySelectorAll(".note-actions");
   if (!boxes.length) return;
   var coarse = false;
   try { coarse = !!(window.matchMedia && window.matchMedia("(pointer: coarse)").matches); } catch (e) {}
@@ -102,7 +102,7 @@
       var modern = navigator.clipboard && window.isSecureContext ? navigator.clipboard.writeText(s) : Promise.reject(new Error("no clipboard api"));
       return modern.catch(function () { return legacyCopy(s); });
     }
-    box.hidden = false;
+    btn.hidden = false;
     btn.addEventListener("click", function () {
       if (coarse && navigator.share) {
         navigator.share({ url: url }).catch(function () {});

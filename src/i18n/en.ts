@@ -74,9 +74,7 @@ export const en: Strings = {
   cardAiLine: "Written by Claude, an AI. Not a scholar.",
 
   capTalmud: "The Talmud",
-  capOrders: "The six Orders",
   dayOf: (day, total) => `Day ${day} of ${total}`,
-  orderOf: (name, i, n) => `${name}, Order ${i} of ${n}`,
   tractateOf: (i, n) => `Tractate ${i} of ${n}`,
   dafOf: (daf, last) => `Daf ${daf} of ${last}`,
   zoomAria: (day, total, seder, tractate, i, n, daf, last) => `Day ${day} of ${total} in the Talmud; ${seder}; ${tractate} is tractate ${i} of ${n}; daf ${daf} of ${last}. Press Enter to zoom in.`,

@@ -59,7 +59,11 @@ describe("daf page", () => {
     expect(html).toContain("Tractate 4 of 11"); // Bekhorot after Zevachim, Menachot, Chullin in Kodashim
     expect((html.match(/class="ms t s\d( cur)?"/g) ?? []).length).toBe(11);
     expect(html).toMatch(/>Kodashim<\/span>/);
-    expect(html).toContain('data-regions=');
+    expect(html).toContain(`data-regions='[[0,1],[`); // three levels: the six Orders open the bar, then this Order's tractates, then the dapim
+    expect(JSON.parse(/data-regions='([^']+)'/.exec(html)![1]!)).toHaveLength(3);
+    expect(html).toMatch(/<div class="zl on" data-l="0"><div class="geo"><span class="ms s1/); // the Orders are the opening layer
+    expect(html).not.toContain('class="ms plain"');
+    expect(html).toContain('<span class="zcap">The Talmud</span><span class="sep" aria-hidden="true">·</span><span class="zval">Day 2,451 of 2,711</span>');
     expect(html).toMatch(/<div class="zoom-stage">[\s\S]*<p class="zoom-line">/); // bar first, its caption line beneath
     for (const hook of ['class="zcap"', 'class="zval"', 'class="zoom-hint"']) expect(html).toContain(hook); // app.js finds these by class
     expect(html).toContain('data-toggle="he"');
@@ -100,14 +104,14 @@ describe("daf page", () => {
   it("offers to share the note: the permalink and nothing else, never the homepage", () => {
     const note = { summary: "S.", question: "Why five cases?", quotes: [], model: "m", promptVersion: "v", generatedAt: "t", sources: [] };
     const html = renderDafPage({ ...base, note }); // isToday: canonical is "/", the share link must still be the permalink
-    expect(html).toContain('<p class="note-share" hidden><button type="button" class="toggle share" data-share-url="https://example.test/bekhorot/2" data-share-done="Copied">Share this note</button></p>');
+    expect(html).toContain('<div class="note-actions"><button type="button" class="share" data-share-url="https://example.test/bekhorot/2" data-share-done="Copied" hidden>Share this note</button></div>');
     expect(html).not.toContain("data-share-line"); // no words travel with the link: the card says it all
-    expect(html.indexOf('class="note-question"')).toBeLessThan(html.indexOf('class="note-share"'));
-    expect(html.indexOf('class="note-share"')).toBeLessThan(html.indexOf("</aside>"));
-    expect(html).not.toContain('data-toggle="share"'); // app.js must not treat it as a reading option
+    expect(html).not.toContain('class="toggle share"'); // a quiet text pillar, not a pill
+    expect(html.indexOf('class="note-question"')).toBeLessThan(html.indexOf('class="note-actions"'));
+    expect(html.indexOf('class="note-actions"')).toBeLessThan(html.indexOf("</aside>"));
     expect(html).not.toMatch(/—/);
     const pending = renderDafPage({ ...base, note: null });
-    expect(pending).not.toContain("note-share"); // nothing to share yet
+    expect(pending).not.toContain("note-actions"); // nothing to share yet, and no newsletter in this env
   });
   it("gives a permalink its own canonical", () => {
     const html = renderDafPage({ ...base, isToday: false, note: null });
@@ -119,14 +123,15 @@ describe("daf page", () => {
     expect(html).toContain("has not been written yet");
     expect(html).toContain(esc(AI_LABEL));
   });
-  it("puts a one-line sign-up under the note once the newsletter is public, on English pages only", () => {
+  it("puts the sign-up pillar inside the note once the newsletter is public, on English pages only, with the share pillar beside it", () => {
     const open = { ...env, NEWSLETTER_PUBLIC: "1", TURNSTILE_SITE_KEY: "0xKEY" } as Env;
     const html = renderDafPage({ ...base, env: open, note: { summary: "S.", question: "Q?", quotes: [], model: "m", promptVersion: "v", generatedAt: "t", sources: [] } });
-    expect(html).toContain('<details class="note-subscribe">\n  <summary><span class="note-subscribe-lead">This note, in your inbox, every morning.</span></summary>');
+    expect(html).toContain('<div class="note-actions"><details class="note-subscribe">\n  <summary><span class="note-subscribe-lead">Get the note as email</span></summary>');
     expect(html).not.toContain("note-subscribe\" open"); // folded by default
-    expect(html.indexOf('class="note"')).toBeLessThan(html.indexOf('class="note-subscribe"'));
-    expect(html.indexOf('class="note-subscribe"')).toBeLessThan(html.indexOf('class="ornament"'));
-    expect(html).toContain("This note, in your inbox, every morning.");
+    expect(html.indexOf('class="note-question"')).toBeLessThan(html.indexOf('class="note-subscribe"'));
+    expect(html.indexOf('class="note-subscribe"')).toBeLessThan(html.indexOf('class="share"')); // email left, share right
+    expect(html.indexOf('class="share"')).toBeLessThan(html.indexOf("</aside>")); // both inside the note box
+    expect(html.indexOf("</aside>")).toBeLessThan(html.indexOf('class="ornament"'));
     expect(html).toContain('<form method="post" action="/newsletter" novalidate>');
     expect(html).toContain('<input type="hidden" name="slot" value="morning">');
     expect(html).toContain('<input type="hidden" name="tz" value="UTC">');
@@ -139,7 +144,8 @@ describe("daf page", () => {
     expect(html).toContain('<a href="/newsletter">The evening edition and other settings.</a>');
     expect(html).not.toMatch(/—/);
     const pending = renderDafPage({ ...base, env: open, note: null });
-    expect(pending).toContain("The daf and its note, in your inbox, every morning.");
+    expect(pending).toContain("Get the note as email"); // the email pillar alone: nothing to share yet
+    expect(pending).not.toContain('class="share"');
     const closed = renderDafPage({ ...base, note: null });
     expect(closed).not.toContain("note-subscribe");
     expect(closed).not.toContain("challenges.cloudflare.com");
@@ -236,7 +242,7 @@ describe("Hebrew pages (Pre-Release)", () => {
     expect(html).toContain('href="/he/tractates"');
     expect(html).toContain('<link rel="alternate" type="application/rss+xml" title="Today&#39;s Daf" href="/he/feed.xml">');
     expect(html).toContain('<meta property="og:image" content="https://example.test/og-he.png">'); // no Hebrew card yet: the static one
-    expect(html).toContain('data-share-url="https://example.test/he/bekhorot/2" data-share-done="הועתק">שיתוף ההערה</button>');
+    expect(html).toContain('<div class="note-actions"><button type="button" class="share" data-share-url="https://example.test/he/bekhorot/2" data-share-done="הועתק" hidden>שיתוף ההערה</button></div>'); // the share pillar alone
     expect(html).not.toContain('href="/newsletter"'); // no newsletter in Hebrew yet
     expect(html).not.toMatch(/—/);
     const ld = JSON.parse(/<script type="application\/ld\+json">(.*?)<\/script>/s.exec(html)![1]!);

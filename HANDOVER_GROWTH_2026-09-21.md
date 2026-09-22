@@ -27,7 +27,9 @@ itself and not with Pillow; the image URL's token changes on every redraw, not o
 card keeps serving until redrawn (only a changed note retires a card). **Joe's review the same day changed the
 product:** the card shows the note (the summary), not the question ("the questions require you to read the note
 first; the notes are beautiful and best first"), and "Share this note" copies only the permalink, never words,
-so a text thread shows the card. The daily email is unchanged.
+so a text thread shows the card. Same day, after the iMessage test: the pill became the right-hand "pillar" of a
+quiet line inside the note (sign-up on the left, share on the right; mock-ups chosen by Joe), and the position bar
+opens on the six Orders (one fewer zoom step). The daily email is unchanged.
 
 **Why.** Daf yomi spreads through group chats and forwarded emails, not search. Today every shared link
 shows the same static `public/og.png`. A forwarded link should carry that day's question.

@@ -106,9 +106,7 @@ export interface Strings {
 
   // ---- position bar ----
   capTalmud: string;
-  capOrders: string;
   dayOf: (day: string, total: string) => string;
-  orderOf: (name: string, i: number, n: number) => string;
   tractateOf: (i: number, n: number) => string;
   dafOf: (daf: string, last: string) => string;
   zoomAria: (day: string, total: string, seder: string, tractate: string, i: number, n: number, daf: string, last: string) => string;

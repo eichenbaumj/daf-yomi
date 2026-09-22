@@ -79,9 +79,7 @@ export const he: Strings = {
   cardAiLine: "נכתב על ידי קלוד, בינה מלאכותית. לא תלמיד חכם.",
 
   capTalmud: "הש״ס",
-  capOrders: "ששת הסדרים",
   dayOf: (day, total) => `יום ${day} מתוך ${total}`,
-  orderOf: (name, i, n) => `${name}, סדר ${i} מתוך ${n}`,
   tractateOf: (i, n) => `מסכת ${i} מתוך ${n}`,
   dafOf: (daf, last) => `דף ${daf} מתוך ${last}`,
   zoomAria: (day, total, seder, tractate, i, n, daf, last) => `יום ${day} מתוך ${total} בש״ס; ${seder}; ${tractate} היא מסכת ${i} מתוך ${n}; דף ${daf} מתוך ${last}. הקישו אנטר להתקרב.`,

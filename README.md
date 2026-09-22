@@ -17,8 +17,9 @@ Live at **https://daf-yomi.dev**. Free, no accounts, no tracking. One Cloudflare
 - `/og/<slug>/<n>/<token>.png` the share card behind a forwarded link: the AI note on parchment, drawn per daf by
   Cloudflare Browser Rendering on a cron, never on a visit (see [HOSTING.md](HOSTING.md), "Share cards")
 - Toggles: Hebrew/Aramaic alongside the English; "Talmud only" hides the interpolated explanation; "Hide the daf"
-  keeps just the note. "Share this note" under the note copies the permalink, and only that, so a text thread
-  shows the card (a share sheet on phones); nothing is recorded
+  keeps just the note. Under the note's text, two quiet pillars: "Get the note as email" (the folded sign-up) and
+  "Share this note", which copies the permalink, and only that, so a text thread shows the card (a share sheet on
+  phones); nothing is recorded. The position bar opens on the six Orders; tap to zoom to the tractates, then the dapim
 
 ## How it works
 

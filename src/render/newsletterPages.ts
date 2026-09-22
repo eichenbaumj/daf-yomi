@@ -29,14 +29,15 @@ export const INLINE_SUBSCRIBE_HEAD = `<script src="https://challenges.cloudflare
 export const INLINE_SUBSCRIBE_TAIL = INLINE_SCRIPT;
 
 /**
- * The one-line sign-up under the AI note: a folded <details> whose summary is the whole pitch. Open, it
- * is the same POST as the full form with the choices collapsed to their defaults (morning, the reader's
- * own zone, no Shabbat hold); a link leads to the rest. Turnstile shows itself only when it must.
+ * The sign-up inside the AI note: the left "pillar" under the note's text, a folded <details> whose summary is
+ * one quiet line. Open, it is the same POST as the full form with the choices collapsed to their defaults
+ * (morning, the reader's own zone, no Shabbat hold); a link leads to the rest. Turnstile shows itself only
+ * when it must. `hasNote` is kept for callers; the wording is the same either way.
  */
 export function renderInlineSubscribe(o: { siteKey: string; defaultTz: string; hasNote: boolean }): string {
-  const lead = o.hasNote ? "This note, in your inbox, every morning." : "The daf and its note, in your inbox, every morning.";
+  void o.hasNote;
   return `<details class="note-subscribe">
-  <summary><span class="note-subscribe-lead">${lead}</span></summary>
+  <summary><span class="note-subscribe-lead">Get the note as email</span></summary>
   <form method="post" action="/newsletter" novalidate>
     <div class="note-subscribe-row">
       <label class="sr-only" for="sub-email">Your email</label>

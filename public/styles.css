@@ -82,20 +82,17 @@ h2 { font-weight: 600; font-size: 1.25rem; margin: 2rem 0 .6rem; }
 .note-question { margin: 0; font-style: italic; color: var(--ink); }
 .note-question::before { content: "✦ "; color: var(--gold); font-style: normal; font-size: .75em; }
 .note-pending .note-summary { font-size: .95rem; }
-/* "Share this question": a pill under the question. Hidden until app.js runs (it needs the clipboard or the share sheet). */
+/* The two pillars under the note's text: the sign-up on the left (a folded form), "Share this note" on the right.
+   Quiet text in the register of "tap to zoom in", so the box keeps its symmetry (Joe, 2026-09-22). */
+.note-actions { position: relative; margin: .9rem 0 0; min-height: 1.35em; }
+.note-actions summary, .note-actions .share { font: inherit; font-size: .82rem; letter-spacing: .02em; line-height: 1.55; color: var(--ink-3); background: none; border: 0; padding: 0; cursor: pointer; }
+.note-actions summary:hover, .note-actions summary:focus-visible, .note-actions .share:hover, .note-actions .share:focus-visible { color: var(--accent); outline: none; }
+.note-actions .share { position: absolute; inset-inline-end: 0; top: 0; }
 [hidden] { display: none !important; }
-.note-share { margin: .8rem 0 0; }
-.note-share .share { font-size: .82rem; padding: .26rem .8rem; }
-/* The sign-up under the note: folded to one line by default; the summary is the whole pitch. */
-.note:has(+ .note-subscribe) { margin-bottom: 0; border-radius: 3px 3px 0 0; }
-.note-subscribe { margin: 0 0 .4rem; border: 1px solid var(--rule); border-top: 0; border-radius: 0 0 3px 3px; background: color-mix(in srgb, var(--note-bg) 55%, var(--paper)); }
-.note-subscribe summary { list-style: none; cursor: pointer; padding: .5rem 1.2rem; font-size: .9rem; color: var(--ink-2); display: flex; align-items: baseline; gap: .55rem; }
+.note-subscribe { margin: 0; }
+.note-subscribe summary { list-style: none; display: block; padding-inline-end: 9rem; }
 .note-subscribe summary::-webkit-details-marker { display: none; }
-.note-subscribe summary::before { content: "✉"; font-size: .95em; color: var(--gold); flex: 0 0 auto; }
-.note-subscribe summary::after { content: "›"; margin-inline-start: auto; font-size: 1.15em; line-height: 1; color: var(--gold); transition: transform .15s; }
-.note-subscribe summary:hover, .note-subscribe[open] summary { color: var(--ink); }
-.note-subscribe[open] summary::after { transform: rotate(90deg); }
-.note-subscribe form { padding: .25rem 1.2rem .85rem; }
+.note-subscribe form { padding: .7rem 0 .1rem; }
 .note-subscribe-row { display: flex; flex-wrap: wrap; gap: .5rem; }
 .note-subscribe-row input[type="email"] { flex: 1 1 14rem; min-width: 0; padding: .55rem .7rem; font: inherit; color: var(--ink); background: var(--paper); border: 1px solid var(--rule); border-radius: 3px; }
 .note-subscribe-row .btn { flex: 0 0 auto; padding-block: .55rem; }
@@ -189,7 +186,7 @@ html[dir="rtl"] .zoom-line, html[dir="rtl"] .dy-label, html[dir="rtl"] .dy-legen
 .prose ul { padding-inline-start: 1.2rem; }
 
 @media print {
-  header.site nav, .tools, .deeper-wrap, .prevnext, footer.site, body::before, .zoom-hint, .note-share { display: none; }
+  header.site nav, .tools, .deeper-wrap, .prevnext, footer.site, body::before, .zoom-hint, .note-actions { display: none; }
   body { background: #fff; color: #000; }
 }
 

@@ -176,7 +176,8 @@ already takes a language, so a Hebrew card is a small later build.
   `/og/…` URL; fetch it and look; `/api/today.json` carries `note.card`; `/admin/og/status?date=YYYY-MM-DD` shows
   the stored metadata; then paste a permalink into opengraph.xyz, iMessage, WhatsApp or Slack: "done" is the
   question visible in a real preview. Facebook's sharing debugger re-scrapes a URL on demand.
-- **"Share this note"** (`public/app.js`, the pill under the note): the permalink and nothing else, through the share
+- **"Share this note"** (`public/app.js`, the right-hand pillar under the note's text; the sign-up is the left one): the
+  permalink and nothing else, through the share
   sheet on a phone (`navigator.share({ url })`) and the clipboard elsewhere, with select-and-copy as the fallback when
   a browser refuses the clipboard API. No words travel with the link on purpose: the thread shows the card. Nothing
   is recorded; the privacy page stays true.
