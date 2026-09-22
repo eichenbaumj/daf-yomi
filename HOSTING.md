@@ -300,6 +300,18 @@ and the point is to get people into the daf.
   the 2,711-daf archive is roughly $400 to $550 at the default effort. Cheaper knobs, untested: `output_config.effort`
   "medium" for the archive (`mapRequest` in `src/map/generate.ts`), or a cheaper `MAP_MODEL` for the archive with
   Opus kept for the cron.
+- **The archive and the judge.** `npm run maps:backfill -- --all [--effort medium]` draws the archive through the
+  Batch API (drafts, the gate, one more draft for the rejects, three at most; `POST /admin/map/put`; outcomes in
+  `.cache/maps-backfill.outcomes.json`, resumable; `--fetch-only` fills `.cache/map-text/` first, ~70 minutes). Before
+  spending on all 2,711, draw a sample and read it: `npm run maps:backfill -- --dapim …` on fifty varied dapim, then
+  `npm run maps:audit -- --dapim … --review` (or `--all --sample 50`): the judge of the map (`src/map/judge.ts`,
+  `prompts/daf-map-judge.md`) reads each stored map against the page and reports boundaries that begin mid-move, kinds
+  the page's words contradict, and glosses the page contradicts, each counting only when it points at a real segment
+  and quotes page words that are there (`verifyMapJudgment`, pure, tested); `data/audit/maps-<date>.json` and a
+  spread. It never runs on a visit or in the cron.
+- **The label** opens with the caveat (Joe, 2026-09-22): "The Talmud does not mark its own joints. These are one
+  reading of where they are, drawn by Claude, an AI, …". Cutting a page into moves is an editorial decision and the
+  page says so before its first line.
 - **Style rounds.** `npm run bake:map -- bekhorot/4 berakhot/2 shabbat/20 shekalim/11 berakhot/10 --json` (stdout
   only) on the shapes that stress the design, read with Joe, edit `prompts/daf-map.md`, repeat. The first two rounds
   (2026-09-22) set the caps and the legal-verb rule; the words were frozen the same evening.

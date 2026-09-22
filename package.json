@@ -12,6 +12,8 @@
     "verify:cycle": "tsx --import ./scripts/md-loader.mjs scripts/verify-cycle.ts",
     "bake:note": "tsx --import ./scripts/md-loader.mjs scripts/bake-note.ts",
     "bake:map": "tsx --import ./scripts/md-loader.mjs scripts/bake-map.ts",
+    "maps:backfill": "tsx --import ./scripts/md-loader.mjs scripts/maps-backfill.ts",
+    "maps:audit": "tsx --import ./scripts/md-loader.mjs scripts/maps-audit.ts",
     "backfill": "tsx --import ./scripts/md-loader.mjs scripts/backfill.ts",
     "tail": "wrangler tail --format pretty",
     "check:links": "tsx --import ./scripts/md-loader.mjs scripts/check-scholar-links.ts",

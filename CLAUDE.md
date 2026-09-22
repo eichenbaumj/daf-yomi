@@ -47,7 +47,9 @@ Rendering, the card bake; see HOSTING.md "Share cards") · `src/index.ts` routes
 `prompts/daf-note.md` the house style (bump `PROMPT_VERSION` in `src/note/prompt.ts` when it changes
 enough to re-bake) · `src/map` the map of the page (`kinds.ts` the vocabulary, `cues.ts` the numbered page and its marks,
 `prompt.ts` + `prompts/daf-map.md` + `MAP_PROMPT_VERSION`, `gate.ts`, `generate.ts` (`ensureMap`, three drafts, no lock),
-`store.ts`) and `src/render/pageMap.ts` (the block, the markers, the running head) · `scripts/` bake table, verify cycle, try notes, backfill, check links, and the audit trio
+`store.ts`, `judge.ts` + `prompts/daf-map-judge.md` the second reading, offline only) and `src/render/pageMap.ts` (the block,
+the markers, the running head) · `scripts/` also `bake:map`, `maps:backfill` (the archive, Batch API), `maps:audit` (the
+judge over stored maps, `data/audit/maps-<date>.json`) · `scripts/` bake table, verify cycle, try notes, backfill, check links, and the audit trio
 (`notes:export`, `notes:audit`, `notes:rebake`; shared bits in `scripts/lib/`) · `data/tractates.json` generated,
 commit it · `data/audit/<date>.json` the judge's verdict on every note, committed, with `<date>.outcomes.json` after a
 re-bake.
