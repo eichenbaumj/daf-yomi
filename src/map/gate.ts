@@ -9,9 +9,14 @@ import { MARK_WORD, segmentIds, type Cue, type MapSection } from "./cues";
 import type { MapDraft } from "./prompt";
 
 export const MAX_UNITS = 24;
-export const MAX_TITLE_WORDS = 10;
-export const MAX_GLOSS_WORDS = 30;
-export const MAX_SHAPE_WORDS = 40;
+/**
+ * The prompt asks for ten, thirty and forty words; the gate allows a little past each, because the model's count
+ * is loose by a word or two (two sample rounds landed at 31 and 32 on "at most thirty") and a 32-word gloss reads
+ * fine, while a second draft costs as much as the first.
+ */
+export const MAX_TITLE_WORDS = 12;
+export const MAX_GLOSS_WORDS = 34;
+export const MAX_SHAPE_WORDS = 45;
 
 /** A title that is only the kind's name ("Question", "The dispute", "Left open") names nothing. */
 const KIND_NAMES = new Set<string>([...MAP_KINDS, "left open"]);

@@ -35,6 +35,10 @@ describe("grounding", () => {
     expect(r.ok).toBe(false);
     expect(r.problems.some((p) => p.includes("quoted phrase not found"))).toBe(true);
   });
+  it("pairs every quotation mark in order, so two short quotes never read as one long one", () => {
+    const r = checkNote({ ...good, summary: good.summary + ' Dots over "Aaron" show he was left out; the word "the Levites" joins them all.' }, source);
+    expect(r.problems.filter((p) => p.includes("quoted phrase"))).toEqual([]);
+  });
   it("is forgiving about curly quotes and case", () => {
     expect(normalize("“Why do I need” all")).toBe(`"why do i need" all`);
     expect(checkNote({ ...good, quotes: ["WHY DO I NEED ALL THESE EXAMPLES"] }, source).ok).toBe(true);

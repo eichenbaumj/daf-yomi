@@ -26,10 +26,14 @@ export function wordCount(s: string): number {
   return s.trim().split(/\s+/).filter(Boolean).length;
 }
 
-/** Quoted spans of three or more words inside prose must also come from the source. */
+/**
+ * Quoted spans of three or more words inside prose must also come from the source. Every pair of marks is consumed
+ * in order, short ones included: skipping a short quote ("Aaron") would pair its closing mark with the next
+ * quote's opening mark and report the prose between them as a quotation.
+ */
 export function quotedSpans(s: string): string[] {
   const out: string[] = [];
-  for (const m of s.matchAll(/[“"]([^”"]{6,200})[”"]/g)) {
+  for (const m of s.matchAll(/[“"]([^”"]{0,200})[”"]/g)) {
     const span = m[1]!.trim();
     if (wordCount(span) >= 3) out.push(span);
   }

@@ -42,10 +42,11 @@ export async function buildMapInput(ref: DafRef, kv?: KVNamespace): Promise<{ in
 }
 
 /**
- * A twelve-unit map is about 800 tokens of JSON, but Opus 5 thinks before it answers and the thinking counts against
- * max_tokens (the note allows 4,000 and has used 3,200). 6,000 leaves room for the longest pages (73 segments).
+ * A twelve-unit map is about 1,500 tokens of JSON, but Opus 5 thinks before it answers and the thinking counts
+ * against max_tokens: a 33-segment page used the whole of 6,000 and was cut off. 12,000 leaves room; the usage
+ * stored with each map says what a page really costs.
  */
-export const MAP_MAX_TOKENS = 6000;
+export const MAP_MAX_TOKENS = 12000;
 
 /** The request body for one draft, shared by the live path and the Batch API scripts. */
 export function mapRequest(model: string, input: MapPromptInput) {
