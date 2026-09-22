@@ -14,6 +14,9 @@ import { esc, page } from "./layout";
 import { renderPositionMini } from "./positionMini";
 import { INLINE_SUBSCRIBE_HEAD, INLINE_SUBSCRIBE_TAIL, renderInlineSubscribe } from "./newsletterPages";
 import { cardPath } from "../og/store";
+import { sectionAnchor } from "../map/cues";
+import type { DafMap } from "../map/store";
+import { mapView, renderHereBar, renderPageMap, segUnits, unitMarker, type MapViewUnit, type TranslatedMapLike } from "./pageMap";
 
 export interface DafPageModel {
   env: Env;
@@ -34,6 +37,10 @@ export interface DafPageModel {
   todayDate?: Date;
   /** The stored share card for this daf, when it shows the note on this page (src/og/store.ts `cardCurrent`). English only. */
   card?: { token: string } | null;
+  /** The map of the page (src/map), shown only while its units fit this text; nothing is shown otherwise. */
+  map?: DafMap | null;
+  /** The map's words in the page's language, when the page is not English; shown only while it belongs to `map`. */
+  mapTranslation?: TranslatedMapLike | null;
 }
 
 /** The English label and legend, kept as exports: the email and the tests read them here. */
@@ -100,8 +107,13 @@ function versionCredit(lang: Lang, t: SefariaText, biur: BiurText | null | undef
   return bits.join(" · ");
 }
 
-function amudSection(lang: Lang, label: string, t: SefariaText, biur: BiurText | null | undefined, anchor: string): string {
+type Marks = { unitOf: Map<string, number>; startsAt: Map<string, MapViewUnit> } | null;
+
+function amudSection(lang: Lang, label: string, t: SefariaText, biur: BiurText | null | undefined, anchor: string, marks: Marks = null): string {
   const S = strings(lang);
+  // The map's unit on each segment (data-unit) and its marker on the first segment of a unit. Inside the Sefaria
+  // fence, so the marker is curled by hand (src/render/pageMap.ts); Sefaria's own words are never touched.
+  const open = (id: string) => { const u = marks?.unitOf.get(id); const start = marks?.startsAt.get(id); return `<li class="seg" id="${id}"${u ? ` data-unit="${u}"` : ""}>${start ? `\n  ${unitMarker(lang, start)}` : ""}`; };
   const heRef = lang === "en" && t.heRef ? ` <span lang="he" dir="rtl" class="he-inline">${esc(t.heRef)}</span>` : "";
   const items: string[] = [];
   if (lang === "en") {
@@ -109,7 +121,7 @@ function amudSection(lang: Lang, label: string, t: SefariaText, biur: BiurText |
     for (let i = 0; i < n; i++) {
       const en = t.enHtml[i] ?? "";
       const he = t.heHtml[i] ?? "";
-      items.push(`<li class="seg" id="${anchor}-${i + 1}">
+      items.push(`${open(`${anchor}-${i + 1}`)}
   <a class="segno" href="#${anchor}-${i + 1}" aria-label="${esc(S.segmentAria(i + 1))}">${i + 1}</a>
   ${en ? `<p class="en" lang="en">${en}</p>` : `<p class="en muted" lang="en">${esc(S.noTextForSegment)}</p>`}
   ${he ? `<p class="he" lang="he" dir="rtl">${he}</p>` : ""}
@@ -123,7 +135,7 @@ function amudSection(lang: Lang, label: string, t: SefariaText, biur: BiurText |
       const b = biur?.html[i] ?? "";
       const he = t.heHtml[i] ?? "";
       const primary = b || he;
-      items.push(`<li class="seg" id="${anchor}-${i + 1}">
+      items.push(`${open(`${anchor}-${i + 1}`)}
   <a class="segno" href="#${anchor}-${i + 1}" aria-label="${esc(S.segmentAria(i + 1))}">${i + 1}</a>
   ${primary ? `<p class="en biur" lang="he">${primary}</p>` : `<p class="en muted" lang="he">${esc(S.noTextForSegment)}</p>`}
   ${b && he ? `<p class="he" lang="he" dir="rtl">${he}</p>` : ""}
@@ -191,7 +203,14 @@ export function renderDafPage(m: DafPageModel): string {
   const chapterLabel = lang === "en" ? pos.chapterLabel : chs.length === 1 ? S.chapterOf(chs[0]!.n, t.chapters.length) : chs.length > 1 ? S.chaptersOf(chs[0]!.n, chs[chs.length - 1]!.n, t.chapters.length) : "";
   const chapterTitles = lang === "en" ? pos.chapterTitles : chs.map((c) => c.heTitle);
 
-  const sections = m.texts.map((x, i) => amudSection(lang, amudLabel(lang, t, ref.daf, i, x.label), x.text, x.biur, i === 0 ? "a" : i === 1 ? "b" : `s${i + 1}`)).join("\n");
+  // The map of the page: its units must chain over exactly the segments this page renders (the English page numbers
+  // max(en, he) per amud, the Hebrew page max(biur, he)); otherwise no map is shown.
+  const segCount = (x: DafPageModel["texts"][number]) => (lang === "en" ? Math.max(x.text.en.length, x.text.he.length) : Math.max(x.biur?.html.length ?? 0, x.text.he.length));
+  const order = m.texts.flatMap((x, i) => Array.from({ length: segCount(x) }, (_, j) => `${sectionAnchor(i)}-${j + 1}`));
+  const view = mapView(lang, m.map ?? null, m.mapTranslation ?? null, order);
+  const marks = view ? segUnits(view, order) : null;
+  const turn = (r: { tractate: Tractate; daf: number } | null) => (r ? { href: p(lang, dafPath(r.tractate, r.daf)), word: r === prev ? prevWord : nextWord, label: dafLabelL(lang, r.tractate, r.daf) } : null);
+  const sections = m.texts.map((x, i) => amudSection(lang, amudLabel(lang, t, ref.daf, i, x.label), x.text, x.biur, sectionAnchor(i), marks)).join("\n");
   const anyBiur = m.texts.some((x) => (x.biur?.html.length ?? 0) > 0);
   // The "show the original" toggle: English pages always have the Hebrew behind it; Hebrew pages only when a biur is the primary text.
   const anyHebrew = lang === "en" ? m.texts.some((x) => x.text.he.length > 0) : anyBiur && m.texts.some((x) => x.text.he.length > 0);
@@ -219,7 +238,7 @@ export function renderDafPage(m: DafPageModel): string {
   ${noteBox(m, lang, subscribeBox)}
 
   <p class="ornament" aria-hidden="true">✦</p>
-
+${view ? `\n  ${renderPageMap(view, lang)}\n\n  ${renderHereBar(lang, turn(prev), turn(next))}\n` : ""}
   <div class="tools" role="group" aria-label="${esc(S.toolsAria)}">
     ${anyHebrew ? toggle("he", S.toggleHe) : ""}
     ${anyElu ? toggle("talmudOnly", S.toggleTalmudOnly) : ""}

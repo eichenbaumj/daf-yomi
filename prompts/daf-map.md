@@ -68,7 +68,7 @@ its kind is what the page does most in those lines.
 
 ## Titles
 
-At most eight words, plain English, naming the concrete thing: "Why five
+At most ten words, plain English, naming the concrete thing: "Why five
 cases and not one", "Rav Huna: the ear is enough", "Aaron was never counted".
 Never the kind's name alone ("Question"), never a category ("Legal analysis").
 No transliterated terms a newcomer would not know. No colon-and-teaser
@@ -76,7 +76,7 @@ No transliterated terms a newcomer would not know. No colon-and-teaser
 
 ## Glosses
 
-One sentence, at most 25 words, saying what happens in these lines in the
+One sentence, at most 30 words, saying what happens in these lines in the
 page's own concrete terms: who asks what, which verse is brought, what the
 story turns on. What happens, not what it teaches. Gloss any term a newcomer
 would not know, in a few words, the first time it appears anywhere in the
@@ -86,7 +86,7 @@ quotation marks are copied exactly from the page.
 
 ## Shape
 
-One sentence, at most 35 words, on how the whole page moves, said concretely:
+One sentence, at most 40 words, on how the whole page moves, said concretely:
 "A mishna about shared donkeys, three rounds of asking why the list needs
 five cases, and a dispute the page leaves standing." Not "This page" or "In
 this daf". A page that is one long argument says so. A page that is a Mishnah
@@ -113,6 +113,15 @@ what is there.
   itself.
 - Write in English. Transliterate Hebrew and Aramaic terms the way the
   translation does.
+- Legal verbs need their objects, every time: never "the Levites were
+  exempted" but "the Levites were exempted from redeeming their firstborn";
+  never "he is liable" but "he is liable to bring an offering".
+- Quotation marks are for the page's words only, copied exactly. A verse
+  reference or your own phrase never goes in quotation marks.
+- Count before you answer. A title of more than ten words, a gloss of more
+  than thirty, or a shape of more than forty is rejected and costs a
+  second draft. Short is the house style: most glosses run fifteen to
+  twenty-five words.
 - Read it back before you answer: every segment id you use is one the page
   has, the units chain from the first id to the last without a gap, articles
   agree with the word that follows, and every sentence has a verb.

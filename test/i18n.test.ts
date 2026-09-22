@@ -4,6 +4,7 @@ import { he } from "../src/i18n/he";
 import { ENABLED_LANGS, p } from "../src/i18n/strings";
 import { dafLabelL, hebrewDateL, longDateL, num, shortDateL } from "../src/i18n/format";
 import { TRACTATES } from "../src/daf/tractates";
+import { MAP_KINDS } from "../src/map/kinds";
 
 const d = (s: string) => { const [y, m, dd] = s.split("-").map(Number); return new Date(y!, m! - 1, dd!); };
 
@@ -37,6 +38,18 @@ describe("the string tables", () => {
       const bare = stripMarkup(s).replace(ALLOWED_LATIN, "");
       expect(bare, s).not.toMatch(/[A-Za-z]/);
     }
+  });
+  it("label and gloss every kind of the map, glossing in English only", () => {
+    for (const table of [en, he]) {
+      expect(Object.keys(table.mapKind).sort()).toEqual([...MAP_KINDS].sort());
+      expect(Object.keys(table.mapKindGloss).sort()).toEqual([...MAP_KINDS].sort());
+      for (const k of MAP_KINDS) expect(table.mapKind[k].length, k).toBeGreaterThan(0);
+    }
+    for (const k of MAP_KINDS) { expect(en.mapKindGloss[k].length, k).toBeGreaterThan(0); expect(he.mapKindGloss[k], k).toBe(""); }
+    expect(en.mapUnitOf(3, 6)).toBe("3 of 6");
+    expect(he.mapUnitOf(3, 6)).toBe("3 מתוך 6");
+    expect(en.mapHead("3 of 6", "An objection", "But the ox")).toBe("3 of 6 · An objection: But the ox");
+    expect(he.mapHead("3 מתוך 6", "קושיה", "השור")).toBe("3 מתוך 6 · קושיה: השור");
   });
   it("keeps the English AI tells out of both", () => {
     for (const s of [...everyString(en), ...everyString(he)]) expect(s, s).not.toMatch(/\b(leverage|robust|seamless|holistic|delve)\b/i);

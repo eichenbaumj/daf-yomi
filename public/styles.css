@@ -139,6 +139,8 @@ a.ref { color: inherit; text-decoration: underline dotted var(--ink-3); }
   html.show-he main { max-width: 68rem; }
   html.show-he .seg { display: grid; grid-template-columns: 1fr 1fr; gap: 0 2rem; align-items: start; }
   html.show-he .seg .he { margin-top: 0; }
+  html.show-he .seg .unit-mark { grid-column: 1 / -1; }
+  html.show-he .here-bar { max-width: 68rem; }
 }
 
 .prevnext { display: flex; justify-content: space-between; gap: 1rem; margin: 2.5rem 0 1rem; padding-top: 1rem; border-top: 1px solid var(--rule); font-size: 1rem; flex-wrap: wrap; }
@@ -159,7 +161,7 @@ header.site nav.lang .sep { margin: 0 .1em; }
 html[lang="he"] body { font-family: var(--hebrew); }
 html[lang="he"] [lang="en"] { font-family: var(--serif); }
 html[lang="he"] .brand, html[lang="he"] .brand-tld, html[lang="he"] .prerelease, html[lang="he"] nav.lang [lang="en"] { font-family: var(--serif); }
-html[dir="rtl"] .daf-head .date, html[dir="rtl"] h1, html[dir="rtl"] .brand, html[dir="rtl"] .note-label .ai, html[dir="rtl"] .now, html[dir="rtl"] .zoom-hint { letter-spacing: 0; }
+html[dir="rtl"] .daf-head .date, html[dir="rtl"] h1, html[dir="rtl"] .brand, html[dir="rtl"] .note-label .ai, html[dir="rtl"] .now, html[dir="rtl"] .zoom-hint, html[dir="rtl"] .unit-kind { letter-spacing: 0; }
 html[dir="rtl"] .seg .en.biur { font-size: 1.15rem; line-height: 1.8; }
 html[dir="rtl"] .seg .he { font-size: 1.1rem; color: var(--ink-2); }
 html[dir="rtl"] .zoom-line, html[dir="rtl"] .dy-label, html[dir="rtl"] .dy-legend, html[dir="rtl"] .dy-stats { direction: rtl; }
@@ -186,7 +188,7 @@ html[dir="rtl"] .zoom-line, html[dir="rtl"] .dy-label, html[dir="rtl"] .dy-legen
 .prose ul { padding-inline-start: 1.2rem; }
 
 @media print {
-  header.site nav, .tools, .deeper-wrap, .prevnext, footer.site, body::before, .zoom-hint, .note-actions { display: none; }
+  header.site nav, .tools, .deeper-wrap, .prevnext, footer.site, body::before, .zoom-hint, .note-actions, .here-bar { display: none; }
   body { background: #fff; color: #000; }
 }
 
@@ -241,13 +243,15 @@ html[dir="rtl"] .zoom-line, html[dir="rtl"] .dy-label, html[dir="rtl"] .dy-legen
 .zoom-line { display: flex; flex-wrap: wrap; align-items: baseline; margin: var(--head-tight, .375rem) 0 0; font-size: .95rem; line-height: 1.55; }
 .zoom-line .zcap, .zoom-line .zval { white-space: nowrap; }
 .zoom-line .zval { font-variant-numeric: tabular-nums; }
-.zoom-hint { margin-inline-start: auto; color: var(--ink-3); font-size: .82rem; letter-spacing: .02em; }
-.zoom-stage { direction: ltr; position: relative; height: 16px; overflow: hidden; border-radius: 2px; }
+.zoom-hint { margin-inline-start: auto; color: var(--ink-2); font-size: .82rem; letter-spacing: .02em; }
+/* 20px, one step up from 16 (Joe, 2026-09-22: a reader missed the bar); the note must still sit above the fold on a desktop. */
+.zoom-stage { direction: ltr; position: relative; height: 20px; overflow: hidden; border-radius: 2px; }
+.zoom:hover .zoom-stage { box-shadow: 0 0 0 2px var(--accent-soft); }
 .zl { position: absolute; inset: 0; transform-origin: 0 50%; opacity: 0; transition: transform .7s cubic-bezier(.4, 0, .2, 1), opacity .45s ease; will-change: transform, opacity; pointer-events: none; }
 .zl.on { opacity: 1; pointer-events: auto; }
 .zl .geo { display: flex; height: 100%; }
 .zl .labels { position: absolute; inset: 0; pointer-events: none; }
-.zl .labels span { position: absolute; top: 0; height: 100%; box-sizing: border-box; padding-left: 4px; overflow: hidden; white-space: nowrap; font-size: .64rem; line-height: 16px; color: var(--seg-ink); letter-spacing: .02em; }
+.zl .labels span { position: absolute; top: 0; height: 100%; box-sizing: border-box; padding-left: 4px; overflow: hidden; white-space: nowrap; font-size: .7rem; line-height: 20px; color: var(--seg-ink); letter-spacing: .02em; }
 .ms { box-sizing: border-box; height: 100%; border-right: 1px solid var(--paper); opacity: .45; border-radius: 1px; text-decoration: none; }
 .ms:last-child { border-right: 0; }
 .ms.cur { opacity: 1; }
@@ -258,8 +262,8 @@ html[dir="rtl"] .zoom-line, html[dir="rtl"] .dy-label, html[dir="rtl"] .dy-legen
 .geo.dapim .dc.chapter-start { margin-left: 2px; }
 .geo.dapim .dc:last-child { margin-right: 0; }
 .zmark { position: absolute; top: -2px; bottom: -2px; width: 2px; margin-left: -1px; background: var(--accent); border-radius: 1px; transition: left .7s cubic-bezier(.4, 0, .2, 1); pointer-events: none; z-index: 2; }
-@media (prefers-reduced-motion: reduce) { .zl, .zmark { transition: none; } }
-@media (max-width: 40rem) { .zl .labels span { font-size: .6rem; } }
+@media (prefers-reduced-motion: reduce) { .zl, .zmark, .here-bar { transition: none; } html { scroll-behavior: auto; } }
+@media (max-width: 40rem) { .zl .labels span { font-size: .66rem; } }
 
 /* ---- newsletter forms (/newsletter, /newsletter/prefs) ---- */
 .subscribe-form { margin: 1.5rem 0; padding: 1.25rem 1.4rem; background: var(--note-bg); border: 1px solid var(--rule); border-top: 3px solid var(--gold); border-radius: 3px; }
@@ -275,3 +279,34 @@ html[dir="rtl"] .zoom-line, html[dir="rtl"] .dy-label, html[dir="rtl"] .dy-legen
 .btn:hover { background: #6e2418; }
 .btn.quiet { color: var(--ink-2); background: transparent; border-color: var(--rule); }
 .form-error { color: var(--accent); font-weight: 600; }
+
+/* ---- The map of the page (src/render/pageMap.ts) ---- */
+/* A ruled block between the note and the text, not a second card. One ink for the kinds (the reader is meant to
+   learn the words, not a colour code); oxblood is spent on the current unit only, gold stays on the ornament. */
+.pagemap { margin: 0 0 1.4rem; padding: 0 0 1rem; border-bottom: 1px solid var(--rule); }
+.pagemap-h { font-size: 1.05rem; margin: 0 0 .45rem; }
+.pagemap-label { margin-bottom: .5rem; }
+.pagemap-shape { margin: 0 0 .8rem; font-size: 1.02rem; }
+.pagemap-units { list-style: none; margin: 0; padding: 0; counter-reset: unit; }
+.pagemap-unit { counter-increment: unit; display: grid; grid-template-columns: 1.5rem minmax(0, 1fr); gap: 0 .3rem; margin: 0 0 .5rem; padding-inline-start: .6rem; border-inline-start: 2px solid var(--rule); }
+.pagemap-unit::before { content: counter(unit); grid-row: 1 / span 2; font-size: .72rem; color: var(--ink-3); font-variant-numeric: tabular-nums; padding-top: .3rem; }
+.pagemap-unit[aria-current] { border-inline-start-color: var(--accent); }
+.pagemap-unit[aria-current] .unit-title { color: var(--accent); }
+.pagemap-link { text-decoration: none; color: var(--ink); }
+.pagemap-link:hover .unit-title { text-decoration: underline; }
+.unit-kind { font-variant-caps: small-caps; letter-spacing: .04em; color: var(--ink-2); font-size: .92rem; margin-inline-end: .3rem; }
+.unit-title { overflow-wrap: anywhere; }
+.unit-gloss { display: block; font-size: .92rem; color: var(--ink-2); line-height: 1.5; }
+.pagemap-kinds { margin: .8rem 0 0; font-size: .88rem; }
+/* "Hide the daf" hides the map with it: its links point at the text, and that mode is for browsing the notes. */
+html.text-hidden .pagemap { display: none; }
+/* The marker at the first segment of a unit: one quiet line, ruled like a section break, linking back to the map. */
+.unit-mark { display: block; margin: .2rem 0 .45rem; padding-top: .35rem; border-top: 1px solid var(--rule); font-size: .8rem; line-height: 1.45; color: var(--ink-2); text-decoration: none; }
+.unit-mark:hover { color: var(--accent); }
+.unit-mark .unit-kind { font-size: .8rem; }
+.seg { scroll-margin-top: 3.2rem; }
+/* The running head: fixed at the top once the map has scrolled away; filled and shown by app.js. A printed book's idiom. */
+.here-bar { position: fixed; top: 0; inset-inline: 0; z-index: 5; margin: 0 auto; max-width: var(--measure); display: flex; align-items: center; gap: .5rem; padding: .35rem 16px; background: color-mix(in srgb, var(--paper) 94%, transparent); backdrop-filter: blur(6px); border-bottom: 1px solid var(--rule); box-shadow: 0 2px 8px -6px var(--shadow); font-size: .88rem; color: var(--ink-2); }
+.here-text { flex: 1; min-width: 0; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: inherit; text-decoration: none; font-variant-numeric: tabular-nums; }
+.here-turn { flex: none; min-width: 1.6rem; text-align: center; color: var(--accent); text-decoration: none; font-size: 1.05rem; }
+html { scroll-behavior: smooth; }

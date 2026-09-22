@@ -9,9 +9,9 @@ import { MARK_WORD, segmentIds, type Cue, type MapSection } from "./cues";
 import type { MapDraft } from "./prompt";
 
 export const MAX_UNITS = 24;
-export const MAX_TITLE_WORDS = 8;
-export const MAX_GLOSS_WORDS = 25;
-export const MAX_SHAPE_WORDS = 35;
+export const MAX_TITLE_WORDS = 10;
+export const MAX_GLOSS_WORDS = 30;
+export const MAX_SHAPE_WORDS = 40;
 
 /** A title that is only the kind's name ("Question", "The dispute", "Left open") names nothing. */
 const KIND_NAMES = new Set<string>([...MAP_KINDS, "left open"]);

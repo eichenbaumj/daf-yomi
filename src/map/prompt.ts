@@ -15,10 +15,10 @@ export const MapSchema = z.object({
     from: z.string().describe("The id of the first segment in this unit, e.g. a-1."),
     to: z.string().describe("The id of the last segment in this unit, inclusive, e.g. a-4. A unit may run from the a side into the b side."),
     kind: z.enum(MAP_KINDS),
-    title: z.string().describe("At most eight plain English words naming the concrete thing. Not the kind's name."),
-    gloss: z.string().describe("One sentence of at most 25 words: what happens in these lines, in the page's own concrete terms."),
+    title: z.string().describe("At most ten plain English words naming the concrete thing. Not the kind's name."),
+    gloss: z.string().describe("One sentence of at most 30 words: what happens in these lines, in the page's own concrete terms."),
   })).describe("Every segment in exactly one unit, in order, without gaps, from the first id to the last. Usually four to twelve units."),
-  shape: z.string().describe("One sentence, at most 35 words, on how the whole page moves."),
+  shape: z.string().describe("One sentence, at most 40 words, on how the whole page moves."),
 });
 export type MapDraft = z.infer<typeof MapSchema>;
 

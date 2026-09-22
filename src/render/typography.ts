@@ -4,7 +4,8 @@
  *
  * Sefaria's text is never touched: it is fenced between SEFARIA_OPEN and SEFARIA_CLOSE by the renderers and the
  * HTML pass skips it, as it skips tags, scripts, styles, code and preformatted blocks. Hebrew chrome is left alone
- * too (a geresh is not an apostrophe); only English pages get the body pass.
+ * too (a geresh is not an apostrophe); only English pages get the body pass. Chrome the renderers place inside
+ * the fence (the map's unit markers, src/render/pageMap.ts) is curled by hand with smartenText before insertion.
  */
 export const SEFARIA_OPEN = "<!--sefaria-->";
 export const SEFARIA_CLOSE = "<!--/sefaria-->";

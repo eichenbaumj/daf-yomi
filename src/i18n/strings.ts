@@ -9,6 +9,8 @@
  * present in every enabled language; Hebrew values carry no Latin letters
  * except a short allowlist (AI, RSS, Pre-Release, the wordmark, URLs).
  */
+import type { MapKind } from "../map/kinds";
+
 export type Lang = "en" | "he" | "yi";
 /** Languages the router accepts as a path prefix. Yiddish joins when its strings exist. */
 export const ENABLED_LANGS: readonly Lang[] = ["en", "he"];
@@ -98,6 +100,24 @@ export interface Strings {
    *  for two seconds after a copy. */
   shareNote: string;
   shareDone: string;
+
+  // ---- the map of the page (src/render/pageMap.ts; drawn by src/map) ----
+  mapHeading: string;
+  mapAiBadge: string;
+  /** The AI sentence above the map's words, every time. */
+  mapAiLabel: string;
+  /** The label of each kind of unit, e.g. "A question". */
+  mapKind: Record<MapKind, string>;
+  /** One clause per kind for the legend under the map, English only; a language whose readers know the terms leaves every gloss "". */
+  mapKindGloss: Record<MapKind, string>;
+  /** "3 of 6". */
+  mapUnitOf: (n: number, total: number) => string;
+  /** The running head: "3 of 6 · An objection: But the ox is different". */
+  mapHead: (of: string, kind: string, title: string) => string;
+  hereBarAria: string;
+  hereBackTitle: string;
+  /** "Yesterday: Bekhorot 3", the aria label of a page turn in the running head. */
+  turnAria: (word: string, label: string) => string;
 
   // ---- social card (src/og/card.ts; the image behind a shared link) ----
   cardWordmark: string;

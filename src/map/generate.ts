@@ -41,8 +41,11 @@ export async function buildMapInput(ref: DafRef, kv?: KVNamespace): Promise<{ in
   };
 }
 
-/** A twelve-unit map is about 800 tokens of JSON; the longest pages (73 segments) stay well inside this. */
-export const MAP_MAX_TOKENS = 2500;
+/**
+ * A twelve-unit map is about 800 tokens of JSON, but Opus 5 thinks before it answers and the thinking counts against
+ * max_tokens (the note allows 4,000 and has used 3,200). 6,000 leaves room for the longest pages (73 segments).
+ */
+export const MAP_MAX_TOKENS = 6000;
 
 /** The request body for one draft, shared by the live path and the Batch API scripts. */
 export function mapRequest(model: string, input: MapPromptInput) {
@@ -56,10 +59,16 @@ export function mapRequest(model: string, input: MapPromptInput) {
 }
 
 export async function draftMap(client: Anthropic, model: string, input: MapPromptInput): Promise<MapDraftResult> {
-  const response = await client.messages.parse(mapRequest(model, input));
+  // messages.create rather than messages.parse: a draft cut off at max_tokens or refused must come back as a
+  // failed draft with its usage, not as a thrown parse error.
+  const response = await client.messages.create(mapRequest(model, input));
   const usage = { inputTokens: response.usage.input_tokens, outputTokens: response.usage.output_tokens };
   if (response.stop_reason === "refusal") return { draft: null, refusal: response.stop_details?.explanation ?? "model declined", usage };
-  return { draft: response.parsed_output ?? null, usage };
+  if (response.stop_reason === "max_tokens") return { draft: null, refusal: `output cut off at ${MAP_MAX_TOKENS} tokens`, usage };
+  const text = response.content.map((b) => (b.type === "text" ? b.text : "")).join("");
+  const parsed = MapSchema.safeParse((() => { try { return JSON.parse(text); } catch { return null; } })());
+  if (!parsed.success) return { draft: null, refusal: "unparseable output", usage };
+  return { draft: parsed.data, usage };
 }
 
 /** Draw (or fetch) the map for a daf. `force` re-draws even if one exists. */

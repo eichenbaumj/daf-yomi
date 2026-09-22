@@ -1,5 +1,8 @@
 import { describe, expect, it } from "vitest";
+import { readFileSync } from "node:fs";
 import { AI_LABEL, MJL_SERIES_URL, mjlUrl, renderDafPage, scholarLinks } from "../src/render/dafPage";
+import { MAP_AI_LABEL } from "../src/render/pageMap";
+import type { DafMap } from "../src/map/store";
 import { tractateBySlug } from "../src/daf/tractates";
 import { esc } from "../src/render/layout";
 import { renderAbout } from "../src/render/about";
@@ -289,5 +292,111 @@ describe("Hebrew pages (Pre-Release)", () => {
     expect(about).not.toMatch(/—/);
     expect(about).toContain('href="https://www.myjewishlearning.com/article/daf-yomi/"');
     expect((about.match(/class="dseg tractate/g) ?? []).length).toBe(40);
+  });
+});
+
+describe("the map of the page", () => {
+  const ref = dafForDate(d("2026-09-20"));
+  const note = { summary: "S.", question: "Q?", quotes: [], model: "m", promptVersion: "v", generatedAt: "2026-09-21T00:00:00Z", sources: [] };
+  const base = { env, origin: "https://example.test", ref, date: d("2026-09-20"), isToday: true, texts: [{ label: "Bekhorot 2a", text: text("Bekhorot.2a") }, { label: "Bekhorot 2b", text: text("Bekhorot.2b") }], notesEnabled: true, note };
+  // The middle unit crosses from the a side to the b side on purpose.
+  const map: DafMap = {
+    units: [
+      { from: "a-1", to: "a-1", kind: "mishna", title: "One who buys a donkey", gloss: "The case." },
+      { from: "a-2", to: "b-1", kind: "question", title: "Rav's question", gloss: "Why list them all." },
+      { from: "b-2", to: "b-2", kind: "open", title: "No answer comes", gloss: "It stands." },
+    ],
+    shape: "A mishna, a question, and it is left open.",
+    generatedAt: "2026-09-21T00:00:00Z", promptVersion: "mv", model: "m", sources: ["Bekhorot.2a", "Bekhorot.2b"], segmentCounts: [2, 2],
+  };
+  it("draws the map between the note and the text, labelled AI, with markers in the text and the running head", () => {
+    const html = renderDafPage({ ...base, map });
+    const at = (needle: string) => { const i = html.indexOf(needle); expect(i, needle).toBeGreaterThan(-1); return i; };
+    expect(at("</aside>")).toBeLessThan(at('class="ornament"'));
+    expect(at('class="ornament"')).toBeLessThan(at('class="pagemap"'));
+    expect(at('class="pagemap"')).toBeLessThan(at('class="here-bar"'));
+    expect(at('class="here-bar"')).toBeLessThan(at('class="tools"'));
+    expect(at('class="tools"')).toBeLessThan(at('class="amud"'));
+    // The AI label, once, above the map's words; the note keeps its own.
+    expect(html.split(esc(MAP_AI_LABEL)).length - 1).toBe(1);
+    expect(at(esc(MAP_AI_LABEL))).toBeLessThan(at(map.shape));
+    expect(html).toContain(esc(AI_LABEL));
+    expect(html).toContain('<span class="ai">AI map</span>');
+    // Every segment carries its unit; the markers sit on the first segment of each unit.
+    expect([...html.matchAll(/<li class="seg" id="([ab]-\d+)" data-unit="(\d+)">/g)].map((m) => `${m[1]}:${m[2]}`)).toEqual(["a-1:1", "a-2:2", "b-1:2", "b-2:3"]);
+    expect(html).toMatch(/id="a-1" data-unit="1">\s*<a class="unit-mark" href="#pagemap-u1">/);
+    expect(html).toMatch(/id="a-2" data-unit="2">\s*<a class="unit-mark" href="#pagemap-u2">/);
+    expect(html).toMatch(/id="b-1" data-unit="2">\s*<a class="segno"/);
+    expect(html).toMatch(/id="b-2" data-unit="3">\s*<a class="unit-mark" href="#pagemap-u3">/);
+    expect((html.match(/class="unit-mark"/g) ?? []).length).toBe(3);
+    // Every link resolves.
+    const pagemap = /<nav class="pagemap"[\s\S]*?<\/nav>/.exec(html)![0];
+    const unitLinks = [...pagemap.matchAll(/href="#([ab]-\d+)"/g)].map((m) => m[1]);
+    expect(unitLinks).toEqual(["a-1", "a-2", "b-2"]);
+    for (const id of unitLinks) expect(html).toContain(`id="${id}"`);
+    for (const m of html.matchAll(/href="#pagemap-u(\d+)"/g)) expect(html).toContain(`id="pagemap-u${m[1]}"`);
+    // Each gloss once; the legend glosses each kind once, in order of first appearance.
+    for (const g of ["The case.", "Why list them all.", "It stands."]) expect(html.split(g).length - 1, g).toBe(1);
+    const legend = /<p class="pagemap-kinds muted">(.*?)<\/p>/.exec(html)![1]!;
+    expect((legend.match(/<b>/g) ?? []).length).toBe(3);
+    expect(legend.indexOf("The mishna")).toBeLessThan(legend.indexOf("A question"));
+    expect(legend.indexOf("A question")).toBeLessThan(legend.indexOf("Left open"));
+    // Curly quotes reach the marker inside the fence and the running head's attribute; Sefaria's markup is untouched.
+    expect(html).toContain('<span class="unit-title">Rav’s question</span>');
+    expect(html).toContain('data-head="2 of 3 · A question: Rav’s question"');
+    expect(html).toContain("<b>one who purchases</b>");
+    expect(html).toContain("<b>Why do I</b>");
+    // The running head: hidden until app.js fills it, page turns without rel (the bottom nav keeps the one pair).
+    expect((html.match(/class="here-bar"/g) ?? []).length).toBe(1);
+    expect(html).toContain('<nav class="here-bar" aria-label="Where you are on the page" hidden>');
+    expect(html).toContain('<a class="here-text" href="#pagemap" title="Back to the shape of the page"></a>');
+    expect(html).toMatch(/<a class="here-turn" href="\/bekhorot\/3" aria-label="Tomorrow: Bekhorot 3">→<\/a>/);
+    expect((html.match(/class="here-turn"/g) ?? []).length).toBe(2);
+    expect((html.match(/rel="prev"/g) ?? []).length).toBe(1);
+    expect((html.match(/rel="next"/g) ?? []).length).toBe(1);
+    expect(html).not.toMatch(/—/);
+    // The existing exact counts are untouched by the map.
+    expect((html.match(/class="dc/g) ?? []).length).toBe(60);
+    expect((html.match(/data-toggle=/g) ?? []).length).toBe(3);
+  });
+  it("draws nothing without a map, and nothing for a map that does not fit the text", () => {
+    for (const html of [renderDafPage({ ...base }), renderDafPage({ ...base, map: { ...map, units: [map.units[0]!, { ...map.units[1]!, to: "a-2" }, { ...map.units[2]!, from: "b-1", to: "b-1" }] } })]) {
+      expect(html).not.toContain('class="pagemap"');
+      expect(html).not.toContain("here-bar");
+      expect(html).not.toContain("data-unit=");
+      expect(html).not.toContain("unit-mark");
+    }
+  });
+  it("shows the Hebrew map on a Hebrew page, or nothing", () => {
+    const biur = (urlRef: string) => ({ urlRef: `Steinsaltz_on_${urlRef}`, ref: "r", heRef: "h", html: ["<b>א</b>", "<b>ב</b>"], plain: ["א", "ב"], version: { language: "he" as const, versionTitle: "William Davidson Edition - Hebrew", license: "CC-BY-NC" }, fetchedAt: "2026-09-20T00:00:00Z" });
+    const tr = { summary: "המשנה מונה חמישה מקרים.", question: "למה חמישה?", quotes: [], of: note.generatedAt, sourcePromptVersion: "v", model: "m", promptVersion: "tv", generatedAt: "2026-09-21T01:00:00Z" };
+    const tmap = { shape: "משנה, שאלה, ונשאר פתוח.", units: [{ title: "הלוקח חמור", gloss: "המקרה." }, { title: "שאלת רב", gloss: "למה למנות." }, { title: "אין תשובה", gloss: "נשאר." }], of: map.generatedAt };
+    const he = { ...base, lang: "he" as const, texts: [{ label: "Bekhorot 2a", text: text("Bekhorot.2a"), biur: biur("Bekhorot.2a") }, { label: "Bekhorot 2b", text: text("Bekhorot.2b"), biur: biur("Bekhorot.2b") }], translation: tr };
+    const html = renderDafPage({ ...he, map, mapTranslation: tmap });
+    expect(html).toContain("מבנה הדף");
+    expect(html).toContain('<span class="ai">מפת AI</span>');
+    expect(html).toContain(tmap.shape);
+    for (const k of ["משנה", "שאלה", "נשאר פתוח"]) expect(html).toContain(`<span class="unit-kind">${k}</span>`);
+    expect(html).toContain("הלוקח חמור");
+    expect(html).not.toContain("pagemap-kinds"); // the Hebrew reader knows the terms: no legend
+    expect(html).not.toContain(map.shape);
+    expect(html).not.toContain("A question");
+    expect(html).not.toContain("The shape of the page");
+    expect(html).toContain('data-head="2 מתוך 3 · שאלה: שאלת רב"');
+    expect(html).toMatch(/<a class="here-turn" href="\/he\/bekhorot\/3" aria-label="מחר: בכורות ג׳">←<\/a>/);
+    expect(html).not.toMatch(/—/);
+    for (const missing of [renderDafPage({ ...he, map, mapTranslation: null }), renderDafPage({ ...he, map, mapTranslation: { ...tmap, of: "2026-09-01T00:00:00Z" } })]) {
+      expect(missing).not.toContain('class="pagemap"');
+      expect(missing).not.toContain("data-unit=");
+    }
+  });
+  it("is wired in the stylesheet and the script", () => {
+    const css = readFileSync("public/styles.css", "utf8");
+    expect(css).toMatch(/html\.text-hidden \.pagemap \{ display: none; \}/);
+    expect(css).toMatch(/@media print \{[^}]*\.here-bar[^}]*display: none/);
+    expect(css).toMatch(/prefers-reduced-motion[\s\S]{0,160}html \{ scroll-behavior: auto; \}/);
+    expect(css).toMatch(/\.zoom-stage \{[^}]*height: 20px/); // the position bar, one step larger (Joe, 2026-09-22)
+    const js = readFileSync("public/app.js", "utf8");
+    for (const hook of ['getElementById("pagemap")', ".here-bar", "data-head", "IntersectionObserver", "aria-current"]) expect(js).toContain(hook);
   });
 });

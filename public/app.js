@@ -112,3 +112,41 @@
     });
   });
 })();
+
+// Where you are on the page. The map's current unit follows the reader down the text, and once the map has scrolled
+// away a running head (as in a printed book) says "3 of 6 · An objection: ...", with the page turns at its ends.
+// Tapping it goes back to the map. All of it is an enhancement: the map's links work without it.
+(function () {
+  var map = document.getElementById("pagemap");
+  var bar = document.querySelector(".here-bar");
+  var segs = document.querySelectorAll(".seg[data-unit]");
+  if (!map || !bar || !segs.length || !("IntersectionObserver" in window)) return;
+  var items = map.querySelectorAll(".pagemap-unit");
+  var text = bar.querySelector(".here-text");
+  var visible = {}, current = 0, mapAway = false;
+  function render() {
+    for (var i = 0; i < items.length; i++) {
+      if (i + 1 === current) items[i].setAttribute("aria-current", "location");
+      else items[i].removeAttribute("aria-current");
+    }
+    if (current) text.textContent = items[current - 1].getAttribute("data-head") || "";
+    bar.hidden = !(current && mapAway);
+  }
+  // A band a third of the way down the viewport. Units are contiguous and in order, so the smallest unit among the
+  // segments crossing the band is the one the reader is in. No geometry, no scroll listener.
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) visible[e.target.id] = +e.target.getAttribute("data-unit");
+      else delete visible[e.target.id];
+    });
+    var min = 0;
+    for (var k in visible) if (!min || visible[k] < min) min = visible[k];
+    current = min;
+    render();
+  }, { rootMargin: "-15% 0px -55% 0px" });
+  Array.prototype.forEach.call(segs, function (s) { io.observe(s); });
+  new IntersectionObserver(function (entries) {
+    mapAway = !entries[entries.length - 1].isIntersecting;
+    render();
+  }).observe(map);
+})();
