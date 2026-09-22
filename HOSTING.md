@@ -263,8 +263,12 @@ writes/day) or run on Workers Paid.
 The structural orientation a Hebrew-speaking reader (Yeshaya) asked for: between the note and the text, the page cut
 into its moves, each pointing at the segments it covers, and one sentence on how the whole page runs; as the reader
 scrolls, a running head says "7 of 13 · A reading: …" with the page turns at its ends. Joe's decisions the same day:
-the heading "The shape of the page", the label sentence, the twelve kinds, glosses visible, the block has its own toggle
-(open by default, remembered like the reading options; hiding it hides the markers and the running head).
+the heading "The shape of the page", the label sentence, the twelve kinds, the block has its own toggle (open by
+default, remembered like the reading options; hiding it hides the markers and the running head). Later the same
+evening: the block is a table of contents (the shape sentence and the numbered kind-and-title lines), each unit's gloss
+sits under its marker in the text where the reader arrives at it, and the prompt asks for five to nine units with
+eight-word titles and twenty-word glosses, because the note reads in forty seconds and the first maps took minutes,
+and the point is to get people into the daf.
 
 - **Where it lives.** `src/map/` (vocabulary, cues, prompt, gate, generator, store), `prompts/daf-map.md`
   (`MAP_PROMPT_VERSION`), `src/render/pageMap.ts` (the block after the ornament, the markers as the first child of a
@@ -278,9 +282,11 @@ the heading "The shape of the page", the label sentence, the twelve kinds, gloss
   `HALAKHAH:` on the Shekalim days. Each must begin a unit (the gate enforces it). About 290 dapim, mostly older Koren
   volumes (Shabbat 60, Pesachim 58, Eruvin 46, Berakhot 38), carry no mark; there the model divides alone.
 - **The gate** (`src/map/gate.ts`): units chain over every segment without a gap, marks begin units, a MISHNA unit is
-  the mishna, kinds from `MAP_KINDS`, caps with a little tolerance past what the prompt asks (title 12 words, gloss
-  34, shape 45: the model lands at 31 or 32 on "at most thirty"), then the note's lexical rules per unit so the
-  feedback names the line, and every quotation verified against the page. A term glossed once anywhere in the map is
+  the mishna, kinds from `MAP_KINDS`, at most 14 units, caps with a little tolerance past what the prompt asks (title
+  10 words, gloss 24, shape 34: the model lands a word or two over "at most"), then the note's lexical rules per unit
+  so the feedback names the line, and every quotation verified against the page. One rule differs from the note's:
+  a direct object satisfies "exempt" ("the Levites' sheep exempted the Israelites' donkeys" is the page's own idiom);
+  the bare adjective ("rendered exempt,") is still caught. A term glossed once anywhere in the map is
   glossed. Three drafts at most (`MAP_MAX_DRAFTS`), each after the first with the feedback; a page that fails three
   times shows no map, never a wrong one. `mapView` at render time refuses a map whose ids no longer fit the text.
 - **Where it runs.** The cron's third pass, after the notes and before the translations: the three near days, three
