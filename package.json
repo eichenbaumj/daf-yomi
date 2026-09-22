@@ -17,6 +17,7 @@
     "check:links": "tsx --import ./scripts/md-loader.mjs scripts/check-scholar-links.ts",
     "fill:missing": "tsx --import ./scripts/md-loader.mjs scripts/fill-missing.ts",
     "translate": "tsx --import ./scripts/md-loader.mjs scripts/translate.ts",
+    "translate:try": "tsx --import ./scripts/md-loader.mjs scripts/try-translate.ts",
     "d1:migrate:local": "wrangler d1 migrations apply daf-yomi-newsletter --local",
     "d1:migrate": "wrangler d1 migrations apply daf-yomi-newsletter --remote",
     "email:preview": "tsx --import ./scripts/md-loader.mjs scripts/email-preview.ts",
@@ -26,7 +27,8 @@
     "og:backfill": "tsx --import ./scripts/md-loader.mjs scripts/og-backfill.ts",
     "notes:export": "tsx --import ./scripts/md-loader.mjs scripts/export-notes.ts",
     "notes:audit": "tsx --import ./scripts/md-loader.mjs scripts/audit-notes.ts",
-    "notes:rebake": "tsx --import ./scripts/md-loader.mjs scripts/rebake.ts"
+    "notes:rebake": "tsx --import ./scripts/md-loader.mjs scripts/rebake.ts",
+    "notes:audit:he": "tsx --import ./scripts/md-loader.mjs scripts/audit-he.ts"
   },
   "keywords": [
     "daf yomi",
