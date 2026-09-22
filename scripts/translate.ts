@@ -16,6 +16,7 @@
  */
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import Anthropic from "@anthropic-ai/sdk";
+import { anthropicClientOptions } from "./lib/cli";
 import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
 import { TRACTATES, tractateBySlug, type Tractate } from "../src/daf/tractates";
 import { addDays, dafForDate, dateForDaf, todayIn, ymd, type DafRef } from "../src/daf/schedule";
@@ -151,7 +152,7 @@ async function runBatch(client: Anthropic, jobs: Job[], round: number): Promise<
 async function main() {
   if (mode === "worker") return runWorker();
   if (!process.env.ANTHROPIC_API_KEY) { console.error("batch mode needs ANTHROPIC_API_KEY"); process.exit(2); }
-  const client = new Anthropic({ maxRetries: 3 });
+  const client = new Anthropic(anthropicClientOptions());
   const jobs = await collectJobs();
   console.log(`${jobs.length} to translate`);
   if (dry) { for (const j of jobs) console.log(`--- ${j.key}\n${translateUserMessage(j.input).slice(0, 1500)}\n…`); return; }

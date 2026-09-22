@@ -17,6 +17,7 @@
  */
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import Anthropic from "@anthropic-ai/sdk";
+import { anthropicClientOptions } from "./lib/cli";
 import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
 import { checkNote } from "../src/note/grounding";
 import { JudgeSchema, hashJudgePrompt, judgeRequest, verifyJudgment, type Judgment } from "../src/note/judge";
@@ -57,7 +58,7 @@ async function main() {
   if (dry) { for (const e of todo) console.log(`${e.key}: ${e.why.join(", ")}`); return; }
   if (!process.env.ANTHROPIC_API_KEY) { console.error("needs ANTHROPIC_API_KEY"); process.exit(2); }
   const token = adminToken();
-  const client = new Anthropic({ maxRetries: 3 });
+  const client = new Anthropic(anthropicClientOptions());
 
   const jobs: Job[] = [];
   for (const entry of todo) {

@@ -13,6 +13,7 @@
  */
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import Anthropic from "@anthropic-ai/sdk";
+import { anthropicClientOptions } from "./lib/cli";
 import { checkNote } from "../src/note/grounding";
 import { JudgeSchema, hashJudgePrompt, judgeRequest, verifyJudgment } from "../src/note/judge";
 import { hashPrompt } from "../src/note/prompt";
@@ -66,7 +67,7 @@ async function main() {
   const pending = keys.filter((k) => file.dapim[k] && !file.dapim[k]!.judge);
   if (!noJudge && pending.length) {
     if (!process.env.ANTHROPIC_API_KEY) { console.error("the judge needs ANTHROPIC_API_KEY"); process.exit(2); }
-    const client = new Anthropic({ maxRetries: 3 });
+    const client = new Anthropic(anthropicClientOptions());
     const requests = [];
     for (const key of pending) {
       const e = file.dapim[key]!;

@@ -18,6 +18,9 @@ describe("grounding", () => {
     expect(checkNote(stranger, source).problems.some((p) => p.includes('"Kontrokos"'))).toBe(true);
     const idiom = { ...good, question: "If a single principle covers all five cases, what was the mishna standing on when it listed them?" };
     expect(checkNote(idiom, source).problems.some((p) => p.includes("no idioms"))).toBe(true);
+    // Possessives and a question's first word are not strangers.
+    expect(checkNote({ ...good, question: "Did the Gemara's impatience with the list change what the mishna's five cases mean?" }, source).ok).toBe(true);
+    expect(checkNote({ ...good, question: "Would God's honor, as Rabban Gamliel sees it, cover this?" }, source).problems.filter((p) => p.includes("brings in"))).toEqual([expect.stringContaining('"Gamliel"')]);
     // Household names and words the summary already carries pass.
     const fine = { ...good, question: "If the Gemara accepts one principle for all five cases, why does the mishna spell out a list for the gentile?" };
     expect(checkNote(fine, source)).toEqual({ ok: true, problems: [] });

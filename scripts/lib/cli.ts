@@ -9,9 +9,18 @@ export const site = (opt("site") ?? "https://daf-yomi.dev").replace(/\/$/, "");
 function tokenFromDevVars(): string | undefined {
   try { return /^ADMIN_TOKEN=(.+)$/m.exec(readFileSync(".dev.vars", "utf8"))?.[1]?.trim(); } catch { return undefined; }
 }
-/** The Anthropic key for batch work, from the environment or .dev.vars (it is a Worker secret, so it is not in wrangler.jsonc). */
-if (!process.env.ANTHROPIC_API_KEY) {
-  try { const k = /^ANTHROPIC_API_KEY=(.+)$/m.exec(readFileSync(".dev.vars", "utf8"))?.[1]?.trim(); if (k) process.env.ANTHROPIC_API_KEY = k; } catch { /* no .dev.vars */ }
+/**
+ * The Anthropic key for batch work, from the environment or .dev.vars (it is a Worker secret, so it is not in
+ * wrangler.jsonc). A key made without a workspace scope needs ANTHROPIC_WORKSPACE_ID as well (Console: Settings,
+ * Workspaces); `anthropicClientOptions()` turns it into the header the API asks for.
+ */
+for (const name of ["ANTHROPIC_API_KEY", "ANTHROPIC_WORKSPACE_ID"]) {
+  if (process.env[name]) continue;
+  try { const v = new RegExp(`^${name}=(.+)$`, "m").exec(readFileSync(".dev.vars", "utf8"))?.[1]?.trim(); if (v) process.env[name] = v; } catch { /* no .dev.vars */ }
+}
+export function anthropicClientOptions(): { maxRetries: number; defaultHeaders?: Record<string, string> } {
+  const ws = process.env.ANTHROPIC_WORKSPACE_ID;
+  return { maxRetries: 3, ...(ws ? { defaultHeaders: { "anthropic-workspace-id": ws } } : {}) };
 }
 export function adminToken(): string {
   const token = process.env.ADMIN_TOKEN ?? tokenFromDevVars();

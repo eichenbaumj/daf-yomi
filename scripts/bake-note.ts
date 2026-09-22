@@ -11,6 +11,7 @@ import { buildPromptInput, draftNote } from "../src/note/generate";
 import { checkNote } from "../src/note/grounding";
 import { SYSTEM_PROMPT, hashPrompt, userMessage } from "../src/note/prompt";
 import Anthropic from "@anthropic-ai/sdk";
+import { anthropicClientOptions } from "./lib/cli";
 
 const args = process.argv.slice(2);
 const opt = (k: string) => { const i = args.indexOf(`--${k}`); return i >= 0 ? args[i + 1] : undefined; };
@@ -32,7 +33,7 @@ function refFor(target: string) {
 async function main() {
   if (targets.length === 0) { console.error("give at least one target: slug/daf or YYYY-MM-DD"); process.exit(2); }
   console.log(`style ${hashPrompt()} · model ${model}\n`);
-  const client = new Anthropic();
+  const client = new Anthropic(anthropicClientOptions());
   for (const target of targets) {
     const ref = refFor(target);
     const { input, sourceText } = await buildPromptInput(ref);
