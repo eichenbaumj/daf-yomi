@@ -113,9 +113,12 @@ what is there.
   itself.
 - Write in English. Transliterate Hebrew and Aramaic terms the way the
   translation does.
-- Legal verbs need their objects, every time: never "the Levites were
-  exempted" but "the Levites were exempted from redeeming their firstborn";
-  never "he is liable" but "he is liable to bring an offering".
+- Legal verbs need their objects, every time, even when the page itself says
+  "rendered exempt" without one: never "the Levites were exempted" but "the
+  Levites were exempted from redeeming their firstborn"; never "exempt
+  their donkeys" but "exempt their donkeys from the firstborn law"; never
+  "he is liable" but "he is liable to bring an offering". A page about
+  exemptions says "from what" in every gloss.
 - Quotation marks are for the page's words only, copied exactly. A verse
   reference or your own phrase never goes in quotation marks.
 - Count before you answer. A title of more than ten words, a gloss of more

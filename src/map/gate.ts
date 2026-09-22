@@ -26,6 +26,7 @@ export interface MapPage { sections: MapSection[]; cues: Cue[] }
 
 export function checkMap(draft: MapDraft, page: MapPage, sourceText: string): GroundingResult {
   const problems: string[] = [];
+  const src = normalize(sourceText);
   const ids = segmentIds(page.sections);
   const index = new Map(ids.map((id, i) => [id, i] as const));
   const units = draft.units;
@@ -80,21 +81,28 @@ export function checkMap(draft: MapDraft, page: MapPage, sourceText: string): Gr
   if (MORE_THAN_ONE_SENTENCE.test(draft.shape.trim())) problems.push("the shape is more than one sentence.");
   if (/^(in this daf|this page|today's page|on this daf)/i.test(draft.shape.trim())) problems.push("do not open the shape with 'This page' or 'In this daf'.");
 
-  // 5. The note's rules, over every string of the map in order (a gloss right after its title counts as a gloss).
-  const prose = [...units.flatMap((u) => [u.title, u.gloss]), draft.shape].join(" ");
-  if (/[—]/.test(prose)) problems.push("no em dashes.");
-  const lower = prose.toLowerCase();
-  for (const w of BANNED_WORDS) if (new RegExp(`\\b${w}\\w*`, "i").test(prose)) problems.push(`banned word: ${w}.`);
-  for (const p of BANNED_PHRASES) if (lower.includes(p)) problems.push(`banned phrase: "${p.trim()}".`);
-  if (LATER_AUTHORITIES.test(prose)) problems.push("do not cite later authorities, Steinsaltz, or Sefaria.");
-  for (const name of sagesNotOnPage(prose, sourceText)) problems.push(`"${name}" is not named on this page; name a sage only for a view the text attributes to them, in the page's own spelling.`);
-  for (const slip of articleSlips(prose)) problems.push(`article does not agree with the next word: "${slip}".`);
-  for (const d of danglingLegalVerbs(prose)) problems.push(`legal verb left hanging, "${d}" Name the object.`);
-  for (const term of unglossed(prose)) problems.push(`gloss "${term}" in a few words the first time it appears in the map; the reader has never opened a Talmud.`);
-
-  // 6. Quotations are copies.
-  const src = normalize(sourceText);
-  for (const span of quotedSpans(prose)) if (!src.includes(normalize(span))) problems.push(`quoted phrase not found in the text: "${span}".`);
+  // 5. The note's rules, per unit so the feedback names the line to fix (the second draft of the first live map
+  // fixed thirteen problems and left two it could not place), then over the whole map for what is map-wide.
+  const where = (i: number) => (i < units.length ? `unit ${i + 1}` : "the shape");
+  const pieces = [...units.map((u) => `${u.title} ${u.gloss}`), draft.shape];
+  pieces.forEach((text, i) => {
+    const at = where(i);
+    if (/[—]/.test(text)) problems.push(`${at}: no em dashes.`);
+    const lower = text.toLowerCase();
+    for (const w of BANNED_WORDS) if (new RegExp(`\\b${w}\\w*`, "i").test(text)) problems.push(`${at}: banned word: ${w}.`);
+    for (const p of BANNED_PHRASES) if (lower.includes(p)) problems.push(`${at}: banned phrase: "${p.trim()}".`);
+    if (LATER_AUTHORITIES.test(text)) problems.push(`${at}: do not cite later authorities, Steinsaltz, or Sefaria.`);
+    for (const name of sagesNotOnPage(text, sourceText)) problems.push(`${at}: "${name}" is not named on this page; name a sage only for a view the text attributes to them, in the page's own spelling.`);
+    for (const slip of articleSlips(text)) problems.push(`${at}: article does not agree with the next word: "${slip}".`);
+    for (const d of danglingLegalVerbs(text)) problems.push(`${at}: legal verb left hanging, "${d}" Say it in full: exempt from the firstborn law, liable to bring an offering.`);
+    for (const span of quotedSpans(text)) if (!src.includes(normalize(span))) problems.push(`${at}: quoted phrase not found in the text: "${span}".`);
+  });
+  // A term glossed once anywhere in the map is glossed; the report names the first unit that uses it bare.
+  const prose = pieces.join(" ");
+  for (const term of unglossed(prose)) {
+    const first = pieces.findIndex((t) => new RegExp(`\\b${term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`, "i").test(t));
+    problems.push(`${where(first < 0 ? 0 : first)}: gloss "${term}" in a few words the first time it appears in the map ("five sela, silver coins"); the reader has never opened a Talmud.`);
+  }
 
   return { ok: problems.length === 0, problems };
 }

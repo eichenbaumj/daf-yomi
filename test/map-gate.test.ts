@@ -72,15 +72,15 @@ describe("map gate", () => {
     expect(problems({ ...good, shape: "This page opens with a mishna about donkeys and then asks why there are five cases." })).toContainEqual(expect.stringMatching(/do not open the shape/));
   });
   it("applies the note's rules to every string", () => {
-    expect(problems(withUnit(2, { gloss: "Rav Huna says the ear counts — a small share." }))).toContainEqual("no em dashes.");
-    expect(problems(withUnit(2, { gloss: "The Gemara delves into what an ear is worth as a share." }))).toContainEqual("banned word: delve.");
-    expect(problems(withUnit(2, { gloss: "A fortiori the ear is a share, says Rav Huna." }))).toContainEqual('banned phrase: "a fortiori".');
-    expect(problems(withUnit(2, { gloss: "Rashi explains that the ear counts as a share for Rav Huna." }))).toContainEqual("do not cite later authorities, Steinsaltz, or Sefaria.");
-    expect(problems(withUnit(2, { gloss: "Rav Yosef says the ear counts as a share for the gentile." }))).toContainEqual(expect.stringMatching(/"Rav Yosef" is not named on this page/));
-    expect(problems(withUnit(2, { gloss: 'Rav Huna calls it "a share in the donkey itself" and moves on.' }))).toContainEqual(expect.stringMatching(/quoted phrase not found/));
-    expect(problems(withUnit(2, { gloss: "Rav Huna says the ear counts, like teruma for a priest." }))).toContainEqual(expect.stringMatching(/gloss "teruma"/));
-    expect(problems(withUnit(2, { gloss: "Rav Huna says a uprooted ear still counts as a share." }))).toContainEqual(expect.stringMatching(/article does not agree/));
-    expect(problems(withUnit(2, { gloss: "Rav Huna says the ear counts, so the donkey is exempt." }))).toContainEqual(expect.stringMatching(/legal verb left hanging/));
+    expect(problems(withUnit(2, { gloss: "Rav Huna says the ear counts — a small share." }))).toContainEqual("unit 3: no em dashes.");
+    expect(problems(withUnit(2, { gloss: "The Gemara delves into what an ear is worth as a share." }))).toContainEqual("unit 3: banned word: delve.");
+    expect(problems(withUnit(2, { gloss: "A fortiori the ear is a share, says Rav Huna." }))).toContainEqual('unit 3: banned phrase: "a fortiori".');
+    expect(problems(withUnit(2, { gloss: "Rashi explains that the ear counts as a share for Rav Huna." }))).toContainEqual("unit 3: do not cite later authorities, Steinsaltz, or Sefaria.");
+    expect(problems(withUnit(2, { gloss: "Rav Yosef says the ear counts as a share for the gentile." }))).toContainEqual(expect.stringMatching(/^unit 3: "Rav Yosef" is not named on this page/));
+    expect(problems(withUnit(2, { gloss: 'Rav Huna calls it "a share in the donkey itself" and moves on.' }))).toContainEqual(expect.stringMatching(/^unit 3: quoted phrase not found/));
+    expect(problems(withUnit(2, { gloss: "Rav Huna says the ear counts, like teruma for a priest." }))).toContainEqual(expect.stringMatching(/^unit 3: gloss "teruma"/));
+    expect(problems(withUnit(2, { gloss: "Rav Huna says a uprooted ear still counts as a share." }))).toContainEqual(expect.stringMatching(/^unit 3: article does not agree/));
+    expect(problems(withUnit(2, { gloss: "Rav Huna says the ear counts, so the donkey is exempt." }))).toContainEqual(expect.stringMatching(/^unit 3: legal verb left hanging/));
   });
   it("counts a term glossed once anywhere in the map", () => {
     const glossedOnce = withUnit(1, { gloss: "The Gemara asks why the mishna needs every case, like teruma, the priest's share of the crop, needs a rule." });
