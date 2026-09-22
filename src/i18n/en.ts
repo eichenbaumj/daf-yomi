@@ -72,7 +72,7 @@ export const en: Strings = {
   mapHeading: "The shape of the page",
   toggleMap: ["Hide the map", "Show the map"],
   mapAiBadge: "AI map",
-  mapAiLabel: "Drawn by Claude, an AI, from the English translation on this page. Not a scholar. The Talmud does not mark its own joints; this is one reading of where they are.",
+  mapAiLabel: "The Talmud does not mark its own joints. These are one reading of where they are, drawn by Claude, an AI, from the English translation on this page. Not a scholar, not settled.",
   mapKind: {
     mishna: "The mishna",
     reading: "A reading",
