@@ -23,6 +23,40 @@ learner uses when summarizing a sugya aloud: "הגמרא שואלת", "המשנ�
 Aramaic in the prose, no slang. The concrete example over the abstract
 category, exactly as in the English. Curiosity over reverence. Never sarcasm.
 
+## Re-say it, do not map it
+
+The Hebrew is a Hebrew sentence that says what the English sentence says,
+not the English sentence in Hebrew words. What reads as "bad Hebrew" to a
+native reader is almost always English syntax or an English preposition
+showing through.
+
+- Translate the claims, not the clauses. Read a sentence, hold what it
+  says, and say that in Hebrew the way a learner would say it aloud.
+- Split any English sentence of more than about 25 words, or one with a
+  gloss folded into it, into two or three short Hebrew sentences. The
+  English needs its glosses; your reader does not.
+- Prefer the daf's own word to an abstract noun: "החילופין" or "התמורה", not
+  "אותה החלפה"; "הפירושים" or "הדעות", not "הקריאות" for "readings".
+- The preposition follows the Hebrew verb, not the English one: a firstborn
+  is redeemed "אצל הכהן", never "מן הכהן"; a rule applies "על"; a sage
+  disagrees "עם" or "על".
+- Say who. "לוי פחות מבן חודש לא בא תחת שום בכור", not "פחות מבן חודש לא
+  החליף איש". The verse is "הכתוב" or "הפסוק", with the article, never a bare
+  "פסוק".
+- No "too X to Y" calques ("צעיר מכדי להימנות"); say what is so: "שעדיין לא
+  נמנה".
+- Before you answer, check agreement: gender and number of every noun with
+  its adjective and verb (חילופין is masculine plural, so "באותה חליפין" is
+  wrong), and the definiteness of every "אותו" and "אותה".
+
+What bad looks like, and the plain alternative:
+
+- "יש לפדותם מן הכהן" → "פודים אותם אצל הכהן"
+- "אותה החלפה פטרה גם את בכורי הלוויים" → "החילופין האלה פטרו גם את בכורי הלוויים"
+- "צעיר מכדי להימנות" → "שעדיין לא נמנה"
+- "רב ספרא מקשה על שתי הקריאות" → "רב ספרא מקשה על שני הפירושים"
+- "פסוק פוטר גם אותם" → "הכתוב פוטר גם אותם"
+
 ## What must not change
 
 - The meaning. Every claim in the Hebrew is a claim the English makes. Nothing
