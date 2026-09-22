@@ -14,7 +14,11 @@ Live at **https://daf-yomi.dev**. Free, no accounts, no tracking. One Cloudflare
 - `/tractates`, `/about`, `/feed.xml` (RSS, last 14 days), `/api/today.json`, `/api/<slug>/<n>.json`
 - `/newsletter` the daf by email: one message a day at the reader's own hour (see [NEWSLETTER.md](NEWSLETTER.md))
 - `/yesterday`, `/tomorrow`, `/date/YYYY-MM-DD` redirect to the right page
-- Toggles: Hebrew/Aramaic alongside the English; "Talmud only" hides the interpolated explanation
+- `/og/<slug>/<n>/<token>.png` the share card behind a forwarded link: the AI note's question on parchment, drawn
+  per daf by Cloudflare Browser Rendering on a cron, never on a visit (see [HOSTING.md](HOSTING.md), "Share cards")
+- Toggles: Hebrew/Aramaic alongside the English; "Talmud only" hides the interpolated explanation; "Hide the daf"
+  keeps just the note. "Share this question" under the note copies the question and the permalink (a share sheet
+  on phones); nothing is recorded
 
 ## How it works
 
@@ -25,6 +29,7 @@ visitor → Worker fetch()
            └─ note: KV → else render "pending" and generate in ctx.waitUntil
 cron (06:00 and 18:00 UTC) → bake tomorrow's, today's and the day after's note, backfill the last 7 days, ≤3 generations/run
 cron (hourly) → the newsletter tick: render the issue once, send it to every reader whose local hour has come (D1 + Resend)
+cron (06:20 and 18:20 UTC) → draw the share cards for the near days plus a trickle of the archive (Browser Rendering → KV og:v1:*)
 ```
 
 - **Schedule**: `src/daf/schedule.ts`. Cycle 14 runs 5 Jan 2020 to 7 Jun 2027. The tractate table

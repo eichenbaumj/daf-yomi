@@ -87,8 +87,9 @@
     var label = btn.textContent;
     var text = "\u201c" + q.textContent.trim() + "\u201d\n" + line;
     function flash() { btn.textContent = done; setTimeout(function () { btn.textContent = label; }, 2000); }
-    function copy(s) {
-      if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(s);
+    // The clipboard API first; when it is missing or refuses (some browsers deny it even on a click), the old
+    // select-and-copy path, which works on the click's own activation.
+    function legacyCopy(s) {
       return new Promise(function (resolve, reject) {
         var ta = document.createElement("textarea");
         ta.value = s; ta.setAttribute("readonly", ""); ta.style.position = "fixed"; ta.style.opacity = "0";
@@ -96,8 +97,12 @@
         var ok = false;
         try { ok = document.execCommand("copy"); } catch (e) {}
         document.body.removeChild(ta);
-        ok ? resolve() : reject();
+        ok ? resolve() : reject(new Error("copy refused"));
       });
+    }
+    function copy(s) {
+      var modern = navigator.clipboard && window.isSecureContext ? navigator.clipboard.writeText(s) : Promise.reject(new Error("no clipboard api"));
+      return modern.catch(function () { return legacyCopy(s); });
     }
     box.hidden = false;
     btn.addEventListener("click", function () {

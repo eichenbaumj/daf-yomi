@@ -120,6 +120,62 @@ origin, so nothing else needed changing.
 - **Yiddish** rides the same machinery: add it to `ENABLED_LANGS`, a `yi.ts` table, a style guide, and the router,
   templates, cache keys, sitemap and cron follow.
 
+## Share cards (added 2026-09-22)
+
+Every English daf page, and the homepage, points `og:image` / `twitter:image` at a per-daf 1200x630 card carrying
+the AI note's question (`/og/<slug>/<daf>/<token>.png`, code in `src/og/`). Hebrew pages keep the static
+`public/og-he.png`; the template already takes a language, so a Hebrew card is a small later build.
+
+- **Drawn by Cloudflare Browser Rendering** (the `browser` binding in `wrangler.jsonc`, `@cloudflare/puppeteer`).
+  Free plan, verified in the docs 2026-09-21: 10 browser-minutes a day, 3 concurrent browsers, one new instance
+  every 20 seconds, 60 s idle timeout. One launch per invocation; the template with its embedded fonts loads once,
+  then each card swaps the texts and takes a screenshot (about a second a card; the first, with the launch, a few
+  seconds). `wrangler dev` runs a local headless Chromium for the binding (it downloads one on first use); never set
+  `"remote": true` on the binding, that spends the daily budget from a laptop.
+- **Never on a visit.** Cards are drawn by the card cron (`20 6,18 * * *`, `runCardBake` in `src/og/bake.ts`,
+  20 minutes after each note bake so a browser hang can never touch the notes; the 4th of the account's 5 cron
+  slots) and by `POST /admin/og/bake`. The image route only reads KV. This is the 2026-09-20 lesson applied: an
+  anonymous request must not spend a metered resource.
+- **Storage.** KV `og:v1:<slug>:<daf>` holds the PNG (60 to 130 KB); the key's metadata says which note it shows
+  (`of` = the note's `generatedAt`), the design (`cv` = `CARD_VERSION`), the cycle whose date it carries, the URL
+  token, size and render time. `ogcursor:v1` is the trickle's place in the cycle. 2,711 cards are about 250 MB of
+  the free 1 GB; the bake writes at most a few dozen keys a day.
+- **The page decides.** `dafPageResponse` reads the card's metadata (never its bytes) and puts the per-daf URL in the
+  head only while the card shows the note on the page; otherwise the static card. So a card never carries a
+  question other than the one in the HTML that references it. The residual window is the page's own edge TTL:
+  an English page with a note but no card yet is cached 600 s instead of 3600 (`x-daf-card: no`), so the cron's
+  work reaches the head within ten minutes. KV takes up to a minute to propagate, so a crawler can once see the
+  static card for a brand-new one; not engineered around. Notes written by the on-visit self-heal or the
+  newsletter's last-resort bake wait for the next 06:20/18:20 run (up to 12 h) before their card exists.
+- **Versioned URL.** The token is fnv1a of design, cycle, the note's `generatedAt` and the render time: any redraw is
+  a new URL, which is the only reliable cache bust for Facebook, Slack and the edge (the PNG is served
+  `immutable` for a year). An old token 302s to the current URL; a card that is not there yet 302s to `/og.png`;
+  both `no-store`. A design-stale card (older `cv`, or another cycle's date) keeps serving until redrawn: only a
+  changed question retires a card, so a design change never blanks the site.
+- **Order of work per run.** Tomorrow, today, the day after, yesterday; then `OG_TRICKLE_PER_RUN` (var, 10) archive
+  cards from the cursor, so the archive fills unattended (two runs a day). Faster: `npm run og:backfill -- --site
+  https://daf-yomi.dev --all` (chunks of 15 per admin call, 21 s between chunks for the instance-rate limit,
+  current cards skipped without a launch). At about a second a card the free plan's 10 minutes draw roughly 450
+  a day, so `--all` takes about six mornings; it stops on the day's budget and says so (exit 3). `--window 3`
+  and `--dapim slug/daf,…` for the near days.
+- **Two different 429s from `launch`.** The instance rate (wait 21 s; the script retries once) and the daily budget
+  ("Browser time limit exceeded for today": stop). Both surface as HTTP 429 from `/admin/og/bake` with `kind`.
+  A cron launch that lands within 20 s of a backfill chunk is the likely collision; the cron just logs it.
+- **Design.** `src/og/card.ts`: the six-Orders bar with a tick at the daf, the wordmark, an AI NOTE chip, tractate and
+  daf with the Hebrew title, the civil and Hebrew dates, the question in Source Serif 4 italic stepped down from
+  62 px until it fits (never cut), a footer with the domain and "Written by Claude, an AI. Not a scholar."
+  Fonts are woff2 subsets fetched once by `npm run og:fonts` into `src/og/fonts/` (latin, latin-ext, hebrew;
+  138 KB) and embedded as data URIs, so a render never touches the network. Preview a card locally with
+  `npm run og:preview -- bekhorot/2` (writes `scratch/og-bekhorot-2.html`; open it, or screenshot it with
+  Playwright). A design change is a `CARD_VERSION` bump; the trickle or the backfill redraws the archive.
+- **Verify after a change.** `curl -s "https://daf-yomi.dev/?nocache=1" | grep -E 'og:image|twitter:image'` shows a
+  `/og/…` URL; fetch it and look; `/api/today.json` carries `note.card`; `/admin/og/status?date=YYYY-MM-DD` shows
+  the stored metadata; then paste a permalink into opengraph.xyz, iMessage, WhatsApp or Slack: "done" is the
+  question visible in a real preview. Facebook's sharing debugger re-scrapes a URL on demand.
+- **"Share this question"** (`public/app.js`, the pill under the note): the share sheet on a phone (`navigator.share`
+  with the quoted question, the daf line and the permalink), the clipboard elsewhere, with select-and-copy as the
+  fallback when a browser refuses the clipboard API. Nothing is recorded; the privacy page stays true.
+
 ## Measured CPU (wrangler tail, 2026-09-20, after the formatter/cache fixes)
 
 | Request | CPU | Notes |
@@ -139,7 +195,7 @@ rendering, and remember the cron run (up to 3 note generations) is the heaviest 
 ## Limits that matter (free plan, verified 2026-09-20 in Cloudflare docs)
 
 - 100,000 requests/day, 10 ms CPU per request and per cron invocation, 50 subrequests per request.
-- 5 cron triggers per account; this Worker uses 3 (two bakes, one hourly newsletter tick).
+- 5 cron triggers per account; this Worker uses 4 (two bakes, one hourly newsletter tick, the card bake at 06:20/18:20).
 - **KV: 1,000 writes/day on free, hard-enforced** (hit it 2026-09-20 during re-bakes: "KV put() limit exceeded
   for the day"; resets at midnight UTC). That is why Sefaria text and generation locks live in the edge Cache
   API, not KV: a crawl of all 2,711 permalinks would otherwise burn 5,000 writes. KV now takes roughly one
@@ -177,6 +233,10 @@ writes/day) or run on Workers Paid.
 - **Wrong daf**: the schedule is offline and deterministic. Run `npm run verify:cycle` before believing it.
   Sefaria's calendar endpoint returns 429 (`retry-after: 30`) after a burst of roughly 75 requests; the
   script paces itself (default 1.2 s) and honours Retry-After, so a full remaining-cycle check takes minutes.
+- **A shared link shows the static card, not the question**: the page had no current card when it was cached. Check
+  `/admin/og/status?date=…` (is `current` true?), then `npm run og:backfill -- --site https://daf-yomi.dev --window 3`,
+  then `?nocache=1` on the page. If `/admin/og/bake` answers 429 with `kind: "budget"`, the day's 10 browser-minutes
+  are gone; the cron catches up tomorrow. With `kind: "other"`, read `npm run tail` during a bake.
 - **Stale page after a deploy**: edge-cache keys include the build id (`--var BUILD:<sha>` in `npm run deploy`),
   so a deploy never serves the previous version. A bare `wrangler deploy` (without the var) falls back to the
   key `dev` and can serve stale HTML for up to an hour; use `npm run deploy`.

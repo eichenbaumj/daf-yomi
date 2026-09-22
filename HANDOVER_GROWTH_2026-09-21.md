@@ -20,6 +20,13 @@ Written 2026-09-21 at the end of a long session with Joe. Read this whole file, 
 
 ## Build 1: make the link itself do the selling
 
+**Shipped 2026-09-22** (commit `1ff8535` and the docs commit after it; operator notes in `HOSTING.md`, "Share cards").
+What differed from the brief below: PNGs are drawn by Cloudflare Browser Rendering from the Worker (on the free plan;
+10 browser-minutes a day), on a fourth cron 20 minutes after each note bake, not in the bake itself and not with
+Pillow; the image URL's token changes on every redraw, not only on a new note; a design-stale card keeps serving
+until redrawn (only a changed question retires a card); the share text has no em dash (three lines: the quoted
+question, "Bekhorot 9 · AI note · Today's Daf", the permalink). The daily email is unchanged.
+
 **Why.** Daf yomi spreads through group chats and forwarded emails, not search. Today every shared link
 shows the same static `public/og.png`. A forwarded link should carry that day's question.
 

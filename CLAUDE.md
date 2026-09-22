@@ -16,6 +16,9 @@ cron; permalinks for every daf.
 - **No em dashes, no AI tells** in any rendered prose (`test/render.test.ts` checks the chrome; the
   grounding check covers notes).
 - Joe's voice on `/about`: first person, plain, dry. Not corporate.
+- **Share cards never render on a visit.** The per-daf social image (`src/og`) is drawn by the card cron and
+  `/admin/og/bake` only; the image route serves KV or falls back to the static card. A page points at a card only
+  while the card shows the note on that page (`cardCurrent`), so a stale question is never behind a shared link.
 - **Design direction (Joe, 2026-09-20):** warm parchment, brown ink, oxblood and gold; "the office of a great old
   Torah scholar," human and lived in, exciting for a day of Torah. White/clinical surfaces were rejected. Assume
   the reader has never heard of Rabbi Steinsaltz, Sefaria, or a Seder: gloss every such name on first appearance.
@@ -24,7 +27,8 @@ cron; permalinks for every daf.
 
 `src/daf` schedule + tractate table · `src/sefaria` fetch + sanitize · `src/note` prompt, grounding,
 generate, KV store · `src/render` HTML (and `email.ts`, the daily issue) · `src/newsletter` readers, the
-hourly send tick, opt-in, provider (see NEWSLETTER.md) · `src/index.ts` routes · `src/cron.ts` nightly bake ·
+hourly send tick, opt-in, provider (see NEWSLETTER.md) · `src/og` the per-daf share card (template, KV store, Browser
+Rendering, the card bake; see HOSTING.md "Share cards") · `src/index.ts` routes · `src/cron.ts` nightly bake ·
 `prompts/daf-note.md` the house style (bump `PROMPT_VERSION` in `src/note/prompt.ts` when it changes
 enough to re-bake) · `scripts/` bake table, verify cycle, try notes, backfill, check links ·
 `data/tractates.json` generated, commit it.
@@ -52,6 +56,7 @@ English, Hebrew (`/he`, Pre-Release until `HE_PUBLIC=1`), Yiddish later on the s
   three dapim per run. If CPU limits ever bite, Workers Paid ($5/mo) is the fix, not a rewrite.
 - Push ≠ deploy here either: `npm run deploy` is the deploy. Verify the live URL after.
 - KV keys: `ref:v1:<slug>:<daf>`, `note:v1:<slug>:<daf>`, `tnote:v1:<lang>:<slug>:<daf>` (translated notes),
+  `og:v1:<slug>:<daf>` (the share card PNG, provenance in its metadata), `ogcursor:v1` (the card trickle's place),
   `gen:<date>` and `confirm:<date>` (daily counters).
   Sefaria text (`text:v2:`) and generation locks live in the edge Cache API, not KV (free plan: 1,000 KV
   writes a day). Readers live in D1 (`NEWSLETTER_DB`), never in KV.

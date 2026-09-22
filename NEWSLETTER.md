@@ -42,6 +42,7 @@ email links until Cisco recategorizes the domain. Public resolvers (1.1.1.1, 8.8
 
 ```
 06:00  bake     ensureNote(D+1), ensureNote(D), ensureNote(D+2)         → KV note:v1:*
+06:20  cards    share cards for D+1, D, D+2, D-1, then a trickle of the archive → KV og:v1:* (src/og; the email is unchanged: no images)
 hh:00  tick     zones whose local hour is within 3 h of a chosen hour → due readers
                 getNote(daf) from KV → render once → reserve rows → POST /emails/batch → mark sent → send_runs row
                 note missing: defer at slots 0..2; at slot 3 call ensureNote once, then send the full issue
@@ -49,6 +50,7 @@ hh:00  tick     zones whose local hour is within 3 h of a chosen hour → due re
 00:00  tick     also: fail reserved rows older than yesterday (never send a stale issue), housekeeping,
                 provider-swap alert at 80 active readers
 18:00  bake     retries anything still missing
+18:20  cards    same as 06:20
 ```
 
 ## Running it
