@@ -21,6 +21,24 @@ export async function loadNoted(kv: KVNamespace, tractates: Tractate[] = TRACTAT
   return new Map(entries);
 }
 
+/** The rendered sitemap lives in KV: building it means 40 lists (~12 s cold), which is longer than a crawler waits. */
+export const SITEMAP_KEY = "sitemap:v1";
+export const SITEMAP_MAX_AGE_S = 3600;
+
+export interface StoredSitemap { xml: string; builtAt: string }
+
+/**
+ * Serve the stored sitemap at once; rebuild it in the background when it is older than an hour or missing
+ * (the very first request builds inline). `later` is ctx.waitUntil.
+ */
+export async function sitemapXml(kv: KVNamespace, build: () => Promise<string>, later: (p: Promise<unknown>) => void, now = Date.now()): Promise<string> {
+  const stored = await kv.get<StoredSitemap>(SITEMAP_KEY, "json");
+  const rebuild = async () => { const xml = await build(); await kv.put(SITEMAP_KEY, JSON.stringify({ xml, builtAt: new Date(now).toISOString() })); return xml; };
+  if (!stored) return rebuild();
+  if (now - Date.parse(stored.builtAt) > SITEMAP_MAX_AGE_S * 1000) later(rebuild().catch((e) => console.error("[sitemap] rebuild", e)));
+  return stored.xml;
+}
+
 export interface SitemapInput { origin: string; env: Env; today: Date; todayRef: DafRef; noted: NotedIndex; tractates?: Tractate[] }
 
 function esc(s: string): string { return s.replace(/&/g, "&amp;"); }

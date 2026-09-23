@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { renderSitemap, loadNoted } from "../src/render/sitemap";
+import { renderSitemap, loadNoted, sitemapXml, SITEMAP_KEY } from "../src/render/sitemap";
 import { FakeKV } from "./helpers/fakeKv";
 import { TRACTATES, tractateBySlug } from "../src/daf/tractates";
 import { dafForDate } from "../src/daf/schedule";
@@ -40,6 +40,21 @@ describe("sitemap", () => {
     expect(xml).not.toContain("/he/");
     expect((xml.match(/<url>/g) ?? []).length).toBe(3 + TRACTATES.length + 4 + 1);
     expect(xml.startsWith('<?xml version="1.0" encoding="UTF-8"?>\n<urlset ')).toBe(true);
+  });
+  it("serves the stored sitemap at once and rebuilds it in the background when stale", async () => {
+    const kv = new FakeKV() as unknown as KVNamespace & FakeKV;
+    let builds = 0;
+    const build = async () => `<built ${++builds}>`;
+    const later: Promise<unknown>[] = [];
+    const t0 = Date.parse("2026-09-23T10:00:00Z");
+    expect(await sitemapXml(kv, build, (p) => later.push(p), t0)).toBe("<built 1>"); // nothing stored: built inline
+    expect(later).toHaveLength(0);
+    expect(await sitemapXml(kv, build, (p) => later.push(p), t0 + 10 * 60 * 1000)).toBe("<built 1>"); // fresh: served, no rebuild
+    expect(later).toHaveLength(0);
+    expect(await sitemapXml(kv, build, (p) => later.push(p), t0 + 2 * 3600 * 1000)).toBe("<built 1>"); // stale: served stale, rebuilt behind
+    expect(later).toHaveLength(1);
+    await later[0];
+    expect(JSON.parse(await kv.get(SITEMAP_KEY, "text") as string).xml).toBe("<built 2>");
   });
   it("escapes ampersands in URLs", () => {
     const xml = renderSitemap({ origin: "https://a.test?x=1&y=2", env, today, todayRef, noted: new Map() });

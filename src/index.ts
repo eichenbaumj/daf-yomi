@@ -5,7 +5,7 @@ import { addDays, dafForDate, dateForDaf, hebrewDate, parseYmd, todayIn, ymd, ty
 import { positionFor } from "./daf/position";
 import { SefariaError, fetchText, loadDafSections, type DafSection } from "./sefaria/client";
 import { getNote, notedDafim, notedDafimWithDates, putNote, type DafNote } from "./note/store";
-import { loadNoted, renderSitemap } from "./render/sitemap";
+import { loadNoted, renderSitemap, sitemapXml } from "./render/sitemap";
 import { isIndexNowKeyPath } from "./indexnow";
 import { buildPromptInput, ensureNote } from "./note/generate";
 import { checkNote } from "./note/grounding";
@@ -225,9 +225,8 @@ async function handle(request: Request, env: Env, ctx: ExecutionContext): Promis
     }
     case "sitemap": {
       // Noted dafim plus today, with lastmod where known (src/render/sitemap.ts). One list per tractate, hourly.
-      return cachedResponse(ck("/sitemap.xml"), 3600, async () => {
-        const noted = await loadNoted(env.DAF_KV);
-        const xml = renderSitemap({ origin, env, today, todayRef: dafForDate(today), noted });
+      return cachedResponse(ck("/sitemap.xml"), 600, async () => {
+        const xml = await sitemapXml(env.DAF_KV, async () => renderSitemap({ origin, env, today, todayRef: dafForDate(today), noted: await loadNoted(env.DAF_KV) }), (p) => ctx.waitUntil(p));
         return new Response(xml, { headers: { "content-type": "application/xml; charset=utf-8" } });
       }, bypass);
     }
