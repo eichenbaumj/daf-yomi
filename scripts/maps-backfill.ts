@@ -4,6 +4,7 @@
  *
  *   npm run maps:backfill -- --rest | --all [--near 3] [--limit N] [--dapim slug/daf,…] [--window N] [--force] [--dry]
  *                            [--fetch-only] [--effort high|medium|low] [--model claude-opus-5] [--budget N]
+ *                            [--retry-given-up]   try the given-up pages again (after a gate or prompt change)
  *
  * Targets: --window N (today ± N), --dapim, --rest (the rest of this cycle), --all; they add up. Dapim within --near days of today (default 3) are the
  * cron's and are skipped. A daf whose stored map is already the current style is skipped unless --force.
@@ -53,7 +54,8 @@ async function main() {
   if (targets.length === 0) { console.error("no targets: use --rest, --all, --window N or --dapim slug/daf (near days are skipped)"); process.exit(2); }
   const outcomes: Record<string, Outcome> = existsSync(OUTCOMES) ? JSON.parse(readFileSync(OUTCOMES, "utf8")) : {};
   const save = () => writeFileSync(OUTCOMES, JSON.stringify(outcomes, null, 1));
-  const done = (k: string) => ["stored", "given-up", "current"].includes(outcomes[k]?.status ?? "") && !(force && outcomes[k]?.status === "current");
+  const retryGivenUp = flag("retry-given-up");
+  const done = (k: string) => (retryGivenUp ? ["stored", "current"] : ["stored", "given-up", "current"]).includes(outcomes[k]?.status ?? "") && !(force && outcomes[k]?.status === "current");
   const todo = targets.filter(([k]) => !done(k)).slice(0, limit);
   console.log(`${todo.length} to draw (of ${targets.length} targets; near days and finished ones skipped)${effort ? `, effort ${effort}` : ""}${dry ? ", dry run" : ""}`);
   if (todo.length === 0) return finish(outcomes);

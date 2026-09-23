@@ -3,7 +3,7 @@
  * page, the text's own marks begin units, kinds come from the vocabulary, and every string obeys the note's rules
  * (src/note/grounding.ts, reused rather than copied).
  */
-import { articleSlips, BANNED_PHRASES, BANNED_WORDS, danglingLegalVerbs, LATER_AUTHORITIES, normalize, quotedSpans, sagesNotOnPage, unglossed, wordCount, type GroundingResult } from "../note/grounding";
+import { articleSlips, BANNED_PHRASES, BANNED_WORDS, danglingLegalVerbs, GLOSS_PHRASES, LATER_AUTHORITIES, normalize, quotedSpans, sagesNotOnPage, unglossed, wordCount, type GroundingResult } from "../note/grounding";
 import { isMapKind, MAP_KINDS } from "./kinds";
 import { MARK_WORD, segmentIds, type Cue, type MapSection } from "./cues";
 import type { MapDraft } from "./prompt";
@@ -33,7 +33,9 @@ export function checkMap(draft: MapDraft, page: MapPage, sourceText: string): Gr
 
   // 1. Structure: known ids, in order, contiguous, covering the page.
   if (units.length === 0) problems.push("the map has no units.");
-  if (units.length > MAX_UNITS) problems.push(`too many units (${units.length}); a unit is a move of the argument, not a segment.`);
+  // A page with more marks than the ceiling gets a unit per mark and a little room; the marks are not negotiable.
+  const maxUnits = Math.max(MAX_UNITS, page.cues.length + 3);
+  if (units.length > maxUnits) problems.push(`too many units (${units.length}); a unit is a move of the argument, not a segment.`);
   let expected = 0;
   let chained = units.length > 0;
   units.forEach((u, i) => {
@@ -97,9 +99,11 @@ export function checkMap(draft: MapDraft, page: MapPage, sourceText: string): Gr
     for (const d of danglingLegalVerbs(text, { objectCounts: true })) problems.push(`${at}: legal verb left hanging, "${d}" Say it in full: exempt from the firstborn law, liable to bring an offering.`);
     for (const span of quotedSpans(text)) if (!src.includes(normalize(span))) problems.push(`${at}: quoted phrase not found in the text: "${span}".`);
   });
-  // A term glossed once anywhere in the map is glossed; the report names the first unit that uses it bare.
+  // A transliterated term (issar, olah, teruma) glossed once anywhere in the map is glossed; the report names the
+  // first unit that uses it bare. The English legal categories the note must gloss ("sin offering", "the red heifer")
+  // are left alone here: a twenty-word line cannot carry the clause, and the words themselves are English.
   const prose = pieces.join(" ");
-  for (const term of unglossed(prose)) {
+  for (const term of unglossed(prose).filter((t) => !GLOSS_PHRASES.some((p) => new RegExp(`^${p.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}s?$`, "i").test(t)))) {
     const first = pieces.findIndex((t) => new RegExp(`\\b${term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`, "i").test(t));
     problems.push(`${where(first < 0 ? 0 : first)}: gloss "${term}" in a few words the first time it appears in the map ("five sela, silver coins"); the reader has never opened a Talmud.`);
   }

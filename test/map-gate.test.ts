@@ -57,6 +57,13 @@ describe("map gate", () => {
     const noSugya: MapDraft = { ...good, units: [good.units[0]!, good.units[1]!, { ...good.units[2]!, to: "b-3", kind: "dispute" }] };
     expect(problems(noSugya)).toContainEqual("segment b-2 carries a § mark and must begin a unit.");
   });
+  it("lets a page with many marks have a unit per mark", () => {
+    const many = [sec("Berakhot 9a", "a", Array.from({ length: 16 }, (_, i) => `§ passage ${i + 1} about the donkey and Rav Huna.`))];
+    const p = { sections: many, cues: cueSegments(many) };
+    const units = many[0]!.segments.map((g, i) => ({ from: g.id, to: g.id, kind: "case" as const, title: `Passage ${i + 1} about the donkey`, gloss: "Rav Huna takes up one more case of the donkey and rules on it." }));
+    expect(p.cues.length).toBe(16);
+    expect(checkMap({ units, shape: "Sixteen short passages, each a case about the donkey that Rav Huna rules on in turn." }, p, sourceTextOf(many)).ok).toBe(true);
+  });
   it("rejects a kind outside the vocabulary", () => {
     expect(problems(withUnit(2, { kind: "lesson" as never }))).toContainEqual(expect.stringMatching(/kind "lesson", which is not one of: mishna, reading/));
   });
@@ -79,6 +86,7 @@ describe("map gate", () => {
     expect(problems(withUnit(2, { gloss: "Rav Yosef says the ear counts as a share for the gentile." }))).toContainEqual(expect.stringMatching(/^unit 3: "Rav Yosef" is not named on this page/));
     expect(problems(withUnit(2, { gloss: 'Rav Huna calls it "a share in the donkey itself" and moves on.' }))).toContainEqual(expect.stringMatching(/^unit 3: quoted phrase not found/));
     expect(problems(withUnit(2, { gloss: "Rav Huna says the ear counts, like teruma for a priest." }))).toContainEqual(expect.stringMatching(/^unit 3: gloss "teruma"/));
+    expect(checkMap(withUnit(2, { gloss: "Rav Huna says the ear counts, as a sin offering would." }), page, source).ok).toBe(true); // an English legal phrase is not gated in the map
     expect(problems(withUnit(2, { gloss: "Rav Huna says a uprooted ear still counts as a share." }))).toContainEqual(expect.stringMatching(/^unit 3: article does not agree/));
     expect(problems(withUnit(2, { gloss: "Rav Huna says the ear counts, so the donkey is exempt." }))).toContainEqual(expect.stringMatching(/^unit 3: legal verb left hanging/));
     expect(checkMap(withUnit(2, { gloss: "Rav Huna says the ear exempts the Israelites' donkeys from the priest's claim." }), page, source).ok).toBe(true); // a direct object satisfies the map's rule

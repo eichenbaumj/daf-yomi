@@ -32,7 +32,8 @@ you do not say it.
   unit. A unit that begins at MISHNA: is the mishna. GEMARA: is a label, not
   a kind: the unit that begins there is whatever the Gemara does first, most
   often a reading or a question.
-- Usually five to nine units, never more than twelve. The map is a table of
+- Usually five to nine units, never more than twelve, except that every one
+  of the text's marks begins a unit whatever their number. The map is a table of
   contents a reader takes in at a glance before the text, not a second
   reading of the page: a question and its answers are one unit, a dispute
   with its proofs is one unit, a run of objections on one point is one unit.
