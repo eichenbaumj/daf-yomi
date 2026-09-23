@@ -1,0 +1,37 @@
+{
+ "generatedAt": "2026-09-23T00:03:18.801Z",
+ "site": "https://daf-yomi.dev",
+ "model": "claude-opus-5",
+ "mapPromptVersion": "2026-09-22.2-a897ca48",
+ "judgeVersion": "2026-09-22.1-4757c4c7",
+ "estUsd": 0.0596,
+ "counts": {
+  "total": 1,
+  "keep": 1
+ },
+ "dapim": {
+  "bekhorot/4": {
+   "key": "bekhorot/4",
+   "generatedAt": "2026-09-22T23:57:25.580Z",
+   "promptVersion": "2026-09-22.2-a897ca48",
+   "units": 11,
+   "shape": "A question about whom the Levites freed from redemption, Rav Safra's string of challenges, one lamb for many donkeys, and an unfinished dispute over the wilderness.",
+   "judge": {
+    "boundaries": [],
+    "kinds": [],
+    "glosses": [],
+    "shapeFits": true,
+    "shapeNote": "",
+    "verdict": "keep",
+    "reasons": [],
+    "unverified": false,
+    "modelVerdict": "keep",
+    "feedback": "",
+    "usage": {
+     "inputTokens": 10107,
+     "outputTokens": 2742
+    }
+   }
+  }
+ }
+}
