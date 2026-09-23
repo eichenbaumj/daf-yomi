@@ -87,6 +87,7 @@ describe("map gate", () => {
     expect(problems(withUnit(2, { gloss: 'Rav Huna calls it "a share in the donkey itself" and moves on.' }))).toContainEqual(expect.stringMatching(/^unit 3: quoted phrase not found/));
     expect(problems(withUnit(2, { gloss: "Rav Huna says the ear counts, like teruma for a priest." }))).toContainEqual(expect.stringMatching(/^unit 3: gloss "teruma"/));
     expect(checkMap(withUnit(2, { gloss: "Rav Huna says the ear counts, as a sin offering would." }), page, source).ok).toBe(true); // an English legal phrase is not gated in the map
+    expect(checkMap(withUnit(2, { gloss: "Rav Huna says the ear counts toward the second-tithe as well." }), page, source).ok).toBe(true); // hyphenated too
     expect(problems(withUnit(2, { gloss: "Rav Huna says a uprooted ear still counts as a share." }))).toContainEqual(expect.stringMatching(/^unit 3: article does not agree/));
     expect(problems(withUnit(2, { gloss: "Rav Huna says the ear counts, so the donkey is exempt." }))).toContainEqual(expect.stringMatching(/^unit 3: legal verb left hanging/));
     expect(checkMap(withUnit(2, { gloss: "Rav Huna says the ear exempts the Israelites' donkeys from the priest's claim." }), page, source).ok).toBe(true); // a direct object satisfies the map's rule

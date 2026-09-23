@@ -35,6 +35,9 @@ describe("grounding", () => {
     expect(r.ok).toBe(false);
     expect(r.problems.some((p) => p.includes("quoted phrase not found"))).toBe(true);
   });
+  it("knows a ewe and a utensil take 'a'", () => {
+    expect(articleSlips("a ewe, a utensil, a useful thing, an ox, a uprooted tree")).toEqual(["a uprooted"]);
+  });
   it("does not mistake the end of a sage's name for an article", () => {
     expect(articleSlips("Rav Aḥa asks why, and Rabbi Ḥiyya answers; a uprooted tree stands.")).toEqual(["a uprooted"]);
   });

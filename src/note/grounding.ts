@@ -41,7 +41,7 @@ export function quotedSpans(s: string): string[] {
 }
 
 /** "a uprooted", "an carob": the one grammar slip the model makes often enough to check for. */
-const A_BEFORE_VOWEL_OK = /^(one|uni|use|usu|eu|ur[aeiou]|ubi|uti|unani|u\b)/i; // "a one-time", "a university", "a useful", "a European", "a urine"
+const A_BEFORE_VOWEL_OK = /^(one|uni|use|usu|ute|ewe|eu|ur[aeiou]|ubi|uti|unani|u\b)/i; // "a one-time", "a university", "a useful", "a utensil", "a ewe", "a European", "a urine"
 export function articleSlips(text: string): string[] {
   const out: string[] = [];
   // A Unicode lookbehind rather than \b: \b is ASCII-only, so the "a" that ends "Rav Aḥa" sat at a "word boundary"

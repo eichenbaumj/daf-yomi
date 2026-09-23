@@ -103,7 +103,8 @@ export function checkMap(draft: MapDraft, page: MapPage, sourceText: string): Gr
   // first unit that uses it bare. The English legal categories the note must gloss ("sin offering", "the red heifer")
   // are left alone here: a twenty-word line cannot carry the clause, and the words themselves are English.
   const prose = pieces.join(" ");
-  for (const term of unglossed(prose).filter((t) => !GLOSS_PHRASES.some((p) => new RegExp(`^${p.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}s?$`, "i").test(t)))) {
+  const phrasePattern = (p: string) => new RegExp(`^${p.split(/[\s-]+/).map((w) => w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("[\\s-]+")}s?$`, "i");
+  for (const term of unglossed(prose).filter((t) => !GLOSS_PHRASES.some((p) => phrasePattern(p).test(t)))) {
     const first = pieces.findIndex((t) => new RegExp(`\\b${term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`, "i").test(t));
     problems.push(`${where(first < 0 ? 0 : first)}: gloss "${term}" in a few words the first time it appears in the map ("five sela, silver coins"); the reader has never opened a Talmud.`);
   }
