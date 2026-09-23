@@ -28,6 +28,8 @@ export interface DafMap {
   /** Segments per section in page order, e.g. [13, 24]; the renderer hides a map whose ids no longer fit the text. */
   segmentCounts: number[];
   usage?: { inputTokens: number; outputTokens: number; attempts: number; estUsd: number };
+  /** The judge of the map's verdict (src/map/judge.ts) on the draft it read; `rewritten` when a later draft is what is stored. Offline only. */
+  review?: { at: string; judgeVersion: string; verdict: "keep" | "redraw"; reasons: string[]; rewritten: boolean; unverified?: boolean };
 }
 
 export const mapKey = (t: Tractate, daf: number) => `map:v1:${t.slug}:${daf}`;

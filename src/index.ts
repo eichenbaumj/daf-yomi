@@ -431,7 +431,7 @@ async function adminNotePut(request: Request, env: Env, today: Date): Promise<Re
  * The map endpoints (all Bearer <ADMIN_TOKEN>), the note endpoints' contract:
  *   POST /admin/map/bake?slug=&daf=[&force=1]  or ?date=      draw here, two drafts at most, and store
  *   GET  /admin/map?slug=&daf=                                  the stored map and whether it is the current style
- *   POST /admin/map/put  {slug, daf, units, shape, model, promptVersion, usage?, replaces}
+ *   POST /admin/map/put  {slug, daf, units, shape, model, promptVersion, usage?, review?, replaces}
  *        store a map drawn offline (scripts/maps-backfill.ts via the Batch API): checked here again against the
  *        page, refused when its style is not the current one, refused unless `replaces` is the stored map's
  *        generatedAt (or null), generatedAt/sources/segmentCounts set here, 429 kind "kv-budget" on the KV limit.
@@ -474,6 +474,7 @@ async function adminMap(request: Request, env: Env, today: Date, action: "bake" 
     ...draft, model: String(body?.model ?? env.NOTE_MODEL ?? "claude-opus-5"), promptVersion: hashMapPrompt(), generatedAt: new Date().toISOString(), sources,
     segmentCounts: input.sections.map((s) => s.segments.length),
     usage: body?.usage && typeof body.usage === "object" ? { inputTokens: Number(body.usage.inputTokens ?? 0), outputTokens: Number(body.usage.outputTokens ?? 0), attempts: Number(body.usage.attempts ?? 1), estUsd: Number(body.usage.estUsd ?? 0) } : undefined,
+    ...(body?.review && typeof body.review === "object" ? { review: { at: String(body.review.at ?? new Date().toISOString()), judgeVersion: String(body.review.judgeVersion ?? ""), verdict: body.review.verdict === "redraw" ? "redraw" as const : "keep" as const, reasons: Array.isArray(body.review.reasons) ? body.review.reasons.map(String) : [], rewritten: Boolean(body.review.rewritten), ...(body.review.unverified ? { unverified: true } : {}) } } : {}),
   };
   try {
     await putMap(env.DAF_KV, t, daf, map);
