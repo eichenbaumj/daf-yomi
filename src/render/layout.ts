@@ -31,6 +31,9 @@ export interface PageOptions {
   ogImageAlt?: string;
 }
 
+/** Sefaria's logomark (the glyph from sefaria.org/static/img/logo.svg), drawn in the footer's own ink; the badge form of it fought the parchment. */
+const SEFARIA_MARK = `<svg class="sefaria-mark" viewBox="0 0 72 93.15" width="14" height="18" aria-hidden="true" focusable="false"><path fill="currentColor" transform="translate(-389 -337.85)" d="M454,397.67c-2.41,11.31-10.59,16.11-28.82,16.11-44.79,0-28.92-36-22.66-43.42,2.63-3.29,4.47-6,11.15-6h12.71c17.72,0,21.1.84,25.54,9.9,2.4,4.88,3.79,15.41,2.08,23.43m4.81-22.48c-1.5-9.67-3.45-20.19-11.85-26-5.09-3.54-10.34-3.8-16.21-3.8-4,0-18.11-.17-24.29-.17-6,0-10-4.94-10-7.34-3.91,4.79-6.9,10.08-5.85,16.48.94,5.76,4.89,9.44,10.67,10.17-6.55,9.25-12.47,19.9-12.18,31.18.18,7.11,1.81,35.32,33.71,35.32h5.81c13.62,0,21.87-10.11,24.27-14,7.05-11.5,8.23-29.29,6-41.78"/></svg>`;
+
 const FONTS = "https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=Frank+Ruhl+Libre:wght@400;700&display=swap";
 
 /** Languages besides English are Pre-Release (noindex, no sitemap, no alternates) until their reviewer round is done. */
@@ -113,7 +116,7 @@ ${o.body}
   <p>${S.footerAttribution}</p>
   <p>${S.footerNote(p(lang, "/about"), newsletterPublic, "/newsletter")}</p>
   <p class="muted small">${esc(S.footerSite)}</p>
-  <p class="powered"><a href="https://www.sefaria.org" rel="noopener"><img src="/powered-by-sefaria.png" alt="Powered by Sefaria" width="116" height="60" loading="lazy"></a></p>
+  <p class="powered"><a href="https://www.sefaria.org" rel="noopener">${SEFARIA_MARK} Powered by Sefaria</a></p>
 </footer>
 <script src="/app.js" defer></script>
 </body>

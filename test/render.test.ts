@@ -239,7 +239,9 @@ describe("search-engine chrome", () => {
     const html = renderAbout(env, "https://example.test", ref);
     expect(html).toContain('<p class="muted small">daf-yomi.dev, one page a day since September 2026.</p>');
     expect(html).toContain("This site is daf-yomi.dev;");
-    expect(html).toContain('<a href="https://www.sefaria.org" rel="noopener"><img src="/powered-by-sefaria.png" alt="Powered by Sefaria" width="116" height="60" loading="lazy"></a>');
+    expect(html).toContain('<p class="powered"><a href="https://www.sefaria.org" rel="noopener"><svg class="sefaria-mark"');
+    expect(html).toContain('</svg> Powered by Sefaria</a></p>');
+    expect(html).not.toContain("powered-by-sefaria.png");
     const ld = JSON.parse(/<script type="application\/ld\+json">(.*?)<\/script>/s.exec(html)![1]!);
     expect(ld["@type"]).toBe("AboutPage");
     expect(ld.author["@type"]).toBe("Person");
