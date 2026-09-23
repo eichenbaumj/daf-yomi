@@ -138,17 +138,26 @@ export function checkTranslation(draft: TranslationDraft, heSource: string, engl
 
 export interface TranslateDraftResult { draft: TranslationDraft | null; refusal?: string; usage: { inputTokens: number; outputTokens: number } }
 
-export async function draftTranslation(client: Anthropic, model: string, input: TranslateInput): Promise<TranslateDraftResult> {
-  const response = await client.messages.parse({
+export const TRANSLATE_MAX_TOKENS = 8000;
+
+export async function draftTranslation(client: Anthropic, model: string, input: TranslateInput): Promise<{ draft: TranslationDraft | null; refusal?: string; usage: { inputTokens: number; outputTokens: number } }> {
+  // messages.create rather than messages.parse: a draft cut off at max_tokens (Opus 5 thinks first, and the thinking
+  // counts; Arakhin 9 failed three times at 4,000) or refused comes back as a failed draft with its usage, never as a
+  // thrown parse error.
+  const response = await client.messages.create({
     model,
-    max_tokens: 4000,
+    max_tokens: TRANSLATE_MAX_TOKENS,
     system: systemPrompt(input.lang),
     messages: [{ role: "user", content: translateUserMessage(input) }],
     output_config: { format: zodOutputFormat(TranslationSchema) },
   });
   const usage = { inputTokens: response.usage.input_tokens, outputTokens: response.usage.output_tokens };
   if (response.stop_reason === "refusal") return { draft: null, refusal: response.stop_details?.explanation ?? "model declined", usage };
-  return { draft: response.parsed_output ?? null, usage };
+  if (response.stop_reason === "max_tokens") return { draft: null, refusal: `output cut off at ${TRANSLATE_MAX_TOKENS} tokens`, usage };
+  const text = response.content.map((b) => (b.type === "text" ? b.text : "")).join("");
+  const parsed = TranslationSchema.safeParse((() => { try { return JSON.parse(text); } catch { return null; } })());
+  if (!parsed.success) return { draft: null, refusal: "unparseable output", usage };
+  return { draft: parsed.data, usage };
 }
 
 export type TranslateOutcome =

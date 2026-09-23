@@ -22,7 +22,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
 import type { DafRef } from "../src/daf/schedule";
-import { buildTranslateInput, checkTranslation, hashTranslatePrompt, systemPrompt, translateUserMessage, TranslationSchema, type TranslatableLang, type TranslateInput, type TranslationDraft } from "../src/note/translate";
+import { buildTranslateInput, checkTranslation, hashTranslatePrompt, systemPrompt, TRANSLATE_MAX_TOKENS, translateUserMessage, TranslationSchema, type TranslatableLang, type TranslateInput, type TranslationDraft } from "../src/note/translate";
 import { TranslationJudgeSchema, translationJudgeRequest, verifyTranslationJudgment, type TranslationJudgment } from "../src/note/tjudge";
 import { screenLabelHe, screenTranslation } from "../src/note/screenHe";
 import { estimateUsd } from "../src/note/generate";
@@ -94,7 +94,7 @@ async function collectJobs(): Promise<Job[]> {
 async function draftRound(client: Anthropic, jobs: Job[], round: number) {
   const requests = jobs.map((j) => ({
     custom_id: cid(j),
-    params: { model, max_tokens: 4000, system: systemPrompt(lang), messages: [{ role: "user" as const, content: translateUserMessage({ ...j.input, feedback: j.feedback }) }], output_config: { format: zodOutputFormat(TranslationSchema) } },
+    params: { model, max_tokens: TRANSLATE_MAX_TOKENS, system: systemPrompt(lang), messages: [{ role: "user" as const, content: translateUserMessage({ ...j.input, feedback: j.feedback }) }], output_config: { format: zodOutputFormat(TranslationSchema) } },
   }));
   const results = await runMessageBatch(client, `translate-${lang}-${utcDay()}-r${round}`, requests, TranslationSchema);
   for (const j of jobs) {
