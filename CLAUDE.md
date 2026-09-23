@@ -70,6 +70,9 @@ English, Hebrew (`/he`, Pre-Release until `HE_PUBLIC=1`), Yiddish later on the s
   rewritten draft; the verdict is derived in code from verified spans. `npm run translate:try -- <targets> --judge` for
   review rounds, `npm run notes:audit:he` over the archive. Bump `TRANSLATE_JUDGE_PROMPT_VERSION` when its criteria change.
 - A language stays Pre-Release (noindex, unlisted, a notice on every page) until its native reviewer round is done.
+  A Pre-Release language is never remembered (Joe, 2026-09-23): `/lang/<x>` sets the `daf_lang` cookie only for a public
+  language and clears it otherwise, and `/` ignores a cookie for a language that is not public. One curious tap on the
+  nav must not turn a reader's front page Hebrew for a year (`test/langswitch.test.ts`).
 - Time axes (the position bar, the About diagram) stay left-to-right in every language; everything else is RTL via
   logical CSS properties.
 

@@ -123,8 +123,10 @@ function apiPayload(ref: DafRef, date: Date, note: DafNote | null, origin: strin
 /**
  * GET /lang/<x>?to=<path>: remember the language in a cookie and go to that page in it. `to` is never echoed: it is
  * parsed with the router and the destination rebuilt from the parsed route, so "//evil.com" and friends go home.
+ * A Pre-Release language is never remembered (Joe, 2026-09-23): one curious tap on the nav must not turn a reader's
+ * front page Hebrew for a year while the edition is unreviewed, so the switch clears the cookie instead of setting it.
  */
-function switchLanguage(url: URL, lang: Lang): Response {
+export function switchLanguage(url: URL, lang: Lang, env: Env): Response {
   const raw = url.searchParams.get("to") ?? "/";
   const stripped = raw.replace(/^\/(he|yi)(?=\/|$)/, "") || "/";
   const r = parseRoute(stripped);
@@ -133,7 +135,7 @@ function switchLanguage(url: URL, lang: Lang): Response {
   else if (r.kind === "tractate") dest = `/${r.tractate.slug}`;
   else if (r.kind === "tractates" || r.kind === "about") dest = `/${r.kind}`;
   const secure = url.protocol === "https:" ? "; Secure" : "";
-  const cookie = lang === "en"
+  const cookie = lang === "en" || !isPublicLang(env, lang)
     ? `${LANG_COOKIE}=; Path=/; Max-Age=0; SameSite=Lax; HttpOnly${secure}`
     : `${LANG_COOKIE}=${lang}; Path=/; Max-Age=31536000; SameSite=Lax; HttpOnly${secure}`;
   return redirect(p(lang, dest), 302, { "set-cookie": cookie, "cache-control": "no-store" });
@@ -154,7 +156,7 @@ async function handle(request: Request, env: Env, ctx: ExecutionContext): Promis
   switch (route.kind) {
     case "redirect": return redirect(route.to, 301);
     case "not-found": return html(renderNotFound(env, origin, url.pathname, lang), 404);
-    case "lang": return switchLanguage(url, route.lang);
+    case "lang": return switchLanguage(url, route.lang, env);
     case "robots": return new Response(`User-agent: *\nAllow: /\nDisallow: /admin/\nDisallow: /lang/\nDisallow: /newsletter/u/\nDisallow: /newsletter/prefs/\nDisallow: /newsletter/confirm\nDisallow: /newsletter/hooks/\nSitemap: ${origin}/sitemap.xml\n`, { headers: { "content-type": "text/plain; charset=utf-8", "cache-control": "public, max-age=3600" } });
     case "relative": {
       const ref = dafForDate(addDays(today, route.offset));
@@ -169,10 +171,11 @@ async function handle(request: Request, env: Env, ctx: ExecutionContext): Promis
       } catch { return html(renderNotFound(env, origin, url.pathname, lang), 404); }
     }
     case "today": {
-      // The one place the cookie is read, before the cache: a reader who chose Hebrew lands on /he.
+      // The one place the cookie is read, before the cache: a reader who chose Hebrew lands on /he. A cookie for a
+      // language that is still Pre-Release is ignored (it may predate the rule above), so nobody is stuck there.
       if (lang === "en") {
         const chosen = cookieLang(request);
-        if (chosen && chosen !== "en") return redirect(p(chosen, "/"), 302, { "cache-control": "no-store" });
+        if (chosen && chosen !== "en" && isPublicLang(env, chosen)) return redirect(p(chosen, "/"), 302, { "cache-control": "no-store" });
       }
       const ref = dafForDate(today);
       return cachedResponse(ck(`/today/${ref.tractate.slug}/${ref.daf}`), 600, () => dafPageResponse(env, ctx, origin, lang, ref, today, true, ref, today, true), bypass);
