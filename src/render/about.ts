@@ -40,7 +40,7 @@ export function renderAbout(env: Env, origin: string, today: DafRef, lang: Lang 
   <p>The daf follows the civil date where you are, the same convention Sefaria, Hebcal, and the printed calendars use. If you learn after nightfall and want to be a day ahead, the next daf is one tap away at the bottom of every page.${env.NEWSLETTER_PUBLIC === "1" ? ` If you would rather have it come to you, <a href="/newsletter">the daf by email</a> arrives once a day at the hour you choose.` : ""}</p>
 
   <h2>Who</h2>
-  <p>Joe Eichenbaum. I'm a partner at a consulting firm that works with state and local governments, and I build things on the side. This site is daf-yomi.dev; the code is <a href="https://github.com/eichenbaumj/daf-yomi" rel="noopener">open on GitHub</a>; the site costs almost nothing to run, so it will stay free. Corrections, complaints, and ideas: <a href="mailto:${esc("joe@group17a.com")}">joe@group17a.com</a>.</p>
+  <p>Joe Eichenbaum. I'm a partner at a consulting firm that works with state and local governments, and I build things on the side (the rest of them live at <a href="https://gizmowarehouse.org" rel="noopener">gizmowarehouse.org</a>). This site is daf-yomi.dev; the code is <a href="https://github.com/eichenbaumj/daf-yomi" rel="noopener">open on GitHub</a>; the site costs almost nothing to run, so it will stay free. Corrections, complaints, and ideas: <a href="mailto:${esc("joe@group17a.com")}">joe@group17a.com</a>.</p>
 </article>`;
   const jsonLd = [{
     "@context": "https://schema.org",

@@ -79,3 +79,5 @@ See [HOSTING.md](HOSTING.md). Short version: `npm run deploy`, set the two secre
 Code: MIT. Text: The William Davidson Talmud (Koren Noé edition) via Sefaria, CC BY-NC 4.0;
 Shekalim from Guggenheimer's Jerusalem Talmud (CC BY); Kinnim/Middot from Sefaria's Mishnah.
 Every page credits the versions it shows. This site is non-commercial and will stay that way.
+
+More of what I build: [gizmowarehouse.org](https://gizmowarehouse.org). The story of this site: [gizmowarehouse.org/gizmo/daf-yomi](https://gizmowarehouse.org/gizmo/daf-yomi).
