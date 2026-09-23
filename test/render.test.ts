@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
-import { AI_LABEL, MJL_SERIES_URL, mjlUrl, renderDafPage, scholarLinks } from "../src/render/dafPage";
+import { AI_LABEL, MJL_SERIES_URL, clampSummary, mjlUrl, renderDafPage, scholarLinks } from "../src/render/dafPage";
 import { MAP_AI_LABEL } from "../src/render/pageMap";
 import type { DafMap } from "../src/map/store";
 import { tractateBySlug } from "../src/daf/tractates";
@@ -46,7 +46,7 @@ describe("site chrome", () => {
 
 describe("daf page", () => {
   const ref = dafForDate(d("2026-09-20"));
-  const base = { env, origin: "https://example.test", ref, date: d("2026-09-20"), isToday: true, texts: [{ label: "Bekhorot 2a", text: text("Bekhorot.2a") }, { label: "Bekhorot 2b", text: text("Bekhorot.2b") }], notesEnabled: true };
+  const base = { env, origin: "https://example.test", ref, date: d("2026-09-20"), isToday: true, atHome: true, texts: [{ label: "Bekhorot 2a", text: text("Bekhorot.2a") }, { label: "Bekhorot 2b", text: text("Bekhorot.2b") }], notesEnabled: true };
   it("shows the AI label, attribution, position and toggles", () => {
     const html = renderDafPage({ ...base, note: { summary: "S.", question: "Q?", quotes: [], model: "m", promptVersion: "v", generatedAt: "t", sources: [] } });
     expect(html).toContain(esc(AI_LABEL));
@@ -117,9 +117,48 @@ describe("daf page", () => {
     expect(pending).not.toContain("note-actions"); // nothing to share yet, and no newsletter in this env
   });
   it("gives a permalink its own canonical", () => {
-    const html = renderDafPage({ ...base, isToday: false, note: null });
+    const html = renderDafPage({ ...base, isToday: false, atHome: false, note: null });
     expect(html).toContain('<link rel="canonical" href="https://example.test/bekhorot/2">');
     expect(html).toContain("<title>Bekhorot 2: Daf Yomi in English · Today’s Daf</title>");
+  });
+  it("keeps today's permalink canonical for itself; only the front page is canonical for /", () => {
+    const perma = renderDafPage({ ...base, atHome: false, note: null }); // isToday, served at /bekhorot/2
+    expect(perma).toContain('<link rel="canonical" href="https://example.test/bekhorot/2">');
+    expect(perma).toContain('<meta property="og:url" content="https://example.test/bekhorot/2">');
+    const ldP = JSON.parse(/<script type="application\/ld\+json">(.*?)<\/script>/s.exec(perma)![1]!);
+    expect(ldP.map((x: { "@type": string }) => x["@type"])).toEqual(["Article", "BreadcrumbList"]);
+    const home = renderDafPage({ ...base, note: null });
+    const ldH = JSON.parse(/<script type="application\/ld\+json">(.*?)<\/script>/s.exec(home)![1]!);
+    expect(ldH[0].url).toBe("https://example.test/bekhorot/2"); // the article lives at its permalink even on the front page
+    expect(ldH[0].mainEntityOfPage).toEqual({ "@type": "WebPage", "@id": "https://example.test/bekhorot/2" });
+    expect(ldH[2]["@type"]).toBe("WebSite");
+    expect(ldH[2].alternateName).toContain("daf-yomi.dev");
+  });
+  it("keeps pages without a note out of the index until the note exists, except around today", () => {
+    const today = d("2026-09-20");
+    const far = renderDafPage({ ...base, isToday: false, atHome: false, date: d("2026-10-25"), todayDate: today, note: null });
+    expect(far).toContain('<meta name="robots" content="noindex,follow">');
+    const near = renderDafPage({ ...base, isToday: false, atHome: false, date: d("2026-09-22"), todayDate: today, note: null });
+    expect(near).not.toContain('name="robots"');
+    const todayNoNote = renderDafPage({ ...base, atHome: false, todayDate: today, note: null });
+    expect(todayNoNote).not.toContain('name="robots"');
+    const noted = renderDafPage({ ...base, isToday: false, atHome: false, date: d("2026-10-25"), todayDate: today, note: { summary: "S.", question: "Q?", quotes: [], model: "m", promptVersion: "v", generatedAt: "t", sources: [] } });
+    expect(noted).not.toContain('name="robots"');
+  });
+  it("writes the snippet from the note, clamped at a sentence, with the label after", () => {
+    const short = renderDafPage({ ...base, atHome: false, note: { summary: "A firstborn donkey belongs to the priest.", question: "Q?", quotes: [], model: "m", promptVersion: "v", generatedAt: "t", sources: [] } });
+    expect(short).toContain('<meta name="description" content="A firstborn donkey belongs to the priest. Bekhorot 2, Daf Yomi in English.">');
+    const long = "A firstborn male animal belongs to the priest and may not be sheared or put to work, but if a gentile owns a share of it, none of that applies. Rav Huna says owning the animal's ear is enough; Rav Nahman objects that the priest could simply tell the gentile to take his ear and go.";
+    const html = renderDafPage({ ...base, atHome: false, note: { summary: long, question: "Q?", quotes: [], model: "m", promptVersion: "v", generatedAt: "t", sources: [] } });
+    const desc = /<meta name="description" content="([^"]*)">/.exec(html)![1]!;
+    expect(desc.length).toBeLessThanOrEqual(160);
+    expect(desc.startsWith("A firstborn male animal")).toBe(true);
+    expect(desc).toContain(" Bekhorot 2, Daf Yomi in English.");
+    expect(clampSummary(long)).toBe("A firstborn male animal belongs to the priest and may not be sheared or put to work, but if a gentile owns a share of it, none of that applies.".slice(0, 0) + clampSummary(long)); // stable
+    expect(clampSummary("one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen twenty twentyone", 60)).toBe("one two three four five six seven eight nine ten eleven…");
+    expect(clampSummary("Short. Then a very long second sentence that runs well past the limit we set here for this test.", 40)).toBe("Short.");
+    const none = renderDafPage({ ...base, isToday: false, atHome: false, note: null });
+    expect(none).toContain('<meta name="description" content="Bekhorot 2: the Daf Yomi page for Sunday, 20 September 2026, in English.">');
   });
   it("says when the note is pending instead of hiding the box", () => {
     const html = renderDafPage({ ...base, note: null });
@@ -221,7 +260,7 @@ describe("Hebrew pages (Pre-Release)", () => {
   });
   const note = { summary: "S.", question: "Q?", quotes: [], model: "m", promptVersion: "v", generatedAt: "2026-09-21T00:00:00Z", sources: [] };
   const tr = { summary: "המשנה מונה חמישה מקרים.", question: "למה חמישה?", quotes: [], of: note.generatedAt, sourcePromptVersion: "v", model: "m", promptVersion: "tv", generatedAt: "2026-09-21T01:00:00Z" };
-  const base = { env, origin: "https://example.test", lang: "he" as const, ref, date: d("2026-09-20"), isToday: true, texts: [{ label: "Bekhorot 2a", text: text("Bekhorot.2a"), biur: biur("Bekhorot.2a") }, { label: "Bekhorot 2b", text: text("Bekhorot.2b"), biur: biur("Bekhorot.2b") }], notesEnabled: true };
+  const base = { env, origin: "https://example.test", lang: "he" as const, ref, date: d("2026-09-20"), isToday: true, atHome: true, texts: [{ label: "Bekhorot 2a", text: text("Bekhorot.2a"), biur: biur("Bekhorot.2a") }, { label: "Bekhorot 2b", text: text("Bekhorot.2b"), biur: biur("Bekhorot.2b") }], notesEnabled: true };
   it("renders right to left with the biur as the text, noindex and the Pre-Release switch", () => {
     const html = renderDafPage({ ...base, note, translation: tr });
     expect(html).toContain('<html lang="he" dir="rtl">');
@@ -269,7 +308,7 @@ describe("Hebrew pages (Pre-Release)", () => {
     expect(html).toContain('<p class="en biur" lang="he">מַתְנִי׳');
   });
   it("indexes and offers alternates once HE_PUBLIC is set", () => {
-    const html = renderDafPage({ ...base, env: { ...env, HE_PUBLIC: "1" } as Env, note, translation: tr, isToday: false });
+    const html = renderDafPage({ ...base, env: { ...env, HE_PUBLIC: "1" } as Env, note, translation: tr, isToday: false, atHome: false });
     expect(html).not.toContain('name="robots"');
     expect(html).toContain('<link rel="alternate" hreflang="en" href="https://example.test/bekhorot/2">');
     expect(html).toContain('<link rel="alternate" hreflang="he" href="https://example.test/he/bekhorot/2">');

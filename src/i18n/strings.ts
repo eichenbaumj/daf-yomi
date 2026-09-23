@@ -76,7 +76,8 @@ export interface Strings {
   nextWord: string;
   arrowPrev: string;
   arrowNext: string;
-  metaDescriptionWithNote: (label: string, dateWords: string, summary: string) => string;
+  /** The search-result snippet: the note's summary (already clamped) first, then the label. */
+  metaDescriptionWithNote: (label: string, summary: string) => string;
   metaDescription: (label: string, dateWords: string) => string;
   headlineToday: (label: string) => string;
   cycleLine: (cycle: number, endDate: string, percent: number) => string;

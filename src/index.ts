@@ -72,7 +72,7 @@ async function loadDafTexts(ref: DafRef, kv: KVNamespace, lang: Lang): Promise<D
   return loadDafSections(ref.tractate, ref.daf, ref.cycle, kv, { withBiur: lang !== "en" });
 }
 
-async function dafPageResponse(env: Env, ctx: ExecutionContext, origin: string, lang: Lang, ref: DafRef, date: Date, isToday: boolean, todayRef: DafRef, todayDate: Date): Promise<Response> {
+async function dafPageResponse(env: Env, ctx: ExecutionContext, origin: string, lang: Lang, ref: DafRef, date: Date, isToday: boolean, todayRef: DafRef, todayDate: Date, atHome = false): Promise<Response> {
   const [texts, note, translation, cardMeta, map] = await Promise.all([
     loadDafTexts(ref, env.DAF_KV, lang),
     getNote(env.DAF_KV, ref.tractate, ref.daf),
@@ -93,7 +93,7 @@ async function dafPageResponse(env: Env, ctx: ExecutionContext, origin: string, 
   if (!note && notesEnabled && nearToday) {
     ctx.waitUntil(ensureNote(env, ref).then((o) => console.log(`[heal] ${ref.tractate.name} ${ref.daf}: ${o.status}${"reason" in o ? ` ${o.reason}` : ""}`)).catch((e) => console.error("[heal]", e)));
   }
-  const body = renderDafPage({ env, origin, lang, ref, date, isToday, texts, note, translation, notesEnabled, todayRef, todayDate, card, map, mapTranslation: null });
+  const body = renderDafPage({ env, origin, lang, ref, date, isToday, atHome, texts, note, translation, notesEnabled, todayRef, todayDate, card, map, mapTranslation: null });
   const shown = lang === "en" ? note : currentTranslation(note, translation);
   // x-daf-card says whether an English page with a note is still waiting for its card, x-daf-map whether the map is
   // drawn on this page (the ttl rule caches both kinds of waiting page briefly).
@@ -173,7 +173,7 @@ async function handle(request: Request, env: Env, ctx: ExecutionContext): Promis
         if (chosen && chosen !== "en") return redirect(p(chosen, "/"), 302, { "cache-control": "no-store" });
       }
       const ref = dafForDate(today);
-      return cachedResponse(ck(`/today/${ref.tractate.slug}/${ref.daf}`), 600, () => dafPageResponse(env, ctx, origin, lang, ref, today, true, ref, today), bypass);
+      return cachedResponse(ck(`/today/${ref.tractate.slug}/${ref.daf}`), 600, () => dafPageResponse(env, ctx, origin, lang, ref, today, true, ref, today, true), bypass);
     }
     case "daf": {
       const todayRef = dafForDate(today);

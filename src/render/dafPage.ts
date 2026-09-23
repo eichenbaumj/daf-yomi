@@ -26,6 +26,8 @@ export interface DafPageModel {
   ref: DafRef;
   date: Date;
   isToday: boolean;
+  /** Served at "/" (the front page presenting today's daf) rather than at the daf's own permalink. */
+  atHome?: boolean;
   texts: { label: string; text: SefariaText; biur?: BiurText | null }[];
   note: DafNote | null;
   /** The note in the page's language, when the page is not English. Shown only while it belongs to `note`. */
@@ -178,6 +180,25 @@ function amudLabel(lang: Lang, t: Tractate, daf: number, i: number, fallback: st
   return `${dafLabelL(lang, t, daf)}${side}`;
 }
 
+/** How many days a page may sit either side of today without a note before it is kept out of the index (mirrors HEAL_WINDOW_DAYS). */
+export const INDEX_WINDOW_DAYS = 3;
+
+/**
+ * The longest prefix of a note summary that fits the search snippet: whole if short enough, else cut at the last
+ * sentence end inside the limit, else at a word boundary with an ellipsis. Never mid-word, never mid-sentence when
+ * a sentence end is available.
+ */
+export function clampSummary(summary: string, max = 120): string {
+  const s = summary.trim();
+  if (s.length <= max) return s;
+  const head = s.slice(0, max + 1);
+  let cut = -1;
+  for (const m of head.matchAll(/[.?!](?=\s)/g)) cut = m.index! + 1;
+  if (cut > 0) return head.slice(0, cut).trim();
+  const space = head.lastIndexOf(" ");
+  return `${(space > 0 ? head.slice(0, space) : head.slice(0, max)).replace(/[,;:]$/, "")}…`;
+}
+
 export function renderDafPage(m: DafPageModel): string {
   const lang = m.lang ?? "en";
   const S = strings(lang);
@@ -194,7 +215,12 @@ export function renderDafPage(m: DafPageModel): string {
   const firstText = m.texts[0]?.text;
   const dateWords = longDateL(lang, m.date);
   const shownNote = lang === "en" ? m.note : currentTranslation(m.note, m.translation ?? null);
-  const description = shownNote ? S.metaDescriptionWithNote(label, dateWords, shownNote.summary) : S.metaDescription(label, dateWords);
+  // The snippet leads with the note, the one thing on this page that exists nowhere else; without a note it is a plain label.
+  const description = shownNote ? S.metaDescriptionWithNote(label, clampSummary(plainText(shownNote.summary))) : S.metaDescription(label, dateWords);
+  // Pages with no note are Sefaria's text under another roof: kept out of the index until the note exists. Today's
+  // page and the days the heal covers stay indexable while their note is being written.
+  const daysFromToday = Math.round((m.date.getTime() - (m.todayDate ?? m.date).getTime()) / 86400000);
+  const indexable = Boolean(shownNote) || m.isToday || Math.abs(daysFromToday) <= INDEX_WINDOW_DAYS;
   const headline = m.isToday ? S.headlineToday(label) : label;
   const dateLine = lang === "en"
     ? `${dateWords} <span class="sep" aria-hidden="true">·</span> ${esc(hebrewDateL("en", m.date))} <span lang="he" dir="rtl" class="he-inline">${esc(hebrewDateL("he", m.date))}</span>`
@@ -261,8 +287,10 @@ ${view ? `\n  ${renderPageMap(view, lang)}\n\n  ${renderHereBar(lang, turn(prev)
   </section>
 </article>${subscribeBox ? INLINE_SUBSCRIBE_TAIL : ""}`;
 
-  const canonicalPath = m.isToday ? "/" : dafPath(t, ref.daf);
-  const url = `${m.origin}${p(lang, canonicalPath)}`;
+  // The front page is canonical for itself; a permalink is always canonical for itself, even on its day. The
+  // article's own address is the permalink either way.
+  const canonicalPath = m.atHome ? "/" : dafPath(t, ref.daf);
+  const url = `${m.origin}${p(lang, dafPath(t, ref.daf))}`;
   // The per-daf share card, when one exists for the note shown here; otherwise the static card (src/og/store.ts).
   const cardUrl = lang === "en" && m.card && shownNote ? `${m.origin}${cardPath(t, ref.daf, m.card.token)}` : null;
   const ogImage = cardUrl ?? `${m.origin}${lang === "he" ? "/og-he.png" : "/og.png"}`;
@@ -271,13 +299,13 @@ ${view ? `\n  ${renderPageMap(view, lang)}\n\n  ${renderHereBar(lang, turn(prev)
       "@context": "https://schema.org",
       "@type": "Article",
       headline: m.isToday ? S.ldHeadlineToday(label) : S.ldHeadline(label),
-      description: plainText(description).slice(0, 300),
+      description,
       datePublished: ymd(m.date),
       dateModified: shownNote?.generatedAt ?? m.note?.generatedAt ?? ymd(m.date),
       inLanguage: lang,
       isAccessibleForFree: true,
       url,
-      mainEntityOfPage: url,
+      mainEntityOfPage: { "@type": "WebPage", "@id": url },
       image: ogImage,
       author: { "@type": "Person", name: "Joe Eichenbaum", url: `${m.origin}${p(lang, "/about")}` },
       publisher: { "@type": "Organization", name: env.SITE_NAME, url: `${m.origin}/`, logo: { "@type": "ImageObject", url: `${m.origin}/og.png` } },
@@ -295,14 +323,15 @@ ${view ? `\n  ${renderPageMap(view, lang)}\n\n  ${renderHereBar(lang, turn(prev)
       ],
     },
   ];
-  if (m.isToday) jsonLd.push({ "@context": "https://schema.org", "@type": "WebSite", name: env.SITE_NAME, alternateName: "Daf Yomi Dot Dev", url: `${m.origin}${p(lang, "/")}`, description: env.SITE_TAGLINE, inLanguage: lang });
+  if (m.atHome) jsonLd.push({ "@context": "https://schema.org", "@type": "WebSite", name: env.SITE_NAME, alternateName: ["Daf Yomi Dot Dev", "daf-yomi.dev"], url: `${m.origin}${p(lang, "/")}`, description: env.SITE_TAGLINE, inLanguage: lang });
   return page({
     env,
     origin: m.origin,
     lang,
     title: m.isToday ? S.titleToday(label) : S.titlePermalink(label),
-    description: plainText(description).slice(0, 300),
+    description,
     canonicalPath,
+    robots: indexable ? undefined : "noindex,follow",
     body,
     bodyClass: "daf-page",
     extraHead: subscribeBox ? INLINE_SUBSCRIBE_HEAD : undefined,

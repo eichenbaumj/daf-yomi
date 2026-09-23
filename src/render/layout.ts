@@ -14,8 +14,10 @@ export interface PageOptions {
   lang?: Lang;
   title: string;
   description: string;
-  /** Path for the canonical link, e.g. "/bekhorot/2". Language-neutral: the prefix is added here. */
-  canonicalPath: string;
+  /** Path for the canonical link, e.g. "/bekhorot/2". Language-neutral: the prefix is added here. Absent = no canonical (error pages). */
+  canonicalPath?: string;
+  /** A robots directive for this page, e.g. "noindex,follow". Pre-release languages are noindex regardless. */
+  robots?: string;
   body: string;
   bodyClass?: string;
   extraHead?: string;
@@ -42,23 +44,25 @@ export function page(o: PageOptions): string {
   const S = strings(lang);
   const siteName = smartenText(o.env.SITE_NAME);
   const fullTitle = o.title === siteName ? siteName : `${o.title} · ${siteName}`;
-  const canonical = `${o.origin}${p(lang, o.canonicalPath)}`;
+  const pagePath = o.canonicalPath ?? "/";
+  const canonical = o.canonicalPath === undefined ? null : `${o.origin}${p(lang, o.canonicalPath)}`;
+  const robots = !isPublicLang(o.env, lang) ? "noindex" : o.robots;
   const prerelease = !isPublicLang(o.env, lang);
   const newsletterPublic = o.env.NEWSLETTER_PUBLIC === "1" && lang === "en";
   const ogImage = o.ogImage ?? `${o.origin}${lang === "he" ? "/og-he.png" : "/og.png"}`;
   const ogImageAlt = o.ogImageAlt ?? S.ogImageAlt(siteName);
   // Alternates only once every listed language is public, so search engines never see an unreviewed translation.
   const alternates = !o.noLangSwitch && ENABLED_LANGS.every((l) => isPublicLang(o.env, l))
-    ? ENABLED_LANGS.map((l) => `<link rel="alternate" hreflang="${l}" href="${esc(o.origin)}${esc(p(l, o.canonicalPath))}">`).join("\n") + `\n<link rel="alternate" hreflang="x-default" href="${esc(o.origin)}${esc(o.canonicalPath)}">`
+    ? ENABLED_LANGS.map((l) => `<link rel="alternate" hreflang="${l}" href="${esc(o.origin)}${esc(p(l, pagePath))}">`).join("\n") + `\n<link rel="alternate" hreflang="x-default" href="${esc(o.origin)}${esc(pagePath)}">`
     : "";
   const langSwitch = o.noLangSwitch ? "" : `
   <nav class="lang" aria-label="${esc(S.langSwitchAria)}">${ENABLED_LANGS.map((l) => {
     const tag = isPublicLang(o.env, l) ? "" : ` <span class="prerelease">${esc(S.preReleaseTag)}</span>`;
     return l === lang
       ? `<span class="cur" lang="${l}" aria-current="true">${esc(S.langName[l])}${tag}</span>`
-      : `<a lang="${l}" href="/lang/${l}?to=${encodeURIComponent(o.canonicalPath)}">${esc(S.langName[l])}${tag}</a>`;
+      : `<a lang="${l}" href="/lang/${l}?to=${encodeURIComponent(pagePath)}">${esc(S.langName[l])}${tag}</a>`;
   }).join('<span class="sep" aria-hidden="true">·</span>')}</nav>`;
-  const notice = prerelease && !o.noLangSwitch ? `<p class="prerelease-notice">${S.preReleaseNotice(esc(o.canonicalPath))}</p>\n` : "";
+  const notice = prerelease && !o.noLangSwitch ? `<p class="prerelease-notice">${S.preReleaseNotice(esc(pagePath))}</p>\n` : "";
   const html = `<!doctype html>
 <html lang="${lang}" dir="${dirOf(lang)}">
 <head>
@@ -66,13 +70,11 @@ export function page(o: PageOptions): string {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(fullTitle)}</title>
 <meta name="description" content="${esc(o.description)}">
-${prerelease ? '<meta name="robots" content="noindex">\n' : ""}<link rel="canonical" href="${esc(canonical)}">
-${alternates ? alternates + "\n" : ""}<meta property="og:site_name" content="${esc(siteName)}">
+${robots ? `<meta name="robots" content="${esc(robots)}">\n` : ""}${canonical ? `<link rel="canonical" href="${esc(canonical)}">\n` : ""}${alternates ? alternates + "\n" : ""}<meta property="og:site_name" content="${esc(siteName)}">
 <meta property="og:type" content="${o.ogType ?? "website"}">
 <meta property="og:title" content="${esc(fullTitle)}">
 <meta property="og:description" content="${esc(o.description)}">
-<meta property="og:url" content="${esc(canonical)}">
-<meta property="og:image" content="${esc(ogImage)}">
+${canonical ? `<meta property="og:url" content="${esc(canonical)}">\n` : ""}<meta property="og:image" content="${esc(ogImage)}">
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
