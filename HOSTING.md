@@ -382,9 +382,11 @@ Where it runs:
 Budgets. KV writes: 1,000 a day on the free plan, the cron needs ~35 (notes, translations, `gen:`, near cards, the
 trickle); the re-bake stops at `--budget` (default 850) counted in `.cache/kv-writes.json`, and every put, translation
 and card is one write, so pair a day's English puts with their Hebrew and leave the cards for the next morning (Browser
-Rendering: 10 minutes a day, roughly 450 cards). Money, Opus 5 at batch price: the judge over 2,711 notes ≈ $120 to
-$195 (estimate; measured figure goes here after the first run); a re-bake ≈ $0.10 to $0.17 per daf. Both scripts print
-what they spent. Check the Anthropic Console spend limit before a full pass.
+Rendering: 10 minutes a day, roughly 450 cards). Money, Opus 5 at batch price, measured on the first pass (2026-09-22/23): the judge over
+2,711 notes cost $94; the re-bake of 1,420 notes cost $142 ($0.10 per daf, 1.9 drafts and 1.4 judgings each), stored
+1,278 and gave up on 142 (mostly questions the judge still found answered on the page after two rewrites, and glosses the
+gate never accepted). Batch queue time that day: seven hours for the judge, about three for the re-bake rounds. Both
+scripts print what they spent, cache every finished result on disk, and replay earlier batches on a rerun. Check the Anthropic Console spend limit before a full pass.
 
 Known wrinkle: a permalink cached at the edge (up to an hour) can briefly show the old question above a card that
 already carries the new one, because old card tokens 302 to the current card. Accept it; `?nocache=1` shows the truth.
