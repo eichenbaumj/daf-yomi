@@ -336,7 +336,8 @@ and the point is to get people into the daf.
   $36 at batch price (93 first drafts, 99 second, 21 third; two retries after gate fixes: English legal phrases are
   not gated in a twenty-word gloss, the unit ceiling follows the marks, "a ewe" is not a slip). Five pages the model
   would not fix in three drafts (Bekhorot 17, Arakhin 3 and 14, Keritot 26, Meilah 20: a bare "obligated" or
-  "liable", an unglossed "sela" or "mitzvot") are left for the cron or a hand. The judge over a seeded sample of 50
+  "liable", an unglossed "sela" or "mitzvot") Joe read and took as they were; they are stored through the put's
+  `override: true`, which waives the wording rules for a hand-reviewed map and never the structure. The judge over a seeded sample of 50
   kept 41 and sent 8 back (4 boundaries, 3 glosses, 1 kind, 1 shape), all with verified page words; those 8 were
   redrawn with the feedback (`--redraw-from`). From here the backfill judges every draft it stores.
 - **The archive and the judge.** `npm run maps:backfill -- --rest` draws the rest of the current cycle (Joe,
