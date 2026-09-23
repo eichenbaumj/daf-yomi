@@ -4,6 +4,7 @@
  *
  *   npm run notes:rebake -- --audit data/audit/2026-09-22.json [--budget 850] [--limit N] [--dapim …] [--dry]
  *                          [--why answered-on-page,mechanics,summary-wrong,gate]   only these reasons (default: all)
+ *                          [--retry-given-up]   try the given-up ones again (finished batch results are reused from disk)
  *
  * Rounds: a draft batch (the writer sees its old note and the judge's feedback), the gate, a judge batch, and one
  * more draft with the judge's new feedback if it was sent back again; at most three drafts and two judge readings per
@@ -34,7 +35,7 @@ const auditPath = opt("audit");
 if (!auditPath) { console.error("need --audit data/audit/<date>.json"); process.exit(2); }
 const outcomesPath = auditPath.replace(/\.json$/, ".outcomes.json");
 const model = opt("model") ?? "claude-opus-5";
-const budget = Number(opt("budget") ?? 850);
+const budget = Number(opt("budget") ?? 5000); // Workers Paid since 2026-09-22; --budget 850 was the free plan's day
 const limit = Number(opt("limit") ?? Infinity);
 const near = nearKeys(Number(opt("near") ?? 3));
 const dry = flag("dry");
@@ -51,7 +52,7 @@ async function main() {
   const outcomes: Record<string, Outcome> = existsSync(outcomesPath) ? JSON.parse(readFileSync(outcomesPath, "utf8")) : {};
   const save = () => writeFileSync(outcomesPath, JSON.stringify(outcomes, null, 1));
   const todo = Object.values(audit.dapim)
-    .filter((e) => e.rebake && !near.has(e.key) && (only.size === 0 || only.has(e.key)) && (why.size === 0 || e.why.some((w) => why.has(w))) && !["stored", "given-up"].includes(outcomes[e.key]?.status ?? ""))
+    .filter((e) => e.rebake && !near.has(e.key) && (only.size === 0 || only.has(e.key)) && (why.size === 0 || e.why.some((w) => why.has(w))) && !(flag("retry-given-up") ? ["stored"] : ["stored", "given-up"]).includes(outcomes[e.key]?.status ?? ""))
     .slice(0, limit);
   console.log(`${todo.length} to re-bake (of ${Object.values(audit.dapim).filter((e) => e.rebake).length} sent back; near days and finished ones skipped)`);
   if (todo.length === 0) return finish(outcomes);
@@ -77,7 +78,11 @@ async function main() {
         const r = results.get(j.key.replace("/", "-"));
         j.drafts++;
         if (r) { j.inputTokens += r.usage.inputTokens; j.outputTokens += r.usage.outputTokens; }
-        if (!r?.parsed) { giveUp(j, `draft ${j.drafts}: ${r?.error ?? "no result"}`); continue; }
+        if (!r?.parsed) {
+          // A cut-off or malformed draft is asked for again, once; a refusal or a missing result is the end.
+          if (r?.error === "unparseable output" && j.drafts < MAX_DRAFTS) { j.feedback = `${j.feedback} Return only the structured fields, complete.`; continue; }
+          giveUp(j, `draft ${j.drafts}: ${r?.error ?? "no result"}`); continue;
+        }
         const check = checkNote(r.parsed, j.text.sourceText);
         if (check.ok) { j.draft = r.parsed; j.state = "judge"; continue; }
         console.log(`${j.key}: draft ${j.drafts} failed the gate: ${check.problems.join(" | ")}`);
