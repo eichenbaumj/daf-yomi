@@ -138,6 +138,11 @@ origin, so nothing else needed changing.
   same `checkTranslation` the Worker uses, and stores via `POST /admin/translate/put` (which checks again and refuses a
   translation of a stale note). Worker mode is one `POST /admin/translate` per daf. Cost anchor: about 13 cents list per
   note at Opus 5, half that in a batch; the archive is 2,711 KV writes (free plan: 1,000 a day, or Workers Paid).
+- **What ran on 2026-09-23.** `npm run translate -- --lang he --rest` re-translated the rest of cycle 14 through the
+  judge: 249 stored of 252 for about $31 at batch price; the judge sent 133 of the first drafts back (nearly all
+  fidelity: a source or a claim the Hebrew added that the English never made) and the second drafts stored.
+  Naturalness over the stored set: 56 at 5, 167 at 4, 29 at 3. Three pages failed the gate three times (Temurah 12: a
+  long question; Niddah 43: an em dash; one more) and are the cron's when they come near, or a hand's.
 - **The Hebrew judge** (`src/note/tjudge.ts`, `prompts/daf-judge-he.md`; added 2026-09-22 after a native reader scored
   Bekhorot 4 at 60/100: "bad Hebrew", English syntax showing through). The regex gate checks quotes, lengths and banned
   words; the judge reads the Hebrew beside the English and answers three things: does it say what the English says (each
