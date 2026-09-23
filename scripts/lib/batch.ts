@@ -3,7 +3,7 @@
  * .cache/batches/<label>.json, and a rerun with the same label and the same request ids polls those batches instead
  * of paying for them again. Requests are chunked so one submission never nears the API's size limits.
  */
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import type Anthropic from "@anthropic-ai/sdk";
 import type { z } from "zod";
 import { sleep } from "./cli";
@@ -40,6 +40,27 @@ function rememberResult(key: string, r: BatchResult<unknown>): void {
   writeFileSync(`${RESULTS}/${key}.json`, JSON.stringify(r));
 }
 
+async function replayEarlier<S extends z.ZodTypeAny>(client: Anthropic, label: string, requests: BatchRequest[], keys: Map<string, string>, schema: S, out: Map<string, BatchResult<z.infer<S>>>): Promise<void> {
+  const want = new Set(requests.map((r) => r.custom_id));
+  for (const file of readdirSync(DIR).filter((f) => f.startsWith(`${label}-`) && f.endsWith(".json"))) {
+    const saved = JSON.parse(readFileSync(`${DIR}/${file}`, "utf8")) as Saved;
+    if (!saved.requestIds.some((id) => want.has(id))) continue;
+    for (const id of saved.ids) {
+      let status; try { status = await client.messages.batches.retrieve(id); } catch { continue; }
+      if (status.processing_status !== "ended") continue;
+      for await (const result of await client.messages.batches.results(id)) {
+        const cid = result.custom_id;
+        if (!want.has(cid) || out.has(cid) || result.result.type !== "succeeded") continue;
+        const msg = result.result.message;
+        const usage = { inputTokens: msg.usage.input_tokens, outputTokens: msg.usage.output_tokens };
+        if (msg.stop_reason === "refusal") continue;
+        const text = msg.content.map((b) => (b.type === "text" ? b.text : "")).join("");
+        try { const r = { parsed: schema.parse(JSON.parse(text)), usage }; out.set(cid, r); rememberResult(keys.get(cid)!, r); } catch { /* unparseable: submit again */ }
+      }
+    }
+  }
+}
+
 export async function runMessageBatch<S extends z.ZodTypeAny>(client: Anthropic, label: string, all: BatchRequest[], schema: S): Promise<Map<string, BatchResult<z.infer<S>>>> {
   const out = new Map<string, BatchResult<z.infer<S>>>();
   if (all.length === 0) return out;
@@ -50,7 +71,12 @@ export async function runMessageBatch<S extends z.ZodTypeAny>(client: Anthropic,
     const hit = cachedResult<z.infer<S>>(keys.get(r.custom_id)!);
     if (hit && hit.parsed !== null) out.set(r.custom_id, hit); else requests.push(r);
   }
-  if (requests.length < all.length) console.log(`${label}: ${all.length - requests.length} result(s) already on disk; ${requests.length} to submit`);
+  // Batches submitted before the per-request cache existed (or by a run that died) still hold their results at the
+  // API for 29 days: replay them for any request of this label that was in one, rather than paying again.
+  if (requests.length) await replayEarlier(client, label, requests, keys, schema, out);
+  const pending = requests.filter((r) => !out.has(r.custom_id));
+  requests.length = 0; requests.push(...pending);
+  if (requests.length < all.length) console.log(`${label}: ${all.length - requests.length} result(s) already on disk or replayed; ${requests.length} to submit`);
   if (requests.length === 0) return out;
   const path = `${DIR}/${label}-${hashIds(requests.map((r) => r.custom_id))}.json`;
   let saved: Saved | null = existsSync(path) ? (JSON.parse(readFileSync(path, "utf8")) as Saved) : null;
