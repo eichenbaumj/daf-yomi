@@ -4,7 +4,8 @@
  *   npm run translate -- --site https://daf-yomi.dev --lang he --window 7 [--dapim berakhot/2,shabbat/31] [--all]
  *                        [--mode batch|worker] [--force] [--dry] [--no-judge] [--model m] [--judge-model m]
  *
- * Targets: --window N (today ± N days), --dapim slug/daf[,…], --all (every daf of the cycle). They add up.
+ * Targets: --window N (today ± N days), --dapim slug/daf[,…], --rest (the rest of this cycle, from tomorrow), --all
+ * (every daf of the cycle). They add up.
  * Modes:
  *   worker  POST /admin/translate per daf: the Worker calls Claude, checks, judges and stores. Simple; fine for a window.
  *   batch   (default) Reads each English note from GET /admin/note and the aligned text from Sefaria, sends every
