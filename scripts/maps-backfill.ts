@@ -2,10 +2,10 @@
  * Draw the map of the page for the archive, offline through the Batch API (half price, hours not seconds), and store
  * each map through POST /admin/map/put once it has passed the gate.
  *
- *   npm run maps:backfill -- --all [--near 3] [--limit N] [--dapim slug/daf,…] [--window N] [--force] [--dry]
+ *   npm run maps:backfill -- --rest | --all [--near 3] [--limit N] [--dapim slug/daf,…] [--window N] [--force] [--dry]
  *                            [--fetch-only] [--effort high|medium|low] [--model claude-opus-5] [--budget N]
  *
- * Targets: --window N (today ± N), --dapim, --all; they add up. Dapim within --near days of today (default 3) are the
+ * Targets: --window N (today ± N), --dapim, --rest (the rest of this cycle), --all; they add up. Dapim within --near days of today (default 3) are the
  * cron's and are skipped. A daf whose stored map is already the current style is skipped unless --force.
  * Rounds: a draft batch, the gate (src/map/gate.ts, the same one the Worker runs), one more draft with the gate's
  * feedback for the rejects; at most MAP_MAX_DRAFTS drafts per daf. A map that never passes is left undrawn and listed.
@@ -50,13 +50,14 @@ const utcDay = () => new Date().toISOString().slice(0, 10);
 
 async function main() {
   const targets = [...parseTargets(opt, flag)].filter(([k]) => !near.has(k));
-  if (targets.length === 0) { console.error("no targets: use --all, --window N or --dapim slug/daf (near days are skipped)"); process.exit(2); }
+  if (targets.length === 0) { console.error("no targets: use --rest, --all, --window N or --dapim slug/daf (near days are skipped)"); process.exit(2); }
   const outcomes: Record<string, Outcome> = existsSync(OUTCOMES) ? JSON.parse(readFileSync(OUTCOMES, "utf8")) : {};
   const save = () => writeFileSync(OUTCOMES, JSON.stringify(outcomes, null, 1));
   const done = (k: string) => ["stored", "given-up", "current"].includes(outcomes[k]?.status ?? "") && !(force && outcomes[k]?.status === "current");
   const todo = targets.filter(([k]) => !done(k)).slice(0, limit);
   console.log(`${todo.length} to draw (of ${targets.length} targets; near days and finished ones skipped)${effort ? `, effort ${effort}` : ""}${dry ? ", dry run" : ""}`);
   if (todo.length === 0) return finish(outcomes);
+  if (dry) { console.log(todo.map(([k]) => k).join(" ")); return; }
 
   // The page text, once into the cache; then, unless --fetch-only, what the site already has.
   const texts = new Map<string, MapPageText>();
@@ -65,7 +66,6 @@ async function main() {
     if (texts.size % 100 === 0) console.log(`  ${texts.size} pages cached`);
   }
   if (fetchOnly) { console.log(`${texts.size} pages in .cache/map-text/`); return; }
-  if (dry) { for (const [key] of todo) { const t = texts.get(key)!; console.log(`${key}: ${t.input.sections.reduce((n, s) => n + s.segments.length, 0)} segments, marks ${t.input.cues.map((c) => c.id).join(" ") || "none"}`); } return; }
   if (!process.env.ANTHROPIC_API_KEY) { console.error("needs ANTHROPIC_API_KEY"); process.exit(2); }
   const token = adminToken();
   const client = new Anthropic(anthropicClientOptions());

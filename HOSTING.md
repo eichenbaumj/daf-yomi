@@ -300,7 +300,9 @@ and the point is to get people into the daf.
   the 2,711-daf archive is roughly $400 to $550 at the default effort. Cheaper knobs, untested: `output_config.effort`
   "medium" for the archive (`mapRequest` in `src/map/generate.ts`), or a cheaper `MAP_MODEL` for the archive with
   Opus kept for the cron.
-- **The archive and the judge.** `npm run maps:backfill -- --all [--effort medium]` draws the archive through the
+- **The archive and the judge.** `npm run maps:backfill -- --rest` draws the rest of the current cycle (Joe,
+  2026-09-22: everything left first, then review, then decide about the back run; `--all` for the whole cycle,
+  `--effort medium` the cheaper knob) through the
   Batch API (drafts, the gate, one more draft for the rejects, three at most; `POST /admin/map/put`; outcomes in
   `.cache/maps-backfill.outcomes.json`, resumable; `--fetch-only` fills `.cache/map-text/` first, ~70 minutes). Before
   spending on all 2,711, draw a sample and read it: `npm run maps:backfill -- --dapim …` on fifty varied dapim, then

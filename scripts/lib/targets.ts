@@ -1,4 +1,4 @@
-/** Which dapim a script works on: --window N (today ± N), --dapim slug/daf[,…], --all. They add up. */
+/** Which dapim a script works on: --window N (today ± N), --dapim slug/daf[,…], --rest (the rest of this cycle, from tomorrow), --all. They add up. */
 import { TRACTATES, tractateBySlug, type Tractate } from "../../src/daf/tractates";
 import { addDays, dafForDate, dateForDaf, todayIn, type DafRef } from "../../src/daf/schedule";
 
@@ -20,8 +20,21 @@ export function parseTargets(opt: (k: string) => string | undefined, flag: (k: s
   const window = Number(opt("window") ?? NaN);
   if (Number.isFinite(window)) for (let d = -window; d <= window; d++) add(dafForDate(addDays(today, d)));
   for (const x of (opt("dapim") ?? "").split(",").map((s) => s.trim()).filter(Boolean)) add(refForKey(x));
+  if (flag("rest")) for (const ref of restOfCycle()) add(ref);
   if (flag("all")) for (const t of TRACTATES) for (let d = t.firstDaf; d <= t.lastDaf; d++) add(refFor(t, d));
   return targets;
+}
+
+/** Every daf from tomorrow to the last day of the current cycle (Joe, 2026-09-22: draw the maps for what is left first). */
+export function restOfCycle(from = today): DafRef[] {
+  const out: DafRef[] = [];
+  const c = dafForDate(from).cycle;
+  for (let d = 1; ; d++) {
+    const ref = dafForDate(addDays(from, d));
+    if (ref.cycle !== c) break;
+    out.push(ref);
+  }
+  return out;
 }
 
 /** Keys within `days` of today: the cron owns these; archive work leaves them alone. */
