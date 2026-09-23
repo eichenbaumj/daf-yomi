@@ -46,6 +46,8 @@ export interface Strings {
   footerAttribution: string;
   /** Footer second paragraph, HTML; `aboutHref` and `newsletterHref` are already language-prefixed. */
   footerNote: (aboutHref: string, newsletterPublic: boolean, newsletterHref: string) => string;
+  /** One line naming the site by its address, so the name is written on every page. */
+  footerSite: string;
 
   // ---- daf page ----
   aiBadge: string;

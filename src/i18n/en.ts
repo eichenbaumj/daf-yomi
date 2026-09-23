@@ -21,6 +21,7 @@ export const en: Strings = {
   footerNote: (aboutHref, newsletterPublic, newsletterHref) =>
     `The daily note is written by an AI and says so. <a href="${aboutHref}">How this works.</a> ${newsletterPublic ? `Free, no accounts, no tracking. The <a href="${newsletterHref}">daily email</a> keeps only your address and your chosen hour.` : "Free, no accounts, no tracking cookies."} A good day of learning to you.`,
 
+  footerSite: "daf-yomi.dev, one page a day since September 2026.",
   aiBadge: "AI note",
   aiLabel: "Written by Claude, an AI, from the English translation on this page. Not a scholar. Here to get you thinking, not to tell you what it means.",
   legend: `<b>Bold</b> is the Talmud's own words. The regular text between is explanation woven in by Rabbi Adin Steinsaltz (1937 to 2020), whose English translation this is. A <i>mishna</i> is the short ruling a passage starts from; the <i>Gemara</i> is the discussion of it; a <i>baraita</i> is an early teaching quoted from outside the Mishna.`,

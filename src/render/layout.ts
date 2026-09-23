@@ -112,6 +112,7 @@ ${o.body}
   <p class="ornament" aria-hidden="true">✦ ✦ ✦</p>
   <p>${S.footerAttribution}</p>
   <p>${S.footerNote(p(lang, "/about"), newsletterPublic, "/newsletter")}</p>
+  <p class="muted small">${esc(S.footerSite)}</p>
 </footer>
 <script src="/app.js" defer></script>
 </body>

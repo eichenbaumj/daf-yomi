@@ -6,6 +6,8 @@ import type { DafMap } from "../src/map/store";
 import { tractateBySlug } from "../src/daf/tractates";
 import { esc } from "../src/render/layout";
 import { renderAbout } from "../src/render/about";
+import { renderNotFound } from "../src/render/simple";
+import { renderTractatePage } from "../src/render/tractatePage";
 import { SEDARIM } from "../src/render/dafYomiDiagram";
 import { TRACTATES } from "../src/daf/tractates";
 import { dafForDate } from "../src/daf/schedule";
@@ -228,6 +230,36 @@ describe("daf page", () => {
     expect(reviewed).not.toContain("JUDGE-X"); // the judge's record stays in KV
     expect(html).not.toContain("<script>x</script>");
     expect(html).toContain("&lt;script&gt;x&lt;/script&gt;");
+  });
+});
+
+describe("search-engine chrome", () => {
+  const ref = dafForDate(d("2026-09-20"));
+  it("writes the site's address on every page and describes About as an AboutPage by a Person", () => {
+    const html = renderAbout(env, "https://example.test", ref);
+    expect(html).toContain('<p class="muted small">daf-yomi.dev, one page a day since September 2026.</p>');
+    expect(html).toContain("This site is daf-yomi.dev;");
+    const ld = JSON.parse(/<script type="application\/ld\+json">(.*?)<\/script>/s.exec(html)![1]!);
+    expect(ld["@type"]).toBe("AboutPage");
+    expect(ld.author["@type"]).toBe("Person");
+    expect(ld.author.sameAs).toContain("https://github.com/eichenbaumj");
+    expect(ld.about.alternateName).toContain("daf-yomi.dev");
+    const he = renderAbout(env, "https://example.test", ref, "he");
+    expect(he).toContain("daf-yomi.dev, דף אחד ביום");
+  });
+  it("gives tractate pages a breadcrumb trail", () => {
+    const t = tractateBySlug("bekhorot")!;
+    const html = renderTractatePage({ env, origin: "https://example.test", tractate: t, today: ref, todayDate: d("2026-09-20"), noted: new Set([2]), intro: null });
+    const ld = JSON.parse(/<script type="application\/ld\+json">(.*?)<\/script>/s.exec(html)![1]!);
+    expect(ld["@type"]).toBe("BreadcrumbList");
+    expect(ld.itemListElement.map((x: { item: string }) => x.item)).toEqual(["https://example.test/", "https://example.test/tractates", "https://example.test/bekhorot"]);
+    expect(html).toContain('<link rel="canonical" href="https://example.test/bekhorot">');
+  });
+  it("keeps the 404 page out of the index and gives it no canonical", () => {
+    const html = renderNotFound(env, "https://example.test", "/nope");
+    expect(html).toContain('<meta name="robots" content="noindex">');
+    expect(html).not.toContain('rel="canonical"');
+    expect(html).not.toContain('property="og:url"');
   });
 });
 

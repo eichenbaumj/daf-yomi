@@ -12,6 +12,8 @@ import type { Env } from "./types";
 import { addDays, dafForDate, todayIn, ymd } from "./daf/schedule";
 import { ensureNote, type GenerateOutcome } from "./note/generate";
 import { getNote } from "./note/store";
+import { dafPath } from "./daf/tractates";
+import { submitIndexNow } from "./indexnow";
 import { hashPrompt } from "./note/prompt";
 import { ENABLED_LANGS } from "./i18n/strings";
 import { ensureTranslation, translationCurrent, type TranslatableLang } from "./note/translate";
@@ -46,6 +48,7 @@ export async function runCron(env: Env, scheduledTime: number): Promise<{ log: s
   const nowUtc = todayIn("UTC", new Date(scheduledTime));
   let generations = 0;
   const say = (s: string) => { log.push(s); console.log(`[cron] ${s}`); };
+  const changed: string[] = [];
 
   const current = hashPrompt();
   for (const [i, date] of bakeTargets(nowUtc).entries()) {
@@ -61,7 +64,7 @@ export async function runCron(env: Env, scheduledTime: number): Promise<{ log: s
     if (stale) say(`${label}: note is from style ${existing!.promptVersion}; re-baking under ${current}`);
     const outcome: GenerateOutcome = await ensureNote(env, ref, { force: stale, countAgainstCap: true, judge: "once" });
     generations++;
-    if (outcome.status === "generated") say(`${label}: generated in ${outcome.attempts} attempt(s)${outcome.judged ? `; judge: ${outcome.judged.verdict} (${outcome.judged.questionStatus}, ${outcome.judged.reach})` : ""}`);
+    if (outcome.status === "generated") { changed.push(dafPath(ref.tractate, ref.daf)); say(`${label}: generated in ${outcome.attempts} attempt(s)${outcome.judged ? `; judge: ${outcome.judged.verdict} (${outcome.judged.questionStatus}, ${outcome.judged.reach})` : ""}`); }
     else if (outcome.status === "failed") say(`${label}: FAILED ${outcome.reason} ${(outcome.problems ?? []).join(" | ")}`);
     else say(`${label}: ${outcome.status} ${"reason" in outcome ? outcome.reason : ""}`);
   }
@@ -105,6 +108,13 @@ export async function runCron(env: Env, scheduledTime: number): Promise<{ log: s
       else if (outcome.status === "failed") say(`${label}: FAILED ${outcome.reason} ${(outcome.problems ?? []).join(" | ")}`);
       else say(`${label}: ${outcome.status} ${"reason" in outcome ? outcome.reason : ""}`);
     }
+  }
+  // Tell the IndexNow engines what changed: the front page (it changes daily), today's permalink, and any new notes.
+  if (env.INDEXNOW_KEY && env.CANONICAL_HOST) {
+    const origin = `https://${env.CANONICAL_HOST}`;
+    const todayRef = dafForDate(nowUtc);
+    const status = await submitIndexNow(env, [`${origin}/`, `${origin}${dafPath(todayRef.tractate, todayRef.daf)}`, ...changed.map((path) => origin + path)]);
+    say(`indexnow: ${status ?? "not sent"} (${changed.length} new note(s))`);
   }
   return { log };
 }

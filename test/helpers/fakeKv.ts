@@ -23,5 +23,8 @@ export class FakeKV {
     this.writes++;
     this.store.set(key, { value: value instanceof ArrayBuffer ? new Uint8Array(value) : value, metadata: opts?.metadata });
   }
-  async list() { return { keys: [...this.store.keys()].map((name) => ({ name })), list_complete: true as const, cursor: undefined }; }
+  async list(opts?: { prefix?: string }) {
+    const keys = [...this.store.entries()].filter(([name]) => !opts?.prefix || name.startsWith(opts.prefix)).map(([name, v]) => ({ name, metadata: v.metadata }));
+    return { keys, list_complete: true as const, cursor: undefined };
+  }
 }

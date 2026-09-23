@@ -90,6 +90,15 @@ export function renderTractatePage(m: TractatePageModel): string {
     canonicalPath: `/${t.slug}`,
     body,
     bodyClass: "tractate-page",
+    jsonLd: [{
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: m.env.SITE_NAME, item: `${m.origin}${p(lang, "/")}` },
+        { "@type": "ListItem", position: 2, name: S.breadcrumbTractates, item: `${m.origin}${p(lang, "/tractates")}` },
+        { "@type": "ListItem", position: 3, name, item: `${m.origin}${p(lang, `/${t.slug}`)}` },
+      ],
+    }],
   });
 }
 

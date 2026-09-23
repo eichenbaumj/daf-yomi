@@ -50,6 +50,9 @@
     "OG_TRICKLE_PER_RUN": "10",
     // Newsletter. Secrets (RESEND_API_KEY, TOKEN_HMAC_SECRET, TURNSTILE_SECRET_KEY, RESEND_WEBHOOK_SECRET) via wrangler secret put.
     "NEWSLETTER_PUBLIC": "1",
+    // IndexNow (Bing, DuckDuckGo and friends): the key is public by design and served back at /<key>.txt. The bake
+    // pings the changed URLs after each run (src/indexnow.ts). Google ignores IndexNow; the sitemap's lastmod covers it.
+    "INDEXNOW_KEY": "2ae2a57114e25170dc866cd8eb7be172",
     // Turnstile widget "daf-yomi newsletter" (hostname daf-yomi.dev, Managed). The site key is public; the secret is TURNSTILE_SECRET_KEY.
     "TURNSTILE_SITE_KEY": "0x4AAAAAAE-ZZXBTLLpvsaGg",
     "NEWSLETTER_FROM": "Daf Yomi Dot Dev <daf@news.daf-yomi.dev>",

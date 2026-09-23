@@ -7,6 +7,11 @@ describe("router", () => {
     expect(parseRoute("/about").kind).toBe("about");
     expect(parseRoute("/tractates").kind).toBe("tractates");
     expect(parseRoute("/feed.xml").kind).toBe("feed");
+    expect(parseRoute("/feed")).toEqual({ kind: "redirect", to: "/feed.xml" }); // one address for the feed
+    expect(parseRoute("/rss.xml")).toEqual({ kind: "redirect", to: "/feed.xml" });
+    expect(parseRoute("/admin/notes/stamp").kind).toBe("admin-notes-stamp");
+    expect(parseRoute("/0123456789abcdef0123456789abcdef.txt")).toEqual({ kind: "indexnow-key", key: "0123456789abcdef0123456789abcdef" });
+    expect(parseRoute("/0123456789abcdef0123456789abcde.txt").kind).toBe("not-found");
     expect(parseRoute("/api/today.json").kind).toBe("api-today");
     expect(parseRoute("/yesterday")).toEqual({ kind: "relative", offset: -1 });
     expect(parseRoute("/date/2026-09-20")).toEqual({ kind: "date", ymd: "2026-09-20" });

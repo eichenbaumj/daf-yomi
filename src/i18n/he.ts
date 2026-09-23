@@ -23,6 +23,7 @@ export const he: Strings = {
   navNewsletter: "ניוזלטר",
   ogImageAlt: (siteName) => `${siteName}: דף היומי, בעברית`,
   footerAttribution: `הטקסט הוא <a href="https://www.sefaria.org/william-davidson-talmud" rel="noopener">תלמוד ויליאם דוידסון</a>: ביאורו העברי של הרב עדין אבן־ישראל שטיינזלץ (מהדורת קורן), מוגש על ידי <a href="https://www.sefaria.org" rel="noopener">ספריא</a> ברישיון <a href="https://creativecommons.org/licenses/by-nc/4.0/" rel="noopener">CC BY-NC 4.0</a>. טקסטים אחרים מזוכים במקומם.`,
+  footerSite: "daf-yomi.dev, דף אחד ביום מאז ספטמבר 2026.",
   footerNote: (aboutHref) =>
     `ההערה היומית נכתבת על ידי בינה מלאכותית, וכך גם נאמר בה. <a href="${aboutHref}">איך זה עובד.</a> חינם, בלי חשבונות, בלי מעקב. יום לימוד טוב.`,
 

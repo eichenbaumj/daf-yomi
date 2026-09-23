@@ -4,7 +4,9 @@ import { TRACTATES, dafPath, dafLabel, isValidDaf, tractateBySlug, type Tractate
 import { addDays, dafForDate, dateForDaf, hebrewDate, parseYmd, todayIn, ymd, type DafRef } from "./daf/schedule";
 import { positionFor } from "./daf/position";
 import { SefariaError, fetchText, loadDafSections, type DafSection } from "./sefaria/client";
-import { getNote, notedDafim, putNote, type DafNote } from "./note/store";
+import { getNote, notedDafim, notedDafimWithDates, putNote, type DafNote } from "./note/store";
+import { loadNoted, renderSitemap } from "./render/sitemap";
+import { isIndexNowKeyPath } from "./indexnow";
 import { buildPromptInput, ensureNote } from "./note/generate";
 import { checkNote } from "./note/grounding";
 import { hashPrompt } from "./note/prompt";
@@ -153,7 +155,7 @@ async function handle(request: Request, env: Env, ctx: ExecutionContext): Promis
     case "redirect": return redirect(route.to, 301);
     case "not-found": return html(renderNotFound(env, origin, url.pathname, lang), 404);
     case "lang": return switchLanguage(url, route.lang);
-    case "robots": return new Response(`User-agent: *\nAllow: /\nDisallow: /admin/\nDisallow: /lang/\nDisallow: /newsletter/u/\nDisallow: /newsletter/prefs/\nDisallow: /newsletter/confirm\nDisallow: /newsletter/hooks/\nSitemap: ${origin}/sitemap.xml\n`, { headers: { "content-type": "text/plain" } });
+    case "robots": return new Response(`User-agent: *\nAllow: /\nDisallow: /admin/\nDisallow: /lang/\nDisallow: /newsletter/u/\nDisallow: /newsletter/prefs/\nDisallow: /newsletter/confirm\nDisallow: /newsletter/hooks/\nSitemap: ${origin}/sitemap.xml\n`, { headers: { "content-type": "text/plain; charset=utf-8", "cache-control": "public, max-age=3600" } });
     case "relative": {
       const ref = dafForDate(addDays(today, route.offset));
       return redirect(p(lang, dafPath(ref.tractate, ref.daf)));
@@ -219,24 +221,18 @@ async function handle(request: Request, env: Env, ctx: ExecutionContext): Promis
       }, bypass);
     }
     case "sitemap": {
-      return cachedResponse(ck("/sitemap.xml"), 86400, async () => {
-        // Languages appear only once public; until then a Hebrew page is noindex and unlisted.
-        const langs = ENABLED_LANGS.filter((l) => isPublicLang(env, l));
-        const paths: string[] = ["/", "/about", "/tractates"];
-        for (const t of TRACTATES) {
-          paths.push(`/${t.slug}`);
-          for (let d = t.firstDaf; d <= t.lastDaf; d++) paths.push(dafPath(t, d));
-        }
-        const alt = (path: string) => langs.length > 1
-          ? langs.map((l) => `<xhtml:link rel="alternate" hreflang="${l}" href="${origin}${p(l, path)}"/>`).join("") + `<xhtml:link rel="alternate" hreflang="x-default" href="${origin}${path}"/>`
-          : "";
-        const urls: string[] = [];
-        for (const path of paths) for (const l of langs) urls.push(`<url><loc>${origin}${p(l, path)}</loc>${alt(path)}</url>`);
-        urls.push(`<url><loc>${origin}/newsletter</loc></url>`);
-        const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${urls.join("\n")}\n</urlset>\n`;
+      // Noted dafim plus today, with lastmod where known (src/render/sitemap.ts). One list per tractate, hourly.
+      return cachedResponse(ck("/sitemap.xml"), 3600, async () => {
+        const noted = await loadNoted(env.DAF_KV);
+        const xml = renderSitemap({ origin, env, today, todayRef: dafForDate(today), noted });
         return new Response(xml, { headers: { "content-type": "application/xml; charset=utf-8" } });
       }, bypass);
     }
+    case "indexnow-key":
+      return isIndexNowKeyPath(env, url.pathname)
+        ? new Response(`${route.key}\n`, { headers: { "content-type": "text/plain; charset=utf-8", "cache-control": "public, max-age=3600" } })
+        : html(renderNotFound(env, origin, url.pathname, lang), 404);
+    case "admin-notes-stamp": return adminNotesStamp(request, env);
     case "api-today": {
       const ref = dafForDate(today);
       const [note, cardMeta, map] = await Promise.all([getNote(env.DAF_KV, ref.tractate, ref.daf), getCardMeta(env.DAF_KV, ref.tractate, ref.daf), getMap(env.DAF_KV, ref.tractate, ref.daf)]);
@@ -304,6 +300,29 @@ function cardTargetsFromParams(url: URL, today: Date, max: number): CardTarget[]
 }
 
 /** Browser Rendering's two 429s become 429 here too, with a `kind` the backfill script acts on. */
+/**
+ * POST /admin/notes/stamp?slug=<tractate>: re-put one tractate's existing notes so each key carries
+ * { generatedAt } metadata (notes written before 2026-09-22 have none, so the sitemap shows no lastmod for
+ * them). At most 157 writes per call; run once per tractate.
+ */
+async function adminNotesStamp(request: Request, env: Env): Promise<Response> {
+  if (!authorized(request, env)) return new Response("unauthorized", { status: 401 });
+  if (request.method !== "POST") return new Response("POST only", { status: 405 });
+  const slug = new URL(request.url).searchParams.get("slug") ?? "";
+  const t = tractateBySlug(slug);
+  if (!t) return new Response(JSON.stringify({ error: "unknown slug" }), { status: 400, headers: JSON_H });
+  const noted = await notedDafimWithDates(env.DAF_KV, t);
+  let stamped = 0, skipped = 0, missing = 0;
+  for (const [daf, when] of noted) {
+    if (when) { skipped++; continue; }
+    const note = await getNote(env.DAF_KV, t, daf);
+    if (!note) { missing++; continue; }
+    await putNote(env.DAF_KV, t, daf, note);
+    stamped++;
+  }
+  return new Response(JSON.stringify({ tractate: t.slug, stamped, alreadyStamped: skipped, missing }), { headers: JSON_H });
+}
+
 async function adminOg(request: Request, env: Env, today: Date, action: "bake" | "status"): Promise<Response> {
   if (!authorized(request, env)) return new Response("unauthorized", { status: 401 });
   const url = new URL(request.url);

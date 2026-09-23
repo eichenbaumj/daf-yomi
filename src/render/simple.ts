@@ -8,7 +8,7 @@ export function renderNotFound(env: Env, origin: string, path: string, lang: Lan
   const body = `<article class="prose"><header class="daf-head"><h1>${esc(S.notFoundHeading)}</h1></header>
 <p>${S.notFoundBody(esc(path))}</p>
 <p><a href="${p(lang, "/")}">${esc(S.todaysDaf)}</a> · <a href="${p(lang, "/tractates")}">${esc(S.allTractates)}</a></p></article>`;
-  return page({ env, origin, lang, title: S.notFoundTitle, description: S.notFoundDescription, canonicalPath: "/404", body, noLangSwitch: true });
+  return page({ env, origin, lang, title: S.notFoundTitle, description: S.notFoundDescription, robots: "noindex", body, noLangSwitch: true });
 }
 
 export function renderError(env: Env, origin: string, message: string, lang: Lang = "en"): string {

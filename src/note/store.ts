@@ -29,7 +29,20 @@ export async function getNote(kv: KVNamespace, t: Tractate, daf: number): Promis
   return kv.get<DafNote>(noteKey(t, daf), "json");
 }
 export async function putNote(kv: KVNamespace, t: Tractate, daf: number, note: DafNote): Promise<void> {
-  await kv.put(noteKey(t, daf), JSON.stringify(note));
+  // generatedAt rides along as metadata so a list (the sitemap's lastmod) never has to read the notes themselves.
+  await kv.put(noteKey(t, daf), JSON.stringify(note), { metadata: { generatedAt: note.generatedAt } });
+}
+/** Daf → generatedAt for every noted daf of the tractate; null where the note predates metadata (stamp it: POST /admin/notes/stamp). */
+export async function notedDafimWithDates(kv: KVNamespace, t: Tractate): Promise<Map<number, string | null>> {
+  const prefix = `note:v1:${t.slug}:`;
+  const out = new Map<number, string | null>();
+  let cursor: string | undefined;
+  do {
+    const page = await kv.list<{ generatedAt?: string }>({ prefix, cursor, limit: 1000 });
+    for (const k of page.keys) out.set(Number(k.name.slice(prefix.length)), typeof k.metadata?.generatedAt === "string" ? k.metadata.generatedAt : null);
+    cursor = page.list_complete ? undefined : page.cursor;
+  } while (cursor);
+  return out;
 }
 /** Set of daf numbers in this tractate that already have a note. */
 export async function notedDafim(kv: KVNamespace, t: Tractate): Promise<Set<number>> {

@@ -16,6 +16,8 @@ export interface Env {
   DAILY_GENERATION_CAP?: string;
   /** Bearer token for the /admin/* endpoints (secret). Unset closes them. */
   ADMIN_TOKEN?: string;
+  /** IndexNow key (32 hex), served at /<key>.txt; unset = no pings. */
+  INDEXNOW_KEY?: string;
   /** "1" once the Hebrew reviewer round is done: /he pages get indexed, listed in the sitemap and offered as hreflang
    *  alternates. Anything else keeps them Pre-Release (noindex, a notice on every page). */
   HE_PUBLIC?: string;

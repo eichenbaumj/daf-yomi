@@ -20,7 +20,7 @@ function everyString(table: object): string[] {
   }
   return out;
 }
-const ALLOWED_LATIN = /AI|RSS|Pre-Release|CC BY-NC 4\.0|Daf Yomi|English|\/he\/bekhorot\/2/g;
+const ALLOWED_LATIN = /AI|RSS|Pre-Release|CC BY-NC 4\.0|Daf Yomi|English|daf-yomi\.dev|\/he\/bekhorot\/2/g;
 const stripMarkup = (s: string) => s.replace(/<[^>]+>/g, " ");
 
 describe("the string tables", () => {

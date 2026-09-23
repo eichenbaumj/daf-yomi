@@ -22,6 +22,8 @@ export type Route =
   | { kind: "admin-bake" }
   | { kind: "og-card"; tractate: Tractate; daf: number; token: string }
   | { kind: "admin-og"; action: "bake" | "status" }
+  | { kind: "admin-notes-stamp" }
+  | { kind: "indexnow-key"; key: string }
   | { kind: "newsletter" }
   | { kind: "newsletter-confirm" }
   | { kind: "newsletter-privacy" }
@@ -62,6 +64,9 @@ export function parseRoute(pathname: string): Route {
   if (path === "/admin/note") return { kind: "admin-translate", action: "note" };
   if (path === "/admin/note/put") return { kind: "admin-note-put" };
   if (path === "/admin/og/bake") return { kind: "admin-og", action: "bake" };
+  if (path === "/admin/notes/stamp") return { kind: "admin-notes-stamp" };
+  const ink = /^\/([a-f0-9]{32})\.txt$/.exec(path);
+  if (ink) return { kind: "indexnow-key", key: ink[1]! };
   if (path === "/admin/og/status") return { kind: "admin-og", action: "status" };
   if (path === "/admin/map/bake") return { kind: "admin-map", action: "bake" };
   if (path === "/admin/map/put") return { kind: "admin-map", action: "put" };
@@ -76,7 +81,8 @@ function parsePage(path: string): Route {
   if (path === "/tomorrow") return { kind: "relative", offset: 1 };
   if (path === "/about") return { kind: "about" };
   if (path === "/tractates") return { kind: "tractates" };
-  if (path === "/feed.xml" || path === "/feed" || path === "/rss.xml") return { kind: "feed" };
+  if (path === "/feed.xml") return { kind: "feed" };
+  if (path === "/feed" || path === "/rss.xml") return { kind: "redirect", to: "/feed.xml" };
   if (path === "/robots.txt") return { kind: "robots" };
   if (path === "/sitemap.xml") return { kind: "sitemap" };
   if (path === "/api/today.json") return { kind: "api-today" };
