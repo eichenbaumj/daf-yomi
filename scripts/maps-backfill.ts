@@ -51,9 +51,10 @@ const redrawFrom = opt("redraw-from");
 
 type Status = "stored" | "given-up" | "refused" | "rejected" | "budget" | "current";
 interface Outcome { status: Status; at: string; reason?: string; drafts: number; estUsd: number; generatedAt?: string; units?: number; draft?: MapDraft; replaces?: string | null; usage?: { inputTokens: number; outputTokens: number } }
-interface Job { key: string; ref: DafRef; text: MapPageText; replaces: string | null; feedback?: string; drafts: number; inputTokens: number; outputTokens: number; draft?: MapDraft; judged?: MapDraft; judgment?: MapJudgment; rewritten: boolean; state: "draft" | "judge" | "ready" | "given-up"; reason?: string }
 type Review = NonNullable<DafMap["review"]>;
-const reviewOf = (j: Job): Review | undefined => (j.judgment ? { at: new Date().toISOString(), judgeVersion: hashMapJudgePrompt(), verdict: j.judgment.verdict, reasons: j.judgment.reasons, rewritten: j.rewritten, ...(j.judgment.unverified ? { unverified: true } : {}) } : undefined);
+interface Job { key: string; ref: DafRef; text: MapPageText; replaces: string | null; feedback?: string; drafts: number; inputTokens: number; outputTokens: number; draft?: MapDraft; judged?: MapDraft; judgment?: MapJudgment; rewritten: boolean; review?: Review; state: "draft" | "judge" | "ready" | "given-up"; reason?: string }
+/** The verdict the stored map carries: the audit's, for a redraw from an audit; otherwise this run's judge. */
+const reviewOf = (j: Job): Review | undefined => j.review ?? (j.judgment ? { at: new Date().toISOString(), judgeVersion: hashMapJudgePrompt(), verdict: j.judgment.verdict, reasons: j.judgment.reasons, rewritten: j.rewritten, ...(j.judgment.unverified ? { unverified: true } : {}) } : undefined);
 
 const cid = (key: string) => key.replace("/", "-");
 const usd = (inputTokens: number, outputTokens: number) => Math.round((estimateUsd(model, inputTokens, outputTokens) / 2) * 10000) / 10000; // batch price
@@ -62,10 +63,10 @@ const utcDay = () => new Date().toISOString().slice(0, 10);
 async function main() {
   // With --redraw-from, the targets are the maps an audit sent back, each with the judge's feedback; they are drawn
   // once more (no second judge) and stored over the map the audit read.
-  const redraws = new Map<string, string>();
+  const redraws = new Map<string, { feedback: string; review: Review }>();
   if (redrawFrom) {
-    const audit = JSON.parse(readFileSync(redrawFrom, "utf8")) as { dapim: Record<string, { judge?: { verdict: string; feedback: string } }> };
-    for (const [k, e] of Object.entries(audit.dapim)) if (e.judge?.verdict === "redraw" && e.judge.feedback) redraws.set(k, e.judge.feedback);
+    const audit = JSON.parse(readFileSync(redrawFrom, "utf8")) as { judgeVersion: string; dapim: Record<string, { judge?: { verdict: "keep" | "redraw"; reasons: string[]; unverified: boolean; feedback: string } }> };
+    for (const [k, e] of Object.entries(audit.dapim)) if (e.judge?.verdict === "redraw" && e.judge.feedback) redraws.set(k, { feedback: e.judge.feedback, review: { at: new Date().toISOString(), judgeVersion: audit.judgeVersion, verdict: "redraw", reasons: e.judge.reasons, rewritten: true, ...(e.judge.unverified ? { unverified: true } : {}) } });
   }
   const targets = redrawFrom ? [...redraws.keys()].map((k) => [k, refForKey(k)] as const) : [...parseTargets(opt, flag)].filter(([k]) => !near.has(k));
   if (targets.length === 0) { console.error("no targets: use --rest, --all, --window N, --dapim slug/daf or --redraw-from (near days are skipped)"); process.exit(2); }
@@ -98,7 +99,8 @@ async function main() {
     if (redrawFrom) {
       // The judge's verdict travels with the redraw; the audit read the stored map, so `replaces` is its generatedAt.
       if (!existing) return;
-      jobs.push({ key, ref, text: texts.get(key)!, replaces: existing.generatedAt, feedback: `The map read: ${existing.units.map((u, i) => `${i + 1}. [${u.from}..${u.to}] ${u.kind}: ${u.title}.`).join(" ")} It was sent back because: ${redraws.get(key)}`, drafts: 0, inputTokens: 0, outputTokens: 0, rewritten: true, judgment: undefined, judged: undefined, state: "draft" });
+      const r = redraws.get(key)!;
+      jobs.push({ key, ref, text: texts.get(key)!, replaces: existing.generatedAt, feedback: `The map read: ${existing.units.map((u, i) => `${i + 1}. [${u.from}..${u.to}] ${u.kind}: ${u.title}.`).join(" ")} It was sent back because: ${r.feedback}`, drafts: 0, inputTokens: 0, outputTokens: 0, rewritten: true, review: r.review, state: "draft" });
       return;
     }
     if (existing && existing.promptVersion === style && !force) { outcomes[key] = { status: "current", at: new Date().toISOString(), drafts: 0, estUsd: 0, generatedAt: existing.generatedAt }; return; }
