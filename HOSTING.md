@@ -319,7 +319,7 @@ and the point is to get people into the daf.
 - **Where it runs.** The cron's third pass, after the notes and before the translations: the three near days, three
   per run, re-drawn when the style changed. `POST /admin/map/bake?slug=&daf=[&force=1]`, `GET /admin/map?slug=&daf=`,
   `POST /admin/map/put` (the note put's contract: stale style refused, `replaces` must match, the gate re-run against
-  the edge-cached text, 429 on the KV limit). Never on a visit.
+  the edge-cached text, 429 on the KV limit, an optional `review` from the judge). Never on a visit.
 - **Measured cost** (2026-09-22, Opus 5 list): Bekhorot 4 took two drafts, 20,321 input and 10,618 output tokens,
   $0.37; tomorrow's and the day after's pages are in `.cache`-free admin logs. Thinking is most of the output: a
   single draft runs 4,000 to 6,000 output tokens, so `MAP_MAX_TOKENS` is 12,000 (a 33-segment page was cut off at
@@ -327,9 +327,16 @@ and the point is to get people into the daf.
   the 2,711-daf archive is roughly $400 to $550 at the default effort. Cheaper knobs, untested: `output_config.effort`
   "medium" for the archive (`mapRequest` in `src/map/generate.ts`), or a cheaper `MAP_MODEL` for the archive with
   Opus kept for the cron.
+- **What ran on 2026-09-23.** `maps:backfill -- --rest` drew 249 of the 254 remaining pages of cycle 14 for about
+  $36 at batch price (93 first drafts, 99 second, 21 third; two retries after gate fixes: English legal phrases are
+  not gated in a twenty-word gloss, the unit ceiling follows the marks, "a ewe" is not a slip). Five pages the model
+  would not fix in three drafts (Bekhorot 17, Arakhin 3 and 14, Keritot 26, Meilah 20: a bare "obligated" or
+  "liable", an unglossed "sela" or "mitzvot") are left for the cron or a hand. The judge over a seeded sample of 50
+  kept 41 and sent 8 back (4 boundaries, 3 glosses, 1 kind, 1 shape), all with verified page words; those 8 were
+  redrawn with the feedback (`--redraw-from`). From here the backfill judges every draft it stores.
 - **The archive and the judge.** `npm run maps:backfill -- --rest` draws the rest of the current cycle (Joe,
   2026-09-22: everything left first, then review, then decide about the back run; `--all` for the whole cycle,
-  `--effort medium` the cheaper knob) through the
+  `--effort medium` the cheaper knob; `--no-judge` to skip the second reading) through the
   Batch API (drafts, the gate, one more draft for the rejects, three at most; `POST /admin/map/put`; outcomes in
   `.cache/maps-backfill.outcomes.json`, resumable; `--fetch-only` fills `.cache/map-text/` first, ~70 minutes). Before
   spending on all 2,711, draw a sample and read it: `npm run maps:backfill -- --dapim …` on fifty varied dapim, then
