@@ -62,6 +62,33 @@ Other surfaces, all already on:
   "not found" and the listing shows a handful of stale `wrangler dev` keys. Same for counting notes
   (`kv key list --remote --prefix note:v1:`; 2,711 on 2026-09-21).
 
+## Search engines (added 2026-09-22)
+
+The note is the only content on this site that exists nowhere else; the daf text is Sefaria's. Everything
+below follows from that.
+
+- **Indexability.** A daf page without a note is `noindex,follow` until its note exists, except today's page and
+  the three days either side (the heal window). Pre-release languages are noindex regardless. The 404 page is
+  noindex with no canonical. (`src/render/dafPage.ts`, `INDEX_WINDOW_DAYS`.)
+- **Canonicals.** A permalink is canonical for itself, even on its day; only `/` is canonical for `/`. The
+  Article JSON-LD's `url` and `mainEntityOfPage` are always the permalink; `WebSite` JSON-LD only on `/`.
+- **Snippets.** The meta description leads with the note's summary, clamped at a sentence and never past 160
+  chars, then the label. Without a note it is a short label-and-date line.
+- **Sitemap** (`src/render/sitemap.ts`): the pages, every tractate, and only the dafim that have a note or are
+  today. `lastmod` comes from the note's `generatedAt`, carried as KV metadata by `putNote` since 2026-09-22;
+  older notes were stamped once with `POST /admin/notes/stamp?slug=<tractate>` (Bearer `ADMIN_TOKEN`; at most
+  157 writes a call; safe to re-run, it skips stamped keys). A tractate's lastmod is its newest note. Cached an
+  hour (40 KV lists per build).
+- **IndexNow.** `INDEXNOW_KEY` in `wrangler.jsonc` is served at `/<key>.txt`; the bake ends by posting `/`,
+  today's permalink and any notes it generated to api.indexnow.org (`src/indexnow.ts`; log line `[cron] indexnow:`).
+  Bing, DuckDuckGo and Yandex use it; Google does not, so the sitemap's lastmod is what Google sees.
+- **Name signals.** `WebSite.alternateName` includes `daf-yomi.dev`; the footer and About write the address in
+  words; tractate pages carry a BreadcrumbList; About is an AboutPage by a Person.
+- **Owner-side, not in code:** Google Search Console Domain property (DNS TXT), sitemap submitted there, Bing
+  Webmaster imported from it, Cloudflare Crawler Hints on. Expect weeks, not days, before the site ranks for its
+  own name; the early signals are Search Console's Indexed count and impressions.
+- `/feed` and `/rss.xml` 301 to `/feed.xml`; robots.txt is cached an hour.
+
 ## Custom domain
 
 `wrangler.jsonc` carries `routes` for `daf-yomi.dev` and `www.daf-yomi.dev` as custom domains; Cloudflare
