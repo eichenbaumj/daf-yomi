@@ -113,6 +113,7 @@ ${o.body}
   <p>${S.footerAttribution}</p>
   <p>${S.footerNote(p(lang, "/about"), newsletterPublic, "/newsletter")}</p>
   <p class="muted small">${esc(S.footerSite)}</p>
+  <p class="powered"><a href="https://www.sefaria.org" rel="noopener"><img src="/powered-by-sefaria.png" alt="Powered by Sefaria" width="116" height="60" loading="lazy"></a></p>
 </footer>
 <script src="/app.js" defer></script>
 </body>

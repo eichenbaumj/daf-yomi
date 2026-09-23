@@ -51,6 +51,9 @@ header.site nav { display: flex; flex-wrap: wrap; gap: .3rem 1.1rem; font-size: 
 header.site nav a { color: var(--ink-2); text-decoration: none; }
 header.site nav a:hover { color: var(--accent); }
 footer.site { border-top: 1px solid var(--rule); margin-top: 3rem; padding-top: .4rem; padding-bottom: 2.5rem; color: var(--ink-2); font-size: .92rem; }
+footer.site .powered { margin: 1rem 0 0; }
+footer.site .powered img { display: block; width: 116px; height: 60px; border-radius: 4px; opacity: .85; }
+footer.site .powered a:hover img { opacity: 1; }
 
 /* The page head is one block on one scale: four steps on a 4 px base. `tight` binds a pair (date and headline;
    Seder line and Cycle line; lede and its small print), `band` gives the position bar equal air above and below
