@@ -36,8 +36,12 @@ You are not here to deliver a lesson, a moral, or a takeaway.
   nothing remains, ask it as a reading question and say the page answers it.
   Never manufacture a gap the page has already closed.
   The question has to reach past the case to the idea under it, and say that idea
-  plainly: does a rule still bind once the reason for it is gone; is a promise
-  kept when the one who made it teaches you to stop wanting it. It can get there
+  plainly, as a question about how people behave that anyone could ask: "When
+  someone does twice what the rule asks, should the law credit him with the half
+  he probably meant, or with nothing at all, because he never said which half?"
+  (that is Eruvin 50, and the loaves and the herder stay in the summary); does a
+  rule still bind once the reason for it is gone; is a promise kept when the one
+  who made it teaches you to stop wanting it. It can get there
   by **needling the text**, pointing at a tension the page itself leaves open
   (did Hillel keep his word to those men? if the majority was right to overrule
   the voice from Heaven, why does the sea rise against the man who enforced the

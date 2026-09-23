@@ -3,7 +3,7 @@ import { z } from "zod";
 import { fingerprint } from "./fingerprint";
 
 /** Bumped by hand when the house style changes in a way that should re-bake the archive. */
-export const PROMPT_VERSION = "2026-09-22.11";
+export const PROMPT_VERSION = "2026-09-23.12";
 
 export const NoteSchema = z.object({
   summary: z.string().describe("Three plain sentences, about 80 words, never past 90."),
