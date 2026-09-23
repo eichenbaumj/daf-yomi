@@ -1,21 +1,28 @@
 {
- "generatedAt": "2026-09-23T00:03:18.801Z",
+ "generatedAt": "2026-09-23T03:49:30.228Z",
  "site": "https://daf-yomi.dev",
  "model": "claude-opus-5",
  "mapPromptVersion": "2026-09-22.2-a897ca48",
  "judgeVersion": "2026-09-22.1-4757c4c7",
- "estUsd": 0.0596,
+ "estUsd": 2.8062,
  "counts": {
-  "total": 1,
-  "keep": 1
+  "total": 50,
+  "keep": 41,
+  "redraw": 8,
+  "boundary": 4,
+  "gloss": 3,
+  "kind": 1,
+  "shape": 1,
+  "judge-error": 1,
+  "unverified": 1
  },
  "dapim": {
-  "bekhorot/4": {
-   "key": "bekhorot/4",
-   "generatedAt": "2026-09-22T23:57:25.580Z",
+  "niddah/5": {
+   "key": "niddah/5",
+   "generatedAt": "2026-09-23T03:26:07.811Z",
    "promptVersion": "2026-09-22.2-a897ca48",
-   "units": 11,
-   "shape": "A question about whom the Levites freed from redemption, Rav Safra's string of challenges, one lamb for many donkeys, and an unfinished dispute over the wilderness.",
+   "units": 9,
+   "shape": "Leftover argument on retroactive impurity, then blood stains of women whose time is sufficient, examination cloths during intercourse, and Ze'eiri's impure bed tested against baraitot.",
    "judge": {
     "boundaries": [],
     "kinds": [],
@@ -28,8 +35,1194 @@
     "modelVerdict": "keep",
     "feedback": "",
     "usage": {
-     "inputTokens": 10107,
-     "outputTokens": 2742
+     "inputTokens": 8989,
+     "outputTokens": 1390
+    }
+   }
+  },
+  "niddah/27": {
+   "key": "niddah/27",
+   "generatedAt": "2026-09-23T03:26:17.884Z",
+   "promptVersion": "2026-09-22.2-a897ca48",
+   "units": 11,
+   "shape": "A refutation closes, then reports of long gaps between birth and afterbirth, and a long run on why Rabbi Shimon purifies houses holding afterbirth or corpse dust.",
+   "judge": {
+    "boundaries": [],
+    "kinds": [],
+    "glosses": [],
+    "shapeFits": true,
+    "shapeNote": "",
+    "verdict": "keep",
+    "reasons": [],
+    "unverified": false,
+    "modelVerdict": "keep",
+    "feedback": "",
+    "usage": {
+     "inputTokens": 9363,
+     "outputTokens": 3103
+    }
+   }
+  },
+  "bekhorot/47": {
+   "key": "bekhorot/47",
+   "generatedAt": "2026-09-23T03:25:10.173Z",
+   "promptVersion": "2026-09-22.2-a897ca48",
+   "units": 10,
+   "shape": "Two disputes over who counts as a firstborn after conversion or flawed lineage, then a mishna on miscarriage and caesarean birth worked through verses.",
+   "judge": {
+    "boundaries": [],
+    "kinds": [],
+    "glosses": [],
+    "shapeFits": true,
+    "shapeNote": "",
+    "verdict": "keep",
+    "reasons": [],
+    "unverified": false,
+    "modelVerdict": "keep",
+    "feedback": "",
+    "usage": {
+     "inputTokens": 10599,
+     "outputTokens": 2578
+    }
+   }
+  },
+  "meilah/3": {
+   "key": "meilah/3",
+   "generatedAt": "2026-09-23T03:25:52.078Z",
+   "promptVersion": "2026-09-22.2-a897ca48",
+   "units": 8,
+   "shape": "A decree on misusing offerings that died, a chain of mishnayot refuting Rabba, an unresolved private-altar dilemma, then two challenges to Rav on piggul sprinkling.",
+   "judge": {
+    "boundaries": [],
+    "kinds": [],
+    "glosses": [],
+    "shapeFits": true,
+    "shapeNote": "",
+    "verdict": "keep",
+    "reasons": [],
+    "unverified": false,
+    "modelVerdict": "keep",
+    "feedback": "",
+    "usage": {
+     "inputTokens": 7370,
+     "outputTokens": 2810
+    }
+   }
+  },
+  "bekhorot/55": {
+   "key": "bekhorot/55",
+   "generatedAt": "2026-09-23T03:25:13.707Z",
+   "promptVersion": "2026-09-22.2-a897ca48",
+   "units": 11,
+   "shape": "An objection to Rav about scattered flocks, then the Jordan as a divider, a long run on rivers and the Euphrates, and a new mishna on bought animals.",
+   "judge": {
+    "boundaries": [
+     {
+      "unit": 8,
+      "turnsAt": "a-22",
+      "pageSays": "And these three rivers are below and receive their waters from the Euphrates River. The Gemara asks: But there are",
+      "explanation": "Unit 8 opens at b-1 in the middle of the question begun at the end of a-22, so the move is cut across the daf break."
+     }
+    ],
+    "kinds": [],
+    "glosses": [],
+    "shapeFits": true,
+    "shapeNote": "",
+    "verdict": "redraw",
+    "reasons": [
+     "boundary"
+    ],
+    "unverified": false,
+    "modelVerdict": "redraw",
+    "feedback": "Unit 8 should begin at a-22, where the page says \"And these three rivers are below and receive their waters from the Euphrates River. The Gemara asks: But there are\". Unit 7 should not end mid-sentence: the question \"But there are / springs that are higher in the mountains than the Euphrates\" begins in a-22 and is answered in b-1, so keep that question with its answer in one unit. Either extend unit 7 only to a-20 or begin unit 8 at a-21/a-22 so that the Euphrates-as-source discussion and its objections sit together. The rest of the map's units, kinds and glosses fit the page.",
+    "usage": {
+     "inputTokens": 8597,
+     "outputTokens": 3517
+    }
+   }
+  },
+  "bekhorot/25": {
+   "key": "bekhorot/25",
+   "generatedAt": "2026-09-23T03:25:01.756Z",
+   "promptVersion": "2026-09-22.2-a897ca48",
+   "units": 11,
+   "shape": "Rav's permit to pluck a firstborn's hair is defended against unintended-act rulings, then a new mishna on shed wool draws rival readings of one baraita.",
+   "judge": {
+    "boundaries": [],
+    "kinds": [],
+    "glosses": [],
+    "shapeFits": true,
+    "shapeNote": "",
+    "verdict": "keep",
+    "reasons": [],
+    "unverified": false,
+    "modelVerdict": "keep",
+    "feedback": "",
+    "usage": {
+     "inputTokens": 10442,
+     "outputTokens": 3672
+    }
+   }
+  },
+  "arakhin/6": {
+   "key": "arakhin/6",
+   "generatedAt": "2026-09-23T03:25:19.298Z",
+   "promptVersion": "2026-09-22.2-a897ca48",
+   "units": 10,
+   "shape": "Gentile gifts to Temple and synagogue, then charity coins that may be borrowed and replaced, then a mishna on vows and valuations for the condemned.",
+   "judge": {
+    "boundaries": [],
+    "kinds": [],
+    "glosses": [],
+    "shapeFits": true,
+    "shapeNote": "",
+    "verdict": "keep",
+    "reasons": [],
+    "unverified": false,
+    "modelVerdict": "keep",
+    "feedback": "",
+    "usage": {
+     "inputTokens": 9261,
+     "outputTokens": 3839
+    }
+   }
+  },
+  "temurah/22": {
+   "key": "temurah/22",
+   "generatedAt": "2026-09-23T03:25:36.691Z",
+   "promptVersion": "2026-09-22.2-a897ca48",
+   "units": 11,
+   "shape": "The tail of a mishna on sin offerings left to die, a long fight over Reish Lakish's over-age offering, dilemmas about what counts as lost, then a new mishna.",
+   "judge": {
+    "boundaries": [],
+    "kinds": [],
+    "glosses": [],
+    "shapeFits": true,
+    "shapeNote": "",
+    "verdict": "keep",
+    "reasons": [],
+    "unverified": false,
+    "modelVerdict": "keep",
+    "feedback": "",
+    "usage": {
+     "inputTokens": 11416,
+     "outputTokens": 2004
+    }
+   }
+  },
+  "bekhorot/21": {
+   "key": "bekhorot/21",
+   "generatedAt": "2026-09-23T03:24:59.641Z",
+   "promptVersion": "2026-09-22.2-a897ca48",
+   "units": 9,
+   "shape": "Four resolutions of a dispute about one kid's offspring, whether young animals are tithed like firstborns, what a murky discharge is, then a new mishna on congealed blood.",
+   "judge": {
+    "boundaries": [],
+    "kinds": [],
+    "glosses": [
+     {
+      "unit": 3,
+      "claim": "an animal under seven days old is tithed, like a firstborn given to a priest",
+      "pageSays": "Just as a firstborn is consecrated before its time and is sacrificed after its time, so too, an animal whose time has not yet arrived is consecrated before its time",
+      "explanation": "The baraita's analogy to the firstborn is about consecration before its time and sacrifice after it, not about being given to a priest; b-3 in fact lists tithed animals as \"not included among the gifts to the priest.\""
+     }
+    ],
+    "shapeFits": true,
+    "shapeNote": "",
+    "verdict": "redraw",
+    "reasons": [
+     "gloss"
+    ],
+    "unverified": false,
+    "modelVerdict": "redraw",
+    "feedback": "Unit 3 says \"an animal under seven days old is tithed, like a firstborn given to a priest\", but the page says \"Just as a firstborn is consecrated before its time and is sacrificed after its time, so too, an animal whose time has not yet arrived is consecrated before its time\". Say what the page says. Unit 3's gloss must state the baraita's actual analogy: an animal whose time has not arrived, like a firstborn, is consecrated before its time and sacrificed after its time, with no mention of priestly gifts. The rest of the cutting (units 1-2 on the two tannaim, unit 4's objection and verbal analogy, units 5-7, and the new mishna in units 8-9) can stand as drawn.",
+    "usage": {
+     "inputTokens": 6196,
+     "outputTokens": 2977
+    }
+   }
+  },
+  "niddah/72": {
+   "key": "niddah/72",
+   "generatedAt": "2026-09-23T03:26:39.291Z",
+   "promptVersion": "2026-09-22.2-a897ca48",
+   "units": 10,
+   "shape": "The close of a mishna on immersing after bleeding, the two houses arguing point by point, Rav Huna's stringency tested, then whether the eleven days come from Sinai.",
+   "judge": {
+    "boundaries": [],
+    "kinds": [],
+    "glosses": [],
+    "shapeFits": true,
+    "shapeNote": "",
+    "verdict": "keep",
+    "reasons": [],
+    "unverified": false,
+    "modelVerdict": "keep",
+    "feedback": "",
+    "usage": {
+     "inputTokens": 9474,
+     "outputTokens": 3623
+    }
+   }
+  },
+  "arakhin/18": {
+   "key": "arakhin/18",
+   "generatedAt": "2026-09-23T03:25:23.193Z",
+   "promptVersion": "2026-09-22.2-a897ca48",
+   "units": 11,
+   "shape": "Leftover discussion of witnesses and the destitute leper, two mishnayot on ages and sex in valuations, then verbal analogies and a baraita counting years day to day.",
+   "judge": {
+    "boundaries": [],
+    "kinds": [
+     {
+      "unit": 11,
+      "is": "question",
+      "was": "dispute",
+      "pageSays": "Rav Yosef said to Abaye: No, we do not disagree; I said one matter and he said one different matter.",
+      "explanation": "The page explicitly denies that Rav and Rav Yosef disagree, so the unit is a question about the baraita's scope, not a dispute."
+     }
+    ],
+    "glosses": [],
+    "shapeFits": true,
+    "shapeNote": "",
+    "verdict": "redraw",
+    "reasons": [
+     "kind"
+    ],
+    "unverified": false,
+    "modelVerdict": "redraw",
+    "feedback": "Unit 11 is dispute on the map but the page shows question: \"Rav Yosef said to Abaye: No, we do not disagree; I said one matter and he said one different matter.\". Keep the unit divisions as they stand, but relabel unit 11 (b-12..b-15): the page has Rav Yosef say \"we do not disagree,\" so it is a question about what the baraita's \"son and daughter\" covers, answered by two complementary applications, not a dispute. Units 1 through 10 fit the page and need no change.",
+    "usage": {
+     "inputTokens": 10392,
+     "outputTokens": 3151
+    }
+   }
+  },
+  "meilah/14": {
+   "key": "meilah/14",
+   "generatedAt": "2026-09-23T03:25:54.717Z",
+   "promptVersion": "2026-09-22.2-a897ca48",
+   "units": 10,
+   "shape": "A dispute over a broken idol tested against the mishna's bird nest, then a new mishna on Temple logs and why building uses non-sacred materials.",
+   "judge": {
+    "boundaries": [],
+    "kinds": [],
+    "glosses": [],
+    "shapeFits": true,
+    "shapeNote": "",
+    "verdict": "keep",
+    "reasons": [],
+    "unverified": false,
+    "modelVerdict": "keep",
+    "feedback": "",
+    "usage": {
+     "inputTokens": 6588,
+     "outputTokens": 1833
+    }
+   }
+  },
+  "keritot/18": {
+   "key": "keritot/18",
+   "generatedAt": "2026-09-23T03:25:48.768Z",
+   "promptVersion": "2026-09-22.2-a897ca48",
+   "units": 11,
+   "shape": "Objections to Rabbi Zeira, then Rav on one or two pieces of fat, then a long argument over whether knowing of an uncertainty divides sins into several offerings.",
+   "judge": {
+    "boundaries": [],
+    "kinds": [],
+    "glosses": [],
+    "shapeFits": true,
+    "shapeNote": "",
+    "verdict": "keep",
+    "reasons": [],
+    "unverified": false,
+    "modelVerdict": "keep",
+    "feedback": "",
+    "usage": {
+     "inputTokens": 12499,
+     "outputTokens": 4567
+    }
+   }
+  },
+  "bekhorot/32": {
+   "key": "bekhorot/32",
+   "generatedAt": "2026-09-23T03:25:04.038Z",
+   "promptVersion": "2026-09-22.2-a897ca48",
+   "units": 10,
+   "shape": "Continued argument over selling animal tithe meat, a long hunt for a spare phrase to license the analogy, Rava's and Rav Ashi's alternatives, then a mishna on who joins.",
+   "judge": {
+    "boundaries": [],
+    "kinds": [],
+    "glosses": [],
+    "shapeFits": true,
+    "shapeNote": "",
+    "verdict": "keep",
+    "reasons": [],
+    "unverified": false,
+    "modelVerdict": "keep",
+    "feedback": "",
+    "usage": {
+     "inputTokens": 10574,
+     "outputTokens": 1758
+    }
+   }
+  },
+  "meilah/17": {
+   "key": "meilah/17",
+   "generatedAt": "2026-09-23T03:25:56.694Z",
+   "promptVersion": "2026-09-22.2-a897ca48",
+   "units": 11,
+   "shape": "A mishna on joining measures of creeping animal blood, a distinction drawn from spilled corpse blood, a long Rome story about nullified decrees, then three more mishnayot on joining.",
+   "judge": {
+    "boundaries": [],
+    "kinds": [],
+    "glosses": [],
+    "shapeFits": false,
+    "shapeNote": "After the Rome story the page has only two mishnayot, at b-8 (\"MISHNA: Sacrificial meat that is piggul\") and b-10 (\"MISHNA: The food that became ritually impure\"), not the three the sentence counts.",
+    "verdict": "redraw",
+    "reasons": [
+     "shape"
+    ],
+    "unverified": false,
+    "modelVerdict": "redraw",
+    "feedback": "The shape sentence misses what the page does: After the Rome story the page has only two mishnayot, at b-8 (\"MISHNA: Sacrificial meat that is piggul\") and b-10 (\"MISHNA: The food that became ritually impure\"), not the three the sentence counts. The shape sentence must match the page's actual count: two mishnayot follow the Rome story, unit 8 (b-8, piggul and notar) and unit 10 (b-10..b-11, first- and second-degree impure foods), each with its own Gemara in units 9 and 11. The unit cuts themselves stand, so keep units 1 through 11 as drawn and only correct the shape sentence.",
+    "usage": {
+     "inputTokens": 8969,
+     "outputTokens": 3162
+    }
+   }
+  },
+  "niddah/28": {
+   "key": "niddah/28",
+   "generatedAt": "2026-09-23T03:26:19.273Z",
+   "promptVersion": "2026-09-22.2-a897ca48",
+   "units": 10,
+   "shape": "A rejected inference about a burned corpse, rulings on discharged limbs and a hand put out, then a mishna on tumtum births and verse pressure on Rav.",
+   "judge": {
+    "boundaries": [],
+    "kinds": [],
+    "glosses": [],
+    "shapeFits": true,
+    "shapeNote": "",
+    "verdict": "keep",
+    "reasons": [],
+    "unverified": false,
+    "modelVerdict": "keep",
+    "feedback": "",
+    "usage": {
+     "inputTokens": 10460,
+     "outputTokens": 3826
+    }
+   }
+  },
+  "keritot/16": {
+   "key": "keritot/16",
+   "generatedAt": "2026-09-23T03:25:47.772Z",
+   "promptVersion": "2026-09-22.2-a897ca48",
+   "units": 9,
+   "shape": "An early teaching split between two tanna'im, five explanations of five guilt offerings, then Rabbi Akiva's Shabbat dilemma reread three ways by Rabba, Abaye and Rav Ḥisda.",
+   "judge": {
+    "boundaries": [],
+    "kinds": [],
+    "glosses": [],
+    "shapeFits": true,
+    "shapeNote": "",
+    "verdict": "keep",
+    "reasons": [],
+    "unverified": false,
+    "modelVerdict": "keep",
+    "feedback": "",
+    "usage": {
+     "inputTokens": 10175,
+     "outputTokens": 2123
+    }
+   }
+  },
+  "temurah/7": {
+   "key": "temurah/7",
+   "generatedAt": "2026-09-23T03:25:32.544Z",
+   "promptVersion": "2026-09-22.2-a897ca48",
+   "units": 9,
+   "shape": "Verses divided up over blood and altars, a fight over animals blemished from birth, Abaye refuted, then a mishna on priests substituting for gifts.",
+   "judge": {
+    "boundaries": [],
+    "kinds": [],
+    "glosses": [],
+    "shapeFits": true,
+    "shapeNote": "",
+    "verdict": "keep",
+    "reasons": [],
+    "unverified": false,
+    "modelVerdict": "keep",
+    "feedback": "",
+    "usage": {
+     "inputTokens": 9906,
+     "outputTokens": 1512
+    }
+   }
+  },
+  "niddah/47": {
+   "key": "niddah/47",
+   "generatedAt": "2026-09-23T03:26:26.299Z",
+   "promptVersion": "2026-09-22.2-a897ca48",
+   "units": 10,
+   "shape": "A leftover argument on whether halla applies by Torah law, then two mishnayot on a girl's stages of maturity, a courtyard digression, and a dispute on counting years.",
+   "judge": {
+    "boundaries": [
+     {
+      "unit": 2,
+      "turnsAt": "a-4",
+      "pageSays": "The Gemara rejects this proof: But perhaps Rabbi Yosei maintains that teruma in the present applies by Torah law and yet ḥalla applies by rabbinic law",
+      "explanation": "The move turns at a-4 with the rejection, and a-5 (\"this answer is as Rav Huna... responded\") only supports that rejection, so unit 2 begins in the middle of it while unit 1 runs past the turn."
+     }
+    ],
+    "kinds": [],
+    "glosses": [],
+    "shapeFits": true,
+    "shapeNote": "",
+    "verdict": "redraw",
+    "reasons": [
+     "boundary"
+    ],
+    "unverified": false,
+    "modelVerdict": "redraw",
+    "feedback": "Unit 2 should begin at a-4, where the page says \"The Gemara rejects this proof: But perhaps Rabbi Yosei maintains that teruma in the present applies by Torah law and yet ḥalla applies by rabbinic law\". Move the line between units 1 and 2 back to a-4, where the page says \"The Gemara rejects this proof,\" so unit 1 holds only the inference from Rabbi Yosei's baraita (a-1..a-3). Unit 2 should then open with that rejection and carry Rav Huna's exchange with the Sages of Rav's study hall (a-4..a-8), since a-5 is explicitly the support for the answer given in a-4.",
+    "usage": {
+     "inputTokens": 10776,
+     "outputTokens": 4188
+    }
+   }
+  },
+  "temurah/24": {
+   "key": "temurah/24",
+   "generatedAt": "2026-09-23T03:25:38.208Z",
+   "promptVersion": "2026-09-22.2-a897ca48",
+   "units": 11,
+   "shape": "Sin offerings kept as backup and whose view says so, then who forbids flaying from the feet, then a mishna on consecrating a fetus.",
+   "judge": {
+    "boundaries": [],
+    "kinds": [],
+    "glosses": [],
+    "shapeFits": true,
+    "shapeNote": "",
+    "verdict": "keep",
+    "reasons": [],
+    "unverified": false,
+    "modelVerdict": "keep",
+    "feedback": "",
+    "usage": {
+     "inputTokens": 10612,
+     "outputTokens": 2604
+    }
+   }
+  },
+  "tamid/30": {
+   "key": "tamid/30",
+   "generatedAt": "2026-09-23T03:26:03.095Z",
+   "promptVersion": "2026-09-22.2-a897ca48",
+   "units": 10,
+   "shape": "The tail of a discussion of beam wood, a dispute over the arrangement's opening, then run of mishnayot from the second lottery through the daily offering's slaughter.",
+   "judge": {
+    "boundaries": [],
+    "kinds": [],
+    "glosses": [
+     {
+      "unit": 8,
+      "claim": "the incense that made Rabbi Elazar ben Diglai's goats sneeze",
+      "pageSays": "Rabbi Elazar ben Diglai said: There were goats belonging to my father that grazed in the cities of Mikhvar",
+      "explanation": "The page attributes the goats to his father, not to Rabbi Elazar ben Diglai himself."
+     }
+    ],
+    "shapeFits": true,
+    "shapeNote": "",
+    "verdict": "redraw",
+    "reasons": [
+     "gloss"
+    ],
+    "unverified": false,
+    "modelVerdict": "redraw",
+    "feedback": "Unit 8 says \"the incense that made Rabbi Elazar ben Diglai's goats sneeze\", but the page says \"Rabbi Elazar ben Diglai said: There were goats belonging to my father that grazed in the cities of Mikhvar\". Say what the page says. The unit divisions and kinds all hold; only unit 8's gloss needs fixing. Say that the goats were Rabbi Elazar ben Diglai's father's, as the page states, rather than his own. Leave units 1 through 7 and 9 through 10 as drawn.",
+    "usage": {
+     "inputTokens": 7411,
+     "outputTokens": 2446
+    }
+   }
+  },
+  "temurah/13": {
+   "key": "temurah/13",
+   "generatedAt": "2026-09-23T03:25:34.171Z",
+   "promptVersion": "2026-09-22.2-a897ca48",
+   "units": 10,
+   "shape": "A leftover measurement, four short readings of the mishna's exclusions, a new mishna on birds and communal offerings, then Rabbi Shimon's animal tithe derivation and an unresolved dilemma.",
+   "judge": {
+    "boundaries": [],
+    "kinds": [],
+    "glosses": [],
+    "shapeFits": true,
+    "shapeNote": "",
+    "verdict": "keep",
+    "reasons": [],
+    "unverified": false,
+    "modelVerdict": "keep",
+    "feedback": "",
+    "usage": {
+     "inputTokens": 9891,
+     "outputTokens": 3376
+    }
+   }
+  },
+  "meilah/21": {
+   "key": "meilah/21",
+   "generatedAt": "2026-09-23T03:25:57.807Z",
+   "promptVersion": "2026-09-22.2-a897ca48",
+   "units": 9,
+   "shape": "Two mishnayot on agents who stray from instructions, with rounds of contradiction and resolution, then a mishna on deposits and a consecrated peruta lost in a purse.",
+   "judge": {
+    "boundaries": [],
+    "kinds": [],
+    "glosses": [],
+    "shapeFits": true,
+    "shapeNote": "",
+    "verdict": "keep",
+    "reasons": [],
+    "unverified": false,
+    "modelVerdict": "keep",
+    "feedback": "",
+    "usage": {
+     "inputTokens": 8573,
+     "outputTokens": 1840
+    }
+   }
+  },
+  "bekhorot/6": {
+   "key": "bekhorot/6",
+   "generatedAt": "2026-09-23T00:08:11.943Z",
+   "promptVersion": "2026-09-22.2-a897ca48",
+   "units": 11,
+   "shape": "A run of verse readings on which animals count as firstborns, dilemmas about offspring that look like another species, then camel's milk, Shimon HaAmasoni, and proofs that milk is food.",
+   "judge": {
+    "boundaries": [],
+    "kinds": [],
+    "glosses": [],
+    "shapeFits": true,
+    "shapeNote": "",
+    "verdict": "keep",
+    "reasons": [],
+    "unverified": false,
+    "modelVerdict": "keep",
+    "feedback": "",
+    "usage": {
+     "inputTokens": 11678,
+     "outputTokens": 2722
+    }
+   }
+  },
+  "tamid/33": {
+   "key": "tamid/33",
+   "generatedAt": "2026-09-23T03:26:03.565Z",
+   "promptVersion": "2026-09-22.2-a897ca48",
+   "units": 9,
+   "shape": "Almost entirely mishna: coals brought in and incense burned, the High Priest escorted, blessing and pouring the libation, closing with the psalm of each day.",
+   "judge": {
+    "boundaries": [],
+    "kinds": [],
+    "glosses": [],
+    "shapeFits": true,
+    "shapeNote": "",
+    "verdict": "keep",
+    "reasons": [],
+    "unverified": false,
+    "modelVerdict": "keep",
+    "feedback": "",
+    "usage": {
+     "inputTokens": 8011,
+     "outputTokens": 2309
+    }
+   }
+  },
+  "temurah/8": {
+   "key": "temurah/8",
+   "generatedAt": "2026-09-23T03:25:32.111Z",
+   "promptVersion": "2026-09-22.2-a897ca48",
+   "units": 8,
+   "shape": "Four early teachings pressed one by one on whether priests own an unblemished firstborn while the Temple stands, then selling rules and a meal at Rav Ashi's.",
+   "judge": {
+    "boundaries": [],
+    "kinds": [],
+    "glosses": [],
+    "shapeFits": true,
+    "shapeNote": "",
+    "verdict": "keep",
+    "reasons": [],
+    "unverified": false,
+    "modelVerdict": "keep",
+    "feedback": "",
+    "usage": {
+     "inputTokens": 9073,
+     "outputTokens": 2614
+    }
+   }
+  },
+  "arakhin/30": {
+   "key": "arakhin/30",
+   "generatedAt": "2026-09-23T03:25:28.448Z",
+   "promptVersion": "2026-09-22.2-a897ca48",
+   "units": 12,
+   "shape": "A lingering penalty dispute, then a mishna on redeeming sold ancestral land, whose leniency for the seller is traced through Hebrew slave verses to Temple fields.",
+   "judge": {
+    "boundaries": [],
+    "kinds": [],
+    "glosses": [],
+    "shapeFits": true,
+    "shapeNote": "",
+    "verdict": "keep",
+    "reasons": [],
+    "unverified": false,
+    "modelVerdict": "keep",
+    "feedback": "",
+    "usage": {
+     "inputTokens": 12112,
+     "outputTokens": 4036
+    }
+   }
+  },
+  "niddah/21": {
+   "key": "niddah/21",
+   "generatedAt": "2026-09-23T03:26:15.463Z",
+   "promptVersion": "2026-09-22.2-a897ca48",
+   "units": 10,
+   "shape": "A mishna on discharged tissue, two versions of one argument over Rabbi Yehuda's impurity, a run of baraitot about cutting the tissue open, then blood through a tube.",
+   "judge": {
+    "boundaries": [],
+    "kinds": [],
+    "glosses": [],
+    "shapeFits": true,
+    "shapeNote": "",
+    "verdict": "keep",
+    "reasons": [],
+    "unverified": false,
+    "modelVerdict": "keep",
+    "feedback": "",
+    "usage": {
+     "inputTokens": 11078,
+     "outputTokens": 2163
+    }
+   }
+  },
+  "bekhorot/56": {
+   "key": "bekhorot/56",
+   "generatedAt": "2026-09-23T03:25:14.757Z",
+   "promptVersion": "2026-09-22.2-a897ca48",
+   "units": 9,
+   "shape": "Verse-work exempting purchased animals from animal tithe, fetuses bought in the womb, a prostitute's payment, then a mishna on brothers as partners and disputes over dividing the estate.",
+   "judge": {
+    "boundaries": [],
+    "kinds": [],
+    "glosses": [],
+    "shapeFits": true,
+    "shapeNote": "",
+    "verdict": "keep",
+    "reasons": [],
+    "unverified": false,
+    "modelVerdict": "keep",
+    "feedback": "",
+    "usage": {
+     "inputTokens": 9244,
+     "outputTokens": 2166
+    }
+   }
+  },
+  "bekhorot/53": {
+   "key": "bekhorot/53",
+   "generatedAt": "2026-09-23T03:25:13.099Z",
+   "promptVersion": "2026-09-22.2-a897ca48",
+   "units": 8,
+   "shape": "A mishna on where animal tithe applies, then why no one separates it now, why dedicated animals are exempt from tithing, and how old and new flocks stay apart.",
+   "judge": {
+    "boundaries": [],
+    "kinds": [],
+    "glosses": [],
+    "shapeFits": true,
+    "shapeNote": "",
+    "verdict": "keep",
+    "reasons": [],
+    "unverified": false,
+    "modelVerdict": "keep",
+    "feedback": "",
+    "usage": {
+     "inputTokens": 9156,
+     "outputTokens": 2224
+    }
+   }
+  },
+  "bekhorot/44": {
+   "key": "bekhorot/44",
+   "generatedAt": "2026-09-23T03:25:12.536Z",
+   "promptVersion": "2026-09-22.2-a897ca48",
+   "units": 14,
+   "shape": "Three mishnayot of priestly blemishes, eyes, ears, belly and testicles, each parsed by baraita and verse, with a long digression on not holding back urine.",
+   "judgeError": "unparseable output"
+  },
+  "arakhin/22": {
+   "key": "arakhin/22",
+   "generatedAt": "2026-09-23T03:25:25.773Z",
+   "promptVersion": "2026-09-22.2-a897ca48",
+   "units": 11,
+   "shape": "A dispute over how long a sale is announced opens onto when courts sell minor orphans' land for debts, tested against several teachings, then settled.",
+   "judge": {
+    "boundaries": [],
+    "kinds": [],
+    "glosses": [],
+    "shapeFits": true,
+    "shapeNote": "",
+    "verdict": "keep",
+    "reasons": [],
+    "unverified": false,
+    "modelVerdict": "keep",
+    "feedback": "",
+    "usage": {
+     "inputTokens": 11284,
+     "outputTokens": 2104
+    }
+   }
+  },
+  "keritot/22": {
+   "key": "keritot/22",
+   "generatedAt": "2026-09-23T03:25:50.283Z",
+   "promptVersion": "2026-09-22.2-a897ca48",
+   "units": 9,
+   "shape": "The last of the blood prohibitions, human, heart and spurting blood, then a mishna and a long verse argument about offerings for uncertain misuse of Temple property.",
+   "judge": {
+    "boundaries": [],
+    "kinds": [],
+    "glosses": [],
+    "shapeFits": true,
+    "shapeNote": "",
+    "verdict": "keep",
+    "reasons": [],
+    "unverified": false,
+    "modelVerdict": "keep",
+    "feedback": "",
+    "usage": {
+     "inputTokens": 12673,
+     "outputTokens": 2416
+    }
+   }
+  },
+  "keritot/24": {
+   "key": "keritot/24",
+   "generatedAt": "2026-09-23T03:25:50.675Z",
+   "promptVersion": "2026-09-22.2-a897ca48",
+   "units": 10,
+   "shape": "A chain of rulings on the animal brought for a possible sin, a detour into refused gifts and seized property, then the mishna's burning and burial clashes.",
+   "judge": {
+    "boundaries": [],
+    "kinds": [],
+    "glosses": [],
+    "shapeFits": true,
+    "shapeNote": "",
+    "verdict": "keep",
+    "reasons": [],
+    "unverified": false,
+    "modelVerdict": "keep",
+    "feedback": "",
+    "usage": {
+     "inputTokens": 9741,
+     "outputTokens": 3122
+    }
+   }
+  },
+  "keritot/3": {
+   "key": "keritot/3",
+   "generatedAt": "2026-09-23T03:25:42.647Z",
+   "promptVersion": "2026-09-22.2-a897ca48",
+   "units": 11,
+   "shape": "A run of counting problems in the karet list: why a sister's verse repeats, whose transgressions are tallied, Shabbat and idolatry as categories, and the missing sorcerer.",
+   "judge": {
+    "boundaries": [],
+    "kinds": [],
+    "glosses": [],
+    "shapeFits": true,
+    "shapeNote": "",
+    "verdict": "keep",
+    "reasons": [],
+    "unverified": false,
+    "modelVerdict": "keep",
+    "feedback": "",
+    "usage": {
+     "inputTokens": 15880,
+     "outputTokens": 3922
+    }
+   }
+  },
+  "bekhorot/46": {
+   "key": "bekhorot/46",
+   "generatedAt": "2026-09-23T03:25:08.966Z",
+   "promptVersion": "2026-09-22.2-a897ca48",
+   "units": 9,
+   "shape": "A vow ruling closes the previous mishna, then a new mishna's four firstborn categories, Shmuel refuted over the emerged head, and a forehead dispute left mid-answer.",
+   "judge": {
+    "boundaries": [],
+    "kinds": [],
+    "glosses": [],
+    "shapeFits": true,
+    "shapeNote": "",
+    "verdict": "keep",
+    "reasons": [],
+    "unverified": false,
+    "modelVerdict": "keep",
+    "feedback": "",
+    "usage": {
+     "inputTokens": 7783,
+     "outputTokens": 1325
+    }
+   }
+  },
+  "arakhin/24": {
+   "key": "arakhin/24",
+   "generatedAt": "2026-09-23T03:25:26.336Z",
+   "promptVersion": "2026-09-22.2-a897ca48",
+   "units": 10,
+   "shape": "Gemara finishes the mishna on what a debtor keeps, a story about phylacteries, a new mishna on ancestral fields, then Rav against Shmuel on the Jubilee.",
+   "judge": {
+    "boundaries": [],
+    "kinds": [],
+    "glosses": [],
+    "shapeFits": true,
+    "shapeNote": "",
+    "verdict": "keep",
+    "reasons": [],
+    "unverified": false,
+    "modelVerdict": "keep",
+    "feedback": "",
+    "usage": {
+     "inputTokens": 8946,
+     "outputTokens": 1763
+    }
+   }
+  },
+  "niddah/36": {
+   "key": "niddah/36",
+   "generatedAt": "2026-09-23T03:26:22.002Z",
+   "promptVersion": "2026-09-22.2-a897ca48",
+   "units": 10,
+   "shape": "Four challenges to Levi and Rav about where blood comes from, a ruling for Rav, then a mishna on labor bleeding and a fatal quarrel.",
+   "judge": {
+    "boundaries": [],
+    "kinds": [],
+    "glosses": [],
+    "shapeFits": true,
+    "shapeNote": "",
+    "verdict": "keep",
+    "reasons": [],
+    "unverified": false,
+    "modelVerdict": "keep",
+    "feedback": "",
+    "usage": {
+     "inputTokens": 10774,
+     "outputTokens": 2937
+    }
+   }
+  },
+  "bekhorot/22": {
+   "key": "bekhorot/22",
+   "generatedAt": "2026-09-23T03:25:00.526Z",
+   "promptVersion": "2026-09-22.2-a897ca48",
+   "units": 8,
+   "shape": "An answer about burial, Rabbi Yoḥanan's nullification, skein measures for a fetus's head, fish brine purified in a ritual bath, and whether nullified impurity revives.",
+   "judge": {
+    "boundaries": [],
+    "kinds": [],
+    "glosses": [],
+    "shapeFits": true,
+    "shapeNote": "",
+    "verdict": "keep",
+    "reasons": [],
+    "unverified": true,
+    "modelVerdict": "redraw",
+    "feedback": "",
+    "usage": {
+     "inputTokens": 5801,
+     "outputTokens": 4254
+    }
+   }
+  },
+  "niddah/4": {
+   "key": "niddah/4",
+   "generatedAt": "2026-09-23T03:26:06.708Z",
+   "promptVersion": "2026-09-22.2-a897ca48",
+   "units": 9,
+   "shape": "Three rescues of Ḥizkiyya's basket, a long run of objections over whether impurity moved place to place, then the Rabbis' twenty-four hours and Rabbi Dosa's fixed cycle.",
+   "judge": {
+    "boundaries": [],
+    "kinds": [],
+    "glosses": [],
+    "shapeFits": true,
+    "shapeNote": "",
+    "verdict": "keep",
+    "reasons": [],
+    "unverified": false,
+    "modelVerdict": "keep",
+    "feedback": "",
+    "usage": {
+     "inputTokens": 10009,
+     "outputTokens": 3148
+    }
+   }
+  },
+  "bekhorot/57": {
+   "key": "bekhorot/57",
+   "generatedAt": "2026-09-23T03:25:15.214Z",
+   "promptVersion": "2026-09-22.2-a897ca48",
+   "units": 10,
+   "shape": "Leftover argument about brothers dividing an inheritance, then a mishna listing animals kept out of the tithe pen, testimonies of marvels, and a mishna of gathering dates.",
+   "judge": {
+    "boundaries": [],
+    "kinds": [],
+    "glosses": [],
+    "shapeFits": true,
+    "shapeNote": "",
+    "verdict": "keep",
+    "reasons": [],
+    "unverified": false,
+    "modelVerdict": "keep",
+    "feedback": "",
+    "usage": {
+     "inputTokens": 9600,
+     "outputTokens": 1597
+    }
+   }
+  },
+  "arakhin/5": {
+   "key": "arakhin/5",
+   "generatedAt": "2026-09-23T03:25:18.392Z",
+   "promptVersion": "2026-09-22.2-a897ca48",
+   "units": 10,
+   "shape": "A baraita on consecrating one limb, Abaye pressing Rava, three unresolved dilemmas, then two mishnas: a newborn's valuation and whether gentiles vow valuations.",
+   "judge": {
+    "boundaries": [
+     {
+      "unit": 7,
+      "turnsAt": "b-3",
+      "pageSays": "In accordance with whose opinion is that which Rabba bar Yosef says that Rav says, and some say that Rav Yeiva bar Yosei says",
+      "explanation": "Unit 7 begins at b-1, which is still the utensil/child discussion of Rav Giddel's ruling from unit 6; the move to consecrating another's animal turns only at b-3."
+     }
+    ],
+    "kinds": [],
+    "glosses": [
+     {
+      "unit": 2,
+      "claim": "Abaye presses Rava four times on whether consecrating an animal's head for its value sanctifies the whole animal.",
+      "pageSays": "This presents a difficulty for Rava, who holds that the baraita that discusses consecration of the head is referring to items consecrated",
+      "explanation": "Abaye speaks only three times (a-6, a-8, a-10); the first challenge at a-4 is the Gemara's, not Abaye's."
+     }
+    ],
+    "shapeFits": true,
+    "shapeNote": "",
+    "verdict": "redraw",
+    "reasons": [
+     "boundary",
+     "gloss"
+    ],
+    "unverified": false,
+    "modelVerdict": "redraw",
+    "feedback": "Unit 7 should begin at b-3, where the page says \"In accordance with whose opinion is that which Rabba bar Yosef says that Rav says, and some say that Rav Yeiva bar Yosei says\". Unit 2 says \"Abaye presses Rava four times on whether consecrating an animal's head for its value sanctifies the whole animal.\", but the page says \"This presents a difficulty for Rava, who holds that the baraita that discusses consecration of the head is referring to items consecrated\". Say what the page says. Move the boundary between units 6 and 7 to b-3: b-1 and b-2 are the continuation of the utensil discussion of Rav Giddel's ruling and belong with unit 6, while unit 7 should cover only b-3 to b-6 on consecrating another's animal. Fix unit 2's gloss so it counts Abaye's three challenges (a-6, a-8, a-10) and does not attribute the anonymous difficulty at a-4 to him.",
+    "usage": {
+     "inputTokens": 10269,
+     "outputTokens": 3557
+    }
+   }
+  },
+  "tamid/31": {
+   "key": "tamid/31",
+   "generatedAt": "2026-09-23T03:26:01.930Z",
+   "promptVersion": "2026-09-22.2-a897ca48",
+   "units": 8,
+   "shape": "Mishna's step-by-step flaying and the nine priests on the ramp, then Gemara on binding, the Temple's tables, the two rings, and Alexander's questions.",
+   "judge": {
+    "boundaries": [],
+    "kinds": [],
+    "glosses": [],
+    "shapeFits": true,
+    "shapeNote": "",
+    "verdict": "keep",
+    "reasons": [],
+    "unverified": false,
+    "modelVerdict": "keep",
+    "feedback": "",
+    "usage": {
+     "inputTokens": 7332,
+     "outputTokens": 1063
+    }
+   }
+  },
+  "niddah/22": {
+   "key": "niddah/22",
+   "generatedAt": "2026-09-23T03:26:16.655Z",
+   "promptVersion": "2026-09-22.2-a897ca48",
+   "units": 11,
+   "shape": "A dispute over blood in discharged tissue, a dilemma about extracted semen, dry blood tested in water, incidents from Tivin, and animal forms compared to man.",
+   "judge": {
+    "boundaries": [],
+    "kinds": [],
+    "glosses": [],
+    "shapeFits": true,
+    "shapeNote": "",
+    "verdict": "keep",
+    "reasons": [],
+    "unverified": false,
+    "modelVerdict": "keep",
+    "feedback": "",
+    "usage": {
+     "inputTokens": 9823,
+     "outputTokens": 1983
+    }
+   }
+  },
+  "niddah/55": {
+   "key": "niddah/55",
+   "generatedAt": "2026-09-23T03:26:31.513Z",
+   "promptVersion": "2026-09-22.2-a897ca48",
+   "units": 12,
+   "shape": "An objection about blood under a heavy stone, then verse hunts for dry corpse flesh, ziva, saliva and nasal fluids, closing with the zav's nine fluids.",
+   "judge": {
+    "boundaries": [],
+    "kinds": [],
+    "glosses": [],
+    "shapeFits": true,
+    "shapeNote": "",
+    "verdict": "keep",
+    "reasons": [],
+    "unverified": false,
+    "modelVerdict": "keep",
+    "feedback": "",
+    "usage": {
+     "inputTokens": 11078,
+     "outputTokens": 2329
+    }
+   }
+  },
+  "kinnim/25": {
+   "key": "kinnim/25",
+   "generatedAt": "2026-09-23T03:25:59.781Z",
+   "promptVersion": "2026-09-22.2-a897ca48",
+   "units": 2,
+   "shape": "The last daf of the tractate is Mishnah alone: one ruling on mixed bird offerings, then the tangled count of a woman's vow, ending in two sayings.",
+   "judge": {
+    "boundaries": [],
+    "kinds": [],
+    "glosses": [],
+    "shapeFits": true,
+    "shapeNote": "",
+    "verdict": "keep",
+    "reasons": [],
+    "unverified": false,
+    "modelVerdict": "keep",
+    "feedback": "",
+    "usage": {
+     "inputTokens": 3600,
+     "outputTokens": 676
+    }
+   }
+  },
+  "niddah/15": {
+   "key": "niddah/15",
+   "generatedAt": "2026-09-23T03:26:12.704Z",
+   "promptVersion": "2026-09-22.2-a897ca48",
+   "units": 10,
+   "shape": "A baraita on how soon she examines herself, an objection to Rav Ashi, a dispute over blood stains, then a mishna on presumed purity and two challenges to uncertainty.",
+   "judge": {
+    "boundaries": [],
+    "kinds": [],
+    "glosses": [],
+    "shapeFits": true,
+    "shapeNote": "",
+    "verdict": "keep",
+    "reasons": [],
+    "unverified": false,
+    "modelVerdict": "keep",
+    "feedback": "",
+    "usage": {
+     "inputTokens": 9399,
+     "outputTokens": 1757
+    }
+   }
+  },
+  "temurah/30": {
+   "key": "temurah/30",
+   "generatedAt": "2026-09-23T03:25:40.787Z",
+   "promptVersion": "2026-09-22.2-a897ca48",
+   "units": 11,
+   "shape": "Leftover talk of payment to a prostitute, two mishnayot on the price of a dog and on flour and birds, and a closing dispute about offspring.",
+   "judge": {
+    "boundaries": [
+     {
+      "unit": 9,
+      "turnsAt": "b-14",
+      "pageSays": "this excludes a red heifer, which is not brought to the House of the Lord, i.e., the Temple, but is slaughtered outside Jerusalem",
+      "explanation": "Unit 9 ends the Beit Shammai/Beit Hillel debate on physically changed items at b-13, then runs on into a separate baraita dispute (Rabbi Elazar vs. the Rabbis on the red heifer and beaten gold plates) that b-14–b-15 develop on its own."
+     }
+    ],
+    "kinds": [],
+    "glosses": [],
+    "shapeFits": true,
+    "shapeNote": "",
+    "verdict": "redraw",
+    "reasons": [
+     "boundary"
+    ],
+    "unverified": false,
+    "modelVerdict": "redraw",
+    "feedback": "Unit 9 should begin at b-14, where the page says \"this excludes a red heifer, which is not brought to the House of the Lord, i.e., the Temple, but is slaughtered outside Jerusalem\". Unit 9 should stop at b-13, where the Beit Shammai/Beit Hillel dispute over items that underwent physical change closes with \"The word “even” is in fact difficult according to Beit Hillel.\" Segments b-14–b-15, the baraita on whether the verse excludes the red heifer or includes beaten plates of gold, with Rav Ḥisda identifying the Rabbis as Rabbi Yosei bar Yehuda, belong in their own unit. The rest of the map, including units 1–8, 10 and 11, can stand as drawn.",
+    "usage": {
+     "inputTokens": 11527,
+     "outputTokens": 2492
+    }
+   }
+  },
+  "niddah/11": {
+   "key": "niddah/11",
+   "generatedAt": "2026-09-23T03:26:10.591Z",
+   "promptVersion": "2026-09-22.2-a897ca48",
+   "units": 10,
+   "shape": "A dispute over the second sighting, Rav Huna on jumping, then a mishna on daily examinations taken apart clause by clause, with Shmuel closing.",
+   "judge": {
+    "boundaries": [],
+    "kinds": [],
+    "glosses": [],
+    "shapeFits": true,
+    "shapeNote": "",
+    "verdict": "keep",
+    "reasons": [],
+    "unverified": false,
+    "modelVerdict": "keep",
+    "feedback": "",
+    "usage": {
+     "inputTokens": 9584,
+     "outputTokens": 2247
+    }
+   }
+  },
+  "niddah/41": {
+   "key": "niddah/41",
+   "generatedAt": "2026-09-23T03:26:23.816Z",
+   "promptVersion": "2026-09-22.2-a897ca48",
+   "units": 10,
+   "shape": "A baraita on caesarean-born animals unfit for the altar, then bleeding at a caesarean birth, where uterine blood turns impure, and semen still inside the body.",
+   "judge": {
+    "boundaries": [],
+    "kinds": [],
+    "glosses": [],
+    "shapeFits": true,
+    "shapeNote": "",
+    "verdict": "keep",
+    "reasons": [],
+    "unverified": false,
+    "modelVerdict": "keep",
+    "feedback": "",
+    "usage": {
+     "inputTokens": 9632,
+     "outputTokens": 2936
     }
    }
   }
