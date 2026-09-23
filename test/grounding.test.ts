@@ -35,6 +35,9 @@ describe("grounding", () => {
     expect(r.ok).toBe(false);
     expect(r.problems.some((p) => p.includes("quoted phrase not found"))).toBe(true);
   });
+  it("does not mistake the end of a sage's name for an article", () => {
+    expect(articleSlips("Rav Aḥa asks why, and Rabbi Ḥiyya answers; a uprooted tree stands.")).toEqual(["a uprooted"]);
+  });
   it("lets a direct object satisfy 'exempt' only when asked to (the map's glosses)", () => {
     const verb = "the Levites' sheep exempted the Israelites' donkeys, and Abaye's inference would exempt their own.";
     expect(danglingLegalVerbs(verb).length).toBe(2);

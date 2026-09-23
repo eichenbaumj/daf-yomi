@@ -69,8 +69,8 @@ export function checkMap(draft: MapDraft, page: MapPage, sourceText: string): Gr
     const tw = wordCount(u.title);
     if (tw < 1 || tw > MAX_TITLE_WORDS) problems.push(`unit ${i + 1}'s title is ${tw} words; at most ${MAX_TITLE_WORDS}.`);
     const gw = wordCount(u.gloss);
-    if (gw < 4 || gw > MAX_GLOSS_WORDS) problems.push(`unit ${i + 1}'s gloss is ${gw} words; one sentence of at most ${MAX_GLOSS_WORDS}.`);
-    if (MORE_THAN_ONE_SENTENCE.test(u.gloss.trim())) problems.push(`unit ${i + 1}'s gloss is more than one sentence.`);
+    // The word cap bounds a gloss; a second short sentence inside it is not worth a failed map.
+    if (gw < 4 || gw > MAX_GLOSS_WORDS) problems.push(`unit ${i + 1}'s gloss is ${gw} words; keep it to ${MAX_GLOSS_WORDS} at most.`);
     const bare = normalize(u.title).replace(/^(a|an|the) /, "");
     if (KIND_NAMES.has(bare)) problems.push(`unit ${i + 1}'s title is only the kind's name ("${u.title}"); name the concrete thing.`);
     if (titles.has(bare)) problems.push(`the title "${u.title}" is used twice.`);

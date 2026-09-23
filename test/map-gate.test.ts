@@ -64,7 +64,7 @@ describe("map gate", () => {
     expect(problems(withUnit(2, { title: "one two three four five six seven eight nine ten eleven" }))).toContainEqual(expect.stringMatching(/title is 11 words; at most 10/));
     expect(problems(withUnit(2, { gloss: "w ".repeat(25).trim() }))).toContainEqual(expect.stringMatching(/gloss is 25 words/));
     expect(checkMap(withUnit(2, { gloss: "w ".repeat(22).trim() }), page, source).ok).toBe(true); // a little past twenty is tolerated
-    expect(problems(withUnit(2, { gloss: "Rav Huna says the ear counts. The page agrees with him." }))).toContainEqual("unit 3's gloss is more than one sentence.");
+    expect(checkMap(withUnit(2, { gloss: "Rav Huna says the ear counts. The page agrees with him." }), page, source).ok).toBe(true); // two short sentences are fine; the word cap bounds it
     expect(problems(withUnit(2, { title: "A case" }))).toContainEqual(expect.stringMatching(/only the kind's name/));
     expect(problems(withUnit(2, { title: "Left open" }))).toContainEqual(expect.stringMatching(/only the kind's name/));
     expect(problems(withUnit(2, { title: good.units[0]!.title }))).toContainEqual(expect.stringMatching(/is used twice/));

@@ -44,7 +44,9 @@ export function quotedSpans(s: string): string[] {
 const A_BEFORE_VOWEL_OK = /^(one|uni|use|usu|eu|ur[aeiou]|ubi|uti|unani|u\b)/i; // "a one-time", "a university", "a useful", "a European", "a urine"
 export function articleSlips(text: string): string[] {
   const out: string[] = [];
-  for (const m of text.matchAll(/\b(a|an) ([A-Za-z][a-z]+)/g)) {
+  // A Unicode lookbehind rather than \b: \b is ASCII-only, so the "a" that ends "Rav Aḥa" sat at a "word boundary"
+  // after the dotted ḥ and "Rav Aḥa asks" read as the slip "a asks".
+  for (const m of text.matchAll(/(?<![\p{L}\p{M}'’])(a|an) ([A-Za-z][a-z]+)/gu)) {
     const article = m[1]!.toLowerCase();
     const word = m[2]!;
     const vowelStart = /^[aeiou]/i.test(word);
