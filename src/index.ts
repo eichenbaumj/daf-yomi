@@ -431,7 +431,7 @@ async function adminNotePut(request: Request, env: Env, today: Date): Promise<Re
  * The map endpoints (all Bearer <ADMIN_TOKEN>), the note endpoints' contract:
  *   POST /admin/map/bake?slug=&daf=[&force=1]  or ?date=      draw here, two drafts at most, and store
  *   GET  /admin/map?slug=&daf=                                  the stored map and whether it is the current style
- *   POST /admin/map/put  {slug, daf, units, shape, model, promptVersion, usage?, review?, replaces}
+ *   POST /admin/map/put  {slug, daf, units, shape, model, promptVersion, usage?, review?, replaces, override?}
  *        store a map drawn offline (scripts/maps-backfill.ts via the Batch API): checked here again against the
  *        page, refused when its style is not the current one, refused unless `replaces` is the stored map's
  *        generatedAt (or null), generatedAt/sources/segmentCounts set here, 429 kind "kv-budget" on the KV limit.
@@ -468,7 +468,8 @@ async function adminMap(request: Request, env: Env, today: Date, action: "bake" 
   const draft = { units, shape: String(body?.shape ?? "") };
   const ref = dafForDate(dateForDaf(t, daf, dafForDate(today).cycle));
   const { input, sources, sourceText } = await buildMapInput(ref, env.DAF_KV);
-  const check = checkMap(draft, input, sourceText);
+  // `override: true` (a hand-reviewed map Joe accepted as it is) skips the wording rules; the structure is always checked.
+  const check = checkMap(draft, input, sourceText, { lexical: body?.override !== true });
   if (!check.ok) return new Response(JSON.stringify({ status: "rejected", problems: check.problems }), { status: 422, headers: JSON_H });
   const map: DafMap = {
     ...draft, model: String(body?.model ?? env.NOTE_MODEL ?? "claude-opus-5"), promptVersion: hashMapPrompt(), generatedAt: new Date().toISOString(), sources,

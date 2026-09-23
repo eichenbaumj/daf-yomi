@@ -24,7 +24,11 @@ const MORE_THAN_ONE_SENTENCE = /[.!?]\s+["“]?[A-Z]/;
 
 export interface MapPage { sections: MapSection[]; cues: Cue[] }
 
-export function checkMap(draft: MapDraft, page: MapPage, sourceText: string): GroundingResult {
+/**
+ * `lexical: false` keeps the structural checks (the units chain, the marks begin units, the kinds, the caps) and skips
+ * the wording rules: the hand override on /admin/map/put, for a page Joe has read and accepted as it is.
+ */
+export function checkMap(draft: MapDraft, page: MapPage, sourceText: string, opts: { lexical?: boolean } = {}): GroundingResult {
   const problems: string[] = [];
   const src = normalize(sourceText);
   const ids = segmentIds(page.sections);
@@ -82,6 +86,8 @@ export function checkMap(draft: MapDraft, page: MapPage, sourceText: string): Gr
   if (sw < 8 || sw > MAX_SHAPE_WORDS) problems.push(`the shape sentence is ${sw} words; one sentence of 8 to ${MAX_SHAPE_WORDS}.`);
   if (MORE_THAN_ONE_SENTENCE.test(draft.shape.trim())) problems.push("the shape is more than one sentence.");
   if (/^(in this daf|this page|today's page|on this daf)/i.test(draft.shape.trim())) problems.push("do not open the shape with 'This page' or 'In this daf'.");
+
+  if (opts.lexical === false) return { ok: problems.length === 0, problems };
 
   // 5. The note's rules, per unit so the feedback names the line to fix (the second draft of the first live map
   // fixed thirteen problems and left two it could not place), then over the whole map for what is map-wide.

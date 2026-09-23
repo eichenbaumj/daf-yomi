@@ -92,6 +92,10 @@ describe("map gate", () => {
     expect(problems(withUnit(2, { gloss: "Rav Huna says the ear counts, so the donkey is exempt." }))).toContainEqual(expect.stringMatching(/^unit 3: legal verb left hanging/));
     expect(checkMap(withUnit(2, { gloss: "Rav Huna says the ear exempts the Israelites' donkeys from the priest's claim." }), page, source).ok).toBe(true); // a direct object satisfies the map's rule
   });
+  it("with lexical: false keeps the structure and lets the wording through (the hand override)", () => {
+    expect(checkMap(withUnit(2, { gloss: "Rav Huna says the ear counts — so the donkey is exempt." }), page, source, { lexical: false }).ok).toBe(true);
+    expect(checkMap(withUnit(1, { from: "a-3" }), page, source, { lexical: false }).ok).toBe(false);
+  });
   it("counts a term glossed once anywhere in the map", () => {
     const glossedOnce = withUnit(1, { gloss: "The Gemara asks why the mishna needs every case, like teruma, the priest's share of the crop, needs a rule." });
     const laterBare = { ...glossedOnce, units: glossedOnce.units.map((u, j) => (j === 3 ? { ...u, gloss: "Rav Ḥisda wants a part the animal cannot live without, as with teruma." } : u)) };
