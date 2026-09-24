@@ -9,7 +9,8 @@ import type { SubscriberRow } from "../newsletter/db";
 
 export const CONSENT_VERSION = "2026-09-v2";
 
-const TZ_SCRIPT = `<script>try{var z=Intl.DateTimeFormat().resolvedOptions().timeZone,s=document.querySelector('select[name=tz]');if(z&&s&&!s.dataset.chosen){if(![].some.call(s.options,function(o){return o.value===z})){var o=document.createElement('option');o.value=z;o.textContent=z;s.appendChild(o)}s.value=z}}catch(e){}try{var q=sessionStorage.getItem("daf:src"),f=document.querySelector('input[name=src]');if(q&&f&&!f.value)f.value=q}catch(e){}</script>`;
+/** Runs once the form exists (it is placed in <head>): the browser's zone into the select, the campaign tag into the hidden field. */
+const TZ_SCRIPT = `<script>document.addEventListener('DOMContentLoaded',function(){try{var z=Intl.DateTimeFormat().resolvedOptions().timeZone,s=document.querySelector('select[name=tz]');if(z&&s&&!s.dataset.chosen){if(![].some.call(s.options,function(o){return o.value===z})){var o=document.createElement('option');o.value=z;o.textContent=z;s.appendChild(o)}s.value=z}}catch(e){}try{var q=sessionStorage.getItem("daf:src"),f=document.querySelector('input[name=src]');if(q&&f&&!f.value)f.value=q}catch(e){}})</script>`;
 
 function tzSelect(options: string[], selected: string, chosen = false): string {
   const all = options.includes(selected) ? options : [...options, selected];
