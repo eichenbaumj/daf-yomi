@@ -22,7 +22,7 @@ import { getNote } from "../note/store";
 import { d1NewsletterDb, type Edition, type NewsletterDb, type Variant } from "./db";
 import { buildEdition, runSendTick } from "./send";
 import { issueHeaders, resendProvider } from "./resend";
-import { emailHash, looksLikeEmail, normalizeEmail, randomHex, signConfirmToken, timingSafeEqual, verifyConfirmToken, CONFIRM_TOKEN_TTL_MS } from "./tokens";
+import { emailHash, ipHash, looksLikeEmail, normalizeEmail, randomHex, signConfirmToken, timingSafeEqual, verifyConfirmToken, CONFIRM_TOKEN_TTL_MS } from "./tokens";
 import { TIMEZONES, isValidTimezone } from "./timezones";
 import { applyResendEvent, verifySvix } from "./webhooks";
 import { siteOrigin } from "./origin";
@@ -88,11 +88,12 @@ async function verifyTurnstile(secret: string, token: string, ip: string | null)
 }
 
 /** Per-IP limit: the Rate Limiting binding when bound, otherwise an edge-cache counter (per data centre, which is fine). */
-async function ipAllowed(env: Env, ip: string): Promise<boolean> {
+/** `ipKey` is the HMAC of the address (tokens.ts ipHash), not the address. */
+async function ipAllowed(env: Env, ipKey: string): Promise<boolean> {
   if (env.SUBSCRIBE_RL) {
-    try { return (await env.SUBSCRIBE_RL.limit({ key: ip })).success; } catch { /* fall through */ }
+    try { return (await env.SUBSCRIBE_RL.limit({ key: ipKey })).success; } catch { /* fall through */ }
   }
-  const key = `rl:sub:${ip}`;
+  const key = `rl:sub:${ipKey}`;
   const n = (await edgeGet<number>(key)) ?? 0;
   if (n >= IP_LIMIT) return false;
   await edgePut(key, n + 1, IP_WINDOW_S);
@@ -116,8 +117,11 @@ async function subscribe(request: Request, env: Env, origin: string, db: Newslet
 
   // Bots that fill the hidden field get the same friendly page and nothing is sent.
   if (field("website")) return noStore(renderCheckInbox(env, origin));
+  // The IP is read for two things and never written anywhere: a ten-minute attempt limit keyed by an HMAC of it,
+  // and Turnstile's own check. The privacy page says exactly this.
   const ip = request.headers.get("cf-connecting-ip") ?? "unknown";
-  if (!(await ipAllowed(env, ip))) return again("Too many attempts from this connection. Wait ten minutes and try again.", 429);
+  const ipKey = env.TOKEN_HMAC_SECRET ? await ipHash(env.TOKEN_HMAC_SECRET, ip) : "unkeyed";
+  if (!(await ipAllowed(env, ipKey))) return again("Too many attempts from this connection. Wait ten minutes and try again.", 429);
 
   const email = normalizeEmail(state.email ?? "");
   if (!looksLikeEmail(email)) return again("That does not look like an email address.");

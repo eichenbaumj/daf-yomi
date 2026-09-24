@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { base64url, emailHash, fromBase64url, looksLikeEmail, normalizeEmail, randomHex, signConfirmToken, timingSafeEqual, verifyConfirmToken, type ConfirmPayload } from "../src/newsletter/tokens";
+import { base64url, emailHash, fromBase64url, ipHash, looksLikeEmail, normalizeEmail, randomHex, signConfirmToken, timingSafeEqual, verifyConfirmToken, type ConfirmPayload } from "../src/newsletter/tokens";
 
 const secret = "test-secret-0123456789abcdef";
 const payload: ConfirmPayload = { email: "reader@example.test", tz: "America/New_York", hour: 6, edition: "today", hold: 0, consent: "2026-09-v1", exp: Date.now() + 60_000, nonce: "abc" };
@@ -32,6 +32,14 @@ describe("tokens", () => {
     const h = randomHex(24);
     expect(h).toMatch(/^[0-9a-f]{48}$/);
     expect(randomHex(24)).not.toBe(h);
+  });
+  it("hashes an IP one way, so the rate limit never keys on the address itself", async () => {
+    const a = await ipHash(secret, "203.0.113.7");
+    expect(a).toBe(await ipHash(secret, "203.0.113.7"));
+    expect(a).not.toBe(await ipHash(secret, "203.0.113.8"));
+    expect(a).not.toBe(await ipHash("other", "203.0.113.7"));
+    expect(a).not.toContain("203.0.113");
+    expect(a).not.toBe(await emailHash(secret, "203.0.113.7")); // a different domain of the same secret
   });
   it("hashes addresses case-insensitively and deterministically", async () => {
     const a = await emailHash(secret, "Reader@Example.test ");

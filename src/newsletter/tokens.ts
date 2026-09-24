@@ -55,6 +55,10 @@ export function looksLikeEmail(email: string): boolean {
 export async function emailHash(secret: string, email: string): Promise<string> {
   return base64url(await hmac(secret, `hash:${normalizeEmail(email)}`));
 }
+/** The sign-up rate limit is keyed by this, never by the address itself, so no store ever holds a raw IP. */
+export async function ipHash(secret: string, ip: string): Promise<string> {
+  return base64url(await hmac(secret, `ip:${ip}`));
+}
 
 export interface ConfirmPayload {
   email: string;
