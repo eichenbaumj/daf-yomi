@@ -1,3 +1,4 @@
+import { SOURCE_RE } from "./source";
 /**
  * Tokens and hashes for the newsletter, on WebCrypto only, so the same code
  * runs in the Worker and in vitest's Node environment.
@@ -68,6 +69,8 @@ export interface ConfirmPayload {
   hold: 0 | 1;
   /** Version string of the consent text shown on the form. */
   consent: string;
+  /** Campaign tag of the paid link the reader arrived through (see source.ts); absent for everyone else. */
+  src?: string;
   /** Expiry, ms since epoch. */
   exp: number;
   nonce: string;
@@ -110,7 +113,8 @@ function isConfirmPayload(x: unknown): x is ConfirmPayload {
   const o = x as Record<string, unknown>;
   return typeof o.email === "string" && typeof o.tz === "string" && typeof o.hour === "number" && Number.isInteger(o.hour) && o.hour >= 0 && o.hour <= 23
     && (o.edition === "today" || o.edition === "tomorrow") && (o.hold === 0 || o.hold === 1)
-    && typeof o.consent === "string" && typeof o.exp === "number" && typeof o.nonce === "string";
+    && typeof o.consent === "string" && typeof o.exp === "number" && typeof o.nonce === "string"
+    && (o.src === undefined || (typeof o.src === "string" && SOURCE_RE.test(o.src)));
 }
 
 /** Constant-time comparison for bearer tokens and webhook signatures. */

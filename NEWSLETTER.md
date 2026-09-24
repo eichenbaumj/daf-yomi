@@ -14,14 +14,14 @@ Joe's `~/.claude/plans/feature-idea-for-daf-ancient-salamander.md`); code under 
 | Who is due | `src/newsletter/plan.ts` (pure) | `slot = localHour - chosenHour`; due at slot 0, caught up to `CATCHUP_HOURS` (3) later if no ledger row exists. Evening readers get tomorrow's daf. |
 | The email | `src/render/email.ts` (pure, no Sefaria) | Rendered once per (date, variant) into `editions`, personalised per reader by string replace (`__UNSUB__`, `__PREFS__`, `__EMAIL__`, `__CONFIRMED__`, held-for-Shabbat block). |
 | Carrier | Resend batch API behind `EmailProvider` (`src/newsletter/provider.ts`, `resend.ts`) | Chunks of 50 with `Idempotency-Key = daf:<date>:<variant>:<firstId>:<n>`; a replay returns the original response, a 409 counts as sent. Free tier: 100 emails/day. Swap to Amazon SES near 85 readers (an alert fires at 80). |
-| Opt-in | `POST /newsletter` → confirmation email → `GET /newsletter/confirm?t=` | Turnstile, per-IP limit, per-address throttle, suppression check, KV daily cap (`confirm:<date>`, 40). No row until the link is clicked. |
+| Opt-in | `POST /newsletter` → confirmation email → `GET /newsletter/confirm?t=` | Turnstile, per-IP limit, per-address throttle, suppression check, KV daily cap (`confirm:<date>`, 40). No row until the link is clicked. An optional campaign tag (`src`, a hidden field) rides inside the confirm token and lands in `subscribers.source`; see "Attribution" below. |
 | Inline box | `renderInlineSubscribe` in `src/render/newsletterPages.ts`, the left "pillar" inside the AI note on every English daf page ("Get the note as email", a `<details>` folded to one line; "Share this note" is the right pillar) | Same POST with the choices collapsed (morning, the browser's zone via a hidden field, no hold); a link leads to the full form. Turnstile is rendered explicitly on first open (a widget rendered inside a closed `<details>` measures zero width), `interaction-only`, so it is invisible unless a challenge is needed. Shown only with `NEWSLETTER_PUBLIC=1` and a `TURNSTILE_SITE_KEY`; never on `/he`. Added 2026-09-21 after ~150 human visits produced 2 sign-ups with only a nav tab asking. |
 | Unsubscribe | `GET|POST /newsletter/u/<token>` | The page's button and RFC 8058 one-click both POST here; idempotent 200. Address and zone are deleted on the spot (row tombstoned, token kept so repeat POSTs stay 200). |
 | Preferences | `GET|POST /newsletter/prefs/<token>` | Hour, zone, edition, hold-Shabbat. |
 | Archive | `GET /newsletter/issue/YYYY-MM-DD` | Exactly what was sent (from `editions`), `noindex`. Doubles as the design preview. |
 | Provider events | `POST /newsletter/hooks/resend` | Svix-signed. Hard bounce → `bounced`; complaint → `complained`; both suppressed for good. Duplicate `svix-id`s are ignored. |
 | Alerts | `src/newsletter/alerts.ts` via the `ALERT` send_email binding | Free to a verified address. Without the binding, alerts are console errors only. |
-| Admin | `GET /admin/newsletter/status`, `POST /admin/newsletter/{send,tick,rebuild-edition,subscribe}` | Bearer `ADMIN_TOKEN`. `send?date=&dry=1` returns the HTML; `send?date=&to=` mails one issue; `tick?time=<ms>` runs a tick now; `subscribe?email=&tz=&hour=&edition=&hold=` adds a reader by hand with the right hash and token. |
+| Admin | `GET /admin/newsletter/status`, `POST /admin/newsletter/{send,tick,rebuild-edition,subscribe}` | Bearer `ADMIN_TOKEN`. `send?date=&dry=1` returns the HTML; `send?date=&to=` mails one issue; `tick?time=<ms>` runs a tick now; `subscribe?email=&tz=&hour=&edition=&hold=` adds a reader by hand with the right hash and token. `status` also returns `sources`: per campaign tag, active and unsubscribed now and confirmations in the last 7 and 30 days (`npm run newsletter:sources` prints it). |
 
 Bindings and vars: see `wrangler.jsonc`. Secrets: `RESEND_API_KEY`, `TOKEN_HMAC_SECRET`, `TURNSTILE_SECRET_KEY`,
 `RESEND_WEBHOOK_SECRET` (plus the existing `ADMIN_TOKEN`, `ANTHROPIC_API_KEY`); all six are set in production.
@@ -52,6 +52,18 @@ hh:00  tick     zones whose local hour is within 3 h of a chosen hour → due re
 18:00  bake     retries anything still missing
 18:20  cards    same as 06:20
 ```
+
+## Attribution (added 2026-09-24)
+
+A paid link carries `?src=<tag>`, one lower-case word of up to 32 letters, digits and hyphens (`ga-news-2026-09`). The
+head script in `src/render/layout.ts` keeps it in `sessionStorage` (`daf:src`, dies with the tab) and strips it from the
+address bar so a shared link never carries it; the form scripts copy it into the hidden `src` field; `subscribe()` checks
+it with `parseSource` (`src/newsletter/source.ts`), signs it into the confirm token, and `confirm()` stores it. A revived
+reader keeps the first tag (`COALESCE(source, ?)`). It names the ad, never the reader, and the privacy page says so
+(`CONSENT_VERSION` 2026-09-v2). Rules: no Google tag, no click id (GCLID) captured or uploaded, ever; Google reports
+clicks and spend, `npm run newsletter:sources` reports confirmed subscribers, the division is by hand. The ad URL must
+be the exact lower-case path with no trailing slash (`/newsletter?src=`, `/?src=`): the router's 301 for anything else
+drops the query. Cached pages never see the tag (cache keys are path-only), which is why the fill is client-side.
 
 ## Running it
 

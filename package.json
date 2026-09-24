@@ -24,6 +24,7 @@
     "d1:migrate": "wrangler d1 migrations apply daf-yomi-newsletter --remote",
     "email:preview": "tsx --import ./scripts/md-loader.mjs scripts/email-preview.ts",
     "newsletter:test": "tsx --import ./scripts/md-loader.mjs scripts/newsletter-send-test.ts",
+    "newsletter:sources": "tsx --import ./scripts/md-loader.mjs scripts/newsletter-sources.ts",
     "og:fonts": "tsx --import ./scripts/md-loader.mjs scripts/og-fonts.ts",
     "og:preview": "tsx --import ./scripts/md-loader.mjs scripts/og-preview.ts",
     "og:backfill": "tsx --import ./scripts/md-loader.mjs scripts/og-backfill.ts",

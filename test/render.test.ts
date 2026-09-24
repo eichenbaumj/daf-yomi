@@ -179,7 +179,10 @@ describe("daf page", () => {
     expect(html).toContain('<form method="post" action="/newsletter" novalidate>');
     expect(html).toContain('<input type="hidden" name="slot" value="morning">');
     expect(html).toContain('<input type="hidden" name="tz" value="UTC">');
-    expect(html).toContain('name="consent" value="2026-09-v1"');
+    expect(html).toContain('name="consent" value="2026-09-v2"');
+    expect(html).toContain('<input type="hidden" name="src" value="">'); // the campaign tag, filled from sessionStorage by the tail script
+    expect(html).toContain('sessionStorage.getItem("daf:src")');
+    expect(html).toContain('u.searchParams.get("src")'); // the head script remembers ?src= and strips it from the address bar
     expect(html).toContain('name="website" class="hp"');
     expect(html).toContain('<div class="cf-turnstile" data-sitekey="0xKEY"></div>');
     expect(html).toContain('<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=dafTurnstileReady" async defer></script>');

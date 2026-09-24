@@ -28,7 +28,7 @@ export function fakeDb(): FakeDb {
     addSubscriber(p) {
       const row: SubscriberRow = {
         id: nextId++, email: p.email, email_hash: p.email_hash ?? `h:${p.email}`, tz: p.tz, hour: p.hour ?? 6, edition: p.edition ?? "today",
-        hold_shabbat: p.hold_shabbat ?? 0, status: p.status ?? "active", unsub_token: p.unsub_token ?? "a".repeat(48), consent_version: "test",
+        hold_shabbat: p.hold_shabbat ?? 0, status: p.status ?? "active", unsub_token: p.unsub_token ?? "a".repeat(48), consent_version: "test", source: p.source ?? null,
         created_at: "2026-09-01T00:00:00.000Z", confirmed_at: p.confirmed_at ?? "2026-09-01T00:00:00.000Z", unsubscribed_at: null, updated_at: "2026-09-01T00:00:00.000Z",
       };
       subscribers.push(row);
@@ -63,7 +63,7 @@ export function fakeDb(): FakeDb {
     async findByEmailHash(h) { t(); return subscribers.find((s) => s.email_hash === h) ?? null; },
     async upsertConfirmed(n: NewSubscriber, now) {
       t(); const existing = subscribers.find((s) => s.email_hash === n.email_hash);
-      if (existing) { Object.assign(existing, { email: n.email, tz: n.tz, hour: n.hour, edition: n.edition, hold_shabbat: n.hold_shabbat, status: "active", consent_version: n.consent_version, confirmed_at: now, unsubscribed_at: null, updated_at: now }); return existing; }
+      if (existing) { Object.assign(existing, { email: n.email, tz: n.tz, hour: n.hour, edition: n.edition, hold_shabbat: n.hold_shabbat, status: "active", consent_version: n.consent_version, confirmed_at: now, unsubscribed_at: null, updated_at: now, source: existing.source ?? n.source }); return existing; }
       return db.addSubscriber({ ...n, confirmed_at: now });
     },
     async recordEvent(ev) { t(); if (events.some((e) => e.provider_event_id === ev.provider_event_id)) return false; events.push(ev); return true; },
@@ -71,6 +71,16 @@ export function fakeDb(): FakeDb {
     async markComplained(h, now) { t(); let n = 0; for (const s of subscribers) if (s.email_hash === h && (s.status === "active" || s.status === "bounced")) { s.status = "complained"; s.updated_at = now; n++; } return n; },
     async addSuppression(h, reason) { t(); if (!suppressions.has(h)) suppressions.set(h, reason); },
     async countByStatus() { t(); const out: Record<string, number> = {}; for (const s of subscribers) out[s.status] = (out[s.status] ?? 0) + 1; return out; },
+    async countBySource(since7, since30) {
+      t(); const m = new Map<string, { source: string; status: string; n: number; confirmed7d: number; confirmed30d: number }>();
+      for (const s of subscribers) {
+        const source = s.source ?? "(none)"; const key = `${source}|${s.status}`;
+        const o = m.get(key) ?? { source, status: s.status, n: 0, confirmed7d: 0, confirmed30d: 0 };
+        o.n++; if (s.confirmed_at && s.confirmed_at >= since7) o.confirmed7d++; if (s.confirmed_at && s.confirmed_at >= since30) o.confirmed30d++;
+        m.set(key, o);
+      }
+      return [...m.values()].sort((a, b) => a.source.localeCompare(b.source) || a.status.localeCompare(b.status));
+    },
     async activeCount() { t(); return subscribers.filter((s) => s.status === "active").length; },
     async recentRuns(limit) { t(); return runs.slice(-limit).reverse(); },
     async deliveryCounts(dates) { t(); const m = new Map<string, number>(); for (const d of deliveries.values()) if (dates.includes(d.edition_date)) m.set(`${d.edition_date}|${d.status}`, (m.get(`${d.edition_date}|${d.status}`) ?? 0) + 1); return [...m].map(([key, n]) => { const [edition_date, status] = key.split("|") as [string, string]; return { edition_date, status, n }; }); },

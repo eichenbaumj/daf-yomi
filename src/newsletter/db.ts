@@ -25,6 +25,8 @@ export interface SubscriberRow {
   status: SubscriberStatus;
   unsub_token: string;
   consent_version: string;
+  /** Campaign tag of the paid link the reader came through, or NULL. Names the ad, never the reader. */
+  source: string | null;
   created_at: string;
   confirmed_at: string | null;
   unsubscribed_at: string | null;
@@ -72,7 +74,9 @@ export interface NewSubscriber {
   hold_shabbat: 0 | 1;
   consent_version: string;
   unsub_token: string;
+  source: string | null;
 }
+export interface SourceCount { source: string; status: string; n: number; confirmed7d: number; confirmed30d: number }
 export interface Prefs { tz: string; hour: number; edition: Edition; hold_shabbat: 0 | 1 }
 export interface EventRow {
   provider_event_id: string;
@@ -118,6 +122,8 @@ export interface NewsletterDb {
   addSuppression(emailHash: string, reason: string, now: string): Promise<void>;
   // --- admin ---
   countByStatus(): Promise<Record<string, number>>;
+  /** Rows per (source, status), plus how many confirmed since `since7`/`since30` (ISO); NULL source reads "(none)". */
+  countBySource(since7: string, since30: string): Promise<SourceCount[]>;
   activeCount(): Promise<number>;
   recentRuns(limit: number): Promise<SendRunRow[]>;
   deliveryCounts(editionDates: string[]): Promise<{ edition_date: string; status: string; n: number }[]>;
@@ -198,14 +204,14 @@ export function d1NewsletterDb(d1: D1Database): NewsletterDb {
       if (existing) {
         await run(
           `UPDATE subscribers SET email = ?2, tz = ?3, hour = ?4, edition = ?5, hold_shabbat = ?6, status = 'active', consent_version = ?7,
-             confirmed_at = ?8, unsubscribed_at = NULL, updated_at = ?8 WHERE id = ?1`,
-          existing.id, s.email, s.tz, s.hour, s.edition, s.hold_shabbat, s.consent_version, now);
+             confirmed_at = ?8, unsubscribed_at = NULL, updated_at = ?8, source = COALESCE(source, ?9) WHERE id = ?1`,
+          existing.id, s.email, s.tz, s.hour, s.edition, s.hold_shabbat, s.consent_version, now, s.source);
         return (await first<SubscriberRow>(`SELECT * FROM subscribers WHERE id = ?1`, existing.id))!;
       }
       await run(
-        `INSERT INTO subscribers (email, email_hash, tz, hour, edition, hold_shabbat, status, unsub_token, consent_version, created_at, confirmed_at, updated_at)
-         VALUES (?1, ?2, ?3, ?4, ?5, ?6, 'active', ?7, ?8, ?9, ?9, ?9)`,
-        s.email, s.email_hash, s.tz, s.hour, s.edition, s.hold_shabbat, s.unsub_token, s.consent_version, now);
+        `INSERT INTO subscribers (email, email_hash, tz, hour, edition, hold_shabbat, status, unsub_token, consent_version, source, created_at, confirmed_at, updated_at)
+         VALUES (?1, ?2, ?3, ?4, ?5, ?6, 'active', ?7, ?8, ?10, ?9, ?9, ?9)`,
+        s.email, s.email_hash, s.tz, s.hour, s.edition, s.hold_shabbat, s.unsub_token, s.consent_version, now, s.source);
       return (await first<SubscriberRow>(`SELECT * FROM subscribers WHERE unsub_token = ?1`, s.unsub_token))!;
     },
 
@@ -220,6 +226,11 @@ export function d1NewsletterDb(d1: D1Database): NewsletterDb {
       const rows = await all<{ status: string; n: number }>(`SELECT status, COUNT(*) AS n FROM subscribers GROUP BY status`);
       return Object.fromEntries(rows.map((r) => [r.status, r.n]));
     },
+    countBySource: (since7, since30) => all<SourceCount>(
+      `SELECT COALESCE(source, '(none)') AS source, status, COUNT(*) AS n,
+              SUM(CASE WHEN confirmed_at >= ?1 THEN 1 ELSE 0 END) AS confirmed7d,
+              SUM(CASE WHEN confirmed_at >= ?2 THEN 1 ELSE 0 END) AS confirmed30d
+         FROM subscribers GROUP BY COALESCE(source, '(none)'), status ORDER BY source, status`, since7, since30),
     activeCount: async () => (await first<{ n: number }>(`SELECT COUNT(*) AS n FROM subscribers WHERE status = 'active'`))?.n ?? 0,
     recentRuns: (limit) => all<SendRunRow>(`SELECT * FROM send_runs ORDER BY tick DESC LIMIT ?1`, limit),
     deliveryCounts: (dates) => all<{ edition_date: string; status: string; n: number }>(

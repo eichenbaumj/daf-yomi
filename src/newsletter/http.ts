@@ -19,7 +19,8 @@ import {
   renderNewsletterPage, renderNotice, renderPrefsPage, renderPrivacyPage, renderUnsubPage, type FormState,
 } from "../render/newsletterPages";
 import { getNote } from "../note/store";
-import { d1NewsletterDb, type Edition, type NewsletterDb, type Variant } from "./db";
+import { d1NewsletterDb, type Edition, type NewsletterDb, type SourceCount, type Variant } from "./db";
+import { parseSource } from "./source";
 import { buildEdition, runSendTick } from "./send";
 import { issueHeaders, resendProvider } from "./resend";
 import { emailHash, ipHash, looksLikeEmail, normalizeEmail, randomHex, signConfirmToken, timingSafeEqual, verifyConfirmToken, CONFIRM_TOKEN_TTL_MS } from "./tokens";
@@ -108,11 +109,23 @@ async function confirmationsAllowed(env: Env): Promise<boolean> {
   return true;
 }
 
+/** One object per campaign tag: how many are active or unsubscribed now, and how many confirmed in the last 7 and 30 days. */
+export function foldSources(rows: SourceCount[]): Record<string, { active: number; unsubscribed: number; confirmed7d: number; confirmed30d: number }> {
+  const out: Record<string, { active: number; unsubscribed: number; confirmed7d: number; confirmed30d: number }> = {};
+  for (const r of rows) {
+    const o = (out[r.source] ??= { active: 0, unsubscribed: 0, confirmed7d: 0, confirmed30d: 0 });
+    if (r.status === "active") o.active += r.n; else if (r.status === "unsubscribed") o.unsubscribed += r.n;
+    o.confirmed7d += r.confirmed7d; o.confirmed30d += r.confirmed30d;
+  }
+  return out;
+}
+
 async function subscribe(request: Request, env: Env, origin: string, db: NewsletterDb): Promise<Response> {
   const form = await request.formData().catch(() => null);
   if (!form) return noStore(renderNotice(env, origin, "That did not work", ["The form did not arrive in one piece. <a href=\"/newsletter\">Try again.</a>"]), 400);
   const field = (k: string) => { const v = form.get(k); return typeof v === "string" ? v : ""; };
-  const state: FormState = { email: field("email").trim(), slot: field("slot") === "evening" ? "evening" : "morning", tz: field("tz"), hold: field("hold") === "1" };
+  const src = parseSource(field("src"));
+  const state: FormState = { email: field("email").trim(), slot: field("slot") === "evening" ? "evening" : "morning", tz: field("tz"), hold: field("hold") === "1", src: src ?? undefined };
   const again = (error: string, status = 400) => noStore(renderNewsletterPage(env, origin, { siteKey: env.TURNSTILE_SITE_KEY ?? "", tzOptions: TIMEZONES, defaultTz: state.tz || "America/New_York", state: { ...state, error } }), status);
 
   // Bots that fill the hidden field get the same friendly page and nothing is sent.
@@ -140,7 +153,7 @@ async function subscribe(request: Request, env: Env, origin: string, db: Newslet
   await edgePut(`sub:${hash}`, 1, EMAIL_THROTTLE_S);
 
   const { hour, edition } = slotPrefs(state.slot ?? null);
-  const token = await signConfirmToken(env.TOKEN_HMAC_SECRET, { email, tz: state.tz!, hour, edition, hold: state.hold ? 1 : 0, consent: field("consent") || CONSENT_VERSION, exp: Date.now() + CONFIRM_TOKEN_TTL_MS, nonce: randomHex(8) });
+  const token = await signConfirmToken(env.TOKEN_HMAC_SECRET, { email, tz: state.tz!, hour, edition, hold: state.hold ? 1 : 0, consent: field("consent") || CONSENT_VERSION, ...(src ? { src } : {}), exp: Date.now() + CONFIRM_TOKEN_TTL_MS, nonce: randomHex(8) });
   const confirmUrl = `${origin}/newsletter/confirm?t=${encodeURIComponent(token)}`;
   const mail = renderConfirmEmail({ origin, siteName: env.SITE_NAME, confirmUrl, hourLabel: hourLabel(hour), tz: state.tz!, editionLabel: edition === "tomorrow" ? "tomorrow's daf the evening before" : "the day's daf" });
   const provider = resendProvider(env.RESEND_API_KEY);
@@ -159,7 +172,7 @@ async function confirm(request: Request, env: Env, origin: string, db: Newslette
   const hash = await emailHash(env.TOKEN_HMAC_SECRET, p.email);
   if (await db.isSuppressed(hash)) return noStore(renderNotice(env, origin, "One thing first", [`Mail to this address bounced or was reported as spam before, so I do not add it automatically. Write to me at <a href="mailto:joe@group17a.com">joe@group17a.com</a> and I will sort it out.`]), 409);
   const now = new Date().toISOString();
-  const sub = await db.upsertConfirmed({ email: p.email, email_hash: hash, tz: p.tz, hour: p.hour, edition: p.edition, hold_shabbat: p.hold, consent_version: p.consent, unsub_token: randomHex(24) }, now);
+  const sub = await db.upsertConfirmed({ email: p.email, email_hash: hash, tz: p.tz, hour: p.hour, edition: p.edition, hold_shabbat: p.hold, consent_version: p.consent, unsub_token: randomHex(24), source: p.src ?? null }, now);
   return noStore(renderConfirmedPage(env, origin, sub));
 }
 
@@ -233,8 +246,9 @@ async function admin(request: Request, env: Env, origin: string, db: NewsletterD
   switch (action) {
     case "status": {
       const dates = [-1, 0, 1].map((k) => ymd(new Date(x.today.getFullYear(), x.today.getMonth(), x.today.getDate() + k)));
-      const [byStatus, runs, deliveries, editions] = await Promise.all([db.countByStatus(), db.recentRuns(24), db.deliveryCounts(dates), db.editionsFor(dates)]);
-      return json({ subscribers: byStatus, recentRuns: runs, deliveries, editions: editions.map((e) => ({ edition_date: e.edition_date, variant: e.variant, slug: e.slug, daf: e.daf, subject: e.subject, bytes: e.html.length, rendered_at: e.rendered_at })) });
+      const ago = (days: number) => new Date(Date.now() - days * 86400000).toISOString();
+      const [byStatus, bySource, runs, deliveries, editions] = await Promise.all([db.countByStatus(), db.countBySource(ago(7), ago(30)), db.recentRuns(24), db.deliveryCounts(dates), db.editionsFor(dates)]);
+      return json({ subscribers: byStatus, sources: foldSources(bySource), recentRuns: runs, deliveries, editions: editions.map((e) => ({ edition_date: e.edition_date, variant: e.variant, slug: e.slug, daf: e.daf, subject: e.subject, bytes: e.html.length, rendered_at: e.rendered_at })) });
     }
     case "send": {
       if (request.method !== "POST") return new Response("POST only", { status: 405 });
@@ -275,7 +289,7 @@ async function admin(request: Request, env: Env, origin: string, db: NewsletterD
       if (!isValidTimezone(tz)) return json({ error: `bad tz ${tz}` }, 400);
       if (!Number.isInteger(hour) || hour < 0 || hour > 23) return json({ error: "hour must be 0-23" }, 400);
       const hash = await emailHash(env.TOKEN_HMAC_SECRET, email);
-      const sub = await db.upsertConfirmed({ email, email_hash: hash, tz, hour, edition, hold_shabbat: hold, consent_version: "admin", unsub_token: randomHex(24) }, new Date().toISOString());
+      const sub = await db.upsertConfirmed({ email, email_hash: hash, tz, hour, edition, hold_shabbat: hold, consent_version: "admin", unsub_token: randomHex(24), source: null }, new Date().toISOString());
       return json({ id: sub.id, email: sub.email, tz: sub.tz, hour: sub.hour, edition: sub.edition, hold_shabbat: sub.hold_shabbat, status: sub.status, prefs: `${origin}/newsletter/prefs/${sub.unsub_token}` });
     }
     case "rebuild-edition": {

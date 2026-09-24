@@ -62,6 +62,11 @@ Other surfaces, all already on:
   "not found" and the listing shows a handful of stale `wrangler dev` keys. Same for counting notes
   (`kv key list --remote --prefix note:v1:`; 2,711 on 2026-09-21).
 
+- **Paid campaigns** (2026-09-24): clicks and spend live in the Google Ads account, per ad group; confirmed subscribers
+  per campaign tag come from `npm run newsletter:sources` (the `?src=` word on the landing URL, stored on the
+  subscriber row; NEWSLETTER.md "Attribution"). Nothing of Google's runs on the site: no tag, no click id, no
+  conversion upload. The brief for the first experiment is `data/ads/2026-09-search-experiment.md`.
+
 ## Search engines (added 2026-09-22)
 
 The note is the only content on this site that exists nowhere else; the daf text is Sefaria's. Everything

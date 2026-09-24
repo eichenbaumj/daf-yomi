@@ -28,6 +28,13 @@ describe("tokens", () => {
     const t = await signConfirmToken(secret, { ...payload, hour: 26 } as ConfirmPayload);
     expect(await verifyConfirmToken(secret, t)).toBeNull();
   });
+  it("carries the campaign tag when there is one, and only a well-formed one", async () => {
+    const tagged = { ...payload, src: "ga-news-2026-09" };
+    expect(await verifyConfirmToken(secret, await signConfirmToken(secret, tagged))).toEqual(tagged);
+    expect(await verifyConfirmToken(secret, await signConfirmToken(secret, payload))).toEqual(payload); // tokens minted before the tag existed still verify
+    expect(await verifyConfirmToken(secret, await signConfirmToken(secret, { ...payload, src: "Not A Tag" }))).toBeNull();
+    expect(await verifyConfirmToken(secret, await signConfirmToken(secret, { ...payload, src: 7 } as unknown as ConfirmPayload))).toBeNull();
+  });
   it("makes lowercase hex tokens the router will not rewrite", () => {
     const h = randomHex(24);
     expect(h).toMatch(/^[0-9a-f]{48}$/);

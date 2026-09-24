@@ -95,7 +95,8 @@ English, Hebrew (`/he`, Pre-Release until `HE_PUBLIC=1`), Yiddish later on the s
 - Newsletter rules: the send path never fetches from Sefaria (a test greps for it); the AI label travels
   into the email verbatim except for its pointer ("of this daf, linked below"); every issue carries
   RFC 8058 one-click unsubscribe headers and a footer link; no images, no tracking, no postal address (Joe's
-  call: non-commercial); `NEWSLETTER_PUBLIC` gates the nav tab and the form until launch.
+  call: non-commercial); `NEWSLETTER_PUBLIC` gates the nav tab and the form until launch. Campaign attribution is
+  one word in a hidden field (`?src=` on the landing URL, `subscribers.source`), never a Google tag or click id.
 - Style iteration is a review round with Joe: `npm run bake:note -- <targets>` on 5 varied dapim, edit
   `prompts/daf-note.md`, repeat. The archive is re-baked precisely, not wholesale: `npm run notes:export`, then
   `npm run notes:audit -- --all --review` (the judge, one Message Batch), read the spread with Joe, then
