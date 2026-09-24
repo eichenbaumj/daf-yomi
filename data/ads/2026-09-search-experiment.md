@@ -84,7 +84,7 @@ Headlines:
 
 Descriptions:
 
-    Today's daf in English and the original, from Sefaria. A note and a map of the page, by AI.
+    Today's daf in English and the original, from Sefaria. A note and map of the page, by AI.
     Free and non-commercial. Read the page, then get the note by email if you want it.
 
 ## Negative keywords (campaign level)
