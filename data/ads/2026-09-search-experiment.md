@@ -136,3 +136,13 @@ an answer).
 ## After the experiment
 
 Pause the campaign rather than deleting it, so the numbers stay readable. The tag rows stay in D1 either way.
+
+## Change, 2026-09-25: everything to the sign-up page
+
+Joe's call: a click to the daf page is unlikely to become a subscriber, a click from someone who wants a
+newsletter is, and a subscriber comes back. So ad group 1 (landing on today's daf) is **paused**, its broader
+terms ("daf yomi", "daf yomi online" in phrase and exact) moved into "Daily email", and the whole $5 a day flows to
+`https://daf-yomi.dev/newsletter?src=ga-news-2026-09`. Google flagged "bekhorot daf yomi" as low search volume, so
+tractate-name terms are not worth adding in future cycles. The read-out is now one number: cost per confirmed
+subscriber under the `ga-news-2026-09` tag. Ad group 1 stays paused, not removed, so it can be revived for a
+landing-page comparison later.
