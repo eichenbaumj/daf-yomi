@@ -146,3 +146,10 @@ terms ("daf yomi", "daf yomi online" in phrase and exact) moved into "Daily emai
 tractate-name terms are not worth adding in future cycles. The read-out is now one number: cost per confirmed
 subscriber under the `ga-news-2026-09` tag. Ad group 1 stays paused, not removed, so it can be revived for a
 landing-page comparison later.
+
+## Change, 2026-09-27: budget and bid raised
+
+Four days in: 9 impressions, 0 clicks, $0 spent, every keyword "Eligible" at zero impressions. Read as the $1.00 bid
+cap losing every auction from a new account. Joe raised the daily budget to $10 and the bid cap to $3.00 for the rest
+of the run (end date still 2026-10-08, so at most about $110). If impressions stay near zero after two days, the
+next suspects are the account's learning hold and the $50 card authorization under Billing.
