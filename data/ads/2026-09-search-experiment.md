@@ -153,3 +153,11 @@ Four days in: 9 impressions, 0 clicks, $0 spent, every keyword "Eligible" at zer
 cap losing every auction from a new account. Joe raised the daily budget to $10 and the bid cap to $3.00 for the rest
 of the run (end date still 2026-10-08, so at most about $110). If impressions stay near zero after two days, the
 next suspects are the account's learning hold and the $50 card authorization under Billing.
+
+## Read-out, 2026-09-28: the ads are showing
+
+Since the bid went to $3.00 on 2026-09-27: 161 impressions, 8 clicks, average $1.84 a click, about $15 spent,
+0 subscribers under the ad tag. Clicks came from "daf yomi" (3 of 40 impressions), "daf yomi today" (2 of 28),
+"today's daf", "today's daf yomi", "daf yomi printable". Joe's own habit query "daf yomi english" drew one
+impression in four days: rare. Wasted impressions went to searches for other products (Eli Stefansky's daf,
+OU daf yomi, Yerushalmi, Al HaDaf) and "printable"; those six words were added to the negative list.
