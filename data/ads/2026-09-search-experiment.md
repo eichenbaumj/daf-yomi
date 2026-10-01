@@ -161,3 +161,12 @@ Since the bid went to $3.00 on 2026-09-27: 161 impressions, 8 clicks, average $1
 "today's daf", "today's daf yomi", "daf yomi printable". Joe's own habit query "daf yomi english" drew one
 impression in four days: rare. Wasted impressions went to searches for other products (Eli Stefansky's daf,
 OU daf yomi, Yerushalmi, Al HaDaf) and "printable"; those six words were added to the negative list.
+
+## Change, 2026-10-01: landing page swapped to today's daf
+
+Through 2026-09-30 the sign-up-page group had 25 clicks, 548 impressions, $43.86 spent, average $1.75 a click,
+and 0 subscribers under its tag. Site-wide, the week after launch settled to about 40 visits a day (295 visits in
+7 days, bots excluded) with 4 organic sign-ups, down from the launch burst. Twenty-five cold visitors and no
+sign-up is a weak but real signal that the bare sign-up page does not convert search traffic. "Daily email" is
+paused; "Ad group 1" (landing on today's daf, tag `ga-daf-2026-09`, the sign-up box inside the note) is live again
+for the rest of the run. If that also yields nothing by 2026-10-08, the next test is the About page.
