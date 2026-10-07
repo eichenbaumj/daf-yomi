@@ -170,3 +170,22 @@ and 0 subscribers under its tag. Site-wide, the week after launch settled to abo
 sign-up is a weak but real signal that the bare sign-up page does not convert search traffic. "Daily email" is
 paused; "Ad group 1" (landing on today's daf, tag `ga-daf-2026-09`, the sign-up box inside the note) is live again
 for the rest of the run. If that also yields nothing by 2026-10-08, the next test is the About page.
+
+## Verdict, 2026-10-07: paused, a day before the end date
+
+Whole run, 2026-09-24 to 10-06 (Google's figures, by hand from the two windows):
+
+| | Sign-up page (09-27 to 09-30) | Today's daf (10-01 to 10-06) |
+|---|---|---|
+| Clicks | about 25 | about 40 |
+| Spend | about $44 | about $60 |
+| Average per click | $1.75 | $1.44 |
+| Click-through rate | 4.6% | 8.7% |
+| Confirmed subscribers with the tag | 0 | 0 |
+
+Roughly 65 paid visits, about $105, and not one confirmed subscriber from either landing page. The ads themselves
+worked (an 8.7% click-through rate on the daf-page group is high for search); the visitors did not sign up.
+Organic sign-ups continued at a few a week in the same period, so the form is not broken; search visitors are
+simply not the people who subscribe. Conclusion for the record: Google search is not a subscriber channel for this
+site at any price we would pay. The next channel to try is a host read on a daf podcast or newsletter, where the
+listener already has the habit. Campaign paused, not removed; the account, negatives and both ad groups stay.
