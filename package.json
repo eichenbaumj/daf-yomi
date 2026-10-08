@@ -31,6 +31,7 @@
     "notes:export": "tsx --import ./scripts/md-loader.mjs scripts/export-notes.ts",
     "notes:audit": "tsx --import ./scripts/md-loader.mjs scripts/audit-notes.ts",
     "notes:rebake": "tsx --import ./scripts/md-loader.mjs scripts/rebake.ts",
+    "notes:redraft": "tsx --import ./scripts/md-loader.mjs scripts/redraft.ts",
     "notes:audit:he": "tsx --import ./scripts/md-loader.mjs scripts/audit-he.ts"
   },
   "keywords": [

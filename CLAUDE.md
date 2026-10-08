@@ -102,6 +102,8 @@ English, Hebrew (`/he`, Pre-Release until `HE_PUBLIC=1`), Yiddish later on the s
   `npm run notes:audit -- --all --review` (the judge, one Message Batch), read the spread with Joe, then
   `npm run notes:rebake -- --audit data/audit/<date>.json` over as many days as the KV budget needs, then the
   `translate` and `og:backfill` commands it prints. HOSTING.md "Note quality audits" has the procedure and costs.
+  One note Joe finds confusing, today's included: `npm run notes:redraft -- <slug/daf> --why "…"`, read the candidates,
+  `--put <n>` (Hebrew and card follow; `--restore` undoes). Records in `data/redrafts/`, committed.
 - The map's style iterates the same way: `npm run bake:map -- <targets>` (stdout only, `--json` for a review file) on
   varied dapim (a `§`-marked page, a glued MISHNA, a page with no marks, a Yerushalmi day, a 70-segment page), edit
   `prompts/daf-map.md`, repeat; bump `MAP_PROMPT_VERSION` when the archive should be re-drawn.

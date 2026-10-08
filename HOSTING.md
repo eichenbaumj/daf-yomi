@@ -409,6 +409,15 @@ scripts print what they spent, cache every finished result on disk, and replay e
 Known wrinkle: a permalink cached at the edge (up to an hour) can briefly show the old question above a card that
 already carries the new one, because old card tokens 302 to the current card. Accept it; `?nocache=1` shows the truth.
 
+**A hand redraft** (first used 2026-10-08, Bekhorot 20, whose question Joe found confusing at the end): when a reader
+finds one note wrong or unclear that the judge kept, `npm run notes:redraft -- <slug/daf> --why "…" [--n 3]` writes N
+candidates live (the writer sees the stored note and the reason), runs the gate and the judge on each (the re-bake's
+bound: three drafts, two judge readings), prints them, and saves `data/redrafts/<date>-<slug>-<daf>.json` with the note
+they would replace. Read them, then `--put <n>` stores one through `POST /admin/note/put` and, when the old note had them,
+re-translates the Hebrew note (`/admin/translate?force=1`) and redraws the card (`/admin/og/bake`). `--restore` puts the
+replaced note back. Today's daf is fair game: the cron never overwrites a stored note. No email is re-sent; a reader
+whose hour has not come yet gets the redraft. About $0.15 a candidate. Commit the record.
+
 ## Failure modes
 
 - **Note missing on today's page**: the cron either had no API key, hit the generation budget, or the

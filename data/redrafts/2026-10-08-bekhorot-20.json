@@ -1,0 +1,117 @@
+{
+ "daf": "bekhorot/20",
+ "at": "2026-10-08T14:06:24.733Z",
+ "why": "The end of the question is confusing. 'Is a possibility either real or not, or can it fairly count against a person and never for him?' offers two half-formed alternatives, never says who the person is, and never says what counting for or against him means on this page. It also leans on 'stricter', which the summary never sets up: here, ignoring the unseen discharge means the next male kid certainly goes to the priest, while worrying about it makes the kid only a doubtful firstborn, which stays with its owner. 'The page says' overstates: the Gemara gives that reason and then a second one (he worries either way, and the two sages disagree about whether a goat that expelled a discharge can still give birth within its first year). And the summary's 'settles that by age: a goat in its first year' never says what the age settles. Write a question a newcomer can restate after one reading: one plain idea, both sides named, the stakes concrete, everything it needs already in the summary. Keep this thread if it can be asked that plainly; otherwise take another the page offers.",
+ "model": "claude-opus-5",
+ "promptVersion": "2026-09-23.12-82b94f6e",
+ "judgeVersion": "2026-09-22.1-5d7144e4",
+ "replaces": {
+  "summary": "A first male born to an animal goes to the priest, so someone who buys a goat from a gentile needs to know whether it has already given birth. Rabbi Yishmael settles that by age: a goat in its first year, a ewe in its second, a cow or donkey in its third. Rabbi Yehoshua tells him he erred, since a murky discharge from the womb, which nobody saw, also frees later offspring from going to the priest.",
+  "question": "The page says Rabbi Yishmael takes the unseen discharge seriously only when the doubt makes the rule stricter, so is a possibility either real or not, or can it fairly count against a person and never for him?",
+  "quotes": [
+   "Go out and say to Rabbi Yishmael: You erred.",
+   "a murky discharge from the womb"
+  ],
+  "model": "claude-opus-5",
+  "promptVersion": "2026-09-23.12-82b94f6e",
+  "generatedAt": "2026-10-06T06:01:57.297Z",
+  "sources": [
+   "Bekhorot.20a",
+   "Bekhorot.20b"
+  ],
+  "usage": {
+   "inputTokens": 22280,
+   "outputTokens": 5440,
+   "attempts": 2,
+   "estUsd": 0.2474
+  },
+  "wordCount": 2381,
+  "review": {
+   "at": "2026-10-06T06:01:57.297Z",
+   "judgeVersion": "2026-09-22.1-5d7144e4",
+   "questionStatus": "partly-answered",
+   "reach": "idea",
+   "verdict": "keep",
+   "rewritten": false
+  }
+ },
+ "hadTranslation": true,
+ "hadCard": true,
+ "candidates": [
+  {
+   "n": 1,
+   "summary": "The first male born to a goat or cow belongs to the priest, so a buyer of an animal from a gentile needs to know whether it has given birth before. Rabbi Yishmael goes by age: a goat that bears young within its first year is bearing for the first time, so that kid goes to the priest. Rabbi Yehoshua says he erred, since an unseen discharge from the womb also counts as a birth; Rabbi Akiva drops the estimates and leaves doubtful cases with the owner.",
+   "question": "When nobody can find out whether the goat gave birth before, is it better to decide by what usually happens, as Rabbi Yishmael does, or to admit the doubt and let the owner keep the kid, as Rabbi Akiva does?",
+   "quotes": [
+    "I have not arrived at this method of determining firstborn status",
+    "Go out and say to Rabbi Yishmael: You erred."
+   ],
+   "gate": "passed",
+   "judge": {
+    "verdict": "keep",
+    "questionStatus": "open",
+    "reach": "idea",
+    "reasons": [],
+    "feedback": "",
+    "unverified": false
+   },
+   "drafts": 1,
+   "judges": 1,
+   "inputTokens": 15030,
+   "outputTokens": 2529,
+   "estUsd": 0.1384
+  },
+  {
+   "n": 2,
+   "summary": "A firstborn male animal goes to the priest, so a man who buys a goat from a gentile needs to know whether it has already given birth. Rabbi Yishmael reads the animal's age: a goat still in its first year cannot have given birth, so the male it bears now is certainly the priest's, and later ones are doubtful and stay with the owner. Rabbi Yehoshua says he erred, since an unseen murky discharge from the womb also counts as a birth.",
+   "question": "When no one can know whether the unseen discharge happened, should that doubt keep the young goat with its owner as readily as it hands it to the priest?",
+   "quotes": [
+    "Go out and say to Rabbi Yishmael: You erred."
+   ],
+   "gate": "passed",
+   "judge": {
+    "verdict": "keep",
+    "questionStatus": "partly-answered",
+    "reach": "idea",
+    "reasons": [],
+    "feedback": "",
+    "unverified": true
+   },
+   "drafts": 1,
+   "judges": 1,
+   "inputTokens": 14989,
+   "outputTokens": 2584,
+   "estUsd": 0.1395
+  },
+  {
+   "n": 3,
+   "summary": "A first male born to an animal belongs to the priest, so a man who buys a young goat from a gentile needs to know whether it has already given birth. Rabbi Yishmael rules by age: if the goat bears a male within its first year, that kid is certainly the priest's. Rabbi Yehoshua says he erred, since an unseen murky discharge from the womb already frees later offspring, leaving the kid doubtful and so with its owner.",
+   "question": "Is it fair to take a possibility nobody can check seriously only when it costs the owner his kid, and to ignore it when it would let him keep it?",
+   "quotes": [
+    "Go out and say to Rabbi Yishmael: You erred",
+    "a murky discharge from the womb, which exempts subsequent births"
+   ],
+   "gate": "passed",
+   "judge": {
+    "verdict": "keep",
+    "questionStatus": "partly-answered",
+    "reach": "idea",
+    "reasons": [],
+    "feedback": "",
+    "unverified": false
+   },
+   "drafts": 1,
+   "judges": 1,
+   "inputTokens": 14982,
+   "outputTokens": 3218,
+   "estUsd": 0.1554
+  }
+ ],
+ "put": {
+  "candidate": 1,
+  "at": "2026-10-08T14:06:55.203Z",
+  "generatedAt": "2026-10-08T14:06:54.913Z",
+  "translation": "200 generated",
+  "card": "200 rendered"
+ }
+}
