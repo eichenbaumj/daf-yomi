@@ -552,13 +552,25 @@ function isLocalHost(hostname: string): boolean {
   return hostname === "localhost" || hostname === "127.0.0.1" || hostname.endsWith(".localhost");
 }
 
+/**
+ * Where a request belongs if it did not arrive at https://CANONICAL_HOST, or null if it did (or is local dev).
+ * The old workers.dev URL and www redirect here, and so do plain http and Cloudflare's other ports (:8080, :8443):
+ * those served the page with a canonical link built from their own origin, and Google found
+ * http://daf-yomi.dev:8080/... pages calling themselves canonical (Search Console, 2026-10-15).
+ */
+export function canonicalRedirect(url: URL, env: Env): string | null {
+  if (!env.CANONICAL_HOST || isLocalHost(url.hostname)) return null;
+  if (url.hostname === env.CANONICAL_HOST && url.protocol === "https:" && url.port === "") return null;
+  return `https://${env.CANONICAL_HOST}${url.pathname}${url.search}`;
+}
+
 export default {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
-    if (env.CANONICAL_HOST && url.hostname !== env.CANONICAL_HOST && !isLocalHost(url.hostname)) {
-      // The old workers.dev URL and www keep working as permanent redirects, so shared links never break.
-      // A 308 keeps a form POST a POST (a 301 would turn it into a GET on the way to the canonical host).
-      return redirect(`https://${env.CANONICAL_HOST}${url.pathname}${url.search}`, request.method === "GET" || request.method === "HEAD" ? 301 : 308);
+    const moved = canonicalRedirect(url, env);
+    if (moved) {
+      // Permanent, so shared links never break. A 308 keeps a form POST a POST (a 301 would turn it into a GET).
+      return redirect(moved, request.method === "GET" || request.method === "HEAD" ? 301 : 308);
     }
     const origin = url.origin;
     try {
